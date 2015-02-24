@@ -1,0 +1,240 @@
+/**********************
+ *
+ *
+ * MINIMAL UI
+ *
+ *
+ **********************/
+#poststuff .extra-metabox-minimal-ui {
+	background: transparent;
+	border: 0px none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.extra-metabox-minimal-ui .handlediv,
+.extra-metabox-minimal-ui .hndle {
+	display: none;
+}
+#poststuff .extra-metabox-minimal-ui .inside {
+	margin: 0;
+	padding: 0;
+}
+/**********************
+ *
+ *
+ * CONFIGURATION
+ *
+ *
+ **********************/
+.extra-metabox .bloc {
+	background: #fafafa;
+	border: 1px solid #DFDFDF;
+	margin: 10px 0;
+	padding: 20px;
+	position: relative;
+}
+.extra-metabox-minimal-ui .bloc {
+	background: #FFFFFF;
+}
+.extra-metabox label,
+.extra-metabox .label {
+	display: inline-block;
+	margin-right: 10px;
+	min-width: 150px;
+	padding-top: 5px;
+	text-align: right;
+	vertical-align: top;
+}
+.extra-metabox .bloc input[type="text"],
+.extra-metabox .bloc select {
+	min-width: 200px;
+}
+.extra-metabox .bloc input[type="number"] {
+	padding: 5px 3px;
+	text-align: right;
+	width: 200px;
+}
+.extra-metabox .bloc input[type="checkbox"],
+.extra-metabox .bloc input[type="radio"] {
+	cursor: pointer;
+	vertical-align: -7px;
+}
+.extra-metabox .mediaInput {
+	float: left;
+	width: 200px;
+}
+.extra-metabox textarea {
+	min-width: 250px;
+	height: 100px;
+}
+#poststuff .extra-metabox h2 {
+	color: #777;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+	margin: 0px;
+	margin-bottom: 20px;
+}
+#poststuff .extra-metabox h2 .dashicons {
+	line-height: 25px;
+	margin-right: 8px;
+	vertical-align: 0px;
+}
+#poststuff .bloc h3,
+.metabox-holder .bloc h3,
+.extra-metabox .bloc h3 {
+	background: transparent;text-shadow: #fff 0 1px 0;
+	cursor: text;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: 0px none;
+	font-size: 15px;
+	margin: 50px 0 5px 0;
+	padding: 0px;
+	padding-left: 20px;
+}
+.extra-metabox .title {
+	color: #000000;
+	font-family: "Bebas", sans-serif;
+	font-size: 28px;
+	font-weight: normal;
+	padding: 5px 5px 3px 5px;
+}
+.extra-metabox textarea.title {
+	line-height: 30px;
+}
+/**********************
+ *
+ *
+ * GLOBAL REPEAT
+ *
+ *
+ **********************/
+.repeat-actions {
+	margin: 20px 0 10px 0;
+}
+.repeat-actions a {
+	border: 1px solid #ddd;
+	color: #000000;
+	display: inline-block;
+	line-height: 20px;
+	margin: 0px 5px 0 0;
+	padding: 10px;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space:nowrap;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}
+.repeat-actions .dashicons {
+	font-size: 16px;
+	margin-right: 5px;
+	vertical-align: -4px;
+	width: auto;
+}
+.copy-btn:hover {
+	border-color: #000000;
+	color: #000000;
+}
+.delete-btn:hover {
+	border-color: red;
+	color: red;
+}
+.extra-metabox .dodelete {
+	border: 0px none;
+	color: red;
+	display: inline-block;
+	font-size: 12px;
+	height: 16px;
+	line-height: 17px;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 18px;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+
+/**********************
+ *
+ *
+ * TINYMCE RESIZE
+ *
+ *
+ **********************/
+.post-status-info {
+	width: 100%;
+	border-spacing: 0;
+	border: 1px solid #e5e5e5;
+	border-top: none;
+	background-color: #f7f7f7;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+}
+.post-status-info td {
+	font-size: 12px;
+}
+.extra-metabox .content-resize-handle {
+	background: transparent url(@{lessurl}/../img/resize.gif) no-repeat scroll right bottom;
+	width: 12px;
+	cursor: n-resize;
+}
+
+/**********************
+ *
+ *
+ * ERROR MESSAGE
+ *
+ *
+ **********************/
+.extra-error-message {
+	color: red;
+}
+
+
+/**********************
+ *
+ *
+ * SEPARATOR
+ *
+ *
+ **********************/
+.extra-metabox hr.separator {
+	clear: both;
+	margin: 30px 0;
+}
+/**********************
+ *
+ *
+ * FILE
+ *
+ *
+ **********************/
+.extra-custom-file {
+	margin: 20px 0;
+}
+.extra-custom-file .file-input {
+	opacity: 0.3;
+}
+.extra-custom-file .file-input:focus {
+	opacity: 1;
+}
+.extra-custom-file .file-name {
+	display: inline-block;
+	padding: 10px 0 0 163px;
+}
+/**********************
+ *
+ *
+ * EASY CLEARING
+ *
+ *
+ **********************/
+.bloc:after,
+.floater:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}

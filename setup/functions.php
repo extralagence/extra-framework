@@ -272,7 +272,7 @@ function extra_submit_shortcode_handler( $tag ) {
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image($id = 0, $params= array(), $class = '', $alt = '') {
+function extra_get_responsive_image($id = 0, $dimensions= array(), $class = '', $alt = '') {
 
 	// hook it to override available sizes
 	$sizes = apply_filters('extra_responsive_sizes', array(
@@ -285,32 +285,30 @@ function extra_get_responsive_image($id = 0, $params= array(), $class = '', $alt
 	if(!is_numeric($id)) {
 		throw new Exception(__("This must be an integer", 'extra'));
 	}
+
+	// START RENDERING
+	ob_start();
+
 	?>
-
-
-	<?php ob_start(); ?>
 
 	<span class="responsiveImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?>">
 		<noscript
 			data-alt="<?php echo $alt; ?>"
-			<?php foreach($sizes as $size => $details): ?>
+			<?php foreach($sizes as $size => $value): ?>
 			data-src-<?php echo $size; ?>="<?php
-				echo wp_get_attachment_image_src($id, array($params[$size]['width'], $params[$size]['height']))[0];
-
+				echo wp_get_attachment_image_src($id, array($dimensions[$size][0], $dimensions[$size][1]))[0];
 			?>"
 			<?php endforeach; ?>>
 
 			<img alt="" src="<?php
-
-				echo wp_get_attachment_image_src($id, array(reset($params)['width'], reset($params)['height']))[0];
-
+				echo wp_get_attachment_image_src($id, array(reset($dimensions)[0], reset($dimensions)[1]))[0];
 			?>">
 		</noscript>
 		<img class="placeholder-image"
 		     src="<?php echo get_template_directory_uri(); ?>/assets/img/blank.png"
 		     alt="<?php echo $alt; ?>"
-		     style="<?php echo (!empty(reset($params)['width'])) ? 'width: ' . reset($params)['width'] . 'px;' : '';
-			 echo (!empty(reset($params)['height'])) ? ' height: ' . reset($params)['height'] . 'px;' : ''; ?>" />
+		     style="<?php echo (!empty(reset($dimensions)[0])) ? 'width: ' . reset($dimensions)[0] . 'px;' : '';
+			 echo (!empty(reset($dimensions)[1])) ? ' height: ' . reset($dimensions)[1] . 'px;' : ''; ?>" />
 	</span>
 	<?php $return = ob_get_contents(); ?>
 
@@ -318,17 +316,8 @@ function extra_get_responsive_image($id = 0, $params= array(), $class = '', $alt
 	ob_end_clean();
 	return $return;
 }
-function extra_responsive_image($src = 0, $params= array(), $class = '', $alt = '') {
-	echo extra_get_responsive_image($src, $params, $class, $alt);
-}
-function extra_setup_bfi_thumb_params($params, $size) {
-    $bfiThumbParams = $params[$size];
-	foreach($params as $key => $value) {
-		if($key != 'width' && $key != 'height') {
-			$bfiThumbParams[$key] = $value;
-		}
-	}
-    return $bfiThumbParams;
+function extra_responsive_image($src = 0, $sizes= array(), $class = '', $alt = '') {
+	echo extra_get_responsive_image($src, $sizes, $class, $alt);
 }
 /**
  * Shortify a string with "..."

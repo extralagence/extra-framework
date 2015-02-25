@@ -72,7 +72,7 @@ function require_extra_libraries () {
 	require_once EXTRA_INCLUDES_PATH . '/extra-gallery/setup.php';
 
 	// BFI THUMB
-	require_once EXTRA_INCLUDES_PATH . '/bfi_thumb/BFI_Thumb.php';
+	require_once EXTRA_INCLUDES_PATH . '/WP-OTF-Regenerate-Thumbnails/otf_regen_thumbs.php';
 	//remove_filter( 'image_resize_dimensions', 'bfi_image_resize_dimensions', 10, 5 );
 	//remove_filter( 'image_downsize', 'bfi_image_downsize', 1, 3 );
 

@@ -32,7 +32,7 @@ function extra_template_enqueue_scripts() {
 	// FANCYBOX
 	wp_enqueue_script('fancybox', EXTRA_URI . '/assets/js/lib/jquery.fancybox.js', array('jquery'), null, true);
 	// EXTRA
-	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/Extra.js', array('jquery', 'tweenmax', 'fancybox'), null, true);
+	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/extra.js', array('jquery', 'tweenmax', 'fancybox'), null, true);
 	$sizes = apply_filters('extra_responsive_sizes', array(
         'desktop' => 'only screen and (min-width: 961px)',
         'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
@@ -40,19 +40,19 @@ function extra_template_enqueue_scripts() {
 	));
 	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
     // EXTRA RESPONSIVE MENU
-    wp_enqueue_script('extra-responsive-menu', EXTRA_URI . '/assets/js/lib/ExtraResponsiveMenu.js', array('jquery', 'tweenmax'), null, true);
+    wp_enqueue_script('extra-responsive-menu', EXTRA_URI . '/assets/js/lib/extra.responsivemenu.js', array('jquery', 'tweenmax'), null, true);
 	// EXTRA-SLIDER
-	wp_enqueue_script('extra-slider', EXTRA_URI . '/assets/js/lib/Extra.slider.js', array('jquery', 'extra', 'tweenmax'), null, true);
+	wp_enqueue_script('extra-slider', EXTRA_URI . '/assets/js/lib/extra.slider.js', array('jquery', 'extra', 'tweenmax'), null, true);
 	// EXTRA
-	wp_enqueue_script('extra-gallery', EXTRA_URI . '/assets/js/lib/Extra.gallery.js', array('jquery', 'extra-slider', 'tweenmax'), null, true);
+	wp_enqueue_script('extra-gallery', EXTRA_URI . '/assets/js/lib/extra.gallery.js', array('jquery', 'extra-slider', 'tweenmax'), null, true);
 	// TO COPY IN THEME scripts.php IF NEEDED
 	//wp_enqueue_script('jquery', EXTRA_URI . '/assets/js/lib/fix_web_jquery.min.js', null, null, true);
 	// EXTRA FADE FROM BOTTOM
-	//wp_enqueue_script('extra-scroll-animator', EXTRA_URI . '/assets/js/lib/ExtraScrollAnimator.js', array('jquery', 'tweenmax', 'extra'), null, true);
+	//wp_enqueue_script('extra-scroll-animator', EXTRA_URI . '/assets/js/lib/extra.scrollanimator.js', array('jquery', 'tweenmax', 'extra'), null, true);
 	// EXTRA FADE FROM BOTTOM
-	//wp_enqueue_script('extra-smooth-fit', EXTRA_URI . '/assets/js/lib/ExtraSmoothFit.js', array('jquery', 'tweenmax', 'extra'), null, true);
+	//wp_enqueue_script('extra-smooth-fit', EXTRA_URI . '/assets/js/lib/extra.smoothfit.js', array('jquery', 'tweenmax', 'extra'), null, true);
 	// EXTRA-SLIDER
-	//wp_enqueue_script('extra-tooltip', EXTRA_URI . '/assets/js/lib/Extra.tooltip.js', array('jquery', 'extra', 'tweenmax'), null, true);
+	//wp_enqueue_script('extra-tooltip', EXTRA_URI . '/assets/js/lib/extra.tooltip.js', array('jquery', 'extra', 'tweenmax'), null, true);
 	// FANCY SELECT
 	//wp_enqueue_script('fancyselect', EXTRA_URI . '/assets/js/lib/fancyselect.js', array('jquery'), null, true);
 }

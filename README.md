@@ -1,4 +1,4 @@
-# extra-framework
+# Extra Framework
 
 Drop it in a theme.
 

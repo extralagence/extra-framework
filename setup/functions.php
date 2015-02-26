@@ -305,7 +305,7 @@ function extra_get_responsive_image($id = 0, $dimensions= array(), $class = '', 
 			?>">
 		</noscript>
 		<img class="placeholder-image"
-		     src="<?php echo get_template_directory_uri(); ?>/assets/img/blank.png"
+		     src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
 		     alt="<?php echo $alt; ?>"
 		     style="<?php echo (!empty(reset($dimensions)[0])) ? 'width: ' . reset($dimensions)[0] . 'px;' : '';
 			 echo (!empty(reset($dimensions)[1])) ? ' height: ' . reset($dimensions)[1] . 'px;' : ''; ?>" />

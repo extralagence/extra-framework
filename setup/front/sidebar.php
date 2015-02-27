@@ -14,6 +14,6 @@
 	 * MENU PAGE
 	 *
 	 *********************/
-	get_template_part("setup/front/menu-page");
+	get_template_part("extra-framework/setup/front/menu-page");
 	?>
 </aside>

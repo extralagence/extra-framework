@@ -15,7 +15,7 @@
  * BEFORE CONTENT
  *
  *********************/
-get_template_part(apply_filters("extra-template-before-content", "setup/front/before-content"));
+get_template_part(apply_filters("extra-template-before-content", "extra-framework/setup/front/before-content"));
 
 /**********************
  *
@@ -29,14 +29,14 @@ the_content();
  * AFTER CONTENT
  *
  *********************/
-get_template_part(apply_filters("extra-template-after-content", "setup/front/after-content"));
+get_template_part(apply_filters("extra-template-after-content", "extra-framework/setup/front/after-content"));
 
 /**********************
  *
  * TOTOP
  *
  *********************/
-get_template_part(apply_filters("extra-template-totop", "setup/front/totop"));
+get_template_part(apply_filters("extra-template-totop", "extra-framework/setup/front/totop"));
 
 
 extra_share();

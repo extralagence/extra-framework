@@ -39,6 +39,12 @@ class Link extends AbstractField {
 	public function the_admin() {
 		?>
 		<div class="extra-link-container <?php echo $this->css_class; ?>">
+			<?php if ($this->title != null) : ?>
+				<h2><?php
+					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+					echo $this->title; ?>
+				</h2>
+			<?php endif; ?>
 			<div class="extra-link-manual">
 				<?php
 				$this->mb->the_field($this->get_prefixed_field_name("type"));

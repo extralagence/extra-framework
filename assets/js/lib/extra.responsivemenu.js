@@ -17,18 +17,14 @@ function ExtraResponsiveMenu(options) {
 			$button: $("#switch-mobile-menu"),
 			everySizes: false,
 			moveButton: true,
+			moveSite: true,
 			prependTimeline: null,
 			appendTimeline: null
 		}, options),
-		menuOpen = true,
+		menuOpen = false,
 		$html = $('html'),
 		$wpadminbar = $("#wpadminbar"),
-		timeline = new TimelineMax({
-			paused: true,
-			onReverseComplete: function () {
-				$window.trigger('extra.hideResponsiveMenuComplete');
-			}
-		}),
+		timeline,
 		$toMove;
 	/**************************
 	 *
@@ -84,48 +80,6 @@ function ExtraResponsiveMenu(options) {
 	/**************************
 	 *
 	 *
-	 * CREATE TIMELINE
-	 *
-	 *
-	 *************************/
-	// START OF TIMELINE
-	if (opt.prependTimeline) {
-		timeline = opt.prependTimeline(timeline);
-	}
-
-	// SETTER
-	TweenMax.set(opt.$menu, {
-		x: -opt.$menu.width() + 'px',
-		ease: Strong.EaseIn,
-		onComplete: function () {
-			$window.trigger('extra.hideResponsiveMenuComplete');
-		}
-	});
-	TweenMax.set($toMove, {
-		x: 0,
-		ease: Strong.EaseIn
-	});
-
-	// TIMELINE
-	timeline.to(opt.$menu, 0.4, {
-		x: 0,
-		ease: Quad.EaseOut
-	});
-	timeline.to($toMove, 0.5, {
-		x: opt.$menu.width() + 'px',
-		ease: Quad.EaseOut,
-		onComplete: function () {
-			$window.trigger('extra.showResponsiveMenuComplete');
-		}
-	}, '-=0.3');
-
-	// END OF TIMELINE
-	if (opt.appendTimeline) {
-		timeline = opt.appendTimeline(timeline);
-	}
-	/**************************
-	 *
-	 *
 	 * SHOW
 	 *
 	 *
@@ -177,14 +131,24 @@ function ExtraResponsiveMenu(options) {
 	});
 
 	$(document).on('extra.responsive-resize', function(){
-		update();
+		hideMenu(true);
+		updateTimeline();
+	});
+
+	$window.on('extra.resize', function(){
+		hideMenu(true);
+		updateTimeline();
 	});
 
 	function update() {
-		if (small) {
-			$toMove = opt.moveButton ? opt.$button : opt.$site;
-		} else {
-			$toMove = opt.moveButton ? [opt.$site, opt.$button] : opt.$site;
+		if(opt.moveButton && opt.moveSite) {
+			$toMove = [opt.$site, opt.$button];
+		} else if(opt.moveButton){
+			$toMove = opt.$button;
+		}else if(opt.moveSite) {
+			$toMove = opt.$site;
+		}else{
+			$toMove = null;
 		}
 		if (!small && !opt.everySizes) {
 			opt.$menu.removeAttr("style");
@@ -196,9 +160,75 @@ function ExtraResponsiveMenu(options) {
 		}
 	}
 
+	function updateTimeline() {
+
+		if(timeline) {
+			timeline.pause().totalProgress(0).kill();
+		}
+
+		timeline = new TimelineMax({
+			paused: true,
+			onReverseComplete: function () {
+				$window.trigger('extra.hideResponsiveMenuComplete');
+			}
+		});
+		/**************************
+		 *
+		 *
+		 * CREATE TIMELINE
+		 *
+		 *
+		 *************************/
+		// START OF TIMELINE
+		if (opt.prependTimeline) {
+			timeline = opt.prependTimeline(timeline);
+		}
+
+		// SETTER
+		TweenMax.set(opt.$menu, {
+			x: -opt.$menu.outerWidth() + 'px',
+			ease: Strong.EaseIn,
+			onComplete: function () {
+				$window.trigger('extra.hideResponsiveMenuComplete');
+			}
+		});
+		if($toMove) {
+			TweenMax.set($toMove, {
+				x: 0,
+				ease: Strong.EaseIn
+			});
+		}
+
+		// TIMELINE
+		timeline.to(opt.$menu.show(), 0.4, {
+			x: 0,
+			ease: Quad.EaseOut
+		});
+		if($toMove) {
+			timeline.to($toMove, 0.5, {
+				x: opt.$menu.outerWidth() + 'px',
+				ease: Quad.EaseOut,
+				onComplete: function () {
+					$window.trigger('extra.showResponsiveMenuComplete');
+				}
+			}, '-=0.3');
+		} else {
+			timeline.addCallback(function(){
+				$window.trigger('extra.showResponsiveMenuComplete');
+			});
+		}
+
+		// END OF TIMELINE
+		if (opt.appendTimeline) {
+			timeline = opt.appendTimeline(timeline);
+		}
+	}
+
 	$window.on('extra.triggerHideResponsiveMenu', function () {
-		hideMenu();
+		hideMenu(true);
 	}).on('extra.triggerShowResponsiveMenu', function () {
-		showMenu();
+		showMenu(true);
 	});
+
+	updateTimeline();
 }

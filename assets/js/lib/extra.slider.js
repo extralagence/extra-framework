@@ -26,6 +26,8 @@
 			'margin'          : 0,
 			'navigate'        : true,
 			'paginate'        : true,
+			'pagination'	  : null,
+			'navigation'	  : null,
 			'paginateContent' : '',
 			'resizable'       : true,
 			'speed'           : 0.5,
@@ -47,8 +49,8 @@
 				$slider = $wrapper.find('> ul'),
 				$items = $slider.find('> li'),
 				numClones = 0,
-				$navigation = $this.find('.navigation'),
-				$pagination = $this.find('.pagination'),
+				$navigation = opt.navigation ? opt.navigation : $this.find('.navigation'),
+				$pagination = opt.pagination ? opt.pagination : $this.find('.pagination'),
 				singleWidth = 0,
 				singleHeight = 0,
 				total = $items.length - 1,
@@ -425,10 +427,7 @@
 						cursor        	: 'move',
 						lockAxis		: false,
 						onDrag: function(event) {
-							console.log(opt);
-							console.log(opt.minDrag);
 							if (this.y !=0 && Math.abs(reference - this.x) < opt.minDrag && opt.dragWindow) {
-							console.log(this.y);
 				                // user is moving vertically
 								$(window).scrollTop($(window).scrollTop()-this.y);
 								return false;

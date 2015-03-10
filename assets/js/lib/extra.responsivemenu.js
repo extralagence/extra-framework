@@ -41,8 +41,6 @@ function ExtraResponsiveMenu(options) {
 		return;
 	}
 
-	console.log(opt);
-
 	/**************************
 	 *
 	 *

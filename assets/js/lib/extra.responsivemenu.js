@@ -6,7 +6,10 @@
  * @$site : jquery object
  * @$button : jquery object
  * @everySizes : boolean
- *
+ * @moveButton : boolean define if the button is moved to menu width
+ * @moveSite : boolean define if the site wrapper is moved
+ * @prependTimeline : function that take and return the timeline. This function is call before open animation
+ * @appendTimeline : function that take and return the timeline. This function is call after open animation
  *
  *************************/
 function ExtraResponsiveMenu(options) {
@@ -37,6 +40,7 @@ function ExtraResponsiveMenu(options) {
 		console.log("Missing element to initialize the responsive menu");
 		return;
 	}
+
 	/**************************
 	 *
 	 *

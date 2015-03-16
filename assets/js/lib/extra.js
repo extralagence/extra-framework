@@ -211,7 +211,7 @@ $(document).ready(function () {
 	              				imgElement.appendTo(container);
 								// REMOVE EXISTING IMAGE
 								container.find("img").not(imgElement).remove();
-	              				container.trigger('complete.extra.responsiveImage');
+								container.trigger('complete.extra.responsiveImage');
 							}).attr({
 								alt: altTxt,
 								src: imgSrc

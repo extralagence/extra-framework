@@ -192,9 +192,9 @@ $(document).ready(function () {
 
 			var datas = container.find("noscript"),
 				altTxt = datas.data("alt"),
+				itemProp = datas.data("img-itemprop"),
 				size = extra.getImageVersion(),
 				addImage = function (size) {
-
 					// SET NEW IMAGE
 					if (datas && container.data("size") != size) {
 						container.data("size", size);
@@ -207,6 +207,9 @@ $(document).ready(function () {
 									'width': this.width,
 									'height': this.height
 								});
+								if (itemProp) {
+									imgElement.attr('itemprop', itemProp);
+								}
 	              				// APPEND
 	              				imgElement.appendTo(container);
 								// REMOVE EXISTING IMAGE

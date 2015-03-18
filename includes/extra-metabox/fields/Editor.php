@@ -50,7 +50,7 @@ class Editor extends AbstractField {
 			<?php endif; ?>
 
 			<?php $this->mb->the_field($this->get_single_field_name('editor'));
-			$value = apply_filters('the_content', html_entity_decode( $this->mb->get_the_value(), ENT_QUOTES, 'UTF-8' ));
+			$value = html_entity_decode( $this->mb->get_the_value(), ENT_QUOTES, 'UTF-8' );
 			wp_editor($value, $editor_id, array(
 				'textarea_name' => $this->mb->get_the_name(),
 				'editor_height' => 500,

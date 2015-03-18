@@ -20,11 +20,23 @@
  */
 class Hidden extends AbstractField {
 
+	protected $id;
+
 	public function the_admin() {
 		?>
 		<?php $this->mb->the_field($this->get_single_field_name('hidden')); ?>
-		<input <?php echo (empty($this->css_class))? '' : 'class="'.$this->css_class.'"'; ?> id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" >
 		<?php
+		if(!isset($this->id)) {
+			$this->id = $this->mb->get_the_name();
+		}
+		?>
+		<input <?php echo (empty($this->css_class))? '' : 'class="'.$this->css_class.'"'; ?> id="<?php echo $this->id; ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" >
+		<?php
+	}
+
+	public function extract_properties($properties) {
+		parent::extract_properties($properties);
+		$this->id = isset($properties['id']) ? $properties['id'] : null;
 	}
 
 	public function the_admin_column_value() {

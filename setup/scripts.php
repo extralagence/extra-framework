@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vincent
- * Date: 17/02/2014
- * Time: 11:34
- */
-
 /**********************
  *
  *
@@ -27,6 +20,8 @@ function extra_template_enqueue_scripts() {
 	wp_enqueue_script('jquery-gsap', EXTRA_URI . '/assets/js/lib/jquery.gsap.min.js', array('jquery'), null, true);
 	// DAGGABLE
 	wp_enqueue_script('draggable', EXTRA_URI . '/assets/js/lib/Draggable.min.js', array('jquery', 'tweenmax'), null, true);
+	// THROWPROPS
+	wp_enqueue_script('throwprops', EXTRA_URI . '/assets/js/lib/ThrowPropsPlugin.min.js', array('jquery', 'tweenmax'), null, true);
 	// MOUSEWHEEL
 	wp_enqueue_script('mousewheel', EXTRA_URI . '/assets/js/lib/jquery.mousewheel.pack.js', array('jquery'), null, true);
 	// FANCYBOX

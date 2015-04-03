@@ -23,6 +23,7 @@
 class TaxonomySelector extends AbstractField {
 
 	protected $taxonomy;
+	protected $show_option_none;
 
 	public static function init () {
 		parent::init();
@@ -40,15 +41,18 @@ class TaxonomySelector extends AbstractField {
 
 	private function generate_category_select() {
 		wp_dropdown_categories(array(
+			'show_option_none' => ($this->show_option_none) ? $this->show_option_none : __("Selectionnez une categorie", 'extra-admin'),
 			'name' => $this->mb->get_the_name(),
 			'selected' => $this->mb->get_the_value(),
 			'taxonomy' => $this->taxonomy,
+			'hide_empty' => false
 		));
 	}
 
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
 		$this->taxonomy = (isset ($properties['taxonomy'])) ? $properties['taxonomy'] : 'category';
+		$this->show_option_none = (isset ($properties['show_option_none'])) ? $properties['show_option_none'] : null;
 	}
 
 	public function the_admin_column_value() {

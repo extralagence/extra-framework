@@ -97,6 +97,8 @@ class Image extends AbstractBlock {
 		$img_id = $block_data[$name_suffix];
 		if(!empty($img_id)){
 
+			$width = $block_width;
+			$height = $block_height;
 			if(empty($alt)) {
 				$alt = get_post_meta($img_id, '_wp_attachment_image_alt', true);
 				if(empty($alt)) {
@@ -117,11 +119,34 @@ class Image extends AbstractBlock {
 					$height = intval(($block_width * $original_height) / $original_width);
 				}
 
-				$src = wp_get_attachment_image_src( $img_id, array($width, $height));
+//				$src = wp_get_attachment_image_src( $img_id, array($width, $height));
 			} else {
-				$src = wp_get_attachment_image_src( $img_id, array($block_width, $block_height));
+//				$src = wp_get_attachment_image_src( $img_id, array($block_width, $block_height));
 			}
-			$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img alt="'.$alt.'" src="'.$src[0].'" width="'.$width.'" height="'.$height.'" /></div>';
+
+			$height = intval($height);
+			$width = intval($width);
+
+			$tablet_w = 960;
+			$tablet_h = intval(floor(960 * $height / $width));
+
+			$mobile_w = 670;
+			$mobile_h = intval(floor(670 * intval($height) / $width));
+
+			$dimensions = array(
+				'desktop' => array($width, $height),
+				'tablet' => array($tablet_w, $tablet_h),
+				'mobile' => array($mobile_w, $mobile_h)
+			);
+			$dimensions = apply_filters('extra-page-builder-image-dimensions', $dimensions, $img_id);
+
+			$html = extra_get_responsive_image(
+				$img_id,
+				$dimensions,
+				'extra-page-builder-image size-'.$img_size
+			);
+
+//			$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img alt="'.$alt.'" src="'.$src[0].'" width="'.$width.'" height="'.$height.'" /></div>';
 		} else {
 			$html = '<div class="extra-page-builder-image empty"></div>';
 		}

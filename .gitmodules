@@ -1,6 +1,6 @@
 [submodule "includes/redux-framework"]
 	path = includes/redux-framework
-	url = https://github.com/ReduxFramework/redux-framework.git
+	url = https://github.com/ReduxFramework/redux-framework
 [submodule "includes/lessphp"]
 	path = includes/lessphp
 	url = https://github.com/leafo/lessphp

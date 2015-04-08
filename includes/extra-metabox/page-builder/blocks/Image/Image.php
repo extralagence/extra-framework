@@ -96,20 +96,21 @@ class Image extends AbstractBlock {
 		}
 		$img_id = $block_data[$name_suffix];
 		if(!empty($img_id)){
-            if(empty($alt)) {
-                $alt = get_post_meta($img_id, '_wp_attachment_image_alt', true);
-                if(empty($alt)) {
-                    $alt = get_the_title($img_id);
-                }
-            }
-			$src =  wp_get_attachment_image_src( $img_id, 'full' );
 
-			$original_width = $src[1];
-			$original_height = $src[2];
-			//$html = '<div class="extra-page-builder-image" style="background-image: url('.$src[0].');"></div>';
-            //$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img src="'.$src[0].'" width="'.$src[1].'" height="'.$src[2].'" /></div>';
+			$width = $block_width;
+			$height = $block_height;
+			if(empty($alt)) {
+				$alt = get_post_meta($img_id, '_wp_attachment_image_alt', true);
+				if(empty($alt)) {
+					$alt = get_the_title($img_id);
+				}
+			}
 
 			if ($img_size == 'auto') {
+				$src =  wp_get_attachment_image_src( $img_id, 'full' );
+				$original_width = $src[1];
+				$original_height = $src[2];
+
 				if ($original_width < $block_width) {
 					$width = $original_width;
 					$height = $original_height;
@@ -118,12 +119,34 @@ class Image extends AbstractBlock {
 					$height = intval(($block_width * $original_height) / $original_width);
 				}
 
-				$params = array('width' => $width, 'height' => $height, 'crop' => 'false');
-				$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img src="'.bfi_thumb($src[0], $params).'" width="'.$width.'" height="'.$height.'" /></div>';
+//				$src = wp_get_attachment_image_src( $img_id, array($width, $height));
 			} else {
-				$params = array('width' => $block_width, 'height' => $block_height, 'crop' => 'true');
-				$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img src="'.bfi_thumb($src[0], $params).'" width="'.$block_width.'" height="'.$block_height.'" /></div>';
+//				$src = wp_get_attachment_image_src( $img_id, array($block_width, $block_height));
 			}
+
+			$height = intval($height);
+			$width = intval($width);
+
+			$tablet_w = 960;
+			$tablet_h = intval(floor(960 * $height / $width));
+
+			$mobile_w = 670;
+			$mobile_h = intval(floor(670 * intval($height) / $width));
+
+			$dimensions = array(
+				'desktop' => array($width, $height),
+				'tablet' => array($tablet_w, $tablet_h),
+				'mobile' => array($mobile_w, $mobile_h)
+			);
+			$dimensions = apply_filters('extra-page-builder-image-dimensions', $dimensions, $img_id);
+
+			$html = extra_get_responsive_image(
+				$img_id,
+				$dimensions,
+				'extra-page-builder-image size-'.$img_size
+			);
+
+//			$html = '<div class="extra-page-builder-image size-'.$img_size.'"><img alt="'.$alt.'" src="'.$src[0].'" width="'.$width.'" height="'.$height.'" /></div>';
 		} else {
 			$html = '<div class="extra-page-builder-image empty"></div>';
 		}

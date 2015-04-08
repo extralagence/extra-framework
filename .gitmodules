@@ -1,12 +1,12 @@
 [submodule "includes/redux-framework"]
 	path = includes/redux-framework
-	url = https://github.com/ReduxFramework/redux-framework.git
+	url = https://github.com/ReduxFramework/redux-framework
 [submodule "includes/lessphp"]
 	path = includes/lessphp
-	url = https://github.com/leafo/lessphp.git
+	url = https://github.com/leafo/lessphp
 [submodule "includes/wp-less"]
 	path = includes/wp-less
-	url = https://github.com/sanchothefat/wp-less.git
+	url = https://github.com/sanchothefat/wp-less
 [submodule "includes/WP-OTF-Regenerate-Thumbnails"]
 	path = includes/WP-OTF-Regenerate-Thumbnails
 	url = https://github.com/gambitph/WP-OTF-Regenerate-Thumbnails.git

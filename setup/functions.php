@@ -297,22 +297,26 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 			data-alt="<?php echo $alt; ?>"
 			<?php foreach($sizes as $size => $value): ?>
 			data-src-<?php echo $size; ?>="<?php
-				echo wp_get_attachment_image_src($id, $dimensions[$size])[0];
+				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
+				echo $src[0];
 			?>"
 			<?php endforeach; ?>>
 
 			<img alt=""
 				 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 				 src="<?php
-				echo wp_get_attachment_image_src($id, reset($dimensions))[0];
-			?>">
+					 $src = wp_get_attachment_image_src($id, reset($dimensions));
+					 echo $src[0];
+				?>">
 		</noscript>
 		<img class="placeholder-image"
 			 src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
 			 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 			 alt="<?php echo $alt; ?>"
-			 style="<?php echo (!empty(reset($dimensions)[0])) ? 'width: ' . reset($dimensions)[0] . 'px;' : '';
-			 echo (!empty(reset($dimensions)[1])) ? ' height: ' . reset($dimensions)[1] . 'px;' : ''; ?>" />
+			 style="<?php
+			 $first_dimension = reset($dimensions);
+			 echo (!empty($first_dimension[0])) ? 'width: ' . $first_dimension[0] . 'px;' : '';
+			 echo (!empty($first_dimension[1])) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>" />
 	</figure>
 	<?php $return = ob_get_contents(); ?>
 

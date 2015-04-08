@@ -68,7 +68,7 @@ add_filter('body_class', 'extra_body_class');
  *
  *********************/
 function extra_wpcf7_ajax_loader () {
-	return get_template_directory_uri() . '/assets/img/loading.gif';
+	return THEME_URI . '/assets/img/loading.gif';
 }
 add_filter('wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader');
 /**********************

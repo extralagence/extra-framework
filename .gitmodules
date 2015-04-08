@@ -3,7 +3,7 @@
 	url = https://github.com/ReduxFramework/redux-framework.git
 [submodule "includes/lessphp"]
 	path = includes/lessphp
-	url = https://github.com/leafo/lessphp.git
+	url = https://github.com/leafo/lessphp
 [submodule "includes/wp-less"]
 	path = includes/wp-less
 	url = https://github.com/sanchothefat/wp-less

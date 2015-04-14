@@ -36,16 +36,16 @@ if (defined('EXTRA_OLD_BROWSER_RESTRICTIONS') && EXTRA_OLD_BROWSER_RESTRICTIONS)
 	function extra_oldbrowser_head(){ ?>
 
 		<div style="display:none;">
-		<div id="oldBrowser" class="oldBrowser-<?php bloginfo("language"); ?>">
-			<h3 class="title"><?php _e("Mettez à jour votre navigateur pour consulter ce site", "extra"); ?></h3>
-			<ul class="browsers">
-				<li class="firefox"><a href="http://www.firefox.com" target="_blank"><span>Mozilla Firefox</span></a></li>
-				<li class="ie"><a href="http://windows.microsoft.com/ie" target="_blank"><span>Internet Explorer</span></a></li>
-				<li class="chrome"><a href="http://www.google.com/chrome" target="_blank"><span>Google Chrome</span></a></li>
-				<li class="safari"><a href="http://www.apple.com/safari/" target="_blank"><span>Safari</span></a></li>
-				<li class="oldBrowserCleaner"></li>
-			</ul>
-		</div>
+			<div id="oldBrowser" class="oldBrowser-<?php bloginfo("language"); ?>">
+				<h3 class="title"><?php _e("Mettez à jour votre navigateur pour consulter ce site", "extra"); ?></h3>
+				<ul class="browsers">
+					<li class="firefox"><a href="http://www.firefox.com" target="_blank"><span>Mozilla Firefox</span></a></li>
+					<li class="ie"><a href="http://windows.microsoft.com/ie" target="_blank"><span>Internet Explorer</span></a></li>
+					<li class="chrome"><a href="http://www.google.com/chrome" target="_blank"><span>Google Chrome</span></a></li>
+					<li class="safari"><a href="http://www.apple.com/safari/" target="_blank"><span>Safari</span></a></li>
+					<li class="oldBrowserCleaner"></li>
+				</ul>
+			</div>
 		</div>
 
 	<?php }

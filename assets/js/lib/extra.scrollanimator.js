@@ -10,6 +10,10 @@ function ExtraScrollAnimator (options) {
 				tween = $this.data('tween'),
 				percent = Math.max(0, Math.min(1, (scrollTop - coords.min) / (coords.max - coords.min)));
 
+			if (small) {
+				percent = 1;
+			}
+
 			if (self.options.autoAlpha) {
 				if (percent == 0) {
 					TweenMax.set($this, {autoAlpha: 0});

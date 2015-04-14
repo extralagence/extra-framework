@@ -272,7 +272,7 @@ function extra_submit_shortcode_handler( $tag ) {
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image($id = 0, $dimensions= array(), $class = '', $alt = '', $img_itemprop) {
+function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop = '') {
 
 	// hook it to override available sizes
 	$sizes = apply_filters('extra_responsive_sizes', array(
@@ -297,22 +297,26 @@ function extra_get_responsive_image($id = 0, $dimensions= array(), $class = '', 
 			data-alt="<?php echo $alt; ?>"
 			<?php foreach($sizes as $size => $value): ?>
 			data-src-<?php echo $size; ?>="<?php
-				echo wp_get_attachment_image_src($id, array($dimensions[$size][0], $dimensions[$size][1]))[0];
+				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
+				echo $src[0];
 			?>"
 			<?php endforeach; ?>>
 
 			<img alt=""
 				 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 				 src="<?php
-				echo wp_get_attachment_image_src($id, array(reset($dimensions)[0], reset($dimensions)[1]))[0];
-			?>">
+					 $src = wp_get_attachment_image_src($id, reset($dimensions));
+					 echo $src[0];
+				?>">
 		</noscript>
 		<img class="placeholder-image"
 			 src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
 			 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 			 alt="<?php echo $alt; ?>"
-			 style="<?php echo (!empty(reset($dimensions)[0])) ? 'width: ' . reset($dimensions)[0] . 'px;' : '';
-			 echo (!empty(reset($dimensions)[1])) ? ' height: ' . reset($dimensions)[1] . 'px;' : ''; ?>" />
+			 style="<?php
+			 $first_dimension = reset($dimensions);
+			 echo (!empty($first_dimension[0])) ? 'width: ' . $first_dimension[0] . 'px;' : '';
+			 echo (!empty($first_dimension[1])) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>" />
 	</figure>
 	<?php $return = ob_get_contents(); ?>
 
@@ -320,8 +324,8 @@ function extra_get_responsive_image($id = 0, $dimensions= array(), $class = '', 
 	ob_end_clean();
 	return $return;
 }
-function extra_responsive_image($src = 0, $sizes= array(), $class = '', $alt = '', $img_itemprop= '') {
-	echo extra_get_responsive_image($src, $sizes, $class, $alt, $img_itemprop);
+function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop= '') {
+	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop);
 }
 /**
  * Shortify a string with "..."

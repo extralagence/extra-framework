@@ -33,12 +33,12 @@ class PageSelector extends AbstractField {
 		<?php $this->mb->the_field($this->get_single_field_name('page_selector')); ?>
 		<p class="<?php echo $this->css_class; ?> extra-page-selector-container">
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
-			<?php $this->generate_post_select($this->mb->get_the_name(), $this->mb->get_the_value(), $this->post_type); ?>
+			<?php $this->generate_post_select($this->mb->get_the_name(), $this->mb->get_the_value(), $this->post_type, $this->option_none_text, $this->option_none_value); ?>
 		</p>
 		<?php
 	}
 
-	private function generate_post_select($select_id, $selected = 0, $post_type = null) {
+	private function generate_post_select($select_id, $selected = 0, $post_type = null, $option_none_text = null, $option_none_value = null) {
 		if ($post_type === null) {
 			wp_dropdown_pages(array(
 				'name' => $this->mb->get_the_name(),
@@ -49,6 +49,9 @@ class PageSelector extends AbstractField {
 			//$label = $post_type_object->label;
 			$posts = get_posts(array('post_type'=> $post_type, 'post_status'=> 'publish', 'suppress_filters' => false, 'posts_per_page'=>-1));
 			echo '<select name="'. $select_id .'" id="'.$select_id.'">';
+			if($option_none_text || $option_none_value) {
+				echo '<option value="'. ($option_none_value != null ? $option_none_value : 0) . '">' . ($option_none_text != null ? $option_none_text : __('Choisir dans la liste...', 'extra')) . '</option>';
+			}
 			foreach ($posts as $post) {
 				echo '<option value="', $post->ID, '"', $selected == $post->ID ? ' selected="selected"' : '', '>', $post->post_title, '</option>';
 			}
@@ -59,6 +62,8 @@ class PageSelector extends AbstractField {
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
 		$this->post_type = (isset ($properties['post_type'])) ? $properties['post_type'] : null;
+		$this->option_none_text = (isset ($properties['option_none_text'])) ? $properties['option_none_text'] : null;
+		$this->option_none_value = (isset ($properties['option_none_value'])) ? $properties['option_none_value'] : null;
 	}
 
 	public function the_admin_column_value() {

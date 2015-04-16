@@ -80,7 +80,7 @@
 					currentItem = total;
 				}
 				var left = -(totalWidth * (currentItem) + (numClones * singleWidth));
-				TweenMax.set($slider, {x: left, force3D: true});
+				TweenMax.set($slider, {x: left, force3D: "auto"});
 			}
 
 			// get the blocs dimensions
@@ -112,6 +112,10 @@
 
 				// set active
 				$items.eq(currentItem + numClones).addClass('active');
+
+				if (!isNaN(opt.auto) && opt.auto > 0) {
+					autoSlide();
+				}
 
 				// listener
 				if (opt.onMoveEnd && time > 0) {
@@ -177,7 +181,7 @@
 									left -= singleWidth * offset;
 								}
 							}
-							TweenMax.to($slider, time, {x: left, force3D: true, onComplete: endHandler, onCompleteParams: [time]});
+							TweenMax.to($slider, time, {x: left, force3D: "auto", onComplete: endHandler, onCompleteParams: [time]});
 							break;
 						case "fade":
 							$items.eq(previousItem).css("zIndex", 1);
@@ -285,6 +289,9 @@
 
 			// auto slide
 			function autoSlide() {
+				if(autoTween) {
+					autoTween.kill();
+				}
 				autoTween = TweenMax.delayedCall(opt.auto, function () {
 					gotoNext();
 					autoSlide();
@@ -421,7 +428,7 @@
 
 				if (Draggable !== undefined) {
 					Draggable.create($slider, {
-						force3D			: true,
+						force3D			: "auto",
 						dragClickables	: true,
 						type          	: 'x',
 						cursor        	: 'move',

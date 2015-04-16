@@ -3,48 +3,6 @@
  *
  *
  *
- * THEME CONFIG
- *
- *
- *
- *********************/
-if ( ! function_exists( 'extra_setup' ) ) {
-	function extra_setup() {
-		// LANGUAGE
-		load_theme_textdomain('extra', get_template_directory().'/includes/lang');
-
-		// DEFAULT POST THUMBNAIL SIZE
-		add_theme_support('post-thumbnails', array('post', 'page'));
-
-		// AUTO RSS
-		add_theme_support( 'automatic-feed-links' );
-
-        // HTML 5
-        add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
-
-        $default_nav_menus = array(
-            'main' => 'Principale',
-            'mobile' => 'Mobile',
-            'footer' => 'Pied de page'
-        );
-
-		// NAVIGATION MENUS
-		register_nav_menus(apply_filters('extra_default_nav_menus', $default_nav_menus));
-
-		// CAP
-		$editor = get_role( 'editor' );
-        $editor->add_cap( 'manage_options' );
-        $editor->add_cap( 'edit_theme_options' );
-
-		global $content_width;
-		$content_width = apply_filters('extra_content_width', 540);
-	}
-}
-add_action('after_setup_theme', 'extra_setup');
-/**********************
- *
- *
- *
  * BODY CLASSES
  *
  *

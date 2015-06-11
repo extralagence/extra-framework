@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vincent
- * Date: 27/02/2014
- * Time: 11:02
- */
-
-/**
  * Class Text
  *
  * Define a page selector input metabox
@@ -76,4 +69,4 @@ class PageSelector extends AbstractField {
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
 		echo $meta;
 	}
-} 
+}

@@ -85,7 +85,7 @@ var BrowserDetection = {
 	}
 };
 
-$(document).ready(function(){
+jQuery(document).ready(function(){
 	BrowserDetection.init();
-	console.log($.browser.versionNumber);
+	//console.log($.browser.versionNumber);
 });

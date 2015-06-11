@@ -10,11 +10,11 @@ if (defined('EXTRA_OLD_BROWSER_RESTRICTIONS') && EXTRA_OLD_BROWSER_RESTRICTIONS)
 		wp_enqueue_script('extra-oldbrowser', EXTRA_MODULES_URI.'/oldbrowser/front/js/oldbrowser.js', array('jquery-browser', 'fancybox'), false, true);
 
 		$restrictions = apply_filters('extra_oldbrowser_restrictions', array(
-			array('msie', 7),
-			array('mozilla', 4),
-			array('safari', 4),
-			array('chrome', 30),
-			array('opera', 12),
+			array('msie', 8),
+//			array('mozilla', 4),
+//			array('safari', 4),
+//			array('chrome', 30),
+//			array('opera', 12),
 			array('netscape', 'any')
 		));
 

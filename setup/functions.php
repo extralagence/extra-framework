@@ -3,48 +3,6 @@
  *
  *
  *
- * THEME CONFIG
- *
- *
- *
- *********************/
-if ( ! function_exists( 'extra_setup' ) ) {
-	function extra_setup() {
-		// LANGUAGE
-		load_theme_textdomain('extra', get_template_directory().'/includes/lang');
-
-		// DEFAULT POST THUMBNAIL SIZE
-		add_theme_support('post-thumbnails', array('post', 'page'));
-
-		// AUTO RSS
-		add_theme_support( 'automatic-feed-links' );
-
-        // HTML 5
-        add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
-
-        $default_nav_menus = array(
-            'main' => 'Principale',
-            'mobile' => 'Mobile',
-            'footer' => 'Pied de page'
-        );
-
-		// NAVIGATION MENUS
-		register_nav_menus(apply_filters('extra_default_nav_menus', $default_nav_menus));
-
-		// CAP
-		$editor = get_role( 'editor' );
-        $editor->add_cap( 'manage_options' );
-        $editor->add_cap( 'edit_theme_options' );
-
-		global $content_width;
-		$content_width = apply_filters('extra_content_width', 540);
-	}
-}
-add_action('after_setup_theme', 'extra_setup');
-/**********************
- *
- *
- *
  * BODY CLASSES
  *
  *
@@ -272,7 +230,7 @@ function extra_submit_shortcode_handler( $tag ) {
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop = '') {
+function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop = '', $caption = '') {
 
 	// hook it to override available sizes
 	$sizes = apply_filters('extra_responsive_sizes', array(
@@ -291,7 +249,7 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 
 	?>
 
-	<figure class="responsiveImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?>">
+	<figure class="responsiveImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?><?php echo (!empty($caption)) ? ' wp-caption' : ''; ?>">
 		<noscript
 			<?php echo ($img_itemprop) ? 'data-img-itemprop="'.$img_itemprop.'"' : ''; ?>
 			data-alt="<?php echo $alt; ?>"
@@ -317,6 +275,11 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 			 $first_dimension = reset($dimensions);
 			 echo (!empty($first_dimension[0])) ? 'width: ' . $first_dimension[0] . 'px;' : '';
 			 echo (!empty($first_dimension[1])) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>" />
+		<?php if (!empty($caption)) : ?>
+			<figcaption class="wp-caption-text">
+				<?php echo $caption; ?>
+			</figcaption>
+		<?php endif; ?>
 	</figure>
 	<?php $return = ob_get_contents(); ?>
 
@@ -324,8 +287,8 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 	ob_end_clean();
 	return $return;
 }
-function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop= '') {
-	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop);
+function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop= '', $caption = '') {
+	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop, $caption);
 }
 /**
  * Shortify a string with "..."

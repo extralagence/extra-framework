@@ -11,7 +11,7 @@
 function extra_template_enqueue_scripts() {
 	// REPLACE JQUERY
 	wp_deregister_script('jquery');
-	wp_enqueue_script('jquery', 'http://code.jquery.com/jquery-1.11.1.min.js', null, null, true);
+	wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-1.11.1.min.js', null, null, true);
 	// TWEENMAX
 	wp_enqueue_script('tweenmax', EXTRA_URI . '/assets/js/lib/TweenMax.min.js', array('jquery'), null, true);
 	// SCROLLTO

@@ -76,6 +76,29 @@ class Link extends AbstractField {
 				</div>
 			</div>
 
+			<div class="extra-link-taxonomy">
+				<?php
+				$this->mb->the_field($this->get_prefixed_field_name("type"));
+				$show_content = $this->mb->is_value('taxonomy');
+				?>
+
+				<label class="extra-link-radio-label" for="<?php $this->mb->the_name(); ?>_taxonomy"><?php _e("Vers une taxonomie", "extra-admin"); ?></label>
+				<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_taxonomy" type="radio" name="<?php $this->mb->the_name(); ?>" value="taxonomy" <?php echo ($show_content)?' checked="checked"':''; ?>>
+
+				<?php $this->mb->the_field($this->get_prefixed_field_name("taxonomy_search")); ?>
+				<input class="extra-link-autocomplete-taxonomy" type="text" name="<?php $this->mb->the_name(); ?>" value="<?php $this->mb->the_value(); ?>"<?php echo ($show_content) ? '' : ' disabled' ?> />
+				<?php $this->mb->the_field($this->get_prefixed_field_name("taxonomy")); ?>
+				<?php $taxonomy = $this->mb->get_the_value(); ?>
+				<input class="extra-link-autocomplete-taxonomy-hidden" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>"/><br>
+				<?php $this->mb->the_field($this->get_prefixed_field_name("taxonomy-slug")); ?>
+				<?php $taxonomy_slug = $this->mb->get_the_value(); ?>
+				<input class="extra-link-autocomplete-taxonomy-slug-hidden" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>"/><br>
+
+				<div class="extra-link-choice-taxonomy" <?php echo (empty($post_id) || !$show_content) ? 'style="display: none;"' : ''; ?>>
+					<?php echo (!empty($taxonomy_slug) && !empty($taxonomy)) ? get_term_link($taxonomy_slug, $taxonomy) : ''; ?>
+				</div>
+			</div>
+
 			<?php $this->mb->the_field($this->get_prefixed_field_name("title")); ?>
 			<label class="extra-link-title-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e("Titre", "extra-admin"); ?></label>
 			<input class="extra-link-title" id="<?php $this->mb->the_name(); ?>_manual" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" /><br>
@@ -85,6 +108,45 @@ class Link extends AbstractField {
 			<label for="<?php $this->mb->the_name(); ?>_manual"><?php _e("Ouvrir le lien dans un nouvel onglet", "extra-admin"); ?></label>
 		</div>
 		<?php
+	}
+
+	static function extra_link_taxonomy_wp_ajax() {
+		global $wpdb;
+
+		$taxonomies = apply_filters('extra_metabox_link_available_taxonomies', get_taxonomies());
+		$taxonomies = "'".implode("', '", $taxonomies)."'";
+
+		$keyword = '%'.$_GET['term'].'%';
+
+		$query = $wpdb->prepare("
+			SELECT DISTINCT t.term_id, t.name, t.slug, tt.taxonomy
+			FROM {$wpdb->terms} as t
+			INNER JOIN {$wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id
+			WHERE t.name LIKE '%s'
+			AND tt.count > 0
+			AND tt.taxonomy IN (".$taxonomies.")
+					ORDER BY t.term_id
+			LIMIT 10
+		", $keyword);
+
+		$results = $wpdb->get_results($query);
+
+		$data = array();
+		foreach ($results as $result) {
+			$taxonomy = get_taxonomy($result->taxonomy);
+
+			$data[] = array(
+				'term_id' => $result->term_id,
+				'slug' => $result->slug,
+				'name' => $result->name,
+				'taxonomy' => $result->taxonomy,
+				'taxonomy_name' => $taxonomy->labels->name,
+				'url' => get_term_link($result->slug, $result->taxonomy)
+			);
+		}
+
+		echo json_encode($data);
+		die();
 	}
 
 	static function extra_link_wp_ajax() {
@@ -101,11 +163,12 @@ class Link extends AbstractField {
 		$keyword = '%'.$_GET['term'].'%';
 
 		$query = $wpdb->prepare("
-		SELECT DISTINCT ID, post_title, post_type FROM {$wpdb->posts}
-		WHERE post_title LIKE '%s'
-		AND post_status = 'publish'
-		AND post_type IN (".$post_types.")
-		ORDER BY ID
+		SELECT DISTINCT p.ID as post_id, p.post_title, p.post_type
+				FROM {$wpdb->posts} as p
+				WHERE p.post_title LIKE '%s'
+				AND p.post_status = 'publish'
+				AND p.post_type IN (".$post_types.")
+				ORDER BY p.ID
 		LIMIT 10
 	", $keyword);
 
@@ -116,7 +179,7 @@ class Link extends AbstractField {
 			$type = get_post_type_object($result->post_type);
 
 			$data[] = array(
-				'ID' => $result->ID,
+				'ID' => $result->post_id,
 				'post_title' => html_entity_decode($result->post_title),
 				'post_type' => $type->labels->singular_name,
 				'url' => get_permalink($result->ID)
@@ -136,11 +199,16 @@ class Link extends AbstractField {
 		$type = $mb->get_the_value(AbstractField::get_field_name($name, 'type', '_'));
 		$url = $mb->get_the_value(AbstractField::get_field_name($name, 'url', '_'));
 		$content = $mb->get_the_value(AbstractField::get_field_name($name, 'content', '_'));
+
 		if ($type == 'content') {
 			return get_permalink($content);
+		} if ($type == 'taxonomy') {
+			return '#/coucou';
 		} else {
 			return $url;
 		}
+
+		//TODO MANAGE TAXONOMY PERMALINK
 	}
 
 	public static function get_title($name, ExtraMetaBox $mb) {
@@ -154,6 +222,30 @@ class Link extends AbstractField {
 			return '_self';
 		}
 	}
+
+	public static function get_permalink_from_meta($meta, $name, $separator) {
+		$type = $meta[$name.$separator.'type'];
+		$url = $meta[$name.$separator.'url'];
+		$content = $meta[$name.$separator.'content'];
+		$taxonomy = $meta[$name.$separator.'taxonomy'];
+		$taxonomy_slug = $meta[$name.$separator.'taxonomy-slug'];
+
+		if ($type == 'content') {
+			return get_permalink($content);
+		} else if ($type == 'taxonomy') {
+			return get_term_link($taxonomy_slug, $taxonomy);
+		} else {
+			return $url;
+		}
+	}
+	public static function get_target_from_meta($meta, $name, $separator) {
+		if (isset($meta[$name.$separator.'target']) && $meta[$name.$separator.'target']) {
+			return '_blank';
+		} else {
+			return '_self';
+		}
+	}
 }
 
 add_action('wp_ajax_extra-link', array('Link', 'extra_link_wp_ajax'));
+add_action('wp_ajax_extra-link-taxonomy', array('Link', 'extra_link_taxonomy_wp_ajax'));

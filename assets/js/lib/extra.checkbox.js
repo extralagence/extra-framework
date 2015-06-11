@@ -19,40 +19,49 @@
 				$this.wrap(wrapTag);
 			}
 
+			function onChangeCheckbox($current) {
+				if ($current.is(':checked')) {
+					$current.parent().addClass("checked");
+				} else {
+					$current.parent().removeClass("checked");
+				}
+			}
+
+			function onChangeRadio ($current) {
+				$('input[name="' + $current.attr('name') + '"]').each(function () {
+					if ($(this).is(':checked')) {
+						$(this).parent().addClass("selected");
+					} else {
+						$(this).parent().removeClass("selected");
+					}
+				});
+			}
+
 			if ($this.attr('type') == 'checkbox') {
 				//
 				// CHECKBOX
 				//
 				$this.on("change", function () {
-					if ($(this).is(':checked')) {
-						$(this).parent().addClass("checked");
-					} else {
-						$(this).parent().removeClass("checked");
-					}
+					onChangeCheckbox($(this));
 				}).on("focus", function(){
 					$(this).parent().addClass("focus");
 				}).on("blur", function(){
 					$(this).parent().removeClass("focus");
-				}).change();
+				});
+				onChangeCheckbox($(this));
 
 			} else if ($this.attr('type') == 'radio') {
 				//
 				// RADIO
 				//
 				$this.on("change", function () {
-					$('input[name="' + $(this).attr('name') + '"]').each(function () {
-						if ($(this).is(':checked')) {
-							$(this).parent().addClass("selected");
-						} else {
-							$(this).parent().removeClass("selected");
-						}
-					});
+					onChangeRadio($(this));
 				}).on("focus", function(){
 					$(this).parent().addClass("focus");
 				}).on("blur", function(){
 					$(this).parent().removeClass("focus");
-				}).change();
-
+				});
+				onChangeRadio($(this));
 			}
 		});
 	};

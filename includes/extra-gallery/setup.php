@@ -72,10 +72,14 @@ function extra_gallery_handler($atts, $content = null) {
 	switch($type) {
 		default:
 		case 'mosaic':
+
 			$return = '<ul class="extra-mosaic">';
 			foreach ($ids as $id):
+
+				$attachment = get_post( $id );
 				$src = wp_get_attachment_image_src($id, 'large');
-				$return .= '    <li><a href="'.$src[0].'">';
+
+				$return .= '    <li><a href="'.$src[0].'" class="zoom">';
 				$sizes = apply_filters('extra_responsive_sizes', array(
 					'desktop' => 'only screen and (min-width: 961px)',
 					'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
@@ -84,11 +88,11 @@ function extra_gallery_handler($atts, $content = null) {
 				$params = array();
 				foreach($sizes as $size => $value) {
 					$params[$size] = array(
-						'width' => apply_filters('extra_gallery_width', $content_width/3, 'gallery', $size),
-						'height' => apply_filters('extra_gallery_height', $content_width/3, 'gallery', $size),
-					);
+						apply_filters('extra_gallery_width', $content_width/3, 'gallery', $size),
+						apply_filters('extra_gallery_height', $content_width/3, 'gallery', $size));
 				}
-				$return .= extra_get_responsive_image($id, $params);
+				$return .= extra_get_responsive_image($id, $params, '', '', '', $attachment->post_excerpt);
+
 				$return .= '    </a></li>';
 			endforeach;
 			$return .= '</ul>';
@@ -108,8 +112,8 @@ function extra_gallery_handler($atts, $content = null) {
 				$params = array();
 				foreach($sizes as $size => $value) {
 					$params[$size] = array(
-						'width' => apply_filters('extra_gallery_width', $content_width/3, 'slider', $size),
-						'height' =>apply_filters('extra_gallery_height', $content_width/3, 'slider', $size),
+						apply_filters('extra_gallery_width', $content_width/3, 'slider', $size),
+						apply_filters('extra_gallery_height', $content_width/3, 'slider', $size),
 					);
 				}
 				$return .= extra_get_responsive_image($id, $params);

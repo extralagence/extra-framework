@@ -15,6 +15,13 @@ var extra = {},
  *********************/
 var extraResponsiveSizesTests = {},
 	small = null;
+
+/*********************
+ *
+ * GLOBAL OPTIONS
+ *
+ *********************/
+var extraOptions = {};
 /*********************
  *
  * JQUERY START
@@ -115,12 +122,9 @@ $(document).ready(function () {
 	 * ALL LINKS TO IMAGES
 	 *
 	 *********************/
-	var zoomIcon = $("<span />", {
-		"class": "zoomIcon"
-	});
-	$("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
-		return $(this).attr("target") != "_blank";
-	}).attr("data-fancybox-group", "gallery").fancybox({
+	var defaultOptions = {
+		zoomIcon : '<span class="zoomIcon"></span>',
+		fancyboxOptions : {
 			margin: 50,
 			padding: 0,
 			type: 'image',
@@ -129,7 +133,15 @@ $(document).ready(function () {
 					type: 'over'
 				}
 			}
-		}).each(function () {
+		}
+	};
+	$.extend(defaultOptions, extraOptions);
+
+	var zoomIcon = $(defaultOptions.zoomIcon);
+
+	$("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
+		return $(this).attr("target") != "_blank";
+	}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
 			var $this = $(this),
 				$img = $this.find(" > img").first(),
 				$icon = zoomIcon.clone(),

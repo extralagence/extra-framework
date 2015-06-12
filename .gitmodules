@@ -6,7 +6,7 @@
 	url = https://github.com/leafo/lessphp
 [submodule "includes/wp-less"]
 	path = includes/wp-less
-	url = https://github.com/sanchothefat/wp-less
+	url = https://github.com/sanchothefat/wp-less.git
 [submodule "includes/WP-OTF-Regenerate-Thumbnails"]
 	path = includes/WP-OTF-Regenerate-Thumbnails
 	url = https://github.com/gambitph/WP-OTF-Regenerate-Thumbnails.git

@@ -10,3 +10,5 @@ It must contains this folders :
 * extra/modules
 * extra/includes
 * extra/setup
+
+That's all folks !

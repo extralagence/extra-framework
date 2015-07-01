@@ -230,7 +230,7 @@ function extra_submit_shortcode_handler( $tag ) {
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop = '', $caption = '') {
+function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '') {
 
 	// hook it to override available sizes
 	$sizes = apply_filters('extra_responsive_sizes', array(
@@ -243,6 +243,14 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 	if(!is_numeric($id)) {
 		throw new Exception(__("This must be an integer", 'extra'));
 	}
+	if (!isset($alt)) {
+		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
+		if (empty($alt)) {
+			$attachment = get_post($id);
+			$alt = $attachment->post_title;
+		}
+	}
+
 
 	// START RENDERING
 	ob_start();
@@ -260,7 +268,7 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 			?>"
 			<?php endforeach; ?>>
 
-			<img alt=""
+			<img alt="<?php echo $alt; ?>"
 				 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 				 src="<?php
 					 $src = wp_get_attachment_image_src($id, reset($dimensions));
@@ -269,8 +277,7 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 		</noscript>
 		<img class="placeholder-image"
 			 src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
-			 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
-			 alt="<?php echo $alt; ?>"
+			 alt=""
 			 style="<?php
 			 $first_dimension = reset($dimensions);
 			 echo (!empty($first_dimension[0])) ? 'width: ' . $first_dimension[0] . 'px;' : '';
@@ -287,7 +294,7 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 	ob_end_clean();
 	return $return;
 }
-function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = '', $img_itemprop= '', $caption = '') {
+function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop= '', $caption = '') {
 	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop, $caption);
 }
 /**

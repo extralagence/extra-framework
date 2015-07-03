@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vincent
- * Date: 27/02/2014
- * Time: 11:02
- */
-
-/**
  * Class Text
  *
  * Define a page selector input metabox
@@ -29,8 +22,13 @@ class PageSelector extends AbstractField {
 	}
 
 	public function the_admin() {
-		?>
-		<?php $this->mb->the_field($this->get_single_field_name('page_selector')); ?>
+		if (!empty($this->title)) : ?>
+		<h2>
+			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
+			<?php echo ($this->title == null) ? __('Image', 'extra-admin') : $this->title; ?>
+		</h2>
+		<?php endif;
+		$this->mb->the_field($this->get_single_field_name('page_selector')); ?>
 		<p class="<?php echo $this->css_class; ?> extra-page-selector-container">
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<?php $this->generate_post_select($this->mb->get_the_name(), $this->mb->get_the_value(), $this->post_type, $this->option_none_text, $this->option_none_value); ?>
@@ -71,4 +69,4 @@ class PageSelector extends AbstractField {
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
 		echo $meta;
 	}
-} 
+}

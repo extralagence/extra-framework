@@ -20,6 +20,7 @@
 			'auto'            : false,
 			'draggable'       : false,
 			'dragWindow'	  : false,
+			'dragWindowObject': $(window),
 			'minDrag'	      : 50,
 			'forcedDimensions': true,
 			'keyboard'        : false,
@@ -66,11 +67,13 @@
 				autoTween,
 			// DRAG
 				drag,
-				reference = 0,
+				referenceX = 0,
+				referenceY = 0,
+				referenceScroll = 0,
 				direction;
 
 			/*********************************** FUNCTIONS ***********************************/
-				// adjust the slider position
+			// adjust the slider position
 			function adjustPosition() {
 				if (currentItem > total) {
 					// too far on the left (previous)
@@ -144,7 +147,7 @@
 					previousItem = currentItem;
 					currentItem = parseInt(newPage, 10);
 
-					if (opt.type === 'fade') {
+					if (opt.type === 'fade' || opt.type === 'custom') {
 						if (currentItem > total) {
 							currentItem = 0;
 						} else if (currentItem < 0) {
@@ -412,13 +415,13 @@
 					$this.trigger('pause.extra.slider', [$this]);
 					autoTween.pause();
 				}).on('mouseleave resume', function () {
-						// listener
-						if (opt.onResume) {
-							opt.onResume($this);
-						}
-						$this.trigger('resume.extra.slider', [$this]);
-						autoTween.resume();
-					});
+					// listener
+					if (opt.onResume) {
+						opt.onResume($this);
+					}
+					$this.trigger('resume.extra.slider', [$this]);
+					autoTween.resume();
+				});
 			}
 
 			/*********************************** DRAGGABLE ***********************************/
@@ -432,23 +435,26 @@
 						dragClickables	: true,
 						type          	: 'x',
 						cursor        	: 'move',
-						lockAxis		: false,
+						lockAxis		: 'x,y',
+						throwProps		: false,
 						onDrag: function(event) {
-							if (this.y !=0 && Math.abs(reference - this.x) < opt.minDrag && opt.dragWindow) {
-				                // user is moving vertically
-								$(window).scrollTop($(window).scrollTop()-this.y);
+							if (this.y !=0 && Math.abs(referenceX - this.x) < opt.minDrag && opt.dragWindow) {
+								// user is moving vertically : scroll
+								TweenMax.set(opt.dragWindowObject, {scrollTo: {autoKill:false, y: referenceScroll + (referenceY - this.pointerY)}});
 								return false;
 							}
 						},
 						onDragStart   	: function () {
 							$this.trigger('pause').addClass('extra-slider-mouse-down');
-							reference = this.x;
+							referenceX = this.x;
+							referenceY = this.pointerY;
+							referenceScroll = opt.dragWindowObject.scrollTop();
 						},
 						onDragEnd     	: function () {
 							$this.trigger('resume').removeClass('extra-slider-mouse-down');
-							if(Math.abs(reference - this.x) > opt.minDrag) {
+							if(Math.abs(referenceX - this.x) > opt.minDrag) {
 								Draggable.get($slider).disable();
-								direction = ((reference - this.x) > 0) ? -1 : 1;
+								direction = ((referenceX - this.x) > 0) ? -1 : 1;
 								if (direction === 1) {
 									gotoPrev();
 								} else {

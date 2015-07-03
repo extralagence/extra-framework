@@ -64,7 +64,7 @@ class Taxonomy extends AbstractField {
 		if(!empty($children)) {
 			foreach ($children as $child) {
 				$selected = ' ';
-				$value = $child->slug;
+				$value = $child->term_id;
 				if ($selected_value == $value) {
 					$selected = ' selected';
 				}

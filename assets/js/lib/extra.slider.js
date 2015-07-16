@@ -39,7 +39,10 @@
 			'onUpdate'        : null,
 			'onUpdateClones'  : null,
 			'onPause'         : null,
-			'onResume'        : null
+			'onResume'        : null,
+			'onGotoNext'      : null,
+			'onGotoPrev'      : null,
+			'ease'            : Quad.easeOut
 		}, options);
 
 		this.each(function () {
@@ -184,7 +187,7 @@
 									left -= singleWidth * offset;
 								}
 							}
-							TweenMax.to($slider, time, {x: left, force3D: "auto", onComplete: endHandler, onCompleteParams: [time]});
+							TweenMax.to($slider, time, {x: left, force3D: "auto", onComplete: endHandler, onCompleteParams: [time], ease: opt.ease});
 							break;
 						case "fade":
 							$items.eq(previousItem).css("zIndex", 1);
@@ -281,11 +284,19 @@
 
 			/*********************************** HELPER FUNCTIONS ***********************************/
 			function gotoNext(time) {
+				$this.trigger('gotoNext.extra.slider', [$this]);
+				if (opt.onGotoNext) {
+					opt.onGotoNext($this);
+				}
 				time = (time !== undefined) ? time : opt.speed;
 				gotoPage(currentItem + 1, time);
 			}
 
 			function gotoPrev(time) {
+				$this.trigger('gotoPrev.extra.slider', [$this]);
+				if (opt.onGotoPrev) {
+					opt.onGotoPrev($this);
+				}
 				time = time !== undefined ? time : opt.speed;
 				gotoPage(currentItem - 1, time);
 			}

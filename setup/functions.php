@@ -130,51 +130,51 @@ function extra_language_switcher(){
 		}
 	}
 }
-/**********************
- *
- *
- *
- * HOOK MENU CLASSES
- *
- *
- *
- *********************/
-function extra_nav_menu_css_class_home($classes, $item){
-
-	global $extra_options;
-
-	if(get_option("page_on_front") == $item->object_id) {
-		$classes[] = "menu-item-home";
-	}
-
-	/*if((is_singular("post") || is_singular("event")) && $extra_options["page-agenda"] == $item->object_id) {
-		$classes[] = "current-page-ancestor current-menu-ancestor current_page_ancestor";
-	}*/
-
-	return $classes;
-}
-add_filter('nav_menu_css_class' , 'extra_nav_menu_css_class_home' , 10 , 2);
-
-/**********************
- *
- *
- *
- * HOOK MENU TITLES
- *
- *
- *
- *********************/
-function extra_hook_nav_menu_footer ($items, $menu, $args) {
+///**********************
+// *
+// *
+// *
+// * HOOK MENU CLASSES
+// *
+// *
+// *
+// *********************/
+//function extra_nav_menu_css_class_home($classes, $item){
+//
 //	global $extra_options;
-
-	foreach ($items as $item) {
-		if ($item->object_id === get_option('page_on_front')) {
-			$item->title = '<span class="icon icon-home"></span><span class="text">'.$item->title.'</span>';
-		}
-	}
-	return $items;
-}
-add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
+//
+//	if(get_option("page_on_front") == $item->object_id) {
+//		$classes[] = "menu-item-home";
+//	}
+//
+//	/*if((is_singular("post") || is_singular("event")) && $extra_options["page-agenda"] == $item->object_id) {
+//		$classes[] = "current-page-ancestor current-menu-ancestor current_page_ancestor";
+//	}*/
+//
+//	return $classes;
+//}
+//add_filter('nav_menu_css_class' , 'extra_nav_menu_css_class_home' , 10 , 2);
+//
+///**********************
+// *
+// *
+// *
+// * HOOK MENU TITLES
+// *
+// *
+// *
+// *********************/
+//function extra_hook_nav_menu_footer ($items, $menu, $args) {
+////	global $extra_options;
+//
+//	foreach ($items as $item) {
+//		if ($item->object_id === get_option('page_on_front')) {
+//			$item->title = '<span class="icon icon-home"></span><span class="text">'.$item->title.'</span>';
+//		}
+//	}
+//	return $items;
+//}
+//add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
 
 function remove_parent_classes($class)
 {

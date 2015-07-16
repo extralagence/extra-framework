@@ -20,11 +20,19 @@
  */
 class Map extends AbstractField {
 
+	protected $show_address = true;
+
 	public static function init () {
 		parent::init();
 		wp_enqueue_style('extra-map-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/css/extra-map.less');
 		wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpFeTSnmCMi1Vb3LuLoAivc4D4CeA2YJs&sensor=false', array('jquery'), null, true);
 		wp_enqueue_script('extra-map-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-map.js', array('jquery'), null, true);
+	}
+
+	public function extract_properties($properties) {
+		parent::extract_properties($properties);
+
+		$this->show_address = (isset($properties['show_address'])) ? $properties['show_address'] : true ;
 	}
 
 	public function the_admin() {
@@ -40,9 +48,11 @@ class Map extends AbstractField {
 			<div class="extra-map">
 
 				<!-- ADDRESS -->
-				<?php $this->mb->the_field($this->get_prefixed_field_name('address')); ?>
-				<p><label for="<?php $this->mb->the_name(); ?>"><?php _e("Adresse à afficher", "extra-admin"); ?></label>
-					<textarea id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>"><?php $this->mb->the_value(); ?></textarea></p>
+				<?php if ($this->show_address) : ?>
+					<?php $this->mb->the_field($this->get_prefixed_field_name('address')); ?>
+					<p><label for="<?php $this->mb->the_name(); ?>"><?php _e("Adresse à afficher", "extra-admin"); ?></label>
+						<textarea id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>"><?php $this->mb->the_value(); ?></textarea></p>
+				<?php endif; ?>
 				<!-- LATITUDE -->
 				<?php $this->mb->the_field($this->get_prefixed_field_name("lat"));
 				$field = $this->mb->get_the_value(); ?>

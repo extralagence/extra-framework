@@ -19,6 +19,7 @@ function ExtraResponsiveMenu(options) {
 			$site: $("#wrapper"),
 			$button: $("#switch-mobile-menu"),
 			everySizes: false,
+			autoHide: true,
 			moveButton: true,
 			moveSite: true,
 			prependTimeline: null,
@@ -190,7 +191,7 @@ function ExtraResponsiveMenu(options) {
 
 		// SETTER
 		TweenMax.set(opt.$menu, {
-			x: -opt.$menu.outerWidth() + 'px',
+			x: (((!opt.everySizes && !small) && (opt.autoHide)) || small) ? -opt.$menu.outerWidth() + 'px' : 0,
 			ease: Strong.EaseIn,
 			onComplete: function () {
 				$window.trigger('extra.hideResponsiveMenuComplete');

@@ -395,7 +395,7 @@
 				$pagination.find("a").removeClass('active').eq(currentItem).addClass('active');
 				$('a', $pagination).each(function (i) {
 					$(this).click(function () {
-						if (!$(this).hasClass('active')) {
+						if (!$(this).hasClass('active') && !$(this).hasClass('disabled')) {
 							gotoPage(i);
 						}
 						return false;

@@ -30,7 +30,7 @@ function extra_custom_share($id = 0) {
 
 	// IF LINK, ECHO SHARE
 	if ( ! empty( $link ) ) {
-		$return = file_get_contents(EXTgitRA_MODULES_URI.'/custom_share/img/sprite.svg');
+		$return = file_get_contents(EXTRA_MODULES_URI.'/custom_share/img/sprite.svg');
 		$return .= '
 		<div class="extra-social-wrapper">
 			<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=' . $link . '" class="extra-social-button extra-social-facebook" data-url="' . $link . '" data-counter="https://graph.facebook.com/?ids=' . urlencode($link) . '">

@@ -297,6 +297,50 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop= '', $caption = '') {
 	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop, $caption);
 }
+
+/**
+ * echo reponsive image
+ * @param $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
+ * @param string $alt
+ */
+function extra_get_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
+
+	// hook it to override available sizes
+	$sizes = apply_filters('extra_responsive_sizes', array(
+		'desktop' => 'only screen and (min-width: 961px)',
+		'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
+		'mobile' => 'only screen and (max-width: 690px)'
+	));
+
+	// SRC IS AN ID
+	if(!is_numeric($id)) {
+		throw new Exception(__("This must be an integer", 'extra'));
+	}
+	// START RENDERING
+	ob_start();
+	?>
+
+	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?>"
+		style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');" >
+		<noscript
+			<?php foreach($sizes as $size => $value): ?>
+				data-src-<?php echo $size; ?>="<?php
+				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
+				echo $src[0];?>"
+				<?php endforeach; ?>>
+		</noscript>
+	</div>
+	<?php $return = ob_get_contents(); ?>
+
+<?php
+	ob_end_clean();
+	return $return;
+}
+function extra_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
+	echo extra_get_responsive_background_image($id, $dimensions, $class);
+}
 /**
  * Shortify a string with "..."
  *

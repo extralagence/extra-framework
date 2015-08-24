@@ -173,7 +173,9 @@
 					$this.trigger('moveStart.extra.slider', [$items.eq(realCurrentItem + numClones), total + 1, $this]);
 
 					if (opt.paginate) {
-						$pagination.find("a").removeClass("active").eq(realCurrentItem).addClass("active");
+						$pagination.each(function () {
+							$(this).find("a").removeClass("active").eq(realCurrentItem).addClass("active");
+						});
 					}
 
 					switch (opt.type) {
@@ -392,13 +394,17 @@
 				for (i = 0; i <= total; i += 1) {
 					$("<a>", {'href': '#'}).html(opt.paginateContent !== '' ? opt.paginateContent.replace("%d", (i + 1)) : i + 1).appendTo($pagination);
 				}
-				$pagination.find("a").removeClass('active').eq(currentItem).addClass('active');
-				$('a', $pagination).each(function (i) {
-					$(this).click(function () {
-						if (!$(this).hasClass('active') && !$(this).hasClass('disabled')) {
-							gotoPage(i);
-						}
-						return false;
+
+				$pagination.each(function () {
+					$(this).find("a").removeClass('active').eq(currentItem).addClass('active');
+
+					$('a', $(this)).each(function (i) {
+						$(this).click(function () {
+							if (!$(this).hasClass('active') && !$(this).hasClass('disabled')) {
+								gotoPage(i);
+							}
+							return false;
+						});
 					});
 				});
 			}

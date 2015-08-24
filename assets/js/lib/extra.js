@@ -202,6 +202,10 @@ $(document).ready(function () {
 		});
 		function initResponsiveImage(container) {
 
+			if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
+				console.log('responsiveBackgroundImagePlaceholder');
+			}
+
 			var datas = container.find("noscript"),
 				altTxt = datas.data("alt"),
 				itemProp = datas.data("img-itemprop"),
@@ -222,8 +226,14 @@ $(document).ready(function () {
 								if (itemProp) {
 									imgElement.attr('itemprop', itemProp);
 								}
-	              				// APPEND
-	              				imgElement.appendTo(container);
+								// APPEND
+								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
+									console.log('responsiveBackgroundImagePlaceholder');
+									container.css('background-image', "url('"+imgSrc+"')");
+								} else {
+									imgElement.appendTo(container);
+								}
+
 								// REMOVE EXISTING IMAGE
 								container.find("img").not(imgElement).remove();
 								container.trigger('complete.extra.responsiveImage');

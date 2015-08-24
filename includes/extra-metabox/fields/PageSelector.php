@@ -41,6 +41,7 @@ class PageSelector extends AbstractField {
 			wp_dropdown_pages(array(
 				'name' => $this->mb->get_the_name(),
 				'selected' => $this->mb->get_the_value(),
+				'show_option_none' => ($option_none_text) ? $option_none_text : ($option_none_value) ? __('Choisir dans la liste...', 'extra') : '',
 			));
 		} else {
 			$post_type_object = get_post_type_object($post_type);

@@ -66,7 +66,7 @@ function extra_dashboard_widgets() {
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
 	unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
-	unset($wp_meta_boxes['dashboard']['side']['high']['id']);
+	unset($wp_meta_boxes['dashboard']['side']['high']['redux_dashboard_widget']);
 }
 add_action('wp_dashboard_setup', 'extra_dashboard_widgets', 999);
 remove_action( 'welcome_panel', 'wp_welcome_panel' );

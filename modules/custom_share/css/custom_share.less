@@ -1,0 +1,99 @@
+.extra-social-wrapper {
+	padding: 15px 0;
+	text-align: right;
+	display: block;
+	font-size: 0;
+	margin: 55px 0;
+	width: 100%;
+}
+.extra-social-wrapper:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+.extra-social-button {
+	fill: @white;
+	color: @white;
+	display: inline-block;
+	font-size: 17px;
+	line-height: 30px;
+	padding: 0 5px;
+	margin-right: 10px;
+}
+.extra-social-button:last-child {
+	margin-right: 0;
+}
+.extra-social-button .icon {
+	display: inline-block;
+	margin: 0 5px;
+	text-align: center;
+	vertical-align: middle;
+	width: 20px;
+	height: auto;
+}
+.extra-social-button .counter {
+	display: inline-block;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	margin: 0 7px 0 -2px;
+	vertical-align: middle;
+}
+.extra-social-button .counter:empty {
+	display: none;
+}
+.js .extra-social-button .text {
+	display: none;
+}
+// FACEBOOK
+.extra-social-facebook {
+	background-color: #46609f;
+}
+// TWITTER
+.extra-social-twitter {
+	background-color: #5cacf2;
+}
+// GOOGLE PLUS
+.extra-social-gplus {
+	background-color: #f44336;
+}
+// SHARE BY MAIL
+.extra-social-share {
+	background-color: #e90606;
+}
+.no-js .extra-social-share {
+	display: none;
+}
+.extra-social-share .icon {
+	font-size: 13px;
+}
+.extra-social-button:hover {
+	fill: @black;
+	color: @black;
+	background-color: @highlight;
+}
+.js-custom-share-hidden {
+	position: absolute;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+}
+// FANCYBOX
+.fancybox-skin,
+.fancybox-opened .fancybox-skin{
+	background: @white;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+.extra-social-share-wrapper {
+	padding: 20px;
+	text-align: left;
+	width: 500px;
+}

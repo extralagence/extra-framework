@@ -193,34 +193,39 @@ function remove_parent_classes($class)
 add_action('init', 'extra_add_shortcode_submit', 10);
 function extra_add_shortcode_submit() {
 	if(function_exists('wpcf7_remove_shortcode')) {
-		wpcf7_remove_shortcode( 'submit', 'wpcf7_submit_shortcode_handler' );
+		wpcf7_remove_shortcode( 'submit' );
 		wpcf7_add_shortcode( 'submit', 'extra_submit_shortcode_handler' );
 	}
 }
-function extra_submit_shortcode_handler( $tag ) {
-	$tag = new WPCF7_Shortcode( $tag );
+if(!function_exists('extra_submit_shortcode_handler')) {
+	function extra_submit_shortcode_handler( $tag ) {
+		$tag = new WPCF7_Shortcode( $tag );
 
-	$class = wpcf7_form_controls_class( $tag->type );
+		$class = wpcf7_form_controls_class( $tag->type );
 
-	$atts = array();
+		$atts = array();
 
-	$atts['class'] = $tag->get_class_option( $class );
-	$atts['id'] = $tag->get_option( 'id', 'id', true );
-	$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
+		$atts['class']    = $tag->get_class_option( $class );
+		$atts['id']       = $tag->get_option( 'id', 'id', true );
+		$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
 
-	$value = isset( $tag->values[0] ) ? $tag->values[0] : '';
+		$value = isset( $tag->values[0] ) ? $tag->values[0] : '';
 
-	if ( empty( $value ) )
-		$value = __( 'Send', 'wpcf7' );
+		if ( empty( $value ) ) {
+			$value = __( 'Send', 'wpcf7' );
+		}
 
-	$atts['type'] = 'submit';
-	//$atts['value'] = $value;
+		$value = apply_filters('extra_cf7_submit_value', $value);
 
-	$atts = wpcf7_format_atts( $atts );
+		$atts['type'] = 'submit';
+		//$atts['value'] = $value;
 
-	$html = sprintf( '<button %1$s>%2$s</button>', $atts, $value );
+		$atts = wpcf7_format_atts( $atts );
 
-	return $html;
+		$html = sprintf( '<button %1$s>%2$s</button>', $atts, $value );
+
+		return $html;
+	}
 }
 
 /**

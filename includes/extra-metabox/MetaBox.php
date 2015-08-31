@@ -1,12 +1,12 @@
 <?php
 /**
- * @author		Dimas Begunoff
- * @copyright	Copyright (c) 2009, Dimas Begunoff, http://farinspace.com
- * @license		http://en.wikipedia.org/wiki/MIT_License The MIT License
- * @package		WPAlchemy
- * @version		1.5.2
- * @link		http://github.com/farinspace/wpalchemy
- * @link		http://farinspace.com
+ * @author        Dimas Begunoff
+ * @copyright    Copyright (c) 2009, Dimas Begunoff, http://farinspace.com
+ * @license        http://en.wikipedia.org/wiki/MIT_License The MIT License
+ * @package        WPAlchemy
+ * @version        1.5.2
+ * @link        http://github.com/farinspace/wpalchemy
+ * @link        http://farinspace.com
  */
 
 /**
@@ -18,55 +18,54 @@
 // todo: perhaps move _global_head and _global_foot locally, when first run
 // define a constant to prevent other instances from running again ...
 
-add_action('admin_head', array('WPAlchemy_MetaBox', '_global_head'));
+add_action( 'admin_head', array( 'WPAlchemy_MetaBox', '_global_head' ) );
 
-add_action('admin_footer', array('WPAlchemy_MetaBox', '_global_foot'));
+add_action( 'admin_footer', array( 'WPAlchemy_MetaBox', '_global_foot' ) );
 
-define('WPALCHEMY_MODE_ARRAY', 'array');
+define( 'WPALCHEMY_MODE_ARRAY', 'array' );
 
-define('WPALCHEMY_MODE_EXTRACT', 'extract');
+define( 'WPALCHEMY_MODE_EXTRACT', 'extract' );
 
-define('WPALCHEMY_FIELD_HINT_TEXT', 'text');
+define( 'WPALCHEMY_FIELD_HINT_TEXT', 'text' );
 
-define('WPALCHEMY_FIELD_HINT_TEXTAREA', 'textarea');
+define( 'WPALCHEMY_FIELD_HINT_TEXTAREA', 'textarea' );
 
-define('WPALCHEMY_FIELD_HINT_CHECKBOX', 'checkbox');
+define( 'WPALCHEMY_FIELD_HINT_CHECKBOX', 'checkbox' );
 
-define('WPALCHEMY_FIELD_HINT_CHECKBOX_MULTI', 'checkbox_multi');
+define( 'WPALCHEMY_FIELD_HINT_CHECKBOX_MULTI', 'checkbox_multi' );
 
-define('WPALCHEMY_FIELD_HINT_RADIO', 'radio');
+define( 'WPALCHEMY_FIELD_HINT_RADIO', 'radio' );
 
-define('WPALCHEMY_FIELD_HINT_SELECT', 'select');
+define( 'WPALCHEMY_FIELD_HINT_SELECT', 'select' );
 
-define('WPALCHEMY_FIELD_HINT_SELECT_MULTI', 'select_multi');
+define( 'WPALCHEMY_FIELD_HINT_SELECT_MULTI', 'select_multi' );
 
 // depreciated, use WPALCHEMY_FIELD_HINT_SELECT_MULTI instead
-define('WPALCHEMY_FIELD_HINT_SELECT_MULTIPLE', 'select_multiple');
+define( 'WPALCHEMY_FIELD_HINT_SELECT_MULTIPLE', 'select_multiple' );
 
-define('WPALCHEMY_LOCK_TOP', 'top');
+define( 'WPALCHEMY_LOCK_TOP', 'top' );
 
-define('WPALCHEMY_LOCK_BOTTOM', 'bottom');
+define( 'WPALCHEMY_LOCK_BOTTOM', 'bottom' );
 
-define('WPALCHEMY_LOCK_BEFORE_POST_TITLE', 'before_post_title');
+define( 'WPALCHEMY_LOCK_BEFORE_POST_TITLE', 'before_post_title' );
 
-define('WPALCHEMY_LOCK_AFTER_POST_TITLE', 'after_post_title');
+define( 'WPALCHEMY_LOCK_AFTER_POST_TITLE', 'after_post_title' );
 
-define('WPALCHEMY_VIEW_START_OPENED', 'opened');
+define( 'WPALCHEMY_VIEW_START_OPENED', 'opened' );
 
-define('WPALCHEMY_VIEW_START_CLOSED', 'closed');
+define( 'WPALCHEMY_VIEW_START_CLOSED', 'closed' );
 
-define('WPALCHEMY_VIEW_ALWAYS_OPENED', 'always_opened');
+define( 'WPALCHEMY_VIEW_ALWAYS_OPENED', 'always_opened' );
 
-class WPAlchemy_MetaBox
-{
+class WPAlchemy_MetaBox {
 	/**
 	 * User defined identifier for the meta box, prefix with an underscore to
 	 * prevent option(s) form showing up in the custom fields meta box, this
 	 * option should be used when instantiating the class.
 	 *
-	 * @since	1.0
-	 * @access	public
-	 * @var		string required
+	 * @since    1.0
+	 * @access    public
+	 * @var        string required
 	 */
 	var $id;
 
@@ -74,10 +73,10 @@ class WPAlchemy_MetaBox
 	 * Used to set the title of the meta box, this option should be used when
 	 * instantiating the class.
 	 *
-	 * @since	1.0
-	 * @access	public
-	 * @var		string required
-	 * @see		$hide_title
+	 * @since    1.0
+	 * @access    public
+	 * @var        string required
+	 * @see        $hide_title
 	 */
 	var $title = 'Custom Meta';
 
@@ -86,9 +85,9 @@ class WPAlchemy_MetaBox
 	 * defined within this file, this option should be used when instantiating
 	 * the class.
 	 *
-	 * @since	1.0
-	 * @access	public
-	 * @var		string required
+	 * @since    1.0
+	 * @access    public
+	 * @var        string required
 	 */
 	var $template;
 
@@ -96,32 +95,32 @@ class WPAlchemy_MetaBox
 	 * Used to set the post types that the meta box can appear in, this option
 	 * should be used when instantiating the class.
 	 *
-	 * @since	1.0
-	 * @access	public
-	 * @var		array
+	 * @since    1.0
+	 * @access    public
+	 * @var        array
 	 */
 	var $types;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $context = 'normal';
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $priority = 'high';
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
-	var $autosave = TRUE;
+	var $autosave = true;
 
 	/**
 	 * Used to set how the class does its data storage, data will be stored as
@@ -131,9 +130,9 @@ class WPAlchemy_MetaBox
 	 * WPALCHEMY_MODE_ARRAY (default) and WPALCHEMY_MODE_EXTRACT, this option
 	 * should be used when instantiating the class.
 	 *
-	 * @since	1.2
-	 * @access	public
-	 * @var		string
+	 * @since    1.2
+	 * @access    public
+	 * @var        string
 	 */
 	var $mode = WPALCHEMY_MODE_ARRAY;
 
@@ -143,100 +142,100 @@ class WPAlchemy_MetaBox
 	 * automatically add a prefix to your variables, this option should be used
 	 * when instantiating the class.
 	 *
-	 * @since	1.2
-	 * @access	public
-	 * @var		array
+	 * @since    1.2
+	 * @access    public
+	 * @var        array
 	 */
 	var $prefix;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_template;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_category_id;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_category;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_tag_id;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_tag;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $exclude_post_id;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_template;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_category_id;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_category;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_tag_id;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_tag;
 
 	/**
-	 * @since	1.0
-	 * @access	public
-	 * @var		bool
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_post_id;
 
 	/**
-	 * @since	EXTRA
-	 * @access	public
-	 * @var		bool
+	 * @since    EXTRA
+	 * @access    public
+	 * @var        bool
 	 */
 	var $include_protected;
 
@@ -245,9 +244,9 @@ class WPAlchemy_MetaBox
 	 * that this callback is executed only when the meta box is present, this
 	 * option should be used when instantiating the class.
 	 *
-	 * @since	1.3.4
-	 * @access	public
-	 * @var		string|array optional
+	 * @since    1.3.4
+	 * @access    public
+	 * @var        string|array optional
 	 */
 	var $init_action;
 
@@ -256,11 +255,13 @@ class WPAlchemy_MetaBox
 	 * true or false to determine if the meta box should or should not be
 	 * displayed, this option should be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @param	array $post_id first variable passed to the callback function
-	 * @see		can_output()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 *
+	 * @param    array $post_id first variable passed to the callback function
+	 *
+	 * @see        can_output()
 	 */
 	var $output_filter;
 
@@ -269,12 +270,14 @@ class WPAlchemy_MetaBox
 	 * saving by passing back FALSE (return FALSE), this option should be used
 	 * when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @param	array $meta meta box data, first variable passed to the callback function
-	 * @param	string $post_id second variable passed to the callback function
-	 * @see		$save_action, add_filter()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 *
+	 * @param    array $meta meta box data, first variable passed to the callback function
+	 * @param    string $post_id second variable passed to the callback function
+	 *
+	 * @see        $save_action, add_filter()
 	 */
 	var $save_filter;
 
@@ -282,12 +285,14 @@ class WPAlchemy_MetaBox
 	 * Callback used to execute custom code after saving, this option should be
 	 * used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @param	array $meta meta box data, first variable passed to the callback function
-	 * @param	string $post_id second variable passed to the callback function
-	 * @see		$save_filter, add_filter()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 *
+	 * @param    array $meta meta box data, first variable passed to the callback function
+	 * @param    string $post_id second variable passed to the callback function
+	 *
+	 * @see        $save_filter, add_filter()
 	 */
 	var $save_action;
 
@@ -295,11 +300,13 @@ class WPAlchemy_MetaBox
 	 * Callback used to override or insert STYLE or SCRIPT tags into the head,
 	 * this option should be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @param	array $content current head content, first variable passed to the callback function
-	 * @see		$head_action, add_filter()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 *
+	 * @param    array $content current head content, first variable passed to the callback function
+	 *
+	 * @see        $head_action, add_filter()
 	 */
 	var $head_filter;
 
@@ -307,10 +314,10 @@ class WPAlchemy_MetaBox
 	 * Callback used to insert STYLE or SCRIPT tags into the head,
 	 * this option should be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @see		$head_filter, add_action()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 * @see        $head_filter, add_action()
 	 */
 	var $head_action;
 
@@ -318,11 +325,13 @@ class WPAlchemy_MetaBox
 	 * Callback used to override or insert SCRIPT tags into the footer, this
 	 * option should be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @param	array $content current foot content, first variable passed to the callback function
-	 * @see		$foot_action, add_filter()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 *
+	 * @param    array $content current foot content, first variable passed to the callback function
+	 *
+	 * @see        $foot_action, add_filter()
 	 */
 	var $foot_filter;
 
@@ -330,10 +339,10 @@ class WPAlchemy_MetaBox
 	 * Callback used to insert SCRIPT tags into the footer, this option should
 	 * be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		string|array optional
-	 * @see		$foot_filter, add_action()
+	 * @since    1.3
+	 * @access    public
+	 * @var        string|array optional
+	 * @see        $foot_filter, add_action()
 	 */
 	var $foot_action;
 
@@ -341,41 +350,41 @@ class WPAlchemy_MetaBox
 	 * Used to hide the default content editor in a page or post, this option
 	 * should be used when instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		bool optional
+	 * @since    1.3
+	 * @access    public
+	 * @var        bool optional
 	 */
-	var $hide_editor = FALSE;
+	var $hide_editor = false;
 
 	/**
 	 * Used in conjunction with the "hide_editor" option, prevents the media
 	 * buttons from also being hidden.
 	 *
-	 * @since	1.5
-	 * @access	public
-	 * @var		bool optional
+	 * @since    1.5
+	 * @access    public
+	 * @var        bool optional
 	 */
-	var $use_media_buttons = FALSE;
+	var $use_media_buttons = false;
 
 	/**
 	 * Used to hide the meta box title, this option should be used when
 	 * instantiating the class.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @var		bool optional
-	 * @see		$title
+	 * @since    1.3
+	 * @access    public
+	 * @var        bool optional
+	 * @see        $title
 	 */
-	var $hide_title = FALSE;
+	var $hide_title = false;
 
 	/**
 	 * Used to lock a meta box in place, possible values are: top, bottom,
 	 * before_post_title, after_post_title, this option should be used when
 	 * instantiating the class.
 	 *
-	 * @since		1.3.3
-	 * @access		public
-	 * @var			string optional possible values are: top, bottom, before_post_title, after_post_title
+	 * @since        1.3.3
+	 * @access        public
+	 * @var            string optional possible values are: top, bottom, before_post_title, after_post_title
 	 */
 	var $lock;
 
@@ -383,34 +392,34 @@ class WPAlchemy_MetaBox
 	 * Used to lock a meta box at top (below the default content editor), this
 	 * option should be used when instantiating the class.
 	 *
-	 * @deprecated	deprecated since version 1.3.3
-	 * @since		1.3
-	 * @access		public
-	 * @var			bool optional
-	 * @see			$lock
+	 * @deprecated    deprecated since version 1.3.3
+	 * @since        1.3
+	 * @access        public
+	 * @var            bool optional
+	 * @see            $lock
 	 */
-	var $lock_on_top = FALSE;
+	var $lock_on_top = false;
 
 	/**
 	 * Used to lock a meta box at bottom, this option should be used when
 	 * instantiating the class.
 	 *
-	 * @deprecated	deprecated since version 1.3.3
-	 * @since		1.3
-	 * @access		public
-	 * @var			bool optional
-	 * @see			$lock
+	 * @deprecated    deprecated since version 1.3.3
+	 * @since        1.3
+	 * @access        public
+	 * @var            bool optional
+	 * @see            $lock
 	 */
-	var $lock_on_bottom = FALSE;
+	var $lock_on_bottom = false;
 
 	/**
 	 * Used to set the initial view state of the meta box, possible values are:
 	 * opened, closed, always_opened, this option should be used when
 	 * instantiating the class.
 	 *
-	 * @since	1.3.3
-	 * @access	public
-	 * @var		string optional possible values are: opened, closed, always_opened
+	 * @since    1.3.3
+	 * @access    public
+	 * @var        string optional possible values are: opened, closed, always_opened
 	 */
 	var $view;
 
@@ -418,11 +427,11 @@ class WPAlchemy_MetaBox
 	 * Used to hide the show/hide checkbox option from the screen options area,
 	 * this option should be used when instantiating the class.
 	 *
-	 * @since		1.3.4
-	 * @access		public
-	 * @var			bool optional
+	 * @since        1.3.4
+	 * @access        public
+	 * @var            bool optional
 	 */
-	var $hide_screen_option = FALSE;
+	var $hide_screen_option = false;
 
 	// private
 
@@ -432,50 +441,53 @@ class WPAlchemy_MetaBox
 	/**
 	 * Used to provide field type hinting
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @var		string
-	 * @see		the_field()
+	 * @since    1.3
+	 * @access    private
+	 * @var        string
+	 * @see        the_field()
 	 */
 	var $hint;
 
 	var $length = 0;
-	var $current = -1;
-	var $in_loop = FALSE;
-	var $in_template = FALSE;
+	var $current = - 1;
+	var $in_loop = false;
+	var $in_template = false;
 	var $group_tag;
 	var $current_post_id;
 
 	/**
 	 * Used to store current loop details, cleared after loop ends
 	 *
-	 * @since	1.4
-	 * @access	private
-	 * @var		stdClass
-	 * @see		have_fields_and_multi(), have_fields()
+	 * @since    1.4
+	 * @access    private
+	 * @var        stdClass
+	 * @see        have_fields_and_multi(), have_fields()
 	 */
 	var $_loop_data;
 
-	function WPAlchemy_MetaBox($arr)
-	{
+	function WPAlchemy_MetaBox( $arr ) {
 		$this->_loop_data = new stdClass;
 
 		$this->meta = array();
 
-		$this->types = array('post', 'page');
+		$this->types = array( 'post', 'page' );
 
-		if (isset($arr) and is_array($arr))
-		{
-			foreach ($arr as $n => $v)
-			{
+		if ( isset( $arr ) and is_array( $arr ) ) {
+			foreach ( $arr as $n => $v ) {
 				$this->$n = $v;
 			}
 
-			if (empty($this->id)) die('Meta box ID required');
+			if ( empty( $this->id ) ) {
+				die( 'Meta box ID required' );
+			}
 
-			if (is_numeric($this->id)) die('Meta box ID must be a string');
+			if ( is_numeric( $this->id ) ) {
+				die( 'Meta box ID must be a string' );
+			}
 
-			if (empty($this->template)) die('Meta box template file required');
+			if ( empty( $this->template ) ) {
+				die( 'Meta box template file required' );
+			}
 
 			// check for nonarray values
 
@@ -487,7 +499,6 @@ class WPAlchemy_MetaBox
 				'exclude_tag_id',
 				'exclude_tag',
 				'exclude_post_id',
-
 				'include_template',
 				'include_category_id',
 				'include_category',
@@ -497,27 +508,26 @@ class WPAlchemy_MetaBox
 				'include_protected'
 			);
 
-			foreach ($exc_inc as $v)
-			{
+			foreach ( $exc_inc as $v ) {
 				// ideally the exclude and include values should be in array form, convert to array otherwise
-				if (!empty($this->$v) AND !is_array($this->$v))
-				{
-					$this->$v = array_map('trim',explode(',',$this->$v));
+				if ( ! empty( $this->$v ) AND ! is_array( $this->$v ) ) {
+					$this->$v = array_map( 'trim', explode( ',', $this->$v ) );
 				}
 			}
 
 			// convert depreciated variables
-			if ($this->lock_on_top) $this->lock = WPALCHEMY_LOCK_TOP;
-			elseif ($this->lock_on_bottom) $this->lock = WPALCHEMY_LOCK_BOTTOM;
+			if ( $this->lock_on_top ) {
+				$this->lock = WPALCHEMY_LOCK_TOP;
+			} elseif ( $this->lock_on_bottom ) {
+				$this->lock = WPALCHEMY_LOCK_BOTTOM;
+			}
 
-			add_action('admin_init', array($this,'_init'));
+			add_action( 'admin_init', array( $this, '_init' ) );
 
 			// uses the default wordpress-importer plugin hook
-			add_action('import_post_meta', array($this, '_import'), 10, 3);
-		}
-		else
-		{
-			die('Associative array parameters required');
+			add_action( 'import_post_meta', array( $this, '_import' ), 10, 3 );
+		} else {
+			die( 'Associative array parameters required' );
 		}
 	}
 
@@ -526,32 +536,26 @@ class WPAlchemy_MetaBox
 	 * additionally will try to fix corrupted serialized data by recalculating
 	 * string length values
 	 *
-	 * @since	1.3.16
-	 * @access	private
+	 * @since    1.3.16
+	 * @access    private
 	 */
-	function _import($post_id, $key, $value)
-	{
-		if (WPALCHEMY_MODE_ARRAY == $this->mode AND $key == $this->id)
-		{
+	function _import( $post_id, $key, $value ) {
+		if ( WPALCHEMY_MODE_ARRAY == $this->mode AND $key == $this->id ) {
 			// using $wp_import to get access to the raw postmeta data prior to it getting passed
 			// through "maybe_unserialize()" in "plugins/wordpress-importer/wordpress-importer.php"
 			// the "import_post_meta" action is called after "maybe_unserialize()"
 
 			global $wp_import;
 
-			foreach ( $wp_import->posts as $post )
-			{
-				if ( $post_id == $post['post_id'] )
-				{
-					foreach( $post['postmeta'] as $meta )
-					{
-						if ( $key == $meta['key'] )
-						{
+			foreach ( $wp_import->posts as $post ) {
+				if ( $post_id == $post['post_id'] ) {
+					foreach ( $post['postmeta'] as $meta ) {
+						if ( $key == $meta['key'] ) {
 							// try to fix corrupted serialized data, specifically "\r\n" being converted to "\n" during wordpress XML export (WXR)
 							// "maybe_unserialize()" fixes a wordpress bug which double serializes already serialized data during export/import
 							$value = maybe_unserialize( preg_replace( '!s:(\d+):"(.*?)";!es', "'s:'.strlen('$2').':\"$2\";'", stripslashes( $meta['value'] ) ) );
 
-							update_post_meta( $post_id, $key,  $value );
+							update_post_meta( $post_id, $key, $value );
 						}
 					}
 				}
@@ -563,75 +567,68 @@ class WPAlchemy_MetaBox
 	 * Used to initialize the meta box, runs on WordPress admin_init action,
 	 * properly calls internal WordPress methods
 	 *
-	 * @since	1.0
-	 * @access	private
+	 * @since    1.0
+	 * @access    private
 	 */
-	function _init()
-	{
+	function _init() {
 		// must be creating or editing a post or page
-		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page()) return;
-
-		if ( ! empty($this->output_filter))
-		{
-			$this->add_filter('output', $this->output_filter);
+		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page() ) {
+			return;
 		}
 
-		if ($this->can_output())
-		{
-			foreach ($this->types as $type)
-			{
-				add_filter('postbox_classes_'.$type.'_'.$this->id.'_metabox', array($this, '_extra_add_postbox_classes'));
-				add_meta_box($this->id . '_metabox', $this->title, array($this, '_setup'), $type, $this->context, $this->priority);
+		if ( ! empty( $this->output_filter ) ) {
+			$this->add_filter( 'output', $this->output_filter );
+		}
+
+		if ( $this->can_output() ) {
+			foreach ( $this->types as $type ) {
+				add_filter( 'postbox_classes_' . $type . '_' . $this->id . '_metabox', array(
+					$this,
+					'_extra_add_postbox_classes'
+				) );
+				add_meta_box( $this->id . '_metabox', $this->title, array(
+					$this,
+					'_setup'
+				), $type, $this->context, $this->priority );
 			}
 
-			add_action('save_post', array($this,'_save'));
+			add_action( 'save_post', array( $this, '_save' ) );
 
-			$filters = array('save', 'head', 'foot');
+			$filters = array( 'save', 'head', 'foot' );
 
-			foreach ($filters as $filter)
-			{
+			foreach ( $filters as $filter ) {
 				$var = $filter . '_filter';
 
-				if (!empty($this->$var))
-				{
-					if ('save' == $filter)
-					{
-						$this->add_filter($filter, $this->$var, 10, 2);
-					}
-					else
-					{
-						$this->add_filter($filter, $this->$var);
+				if ( ! empty( $this->$var ) ) {
+					if ( 'save' == $filter ) {
+						$this->add_filter( $filter, $this->$var, 10, 2 );
+					} else {
+						$this->add_filter( $filter, $this->$var );
 					}
 				}
 			}
 
-			$actions = array('save', 'head', 'foot', 'init');
+			$actions = array( 'save', 'head', 'foot', 'init' );
 
-			foreach ($actions as $action)
-			{
+			foreach ( $actions as $action ) {
 				$var = $action . '_action';
 
-				if (!empty($this->$var))
-				{
-					if ('save' == $action)
-					{
-						$this->add_action($action, $this->$var, 10, 2);
-					}
-					else
-					{
-						$this->add_action($action, $this->$var);
+				if ( ! empty( $this->$var ) ) {
+					if ( 'save' == $action ) {
+						$this->add_action( $action, $this->$var, 10, 2 );
+					} else {
+						$this->add_action( $action, $this->$var );
 					}
 				}
 			}
 
-			add_action('admin_head', array($this,'_head'), 11);
+			add_action( 'admin_head', array( $this, '_head' ), 11 );
 
-			add_action('admin_footer', array($this,'_foot'), 11);
+			add_action( 'admin_footer', array( $this, '_foot' ), 11 );
 
 			// action: init
-			if ($this->has_action('init'))
-			{
-				$this->do_action('init');
+			if ( $this->has_action( 'init' ) ) {
+				$this->do_action( 'init' );
 			}
 		}
 	}
@@ -640,19 +637,22 @@ class WPAlchemy_MetaBox
 	 * Used to insert STYLE or SCRIPT tags into the head, called on WordPress
 	 * admin_head action.
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @see		_foot()
+	 * @since    1.3
+	 * @access    private
+	 * @see        _foot()
 	 */
-	function _head()
-	{
-		$content = NULL;
+	function _head() {
+		$content = null;
 
 		ob_start();
 
 		?>
 		<style type="text/css">
-			<?php if ($this->hide_editor) { ?> #wp-content-editor-container, #post-status-info, <?php if ($this->use_media_buttons) { ?> #content-html, #content-tmce<?php } else { ?> #wp-content-wrap<?php } ?> { display:none; } <?php } ?>
+			<?php if ($this->hide_editor) { ?>
+			#wp-content-editor-container, #post-status-info, <?php if ($this->use_media_buttons) { ?> #content-html, #content-tmce<?php } else { ?> #wp-content-wrap<?php } ?> {
+				display: none;
+			}
+			<?php } ?>
 		</style>
 		<?php
 
@@ -661,17 +661,15 @@ class WPAlchemy_MetaBox
 		ob_end_clean();
 
 		// filter: head
-		if ($this->has_filter('head'))
-		{
-			$content = $this->apply_filters('head', $content);
+		if ( $this->has_filter( 'head' ) ) {
+			$content = $this->apply_filters( 'head', $content );
 		}
 
 		echo $content;
 
 		// action: head
-		if ($this->has_action('head'))
-		{
-			$this->do_action('head');
+		if ( $this->has_action( 'head' ) ) {
+			$this->do_action( 'head' );
 		}
 	}
 
@@ -679,13 +677,12 @@ class WPAlchemy_MetaBox
 	 * Used to insert SCRIPT tags into the footer, called on WordPress
 	 * admin_footer action.
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @see		_head()
+	 * @since    1.3
+	 * @access    private
+	 * @see        _head()
 	 */
-	function _foot()
-	{
-		$content = NULL;
+	function _foot() {
+		$content = null;
 
 		if
 		(
@@ -693,14 +690,13 @@ class WPAlchemy_MetaBox
 			$this->hide_title OR
 			$this->view OR
 			$this->hide_screen_option
-		)
-		{
+		) {
 			ob_start();
 
 			?>
 			<script type="text/javascript">
 				/* <![CDATA[ */
-				(function($){ /* not using jQuery ondomready, code runs right away in footer */
+				(function ($) { /* not using jQuery ondomready, code runs right away in footer */
 
 					var mb_id = '<?php echo $this->id; ?>';
 					var mb = $('#' + mb_id + '_metabox');
@@ -708,67 +704,61 @@ class WPAlchemy_MetaBox
 					<?php if (WPALCHEMY_LOCK_TOP == $this->lock): ?>
 					<?php if ('side' == $this->context): ?>
 					var id = 'wpalchemy-side-top';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).prependTo('#side-info-column');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).prependTo('#side-info-column');
 					}
 					<?php else: ?>
 					var id = 'wpalchemy-content-top';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).insertAfter('#postdiv, #postdivrich');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).insertAfter('#postdiv, #postdivrich');
 					}
 					<?php endif; ?>
-					$('#'+id).append(mb);
+					$('#' + id).append(mb);
 					<?php elseif (WPALCHEMY_LOCK_BOTTOM == $this->lock): ?>
 					<?php if ('side' == $this->context): ?>
 					var id = 'wpalchemy-side-bottom';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).appendTo('#side-info-column');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).appendTo('#side-info-column');
 					}
 					<?php else: ?>
-					if ( ! $('#advanced-sortables').children().length)
-					{
-						$('#advanced-sortables').css('display','none');
+					if (!$('#advanced-sortables').children().length) {
+						$('#advanced-sortables').css('display', 'none');
 					}
 
 					var id = 'wpalchemy-content-bottom';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).insertAfter('#advanced-sortables');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).insertAfter('#advanced-sortables');
 					}
 					<?php endif; ?>
-					$('#'+id).append(mb);
+					$('#' + id).append(mb);
 					<?php elseif (WPALCHEMY_LOCK_BEFORE_POST_TITLE == $this->lock): ?>
 					<?php if ('side' != $this->context): ?>
 					var id = 'wpalchemy-content-bpt';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).prependTo('#post-body-content');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).prependTo('#post-body-content');
 					}
-					$('#'+id).append(mb);
+					$('#' + id).append(mb);
 					<?php endif; ?>
 					<?php elseif (WPALCHEMY_LOCK_AFTER_POST_TITLE == $this->lock): ?>
 					<?php if ('side' != $this->context): ?>
 					var id = 'wpalchemy-content-apt';
-					if ( ! $('#'+id).length)
-					{
-						$('<div></div>').attr('id',id).insertAfter('#titlediv');
+					if (!$('#' + id).length) {
+						$('<div></div>').attr('id', id).insertAfter('#titlediv');
 					}
-					$('#'+id).append(mb);
+					$('#' + id).append(mb);
 					<?php endif; ?>
 					<?php endif; ?>
 
 					<?php if ( ! empty($this->lock)): ?>
-					$('.hndle', mb).css('cursor','pointer');
+					$('.hndle', mb).css('cursor', 'pointer');
 					$('.handlediv', mb).remove();
 					<?php endif; ?>
 
 					<?php if ($this->hide_title): ?>
 					$('.hndle', mb).remove();
 					$('.handlediv', mb).remove();
-					mb.removeClass('closed'); /* start opened */
+					mb.removeClass('closed');
+					/* start opened */
 					<?php endif; ?>
 
 					<?php if (WPALCHEMY_VIEW_START_OPENED == $this->view): ?>
@@ -778,14 +768,17 @@ class WPAlchemy_MetaBox
 					<?php elseif (WPALCHEMY_VIEW_ALWAYS_OPENED == $this->view): ?>
 					/* todo: need to find a way to add this script block below, load-scripts.php?... */
 					var h3 = mb.children('h3');
-					setTimeout(function(){ h3.unbind('click'); }, 1000);
+					setTimeout(function () {
+						h3.unbind('click');
+					}, 1000);
 					$('.handlediv', mb).remove();
-					mb.removeClass('closed'); /* start opened */
-					$('.hndle', mb).css('cursor','auto');
+					mb.removeClass('closed');
+					/* start opened */
+					$('.hndle', mb).css('cursor', 'auto');
 					<?php endif; ?>
 
 					<?php if ($this->hide_screen_option): ?>
-					$('.metabox-prefs label[for='+ mb_id +'_metabox-hide]').remove();
+					$('.metabox-prefs label[for=' + mb_id + '_metabox-hide]').remove();
 					<?php endif; ?>
 
 					mb = null;
@@ -801,258 +794,248 @@ class WPAlchemy_MetaBox
 		}
 
 		// filter: foot
-		if ($this->has_filter('foot'))
-		{
-			$content = $this->apply_filters('foot', $content);
+		if ( $this->has_filter( 'foot' ) ) {
+			$content = $this->apply_filters( 'foot', $content );
 		}
 
 		echo $content;
 
 		// action: foot
-		if ($this->has_action('foot'))
-		{
-			$this->do_action('foot');
+		if ( $this->has_action( 'foot' ) ) {
+			$this->do_action( 'foot' );
 		}
 	}
 
 	/**
 	 * Used to setup the meta box content template
 	 *
-	 * @since	1.0
-	 * @access	private
-	 * @see		_init()
+	 * @since    1.0
+	 * @access    private
+	 * @see        _init()
 	 */
-	function _setup()
-	{
-		$this->in_template = TRUE;
+	function _setup() {
+		$this->in_template = true;
 
 		// also make current post data available
 		global $post;
 
 		// shortcuts
-		$mb =& $this;
+		$mb      =& $this;
 		$metabox =& $this;
-		$id = $this->id;
-		$meta = $this->_meta(NULL, TRUE);
+		$id      = $this->id;
+		$meta    = $this->_meta( null, true );
 
 		// use include because users may want to use one templete for multiple meta boxes
 		include $this->template;
 
 		// create a nonce for verification
-		echo '<input type="hidden" name="'. $this->id .'_nonce" value="' . wp_create_nonce($this->id) . '" />';
+		echo '<input type="hidden" name="' . $this->id . '_nonce" value="' . wp_create_nonce( $this->id ) . '" />';
 
-		$this->in_template = FALSE;
+		$this->in_template = false;
 	}
 
 	/**
 	 * Used to properly prefix the filter tag, the tag is unique to the meta
 	 * box instance
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @param	string $tag name of the filter
-	 * @return	string uniquely prefixed tag name
+	 * @since    1.3
+	 * @access    private
+	 *
+	 * @param    string $tag name of the filter
+	 *
+	 * @return    string uniquely prefixed tag name
 	 */
-	function _get_filter_tag($tag)
-	{
+	function _get_filter_tag( $tag ) {
 		$prefix = 'wpalchemy_filter_' . $this->id . '_';
-		$prefix = preg_replace('/_+/', '_', $prefix);
+		$prefix = preg_replace( '/_+/', '_', $prefix );
 
-		$tag = preg_replace('/^'. $prefix .'/i', '', $tag);
+		$tag = preg_replace( '/^' . $prefix . '/i', '', $tag );
+
 		return $prefix . $tag;
 	}
 
 	/**
 	 * Uses WordPress add_filter() function, see WordPress add_filter()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L65
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L65
 	 */
-	function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1)
-	{
-		$tag = $this->_get_filter_tag($tag);;
-		add_filter($tag, $function_to_add, $priority, $accepted_args);
+	function add_filter( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+		$tag = $this->_get_filter_tag( $tag );;
+		add_filter( $tag, $function_to_add, $priority, $accepted_args );
 	}
 
 	/**
 	 * Uses WordPress has_filter() function, see WordPress has_filter()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L86
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L86
 	 */
-	function has_filter($tag, $function_to_check = FALSE)
-	{
-		$tag = $this->_get_filter_tag($tag);
-		return has_filter($tag, $function_to_check);
+	function has_filter( $tag, $function_to_check = false ) {
+		$tag = $this->_get_filter_tag( $tag );
+
+		return has_filter( $tag, $function_to_check );
 	}
 
 	/**
 	 * Uses WordPress apply_filters() function, see WordPress apply_filters()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L134
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L134
 	 */
-	function apply_filters($tag, $value)
-	{
-		$args = func_get_args();
-		$args[0] = $this->_get_filter_tag($tag);
-		return call_user_func_array('apply_filters', $args);
+	function apply_filters( $tag, $value ) {
+		$args    = func_get_args();
+		$args[0] = $this->_get_filter_tag( $tag );
+
+		return call_user_func_array( 'apply_filters', $args );
 	}
 
 	/**
 	 * Uses WordPress remove_filter() function, see WordPress remove_filter()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L250
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L250
 	 */
-	function remove_filter($tag, $function_to_remove, $priority = 10, $accepted_args = 1)
-	{
-		$tag = $this->_get_filter_tag($tag);
-		return remove_filter($tag, $function_to_remove, $priority, $accepted_args);
+	function remove_filter( $tag, $function_to_remove, $priority = 10, $accepted_args = 1 ) {
+		$tag = $this->_get_filter_tag( $tag );
+
+		return remove_filter( $tag, $function_to_remove, $priority, $accepted_args );
 	}
 
 	/**
 	 * Used to properly prefix the action tag, the tag is unique to the meta
 	 * box instance
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @param	string $tag name of the action
-	 * @return	string uniquely prefixed tag name
+	 * @since    1.3
+	 * @access    private
+	 *
+	 * @param    string $tag name of the action
+	 *
+	 * @return    string uniquely prefixed tag name
 	 */
-	function _get_action_tag($tag)
-	{
+	function _get_action_tag( $tag ) {
 		$prefix = 'wpalchemy_action_' . $this->id . '_';
-		$prefix = preg_replace('/_+/', '_', $prefix);
+		$prefix = preg_replace( '/_+/', '_', $prefix );
 
-		$tag = preg_replace('/^'. $prefix .'/i', '', $tag);
+		$tag = preg_replace( '/^' . $prefix . '/i', '', $tag );
+
 		return $prefix . $tag;
 	}
 
 	/**
 	 * Uses WordPress add_action() function, see WordPress add_action()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L324
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L324
 	 */
-	function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1)
-	{
-		$tag = $this->_get_action_tag($tag);
-		if ($tag == 'init') {
-			var_dump($tag);
-			var_dump($function_to_add);
+	function add_action( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+		$tag = $this->_get_action_tag( $tag );
+		if ( $tag == 'init' ) {
+			var_dump( $tag );
+			var_dump( $function_to_add );
 		}
-		add_action($tag, $function_to_add, $priority, $accepted_args);
+		add_action( $tag, $function_to_add, $priority, $accepted_args );
 	}
 
 	/**
 	 * Uses WordPress has_action() function, see WordPress has_action()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L492
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L492
 	 */
-	function has_action($tag, $function_to_check = FALSE)
-	{
-		$tag = $this->_get_action_tag($tag);
-		return has_action($tag, $function_to_check);
+	function has_action( $tag, $function_to_check = false ) {
+		$tag = $this->_get_action_tag( $tag );
+
+		return has_action( $tag, $function_to_check );
 	}
 
 	/**
 	 * Uses WordPress remove_action() function, see WordPress remove_action()
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L513
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L513
 	 */
-	function remove_action($tag, $function_to_remove, $priority = 10, $accepted_args = 1)
-	{
-		$tag = $this->_get_action_tag($tag);
-		return remove_action($tag, $function_to_remove, $priority, $accepted_args);
+	function remove_action( $tag, $function_to_remove, $priority = 10, $accepted_args = 1 ) {
+		$tag = $this->_get_action_tag( $tag );
+
+		return remove_action( $tag, $function_to_remove, $priority, $accepted_args );
 	}
 
 	/**
 	 * Uses WordPress do_action() function, see WordPress do_action()
-	 * @since	1.3
-	 * @access	public
-	 * @link	http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L352
+	 * @since    1.3
+	 * @access    public
+	 * @link    http://core.trac.wordpress.org/browser/trunk/wp-includes/plugin.php#L352
 	 */
-	function do_action($tag, $arg = '')
-	{
-		$args = func_get_args();
-		$args[0] = $this->_get_action_tag($tag);
-		return call_user_func_array('do_action', $args);
+	function do_action( $tag, $arg = '' ) {
+		$args    = func_get_args();
+		$args[0] = $this->_get_action_tag( $tag );
+
+		return call_user_func_array( 'do_action', $args );
 	}
 
 	/**
 	 * Used to check if creating a new post or editing one
 	 *
 	 * @static
-	 * @since	1.3.7
-	 * @access	private
-	 * @return	bool
-	 * @see		_is_page()
+	 * @since    1.3.7
+	 * @access    private
+	 * @return    bool
+	 * @see        _is_page()
 	 */
-	static function _is_post()
-	{
-		if ('post' == WPAlchemy_MetaBox::_is_post_or_page())
-		{
-			return TRUE;
+	static function _is_post() {
+		if ( 'post' == WPAlchemy_MetaBox::_is_post_or_page() ) {
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Used to check if creating a new page or editing one
 	 *
 	 * @static
-	 * @since	1.3.7
-	 * @access	private
-	 * @return	bool
-	 * @see		_is_post()
+	 * @since    1.3.7
+	 * @access    private
+	 * @return    bool
+	 * @see        _is_post()
 	 */
-	static function _is_page()
-	{
-		if ('page' == WPAlchemy_MetaBox::_is_post_or_page())
-		{
-			return TRUE;
+	static function _is_page() {
+		if ( 'page' == WPAlchemy_MetaBox::_is_post_or_page() ) {
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Used to check if creating or editing a post or page
 	 *
 	 * @static
-	 * @since	1.3.8
-	 * @access	private
-	 * @return	string "post" or "page"
-	 * @see		_is_post(), _is_page()
+	 * @since    1.3.8
+	 * @access    private
+	 * @return    string "post" or "page"
+	 * @see        _is_post(), _is_page()
 	 */
-	static function _is_post_or_page()
-	{
+	static function _is_post_or_page() {
 		$post_type = WPAlchemy_MetaBox::_get_current_post_type();
 
-		if (isset($post_type))
-		{
-			if ('page' == $post_type)
-			{
+		if ( isset( $post_type ) ) {
+			if ( 'page' == $post_type ) {
 				return 'page';
-			}
-			else
-			{
+			} else {
 				return 'post';
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -1060,63 +1043,55 @@ class WPAlchemy_MetaBox
 	 * new post, page or custom post type.
 	 *
 	 * @static
-	 * @since	1.4.6
-	 * @return	string [custom_post_type], page or post
+	 * @since    1.4.6
+	 * @return    string [custom_post_type], page or post
 	 */
-	static function _get_current_post_type()
-	{
-		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : NULL ;
+	static function _get_current_post_type() {
+		$uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : null;
 
-		if ( isset( $uri ) )
-		{
-			$uri_parts = parse_url($uri);
+		if ( isset( $uri ) ) {
+			$uri_parts = parse_url( $uri );
 
-			$file = basename($uri_parts['path']);
+			$file = basename( $uri_parts['path'] );
 
-			if ($uri AND in_array($file, array('post.php', 'post-new.php')))
-			{
+			if ( $uri AND in_array( $file, array( 'post.php', 'post-new.php' ) ) ) {
 				$post_id = WPAlchemy_MetaBox::_get_post_id();
 
-				$post_type = isset($_GET['post_type']) ? $_GET['post_type'] : NULL ;
+				$post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : null;
 
-				$post_type = $post_id ? get_post_type($post_id) : $post_type ;
+				$post_type = $post_id ? get_post_type( $post_id ) : $post_type;
 
-				if (isset($post_type))
-				{
+				if ( isset( $post_type ) ) {
 					return $post_type;
-				}
-				else
-				{
+				} else {
 					// because of the 'post.php' and 'post-new.php' checks above, we can default to 'post'
 					return 'post';
 				}
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * Used to get the current post id.
 	 *
 	 * @static
-	 * @since	1.4.8
-	 * @return	int post ID
+	 * @since    1.4.8
+	 * @return    int post ID
 	 */
-	static function _get_post_id()
-	{
+	static function _get_post_id() {
 		global $post;
 
-		$p_post_id = isset($_POST['post_ID']) ? $_POST['post_ID'] : null ;
+		$p_post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : null;
 
-		$g_post_id = isset($_GET['post']) ? $_GET['post'] : null ;
+		$g_post_id = isset( $_GET['post'] ) ? $_GET['post'] : null;
 
-		$post_id = $g_post_id ? $g_post_id : $p_post_id ;
+		$post_id = $g_post_id ? $g_post_id : $p_post_id;
 
-		$post_id = isset($post->ID) ? $post->ID : $post_id ;
+		$post_id = isset( $post->ID ) ? $post->ID : $post_id;
 
-		if (isset($post_id))
-		{
+		if ( isset( $post_id ) ) {
 			return (integer) $post_id;
 		}
 
@@ -1124,136 +1099,115 @@ class WPAlchemy_MetaBox
 	}
 
 	/**
-	 * @since	1.0
+	 * @since    1.0
 	 */
-	function can_output()
-	{
+	function can_output() {
 		$post_id = WPAlchemy_MetaBox::_get_post_id();
 
-		if (!empty($this->exclude_template) OR !empty($this->include_template))
-		{
-			$template_file = get_post_meta($post_id,'_wp_page_template',TRUE);
+		if ( ! empty( $this->exclude_template ) OR ! empty( $this->include_template ) ) {
+			$template_file = get_post_meta( $post_id, '_wp_page_template', true );
 		}
 
 		if
 		(
-			!empty($this->exclude_category) OR
-			!empty($this->exclude_category_id) OR
-			!empty($this->include_category) OR
-			!empty($this->include_category_id)
-		)
-		{
-			$categories = wp_get_post_categories($post_id,'fields=all');
+			! empty( $this->exclude_category ) OR
+			! empty( $this->exclude_category_id ) OR
+			! empty( $this->include_category ) OR
+			! empty( $this->include_category_id )
+		) {
+			$categories = wp_get_post_categories( $post_id, 'fields=all' );
 		}
 
 		if
 		(
-			!empty($this->exclude_tag) OR
-			!empty($this->exclude_tag_id) OR
-			!empty($this->include_tag) OR
-			!empty($this->include_tag_id)
-		)
-		{
-			$tags = wp_get_post_tags($post_id);
+			! empty( $this->exclude_tag ) OR
+			! empty( $this->exclude_tag_id ) OR
+			! empty( $this->include_tag ) OR
+			! empty( $this->include_tag_id )
+		) {
+			$tags = wp_get_post_tags( $post_id );
 		}
 
 		// processing order: "exclude" then "include"
 		// processing order: "template" then "category" then "post"
 
-		$can_output = TRUE; // include all
+		$can_output = true; // include all
 
-		if($this->include_protected) {
-			$post = get_post($post_id);
-			if(empty($post->post_password)) {
-				$can_output = FALSE;
+		if ( $this->include_protected ) {
+			$post = get_post( $post_id );
+			if ( empty( $post->post_password ) ) {
+				$can_output = false;
 			}
 		}
 
 		if
 		(
-			!empty($this->exclude_template) OR
-			!empty($this->exclude_category_id) OR
-			!empty($this->exclude_category) OR
-			!empty($this->exclude_tag_id) OR
-			!empty($this->exclude_tag) OR
-			!empty($this->exclude_post_id) OR
-			!empty($this->include_template) OR
-			!empty($this->include_category_id) OR
-			!empty($this->include_category) OR
-			!empty($this->include_tag_id) OR
-			!empty($this->include_tag) OR
-			!empty($this->include_post_id)
-		)
-		{
-			if (!empty($this->exclude_template))
-			{
-				if (in_array($template_file,$this->exclude_template))
-				{
-					$can_output = FALSE;
+			! empty( $this->exclude_template ) OR
+			! empty( $this->exclude_category_id ) OR
+			! empty( $this->exclude_category ) OR
+			! empty( $this->exclude_tag_id ) OR
+			! empty( $this->exclude_tag ) OR
+			! empty( $this->exclude_post_id ) OR
+			! empty( $this->include_template ) OR
+			! empty( $this->include_category_id ) OR
+			! empty( $this->include_category ) OR
+			! empty( $this->include_tag_id ) OR
+			! empty( $this->include_tag ) OR
+			! empty( $this->include_post_id )
+		) {
+			if ( ! empty( $this->exclude_template ) ) {
+				if ( in_array( $template_file, $this->exclude_template ) ) {
+					$can_output = false;
 				}
 			}
 
-			if (!empty($this->exclude_category_id))
-			{
-				foreach ($categories as $cat)
-				{
-					if (in_array($cat->term_id,$this->exclude_category_id))
-					{
-						$can_output = FALSE;
+			if ( ! empty( $this->exclude_category_id ) ) {
+				foreach ( $categories as $cat ) {
+					if ( in_array( $cat->term_id, $this->exclude_category_id ) ) {
+						$can_output = false;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->exclude_category))
-			{
-				foreach ($categories as $cat)
-				{
+			if ( ! empty( $this->exclude_category ) ) {
+				foreach ( $categories as $cat ) {
 					if
 					(
-						in_array($cat->slug,$this->exclude_category) OR
-						in_array($cat->name,$this->exclude_category)
-					)
-					{
-						$can_output = FALSE;
+						in_array( $cat->slug, $this->exclude_category ) OR
+						in_array( $cat->name, $this->exclude_category )
+					) {
+						$can_output = false;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->exclude_tag_id))
-			{
-				foreach ($tags as $tag)
-				{
-					if (in_array($tag->term_id,$this->exclude_tag_id))
-					{
-						$can_output = FALSE;
+			if ( ! empty( $this->exclude_tag_id ) ) {
+				foreach ( $tags as $tag ) {
+					if ( in_array( $tag->term_id, $this->exclude_tag_id ) ) {
+						$can_output = false;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->exclude_tag))
-			{
-				foreach ($tags as $tag)
-				{
+			if ( ! empty( $this->exclude_tag ) ) {
+				foreach ( $tags as $tag ) {
 					if
 					(
-						in_array($tag->slug,$this->exclude_tag) OR
-						in_array($tag->name,$this->exclude_tag)
-					)
-					{
-						$can_output = FALSE;
+						in_array( $tag->slug, $this->exclude_tag ) OR
+						in_array( $tag->name, $this->exclude_tag )
+					) {
+						$can_output = false;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->exclude_post_id))
-			{
-				if (in_array($post_id,$this->exclude_post_id))
-				{
-					$can_output = FALSE;
+			if ( ! empty( $this->exclude_post_id ) ) {
+				if ( in_array( $post_id, $this->exclude_post_id ) ) {
+					$can_output = false;
 				}
 			}
 
@@ -1261,101 +1215,82 @@ class WPAlchemy_MetaBox
 
 			if
 			(
-				empty($this->exclude_template) AND
-				empty($this->exclude_category_id) AND
-				empty($this->exclude_category) AND
-				empty($this->exclude_tag_id) AND
-				empty($this->exclude_tag) AND
-				empty($this->exclude_post_id)
-			)
-			{
-				$can_output = FALSE;
+				empty( $this->exclude_template ) AND
+				empty( $this->exclude_category_id ) AND
+				empty( $this->exclude_category ) AND
+				empty( $this->exclude_tag_id ) AND
+				empty( $this->exclude_tag ) AND
+				empty( $this->exclude_post_id )
+			) {
+				$can_output = false;
 			}
 
-			if (!empty($this->include_template))
-			{
-				if (in_array($template_file,$this->include_template))
-				{
-					$can_output = TRUE;
+			if ( ! empty( $this->include_template ) ) {
+				if ( in_array( $template_file, $this->include_template ) ) {
+					$can_output = true;
 				}
 			}
 
-			if (!empty($this->include_category_id))
-			{
-				foreach ($categories as $cat)
-				{
-					if (in_array($cat->term_id,$this->include_category_id))
-					{
-						$can_output = TRUE;
+			if ( ! empty( $this->include_category_id ) ) {
+				foreach ( $categories as $cat ) {
+					if ( in_array( $cat->term_id, $this->include_category_id ) ) {
+						$can_output = true;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->include_category))
-			{
-				foreach ($categories as $cat)
-				{
+			if ( ! empty( $this->include_category ) ) {
+				foreach ( $categories as $cat ) {
 					if
 					(
-						in_array($cat->slug,$this->include_category) OR
-						in_array($cat->name,$this->include_category)
-					)
-					{
-						$can_output = TRUE;
+						in_array( $cat->slug, $this->include_category ) OR
+						in_array( $cat->name, $this->include_category )
+					) {
+						$can_output = true;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->include_tag_id))
-			{
-				foreach ($tags as $tag)
-				{
-					if (in_array($tag->term_id,$this->include_tag_id))
-					{
-						$can_output = TRUE;
+			if ( ! empty( $this->include_tag_id ) ) {
+				foreach ( $tags as $tag ) {
+					if ( in_array( $tag->term_id, $this->include_tag_id ) ) {
+						$can_output = true;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->include_tag))
-			{
-				foreach ($tags as $tag)
-				{
+			if ( ! empty( $this->include_tag ) ) {
+				foreach ( $tags as $tag ) {
 					if
 					(
-						in_array($tag->slug,$this->include_tag) OR
-						in_array($tag->name,$this->include_tag)
-					)
-					{
-						$can_output = TRUE;
+						in_array( $tag->slug, $this->include_tag ) OR
+						in_array( $tag->name, $this->include_tag )
+					) {
+						$can_output = true;
 						break;
 					}
 				}
 			}
 
-			if (!empty($this->include_post_id))
-			{
-				if (in_array($post_id,$this->include_post_id))
-				{
-					$can_output = TRUE;
+			if ( ! empty( $this->include_post_id ) ) {
+				if ( in_array( $post_id, $this->include_post_id ) ) {
+					$can_output = true;
 				}
 			}
 		}
 
 		$post_type = WPAlchemy_MetaBox::_get_current_post_type();
 
-		if (isset($post_type) AND ! in_array($post_type, $this->types))
-		{
-			$can_output = FALSE;
+		if ( isset( $post_type ) AND ! in_array( $post_type, $this->types ) ) {
+			$can_output = false;
 		}
 
 		// filter: output (can_output)
-		if ($this->has_filter('output'))
-		{
-			$can_output = $this->apply_filters('output', $post_id);
+		if ( $this->has_filter( 'output' ) ) {
+			$can_output = $this->apply_filters( 'output', $post_id );
 		}
 
 		return $can_output;
@@ -1366,30 +1301,31 @@ class WPAlchemy_MetaBox
 	 * WordPress admin_footer action.
 	 *
 	 * @static
-	 * @since	1.3
-	 * @access	private
-	 * @see		_global_foot()
+	 * @since    1.3
+	 * @access    private
+	 * @see        _global_foot()
 	 */
-	static function _global_head()
-	{
+	static function _global_head() {
 		// must be creating or editing a post or page
-		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page()) return;
+		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page() ) {
+			return;
+		}
 
 		// todo: you're assuming people will want to use this exact functionality
 		// consider giving a developer access to change this via hooks/callbacks
 
 		// include javascript for special functionality
-		?><style type="text/css"> .wpa_group.tocopy { display:none; } </style>
+		?>
+		<style type="text/css"> .wpa_group.tocopy {
+				display: none;
+			} </style>
 		<script type="text/javascript">
 			/* <![CDATA[ */
-			jQuery(function($)
-			{
-				$(document).click(function(e)
-				{
+			jQuery(function ($) {
+				$(document).click(function (e) {
 					var elem = $(e.target);
 
-					if (elem.attr('class') && elem.filter('[class*=dodelete]').length)
-					{
+					if (elem.attr('class') && elem.filter('[class*=dodelete]').length) {
 						console.log('dodelete');
 
 						e.preventDefault();
@@ -1403,33 +1339,29 @@ class WPAlchemy_MetaBox
 						}
 						// Before Add by Vincent
 
-						if(p.length <= 0)
-							p = elem.parents('.postbox'); /*wp*/
+						if (p.length <= 0)
+							p = elem.parents('.postbox');
+						/*wp*/
 
 						var the_name = elem.attr('class').match(/dodelete-([a-zA-Z0-9_-]*)/i);
 
-						the_name = (the_name && the_name[1]) ? the_name[1] : null ;
+						the_name = (the_name && the_name[1]) ? the_name[1] : null;
 
 						/* todo: expose and allow editing of this message */
-						if (confirm('This action can not be undone, are you sure?'))
-						{
-							if (the_name)
-							{
-								console.log('.wpa_group-'+ the_name)
-								$('.wpa_group-'+ the_name, p).not('.tocopy').remove();
+						if (confirm('This action can not be undone, are you sure?')) {
+							if (the_name) {
+								console.log('.wpa_group-' + the_name)
+								$('.wpa_group-' + the_name, p).not('.tocopy').remove();
 							}
-							else
-							{
+							else {
 								elem.parents('.wpa_group:first').remove();
 							}
 
-							if(!the_name)
-							{
+							if (!the_name) {
 								var the_group = elem.parents('.wpa_group');
-								if(the_group && the_group.attr('class'))
-								{
+								if (the_group && the_group.attr('class')) {
 									the_name = the_group.attr('class').match(/wpa_group-([a-zA-Z0-9_-]*)/i);
-									the_name = (the_name && the_name[1]) ? the_name[1] : null ;
+									the_name = (the_name && the_name[1]) ? the_name[1] : null;
 								}
 							}
 							checkLoopLimit(the_name);
@@ -1439,14 +1371,15 @@ class WPAlchemy_MetaBox
 					}
 				});
 
-				$(document).on('click', '[class*=docopy-]', function(e) {
+				$(document).on('click', '[class*=docopy-]', function (e) {
 					e.preventDefault();
 //					console.log('docopy');
 
 					var p = $(this).parents('.wpa_group:first');
 
-					if(p.length <= 0) {
-						p = $(this).closest('.extra-metabox'); /*wp*/
+					if (p.length <= 0) {
+						p = $(this).closest('.extra-metabox');
+						/*wp*/
 					}
 
 					var the_name = $(this).attr('class').match(/docopy-([a-zA-Z0-9_-]*)/i)[1];
@@ -1454,7 +1387,7 @@ class WPAlchemy_MetaBox
 //					console.log("the_name");
 //					console.log(the_name);
 
-					var the_group = $('.wpa_group-'+ the_name +'.tocopy', p).first();
+					var the_group = $('.wpa_group-' + the_name + '.tocopy', p).first();
 //					console.log("the_group");
 //					console.log(the_group);
 
@@ -1465,7 +1398,7 @@ class WPAlchemy_MetaBox
 
 					var the_props = ['name', 'id', 'for', 'class'];
 
-					the_group.find('*').each(function(i, elem) {
+					the_group.find('*').each(function (i, elem) {
 						for (var j = 0; j < the_props.length; j++) {
 
 //							console.log($(elem));
@@ -1473,21 +1406,21 @@ class WPAlchemy_MetaBox
 							var the_prop = $(elem).attr(the_props[j]);
 
 							if (the_prop) {
-							    
-                                var reg1 = new RegExp('\\['+the_name+'\\]\\[(\\d+)\\]', 'i');
-                                var reg2 = new RegExp('_'+the_name+'-_(\\d+)-', 'i');
-                                var the_match1 = the_prop.match(reg1);
-                                var the_match2 = the_prop.match(reg2);
 
-                                if (the_match1) {
-                                    the_prop = the_prop.replace(the_match1[0], '['+ the_name + ']' + '['+ (+the_match1[1]+1) +']');
-                                    $(elem).attr(the_props[j], the_prop);
-                                }
+								var reg1 = new RegExp('\\[' + the_name + '\\]\\[(\\d+)\\]', 'i');
+								var reg2 = new RegExp('_' + the_name + '-_(\\d+)-', 'i');
+								var the_match1 = the_prop.match(reg1);
+								var the_match2 = the_prop.match(reg2);
 
-                                if (the_match2) {
-                                    the_prop = the_prop.replace(the_match2[0], '_'+ the_name + '-' + '_'+ (+the_match2[1]+1) +'-');
-                                    $(elem).attr(the_props[j], the_prop);
-                                }
+								if (the_match1) {
+									the_prop = the_prop.replace(the_match1[0], '[' + the_name + ']' + '[' + (+the_match1[1] + 1) + ']');
+									$(elem).attr(the_props[j], the_prop);
+								}
+
+								if (the_match2) {
+									the_prop = the_prop.replace(the_match2[0], '_' + the_name + '-' + '_' + (+the_match2[1] + 1) + '-');
+									$(elem).attr(the_props[j], the_prop);
+								}
 
 								the_match = null;
 
@@ -1495,7 +1428,7 @@ class WPAlchemy_MetaBox
 								the_match = the_prop.match(/n(\d+)/i);
 
 								if (the_match) {
-									the_prop = the_prop.replace(the_match[0], 'n' + (+the_match[1]+1));
+									the_prop = the_prop.replace(the_match[0], 'n' + (+the_match[1] + 1));
 
 									$(elem).attr(the_props[j], the_prop);
 								}
@@ -1519,7 +1452,7 @@ class WPAlchemy_MetaBox
 //					}
 
 					if ($(this).hasClass('ontop')) {
-						$('.wpa_group-'+ the_name, p).first().before(the_clone);
+						$('.wpa_group-' + the_name, p).first().before(the_clone);
 					}
 					else {
 						the_group.before(the_clone);
@@ -1528,38 +1461,34 @@ class WPAlchemy_MetaBox
 					checkLoopLimit(the_name);
 
 					$.wpalchemy.trigger('wpa_copy', [the_clone]);
-					
+
 					return false;
-					
+
 				});
 
-				function checkLoopLimit(name)
-				{
+				function checkLoopLimit(name) {
 					var elems = $('.docopy-' + name);
 
-					$.each(elems, function(idx, elem){
+					$.each(elems, function (idx, elem) {
 
 						var p = $(this).parents('.wpa_group:first');
 
-						if(p.length <= 0)
-							p = $(this).parents('.postbox'); /*wp*/
+						if (p.length <= 0)
+							p = $(this).parents('.postbox');
+						/*wp*/
 
 						var the_class = $('.wpa_loop-' + name, p).attr('class');
 
-						if (the_class)
-						{
+						if (the_class) {
 							var the_match = the_class.match(/wpa_loop_limit-([0-9]*)/i);
 
-							if (the_match)
-							{
+							if (the_match) {
 								var the_limit = the_match[1];
 
-								if ($('.wpa_group-' + name, p).not('.wpa_group.tocopy').length >= the_limit)
-								{
+								if ($('.wpa_group-' + name, p).not('.wpa_group.tocopy').length >= the_limit) {
 									$(this).hide();
 								}
-								else
-								{
+								else {
 									$(this).show();
 								}
 							}
@@ -1570,8 +1499,7 @@ class WPAlchemy_MetaBox
 				}
 
 				/* do an initial limit check, show or hide buttons */
-				$('[class*=docopy-]').each(function()
-				{
+				$('[class*=docopy-]').each(function () {
 					var the_name = $(this).attr('class').match(/docopy-([a-zA-Z0-9_-]*)/i)[1];
 
 					checkLoopLimit(the_name);
@@ -1579,7 +1507,7 @@ class WPAlchemy_MetaBox
 			});
 			/* ]]> */
 		</script>
-	<?php
+		<?php
 	}
 
 	/**
@@ -1587,41 +1515,43 @@ class WPAlchemy_MetaBox
 	 * admin_footer action.
 	 *
 	 * @static
-	 * @since	1.3
-	 * @access	private
-	 * @see		_global_head()
+	 * @since    1.3
+	 * @access    private
+	 * @see        _global_head()
 	 */
-	static function _global_foot()
-	{
+	static function _global_foot() {
 		// must be creating or editing a post or page
-		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page()) return;
+		if ( ! WPAlchemy_MetaBox::_is_post() AND ! WPAlchemy_MetaBox::_is_page() ) {
+			return;
+		}
 
 		?>
 		<script type="text/javascript">
 			/* <![CDATA[ */
-			(function($){ /* not using jQuery ondomready, code runs right away in footer */
+			(function ($) { /* not using jQuery ondomready, code runs right away in footer */
 
 				/* use a global dom element to attach events to */
-				$.wpalchemy = $('<div></div>').attr('id','wpalchemy').appendTo('body');
+				$.wpalchemy = $('<div></div>').attr('id', 'wpalchemy').appendTo('body');
 
 			})(jQuery);
 			/* ]]> */
 		</script>
-	<?php
+		<?php
 	}
 
 	/**
 	 * Gets the meta data for a meta box
 	 *
-	 * @since	1.0
-	 * @access	public
-	 * @param	int $post_id optional post ID for which to retrieve the meta data
-	 * @return	array
-	 * @see		_meta
+	 * @since    1.0
+	 * @access    public
+	 *
+	 * @param    int $post_id optional post ID for which to retrieve the meta data
+	 *
+	 * @return    array
+	 * @see        _meta
 	 */
-	function the_meta($post_id = NULL)
-	{
-		return $this->_meta($post_id);
+	function the_meta( $post_id = null ) {
+		return $this->_meta( $post_id );
 	}
 
 	/**
@@ -1630,52 +1560,49 @@ class WPAlchemy_MetaBox
 	 * Internal method calls will typically bypass the data retrieval and will
 	 * immediately return the current meta data
 	 *
-	 * @since	1.3
-	 * @access	private
-	 * @param	int $post_id optional post ID for which to retrieve the meta data
-	 * @param	bool $internal optional boolean if internally calling
-	 * @return	array
-	 * @see		the_meta()
+	 * @since    1.3
+	 * @access    private
+	 *
+	 * @param    int $post_id optional post ID for which to retrieve the meta data
+	 * @param    bool $internal optional boolean if internally calling
+	 *
+	 * @return    array
+	 * @see        the_meta()
 	 */
-	function _meta($post_id = NULL, $internal = FALSE)
-	{
-		if ( ! is_numeric($post_id))
-		{
-			if ($internal AND $this->current_post_id)
-			{
+	function _meta( $post_id = null, $internal = false ) {
+		if ( ! is_numeric( $post_id ) ) {
+			if ( $internal AND $this->current_post_id ) {
 				$post_id = $this->current_post_id;
-			}
-			else
-			{
+			} else {
 				global $post;
 
-				$post_id = ($post !== null) ? $post->ID : null;
+				$post_id = ( $post !== null ) ? $post->ID : null;
 			}
 		}
 
 		// this allows multiple internal calls to _meta() without having to fetch data everytime
-		if ($internal AND !empty($this->meta) AND $this->current_post_id == $post_id) return $this->meta;
+		if ( $internal AND ! empty( $this->meta ) AND $this->current_post_id == $post_id ) {
+			return $this->meta;
+		}
 
 		$this->current_post_id = $post_id;
 
 		// WPALCHEMY_MODE_ARRAY
 
-		$meta = get_post_meta($post_id, $this->id, TRUE);
+		$meta = get_post_meta( $post_id, $this->id, true );
 
 		// var_dump($meta);
 
 		// WPALCHEMY_MODE_EXTRACT
 
-		$fields = get_post_meta($post_id, $this->id . '_fields', TRUE);
+		$fields = get_post_meta( $post_id, $this->id . '_fields', true );
 
-		if ( ! empty($fields) AND is_array($fields))
-		{
+		if ( ! empty( $fields ) AND is_array( $fields ) ) {
 			$meta = array();
 
-			foreach ($fields as $field)
-			{
-				$field_noprefix = preg_replace('/^' . $this->prefix . '/i', '', $field);
-				$meta[$field_noprefix] = get_post_meta($post_id, $field, TRUE);
+			foreach ( $fields as $field ) {
+				$field_noprefix          = preg_replace( '/^' . $this->prefix . '/i', '', $field );
+				$meta[ $field_noprefix ] = get_post_meta( $post_id, $field, true );
 			}
 		}
 
@@ -1686,156 +1613,128 @@ class WPAlchemy_MetaBox
 
 	// user can also use the_ID(), php functions are case-insensitive
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function the_id()
-	{
+	function the_id() {
 		echo $this->get_the_id();
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function get_the_id()
-	{
+	function get_the_id() {
 		return $this->id;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function the_field($n, $hint = NULL)
-	{
+	function the_field( $n, $hint = null ) {
 		$this->name = $n;
 		$this->hint = $hint;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function have_value($n = NULL)
-	{
-		if ($this->get_the_value($n)) return TRUE;
+	function have_value( $n = null ) {
+		if ( $this->get_the_value( $n ) ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function the_value($n = NULL)
-	{
-		echo $this->get_the_value($n);
+	function the_value( $n = null ) {
+		echo $this->get_the_value( $n );
 	}
 
-	function get_the_value($n = NULL, $collection = FALSE)
-	{
-		$this->_meta(NULL, TRUE);
+	function get_the_value( $n = null, $collection = false ) {
+		$this->_meta( null, true );
 
 		$value = null;
 
-		if ($this->is_in_loop())
-		{
-			$n = is_null($n) ? $this->name : $n ;
+		if ( $this->is_in_loop() ) {
+			$n = is_null( $n ) ? $this->name : $n;
 
-			if(!is_null($n))
-			{
-				if ($collection)
-				{
-					$keys   = $this->get_the_loop_group_name_array();
-				}
-				else
-				{
+			if ( ! is_null( $n ) ) {
+				if ( $collection ) {
+					$keys = $this->get_the_loop_group_name_array();
+				} else {
 					$keys   = $this->get_the_loop_group_name_array();
 					$keys[] = $n;
 				}
-			}
-			else
-			{
-				if ($collection)
-				{
-					$keys   = $this->get_the_loop_group_name_array();
-					end($keys);
-					$last   = key($keys);
-					unset($keys[$last]);
-				}
-				else
-				{
-					$keys   = $this->get_the_loop_group_name_array();
+			} else {
+				if ( $collection ) {
+					$keys = $this->get_the_loop_group_name_array();
+					end( $keys );
+					$last = key( $keys );
+					unset( $keys[ $last ] );
+				} else {
+					$keys = $this->get_the_loop_group_name_array();
 				}
 			}
-			$value = $this->get_meta_by_array($keys);
-		}
-		else
-		{
-			$n = is_null($n) ? $this->name : $n ;
+			$value = $this->get_meta_by_array( $keys );
+		} else {
+			$n = is_null( $n ) ? $this->name : $n;
 
-			if(isset($this->meta[$n]))
-			{
-				$value = $this->meta[$n];
+			if ( isset( $this->meta[ $n ] ) ) {
+				$value = $this->meta[ $n ];
 			}
 		}
 
-		if (is_string($value) || is_numeric($value))
-		{
-			if ($this->in_template)
-			{
+		if ( is_string( $value ) || is_numeric( $value ) ) {
+			if ( $this->in_template ) {
 				return $value;
-			}
-			else
-			{
+			} else {
 				// http://wordpress.org/support/topic/call-function-called-by-embed-shortcode-direct
 				// http://phpdoc.wordpress.org/trunk/WordPress/Embed/WP_Embed.html#run_shortcode
 
 				global $wp_embed;
 
-				return do_shortcode($wp_embed->run_shortcode($value));
+				return do_shortcode( $wp_embed->run_shortcode( $value ) );
 			}
-		}
-		else
-		{
+		} else {
 			// value can sometimes be an array
 			return $value;
 		}
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function the_name($n = NULL)
-	{
-		echo $this->get_the_name($n);
+	function the_name( $n = null ) {
+		echo $this->get_the_name( $n );
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function get_the_name($n = NULL)
-	{
-		if (!$this->in_template AND $this->mode == WPALCHEMY_MODE_EXTRACT)
-		{
-			return $this->prefix . str_replace($this->prefix, '', is_null($n) ? $this->name : $n);
+	function get_the_name( $n = null ) {
+		if ( ! $this->in_template AND $this->mode == WPALCHEMY_MODE_EXTRACT ) {
+			return $this->prefix . str_replace( $this->prefix, '', is_null( $n ) ? $this->name : $n );
 		}
 
-		if ($this->is_in_loop())
-		{
-			$n = is_null($n) ? $this->name : $n ;
+		if ( $this->is_in_loop() ) {
+			$n = is_null( $n ) ? $this->name : $n;
 
-			if (!is_null($n))
-				$the_field = $this->get_the_loop_group_name(true) . '[' . $n . ']' ;
-			else
-				$the_field = $this->get_the_loop_group_name(true);
-		}
-		else
-		{
-			$n = is_null($n) ? $this->name : $n ;
+			if ( ! is_null( $n ) ) {
+				$the_field = $this->get_the_loop_group_name( true ) . '[' . $n . ']';
+			} else {
+				$the_field = $this->get_the_loop_group_name( true );
+			}
+		} else {
+			$n = is_null( $n ) ? $this->name : $n;
 
 			$the_field = $this->id . '[' . $n . ']';
 		}
@@ -1847,8 +1746,7 @@ class WPAlchemy_MetaBox
 			WPALCHEMY_FIELD_HINT_SELECT_MULTIPLE,
 		);
 
-		if (in_array($this->hint, $hints))
-		{
+		if ( in_array( $this->hint, $hints ) ) {
 			$the_field .= '[]';
 		}
 
@@ -1856,276 +1754,277 @@ class WPAlchemy_MetaBox
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function the_index()
-	{
+	function the_index() {
 		echo $this->get_the_index();
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function get_the_index()
-	{
-		return $this->in_loop ? $this->get_the_current_group_current() : 0 ;
+	function get_the_index() {
+		return $this->in_loop ? $this->get_the_current_group_current() : 0;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function is_first()
-	{
-		if ($this->in_loop AND $this->current == 0) return TRUE;
+	function is_first() {
+		if ( $this->in_loop AND $this->current == 0 ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function is_last()
-	{
-		if ($this->in_loop AND ($this->current+1) == $this->length) return TRUE;
+	function is_last() {
+		if ( $this->in_loop AND ( $this->current + 1 ) == $this->length ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Used to check if a value is a match
 	 *
-	 * @since	1.1
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @return	bool
-	 * @see		is_value()
+	 * @since    1.1
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @return    bool
+	 * @see        is_value()
 	 */
-	function is_value($n, $v = NULL)
-	{
-		if (is_null($v))
-		{
+	function is_value( $n, $v = null ) {
+		if ( is_null( $v ) ) {
 			$the_value = $this->get_the_value();
 
 			$v = $n;
-		}
-		else
-		{
-			$the_value = $this->get_the_value($n);
+		} else {
+			$the_value = $this->get_the_value( $n );
 		}
 
-		if($v == $the_value) return TRUE;
+		if ( $v == $the_value ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Used to check if a value is selected, useful when working with checkbox,
 	 * radio and select values.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @return	bool
-	 * @see		is_value()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @return    bool
+	 * @see        is_value()
 	 */
-	function is_selected($n, $v = NULL)
-	{
-		if (is_null($v))
-		{
-			$the_value = $this->get_the_value(NULL);
+	function is_selected( $n, $v = null ) {
+		if ( is_null( $v ) ) {
+			$the_value = $this->get_the_value( null );
 
 			$v = $n;
-		}
-		else
-		{
-			$the_value = $this->get_the_value($n);
+		} else {
+			$the_value = $this->get_the_value( $n );
 		}
 
-		if (is_array($the_value))
-		{
-			if (in_array($v, $the_value)) return TRUE;
-		}
-		elseif($v == $the_value)
-		{
-			return TRUE;
+		if ( is_array( $the_value ) ) {
+			if ( in_array( $v, $the_value ) ) {
+				return true;
+			}
+		} elseif ( $v == $the_value ) {
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
 	 * Prints the current state of a checkbox field and should be used inline
 	 * within the INPUT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @see		get_the_checkbox_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @see        get_the_checkbox_state()
 	 */
-	function the_checkbox_state($n, $v = NULL)
-	{
-		echo $this->get_the_checkbox_state($n, $v);
+	function the_checkbox_state( $n, $v = null ) {
+		echo $this->get_the_checkbox_state( $n, $v );
 	}
 
 	/**
 	 * Returns the current state of a checkbox field, the returned string is
 	 * suitable to be used inline within the INPUT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @return	string suitable to be used inline within the INPUT tag
-	 * @see		the_checkbox_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @return    string suitable to be used inline within the INPUT tag
+	 * @see        the_checkbox_state()
 	 */
-	function get_the_checkbox_state($n, $v = NULL)
-	{
-		if ($this->is_selected($n, $v)) return ' checked="checked"';
+	function get_the_checkbox_state( $n, $v = null ) {
+		if ( $this->is_selected( $n, $v ) ) {
+			return ' checked="checked"';
+		}
 	}
 
 	/**
 	 * Prints the current state of a radio field and should be used inline
 	 * within the INPUT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @see		get_the_radio_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @see        get_the_radio_state()
 	 */
-	function the_radio_state($n, $v = NULL)
-	{
-		echo $this->get_the_checkbox_state($n, $v);
+	function the_radio_state( $n, $v = null ) {
+		echo $this->get_the_checkbox_state( $n, $v );
 	}
 
 	/**
 	 * Returns the current state of a radio field, the returned string is
 	 * suitable to be used inline within the INPUT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @return	string suitable to be used inline within the INPUT tag
-	 * @see		the_radio_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @return    string suitable to be used inline within the INPUT tag
+	 * @see        the_radio_state()
 	 */
-	function get_the_radio_state($n, $v = NULL)
-	{
-		return $this->get_the_checkbox_state($n, $v);
+	function get_the_radio_state( $n, $v = null ) {
+		return $this->get_the_checkbox_state( $n, $v );
 	}
 
 	/**
 	 * Prints the current state of a select field and should be used inline
 	 * within the SELECT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @see		get_the_select_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @see        get_the_select_state()
 	 */
-	function the_select_state($n, $v = NULL)
-	{
-		echo $this->get_the_select_state($n, $v);
+	function the_select_state( $n, $v = null ) {
+		echo $this->get_the_select_state( $n, $v );
 	}
 
 	/**
 	 * Returns the current state of a select field, the returned string is
 	 * suitable to be used inline within the SELECT tag.
 	 *
-	 * @since	1.3
-	 * @access	public
-	 * @param	string $n the field name to check or the value to check for (if the_field() is used prior)
-	 * @param	string $v optional the value to check for
-	 * @return	string suitable to be used inline within the SELECT tag
-	 * @see		the_select_state()
+	 * @since    1.3
+	 * @access    public
+	 *
+	 * @param    string $n the field name to check or the value to check for (if the_field() is used prior)
+	 * @param    string $v optional the value to check for
+	 *
+	 * @return    string suitable to be used inline within the SELECT tag
+	 * @see        the_select_state()
 	 */
-	function get_the_select_state($n, $v = NULL)
-	{
-		if ($this->is_selected($n, $v)) return ' selected="selected"';
+	function get_the_select_state( $n, $v = null ) {
+		if ( $this->is_selected( $n, $v ) ) {
+			return ' selected="selected"';
+		}
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function the_group_open($t = 'div')
-	{
-		echo $this->get_the_group_open($t);
+	function the_group_open( $t = 'div' ) {
+		echo $this->get_the_group_open( $t );
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function get_the_group_open($t = 'div')
-	{
+	function get_the_group_open( $t = 'div' ) {
 		$this->group_tag = $t;
 
 		$curr_loop = $this->get_the_current_loop();
 		$the_name  = $curr_loop->name;
 
-		$loop_open = NULL;
+		$loop_open = null;
 
-		$loop_open_classes = array('wpa_loop', 'wpa_loop-' . $the_name);
+		$loop_open_classes = array( 'wpa_loop', 'wpa_loop-' . $the_name );
 
-		$css_class = array('wpa_group', 'wpa_group-'. $the_name);
+		$css_class = array( 'wpa_group', 'wpa_group-' . $the_name );
 
-		if ($curr_loop->is_first())
-		{
-			array_push($css_class, 'first');
+		//var_dump( $curr_loop );
+
+		if ( $curr_loop->is_first() ) {
+			array_push( $css_class, 'first' );
 
 			$loop_open = '<div class="wpa_loop">';
 
-			if (isset($this->_loop_data->limit))
-			{
-				array_push($loop_open_classes, 'wpa_loop_limit-' . $this->_loop_data->limit);
+			if ( isset( $this->_loop_data->limit ) ) {
+				array_push( $loop_open_classes, 'wpa_loop_limit-' . $this->_loop_data->limit );
 			}
 
-			$loop_open = '<div id="wpa_loop-'. $the_name .'" class="' . implode(' ', $loop_open_classes) . '">';
+			$loop_open = '<div id="wpa_loop-' . $the_name . '" class="' . implode( ' ', $loop_open_classes ) . '">';
 		}
 
-		if ($curr_loop->is_last())
-		{
-			array_push($css_class, 'last');
+		if ( $curr_loop->is_last() ) {
+			array_push( $css_class, 'last' );
 
-			if ($this->in_loop == 'multi')
-			{
-				array_push($css_class, 'tocopy');
+			if ( $this->in_loop == 'multi' ) {
+				array_push( $css_class, 'tocopy' );
 			}
 		}
+
 		// id="wpa_loop-'. $the_name .'"
-		return $loop_open . '<' . $t . ' class="'. implode(' ', $css_class) . '">';
+		return $loop_open . '<' . $t . ' class="' . implode( ' ', $css_class ) . '">';
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function the_group_close()
-	{
+	function the_group_close() {
 		echo $this->get_the_group_close();
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function get_the_group_close()
-	{
-		$loop_close = NULL;
+	function get_the_group_close() {
+		$loop_close = null;
 
 		$curr_loop = $this->get_the_current_loop();
 
-		if ($curr_loop->is_last())
-		{
+		if ( $curr_loop->is_last() ) {
 			$loop_close = '</div>';
 		}
 
@@ -2133,124 +2032,112 @@ class WPAlchemy_MetaBox
 	}
 
 	/**
-	 * @since	1.1
-	 * @access	public
+	 * @since    1.1
+	 * @access    public
 	 */
-	function have_fields_and_multi($n, $options = NULL)
-	{
-		if (is_array($options))
-		{
+	function have_fields_and_multi( $n, $options = null ) {
+		if ( is_array( $options ) ) {
 			// use as stdClass object
-			$options = (object)$options;
+			$options = (object) $options;
 
 			$length = @$options->length;
 
 			$this->_loop_data->limit = @$options->limit;
-		}
-		else
-		{
+		} else {
 			// backward compatibility (bc)
 			$length = $options;
 		}
 
-		$this->_meta(NULL, TRUE);
+		$this->_meta( null, true );
 
 		$this->in_loop = 'multi';
 
 		// push new loop or set loop to current name
-		$this->push_or_set_current_loop($n, $length, $this->in_loop);
+		$this->push_or_set_current_loop( $n, $length, $this->in_loop );
 
-		return $this->_loop($n, $length, 2);
+		return $this->_loop( $n, $length, 2 );
 	}
 
 	/**
 	 * @deprecated
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function have_fields_and_one($n)
-	{
-		$this->_meta(NULL, TRUE);
+	function have_fields_and_one( $n ) {
+		$this->_meta( null, true );
 		$this->in_loop = 'single';
-		$this->push_or_set_current_loop($n, $length, $this->in_loop);
-		return $this->_loop($n,NULL,1);
+		$this->push_or_set_current_loop( $n, $length, $this->in_loop );
+
+		return $this->_loop( $n, null, 1 );
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	public
+	 * @since    1.0
+	 * @access    public
 	 */
-	function have_fields($n,$length=NULL)
-	{
-		$this->_meta(NULL, TRUE);
+	function have_fields( $n, $length = null ) {
+		$this->_meta( null, true );
 		// push new loop or set loop to current name
 		$this->in_loop = 'normal';
-		$this->push_or_set_current_loop($n, $length, $this->in_loop);
-		return $this->_loop($n,$length);
+		$this->push_or_set_current_loop( $n, $length, $this->in_loop );
+
+		return $this->_loop( $n, $length );
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	private
+	 * @since    1.0
+	 * @access    private
 	 */
-	function _loop($n,$length=NULL,$and_one=0)
-	{
-		if (!$this->in_loop)
-		{
-			$this->in_loop = TRUE;
+	function _loop( $n, $length = null, $and_one = 0 ) {
+		if ( ! $this->in_loop ) {
+			$this->in_loop = true;
 		}
 
 		$cnt = $this->get_the_current_group_count();
 
-		$length = is_null($length) ? $cnt : $length ;
+		$length = is_null( $length ) ? $cnt : $length;
 
-		if ($this->in_loop == 'multi' AND $cnt > $length) $length = $cnt;
+		if ( $this->in_loop == 'multi' AND $cnt > $length ) {
+			$length = $cnt;
+		}
 
 		$this->length = $length;
 
-		if ($this->in_template AND $and_one)
-		{
-			if ($length == 0)
-			{
+		if ( $this->in_template AND $and_one ) {
+			if ( $length == 0 ) {
 				$this->length = $and_one;
-			}
-			else
-			{
-				$this->length = $length+1;
+			} else {
+				$this->length = $length + 1;
 			}
 		}
 
-		$this->set_the_current_group_length($this->length);
+		$this->set_the_current_group_length( $this->length );
 		$this->increment_current_loop();
-		$this->current++;
+		$this->current ++;
 
-		if ($this->get_the_current_group_current() < $this->get_the_current_group_length())
-		{
-			$this->name      = NULL;
-			$this->fieldtype = NULL;
+		if ( $this->get_the_current_group_current() < $this->get_the_current_group_length() ) {
+			$this->name      = null;
+			$this->fieldtype = null;
 
-			return TRUE;
-		}
-		else if ($this->get_the_current_group_current() == $this->get_the_current_group_length())
-		{
-			$this->name      = NULL;
-			$this->set_the_current_group_current(-1);
+			return true;
+		} else if ( $this->get_the_current_group_current() == $this->get_the_current_group_length() ) {
+			$this->name = null;
+			$this->set_the_current_group_current( - 1 );
 			$this->prev_loop();
 		}
 
-		$this->in_loop = FALSE;
+		$this->in_loop = false;
 
 		$this->_loop_data = new stdClass;
 
-		return FALSE;
+		return false;
 	}
 
 	/**
-	 * @since	1.0
-	 * @access	private
+	 * @since    1.0
+	 * @access    private
 	 */
-	function _save($post_id)
-	{
+	function _save( $post_id ) {
 		/**
 		 * note: the "save_post" action fires for saving revisions and post/pages,
 		 * when saving a post this function fires twice, once for a revision save,
@@ -2264,125 +2151,113 @@ class WPAlchemy_MetaBox
 		 * so in the case that this functionality changes, let it run twice
 		 */
 
-		$real_post_id = isset($_POST['post_ID']) ? $_POST['post_ID'] : NULL ;
+		$real_post_id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : null;
 
 		// check autosave
-		if (defined('DOING_AUTOSAVE') AND DOING_AUTOSAVE AND !$this->autosave) return $post_id;
+		if ( defined( 'DOING_AUTOSAVE' ) AND DOING_AUTOSAVE AND ! $this->autosave ) {
+			return $post_id;
+		}
 
 		// make sure data came from our meta box, verify nonce
-		$nonce = isset($_POST[$this->id.'_nonce']) ? $_POST[$this->id.'_nonce'] : NULL ;
-		if (!wp_verify_nonce($nonce, $this->id)) return $post_id;
+		$nonce = isset( $_POST[ $this->id . '_nonce' ] ) ? $_POST[ $this->id . '_nonce' ] : null;
+		if ( ! wp_verify_nonce( $nonce, $this->id ) ) {
+			return $post_id;
+		}
 
 		// check user permissions
-		if ($_POST['post_type'] == 'page')
-		{
-			if (!current_user_can('edit_page', $post_id)) return $post_id;
-		}
-		else
-		{
-			if (!current_user_can('edit_post', $post_id)) return $post_id;
+		if ( $_POST['post_type'] == 'page' ) {
+			if ( ! current_user_can( 'edit_page', $post_id ) ) {
+				return $post_id;
+			}
+		} else {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return $post_id;
+			}
 		}
 
 		// authentication passed, save data
 
-		$new_data = isset( $_POST[$this->id] ) ? $_POST[$this->id] : NULL ;
+		$new_data = isset( $_POST[ $this->id ] ) ? $_POST[ $this->id ] : null;
 
-		WPAlchemy_MetaBox::clean($new_data);
+		WPAlchemy_MetaBox::clean( $new_data );
 
-		if (empty($new_data))
-		{
-			$new_data = NULL;
+		if ( empty( $new_data ) ) {
+			$new_data = null;
 		}
 
 		// filter: save
-		if ($this->has_filter('save'))
-		{
-			$new_data = $this->apply_filters('save', $new_data, $real_post_id);
+		if ( $this->has_filter( 'save' ) ) {
+			$new_data = $this->apply_filters( 'save', $new_data, $real_post_id );
 
 			/**
 			 * halt saving
 			 * @since 1.3.4
 			 */
-			if (FALSE === $new_data) return $post_id;
+			if ( false === $new_data ) {
+				return $post_id;
+			}
 
-			WPAlchemy_MetaBox::clean($new_data);
+			WPAlchemy_MetaBox::clean( $new_data );
 		}
 
 		// get current fields, use $real_post_id (checked for in both modes)
-		$current_fields = get_post_meta($real_post_id, $this->id . '_fields', TRUE);
+		$current_fields = get_post_meta( $real_post_id, $this->id . '_fields', true );
 
-		if ($this->mode == WPALCHEMY_MODE_EXTRACT)
-		{
+		if ( $this->mode == WPALCHEMY_MODE_EXTRACT ) {
 			$new_fields = array();
 
-			if (is_array($new_data))
-			{
-				foreach ($new_data as $k => $v)
-				{
+			if ( is_array( $new_data ) ) {
+				foreach ( $new_data as $k => $v ) {
 					$field = $this->prefix . $k;
 
-					array_push($new_fields,$field);
+					array_push( $new_fields, $field );
 
-					$new_value = $new_data[$k];
+					$new_value = $new_data[ $k ];
 
-					if (is_null($new_value))
-					{
-						delete_post_meta($post_id, $field);
-					}
-					else
-					{
-						update_post_meta($post_id, $field, $new_value);
+					if ( is_null( $new_value ) ) {
+						delete_post_meta( $post_id, $field );
+					} else {
+						update_post_meta( $post_id, $field, $new_value );
 					}
 				}
 			}
 
-			$diff_fields = array_diff((array)$current_fields,$new_fields);
+			$diff_fields = array_diff( (array) $current_fields, $new_fields );
 
-			if (is_array($diff_fields))
-			{
-				foreach ($diff_fields as $field)
-				{
-					delete_post_meta($post_id,$field);
+			if ( is_array( $diff_fields ) ) {
+				foreach ( $diff_fields as $field ) {
+					delete_post_meta( $post_id, $field );
 				}
 			}
 
-			delete_post_meta($post_id, $this->id . '_fields');
+			delete_post_meta( $post_id, $this->id . '_fields' );
 
-			if ( ! empty($new_fields))
-			{
-				add_post_meta($post_id,$this->id . '_fields', $new_fields, TRUE);
+			if ( ! empty( $new_fields ) ) {
+				add_post_meta( $post_id, $this->id . '_fields', $new_fields, true );
 			}
 
 			// keep data tidy, delete values if previously using WPALCHEMY_MODE_ARRAY
-			delete_post_meta($post_id, $this->id);
-		}
-		else
-		{
-			if (is_null($new_data))
-			{
-				delete_post_meta($post_id, $this->id);
-			}
-			else
-			{
-				update_post_meta($post_id, $this->id, $new_data);
+			delete_post_meta( $post_id, $this->id );
+		} else {
+			if ( is_null( $new_data ) ) {
+				delete_post_meta( $post_id, $this->id );
+			} else {
+				update_post_meta( $post_id, $this->id, $new_data );
 			}
 
 			// keep data tidy, delete values if previously using WPALCHEMY_MODE_EXTRACT
-			if (is_array($current_fields))
-			{
-				foreach ($current_fields as $field)
-				{
-					delete_post_meta($post_id, $field);
+			if ( is_array( $current_fields ) ) {
+				foreach ( $current_fields as $field ) {
+					delete_post_meta( $post_id, $field );
 				}
 
-				delete_post_meta($post_id, $this->id . '_fields');
+				delete_post_meta( $post_id, $this->id . '_fields' );
 			}
 		}
 
 		// action: save
-		if ($this->has_action('save'))
-		{
-			$this->do_action('save', $new_data, $real_post_id);
+		if ( $this->has_action( 'save' ) ) {
+			$this->do_action( 'save', $new_data, $real_post_id );
 		}
 
 		return $post_id;
@@ -2392,56 +2267,43 @@ class WPAlchemy_MetaBox
 	 * Cleans an array, removing blank ('') values
 	 *
 	 * @static
-	 * @since	1.0
-	 * @access	public
-	 * @param	array the array to clean (passed by reference)
+	 * @since    1.0
+	 * @access    public
+	 *
+	 * @param    array the array to clean (passed by reference)
 	 */
-	static function clean(&$arr)
-	{
-		if (is_array($arr))
-		{
-			foreach ($arr as $i => $v)
-			{
-				if (is_array($arr[$i]))
-				{
-					WPAlchemy_MetaBox::clean($arr[$i]);
+	static function clean( &$arr ) {
+		if ( is_array( $arr ) ) {
+			foreach ( $arr as $i => $v ) {
+				if ( is_array( $arr[ $i ] ) ) {
+					WPAlchemy_MetaBox::clean( $arr[ $i ] );
 
-					if (!count($arr[$i]))
-					{
-						unset($arr[$i]);
+					if ( ! count( $arr[ $i ] ) ) {
+						unset( $arr[ $i ] );
 					}
-				}
-				else
-				{
-					if ('' == trim($arr[$i]) OR is_null($arr[$i]))
-					{
-						unset($arr[$i]);
+				} else {
+					if ( '' == trim( $arr[ $i ] ) OR is_null( $arr[ $i ] ) ) {
+						unset( $arr[ $i ] );
 					}
 				}
 			}
 
-			if (!count($arr))
-			{
+			if ( ! count( $arr ) ) {
 				$arr = array();
-			}
-			else
-			{
-				$keys = array_keys($arr);
+			} else {
+				$keys = array_keys( $arr );
 
-				$is_numeric = TRUE;
+				$is_numeric = true;
 
-				foreach ($keys as $key)
-				{
-					if (!is_numeric($key))
-					{
-						$is_numeric = FALSE;
+				foreach ( $keys as $key ) {
+					if ( ! is_numeric( $key ) ) {
+						$is_numeric = false;
 						break;
 					}
 				}
 
-				if ($is_numeric)
-				{
-					$arr = array_values($arr);
+				if ( $is_numeric ) {
+					$arr = array_values( $arr );
 				}
 			}
 		}
@@ -2455,359 +2317,340 @@ class WPAlchemy_MetaBox
 
 	var $_loop_stack = array();
 
-	function push_loop($name, $length, $type)
-	{
-		$loop         = new WPA_Loop($name, $length, $type);
-		$parent       = $this->get_the_current_loop();
-		if($parent)
+	function push_loop( $name, $length, $type ) {
+		$loop   = new WPA_Loop( $name, $length, $type );
+		$parent = $this->get_the_current_loop();
+		if ( $parent ) {
 			$loop->parent = $parent->name;
-		else
+		} else {
 			$loop->parent = false;
-		$this->_loop_stack[$name] = $loop;
+		}
+		$this->_loop_stack[ $name ] = $loop;
+
 		return $loop;
 	}
 
-	function push_or_set_current_loop($name, $length, $type)
-	{
-		if( !array_key_exists( $name, $this->_loop_stack ) )
-		{
-			$this->push_loop($name, $length, $type);
+	function push_or_set_current_loop( $name, $length, $type ) {
+		if ( ! array_key_exists( $name, $this->_loop_stack ) ) {
+			$this->push_loop( $name, $length, $type );
 		}
 
-		$this->set_current_loop($name);
+		$this->set_current_loop( $name );
 	}
 
-	function set_current_loop($name)
-	{
-		reset($this->_loop_stack);
-		if(!array_key_exists($name, $this->_loop_stack)){
+	function set_current_loop( $name ) {
+		reset( $this->_loop_stack );
+		if ( ! array_key_exists( $name, $this->_loop_stack ) ) {
 			return;
 		}
-		while(key($this->_loop_stack) !== $name)
-			next($this->_loop_stack);
-	}
-
-	function next_loop()
-	{
-		return next($this->_loop_stack);
-	}
-
-	function prev_loop()
-	{
-		$parent = $this->get_the_current_loop()->parent;
-		if($parent)
-		{
-			$this->set_current_loop($parent);
+		while ( key( $this->_loop_stack ) !== $name ) {
+			next( $this->_loop_stack );
 		}
-		else
-		{
+	}
+
+	function next_loop() {
+		return next( $this->_loop_stack );
+	}
+
+	function prev_loop() {
+		$parent = $this->get_the_current_loop()->parent;
+		if ( $parent ) {
+			$this->set_current_loop( $parent );
+		} else {
 			$this->_loop_stack = array();
+
 			return false;
 		}
 	}
 
-	function get_the_current_group_length()
-	{
-		return current($this->_loop_stack)->length;
+	function get_the_current_group_length() {
+		return current( $this->_loop_stack )->length;
 	}
 
-	function get_the_current_group_current()
-	{
-		return current($this->_loop_stack)->current;
+	function get_the_current_group_current() {
+		return current( $this->_loop_stack )->current;
 	}
 
-	function set_the_current_group_length($length)
-	{
-		current($this->_loop_stack)->length = $length;
+	function set_the_current_group_length( $length ) {
+		current( $this->_loop_stack )->length = $length;
 	}
 
-	function set_the_current_group_current($current)
-	{
-		current($this->_loop_stack)->current = $current;
+	function set_the_current_group_current( $current ) {
+		current( $this->_loop_stack )->current = $current;
 	}
 
-	function get_the_loop_collection($name = null)
-	{
-		$collection   = array();
+	function get_the_loop_collection( $name = null ) {
+		$collection = array();
 
-		if(is_null($name))
-		{
+		if ( is_null( $name ) ) {
 			$curr = $this->get_the_current_loop();
-			if($curr)
-			{
+			if ( $curr ) {
 				$name         = $curr->name;
 				$loop_stack   = $this->_loop_stack;
-				$loop         = $loop_stack[$name];
+				$loop         = $loop_stack[ $name ];
 				$collection[] = $loop;
-				while ($loop)
-				{
+				while ( $loop ) {
 					$collection[] = $loop;
-					if($loop->parent)
-						$loop = $loop_stack[$loop->parent];
-					else
+					if ( $loop->parent ) {
+						$loop = $loop_stack[ $loop->parent ];
+					} else {
 						$loop = false;
+					}
 				}
-				$collection = array_reverse($collection);
+				$collection = array_reverse( $collection );
 			}
 		}
 
 		return $collection;
 	}
 
-	function get_the_loop_group_name($with_id = false)
-	{
-		$loop_name  = $with_id ? $this->id : '';
-		$curr       = $this->get_the_current_loop();
+	function get_the_loop_group_name( $with_id = false ) {
+		$loop_name = $with_id ? $this->id : '';
+		$curr      = $this->get_the_current_loop();
 
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
 		// print_r($loop_stack);
-		foreach ($loop_stack as $loop)
-		{
+		foreach ( $loop_stack as $loop ) {
 			$loop_name .= '[' . $loop->name . '][' . $loop->current . ']';
 
-			if($loop->name === $curr->name)
+			if ( $loop->name === $curr->name ) {
 				break;
+			}
 		}
+
 		return $loop_name;
 	}
 
-	function get_the_loop_level()
-	{
+	function get_the_loop_level() {
 		$curr  = $this->get_the_current_loop();
 		$depth = 0;
 
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $loop)
-		{
-			if($loop->name === $curr->name)
+		foreach ( $loop_stack as $loop ) {
+			if ( $loop->name === $curr->name ) {
 				break;
-			$depth++;
+			}
+			$depth ++;
 		}
+
 		return $depth;
 	}
 
-	function get_the_loop_group_id()
-	{
-		$loop_name  = '';
-		$curr       = $this->get_the_current_loop();
+	function get_the_loop_group_id() {
+		$loop_name = '';
+		$curr      = $this->get_the_current_loop();
 
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $key => $loop)
-		{
+		foreach ( $loop_stack as $key => $loop ) {
 			$is_first = false;
 			$is_last  = false;
 
-			reset($loop_stack);
-			if ($key === key($loop_stack))
+			reset( $loop_stack );
+			if ( $key === key( $loop_stack ) ) {
 				$is_first = true;
-			if ($loop->name === $curr->name)
+			}
+			if ( $loop->name === $curr->name ) {
 				$is_last = true;
+			}
 
 			$loop_name .= '[' . $loop->name . ']';
 
-			if(!$is_last)
+			if ( ! $is_last ) {
 				$loop_name .= '[' . $loop->current . ']';
+			}
 
-			if($loop->name === $curr->name)
+			if ( $loop->name === $curr->name ) {
 				break;
+			}
 		}
+
 		return $loop_name;
 	}
 
-	function get_the_loop_group_name_array($with_id = false)
-	{
-		$loop_name   = array();
-		$curr        = $this->get_the_current_loop();
+	function get_the_loop_group_name_array( $with_id = false ) {
+		$loop_name = array();
+		$curr      = $this->get_the_current_loop();
 
-		if($with_id)
-		{
+		if ( $with_id ) {
 			$loop_name[] = $this->id;
 		}
 
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $loop)
-		{
+		foreach ( $loop_stack as $loop ) {
 			$loop_name[] = $loop->name;
 			$loop_name[] = $loop->current;
 
-			if($loop->name === $curr->name)
+			if ( $loop->name === $curr->name ) {
 				break;
+			}
 		}
+
 		return $loop_name;
 	}
 
-	function get_the_dotted_loop_group_name($with_id = false)
-	{
-		$loop_name  = $with_id ? $this->id : '';
-		$curr       = $this->get_the_current_loop();
+	function get_the_dotted_loop_group_name( $with_id = false ) {
+		$loop_name = $with_id ? $this->id : '';
+		$curr      = $this->get_the_current_loop();
 
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $loop)
-		{
-			$loop_name .= ($loop_name === '' ? '' : '.') . $loop->name . '.' . $loop->current;
+		foreach ( $loop_stack as $loop ) {
+			$loop_name .= ( $loop_name === '' ? '' : '.' ) . $loop->name . '.' . $loop->current;
 
-			if($loop->name === $curr->name)
+			if ( $loop->name === $curr->name ) {
 				break;
+			}
 		}
+
 		return $loop_name;
 	}
 
-	function get_meta_by_dotted($dotted)
-	{
-		$keys = explode('.', $dotted);
+	function get_meta_by_dotted( $dotted ) {
+		$keys = explode( '.', $dotted );
 		$meta = $this->meta;
-		foreach ($keys as $key)
-		{
-			if(array_key_exists($key, $meta))
-			{
-				$meta = $meta[$key];
-			}
-			else
-			{
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $meta ) ) {
+				$meta = $meta[ $key ];
+			} else {
 				return null;
 			}
 		}
+
 		return $meta;
 	}
 
-	function get_meta_by_array($arr)
-	{
+	function get_meta_by_array( $arr ) {
 		$meta = $this->meta;
 
-		if(!is_array($arr) || !is_array($meta) || is_null($meta))
+		if ( ! is_array( $arr ) || ! is_array( $meta ) || is_null( $meta ) ) {
 			return null;
+		}
 
-		foreach ($arr as $key)
-		{
-			if(is_array($meta) and array_key_exists($key, $meta))
-			{
-				$meta = $meta[$key];
-			}
-			else
-			{
+		foreach ( $arr as $key ) {
+			if ( is_array( $meta ) and array_key_exists( $key, $meta ) ) {
+				$meta = $meta[ $key ];
+			} else {
 				return null;
 			}
 		}
+
 		return $meta;
 	}
 
-	function get_the_current_group_count()
-	{
-		$arr  = $this->get_the_loop_group_name_array();
-		end($arr);
-		$last = key($arr);
-		unset($arr[$last]);
-		$meta = $this->get_meta_by_array($arr);
-		return count($meta);
+	function get_the_current_group_count() {
+		$arr = $this->get_the_loop_group_name_array();
+		end( $arr );
+		$last = key( $arr );
+		unset( $arr[ $last ] );
+		$meta = $this->get_meta_by_array( $arr );
+
+		return count( $meta );
 	}
 
-	function increment_current_loop()
-	{
-		current($this->_loop_stack)->current++;
+	function increment_current_loop() {
+		current( $this->_loop_stack )->current ++;
 	}
 
-	function get_the_current_loop()
-	{
-		return current($this->_loop_stack);
+	function get_the_current_loop() {
+		return current( $this->_loop_stack );
 	}
 
-	function is_in_multi_last()
-	{
+	function is_in_multi_last() {
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $loop)
-		{
-			if($loop->type === 'multi' and $loop->is_last())
+		foreach ( $loop_stack as $loop ) {
+			if ( $loop->type === 'multi' and $loop->is_last() ) {
 				return true;
+			}
 		}
+
 		return false;
 	}
 
-	function is_in_loop()
-	{
-		if(current($this->_loop_stack) === false)
+	function is_in_loop() {
+		if ( current( $this->_loop_stack ) === false ) {
 			return false;
+		}
+
 		return true;
 	}
 
-	function is_parent_multi()
-	{
+	function is_parent_multi() {
 		// copy _loop_stack to prevent internal pointer ruined
 		$loop_stack = $this->get_the_loop_collection();
-		foreach ($loop_stack as $loop)
-		{
-			if($loop->type === 'multi')
+		foreach ( $loop_stack as $loop ) {
+			if ( $loop->type === 'multi' ) {
 				return true;
+			}
 		}
+
 		return false;
 	}
 
-	function the_copy_button_class()
-	{
+	function the_copy_button_class() {
 		$curr = $this->get_the_current_loop();
+
 		return 'docopy-' . $curr->get_the_indexed_name();
 	}
 
 	/**
 	 * EXTRA CSS CLASS
 	 */
-	function _extra_add_postbox_classes ($classes) {
-		array_push($classes,'extra-metabox');
-		if(isset($this->hide_ui) && $this->hide_ui === true) {
-			array_push($classes,'extra-metabox-minimal-ui');
+	function _extra_add_postbox_classes( $classes ) {
+		array_push( $classes, 'extra-metabox' );
+		if ( isset( $this->hide_ui ) && $this->hide_ui === true ) {
+			array_push( $classes, 'extra-metabox-minimal-ui' );
 		}
+
 		return $classes;
 	}
 
 }
 
-class WPA_Loop
-{
+class WPA_Loop {
 
-	public $length   = 0;
+	public $length = 0;
 
-	public $parent   = NULL;
+	public $parent = null;
 
-	public $current  = -1;
+	public $current = - 1;
 
-	public $name     = NULL;
+	public $name = null;
 
-	public $type     = false;
+	public $type = false;
 
-	function __construct($name, $length, $type)
-	{
+	function __construct( $name, $length, $type ) {
 		$this->name   = $name;
 		$this->length = $length;
 		$this->type   = $type;
 	}
 
-	function the_indexed_name()
-	{
+	function the_indexed_name() {
 		echo $this->get_the_indexed_name();
 	}
 
-	function get_the_indexed_name()
-	{
+	function get_the_indexed_name() {
 		return $this->name . '[' . $this->current . ']';
 	}
 
-	function is_first()
-	{
-		if ( $this->current == 0 ) return TRUE;
+	function is_first() {
+		if ( $this->current == 0 ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
-	function is_last()
-	{
-		if ( ( $this->current + 1 ) == $this->length ) return TRUE;
+	function is_last() {
+		if ( ( $this->current + 1 ) == $this->length ) {
+			return true;
+		}
 
-		return FALSE;
+		return false;
 	}
 
 }

@@ -136,9 +136,10 @@ $(document).ready(function () {
 	};
 	$.extend(defaultOptions, extraOptions);
 
-	$("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
-		return $(this).attr("target") != "_blank";
-	}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
+	function initFancybox($parent) {
+		$parent.find("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
+			return $(this).attr("target") != "_blank";
+		}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
 			var $this = $(this),
 				$img = $this.find(" > img").first();
 			if ($img.length) {
@@ -151,6 +152,14 @@ $(document).ready(function () {
 				}
 			}
 		});
+	}
+	initFancybox($("body"));
+	$window.on('extra.initFancybox', function(event, $parent) {
+		if($parent == null) {
+			return;
+		}
+		initFancybox($parent);
+	});
 	/*********************
 	 *
 	 * BACK TO TOP

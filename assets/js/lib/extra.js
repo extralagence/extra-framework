@@ -123,7 +123,6 @@ $(document).ready(function () {
 	 *
 	 *********************/
 	var defaultOptions = {
-		zoomIcon : '<span class="zoomIcon"></span>',
 		fancyboxOptions : {
 			margin: 50,
 			padding: 0,
@@ -137,36 +136,14 @@ $(document).ready(function () {
 	};
 	$.extend(defaultOptions, extraOptions);
 
-	var zoomIcon = $(defaultOptions.zoomIcon);
-
-	$("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
-		return $(this).attr("target") != "_blank";
-	}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
+	function initFancybox($parent) {
+		$parent.find("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], .fancybox").not('.no-fancybox').filter(function () {
+			return $(this).attr("target") != "_blank";
+		}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
 			var $this = $(this),
-				$img = $this.find(" > img").first(),
-				$icon = zoomIcon.clone(),
-				width = 0,
-				height = 0;
+				$img = $this.find(" > img").first();
 			if ($img.length) {
-				width = $img.outerWidth();
-				height = $img.outerHeight();
 				$(this).addClass("zoom");
-				/*if(!$img[0].complete) {
-					$img.load(function() {
-						width = $img.outerWidth();
-						height = $img.outerHeight();
-						$(this).width($img.outerWidth()).height($img.outerHeight());
-					});
-				} else {
-					$(this).width($img.outerWidth()).height($img.outerHeight());
-				}*/
-				$this.append($icon);
-				TweenMax.set($icon, {css: {opacity: 0}});
-				$this.hover(function () {
-					TweenMax.to($icon, 0.3, {css: {opacity: 1}});
-				}, function () {
-					TweenMax.to($icon, 0.3, {css: {opacity: 0}});
-				});
 				if ($img.hasClass("alignleft")) {
 					$this.addClass("alignleft");
 				}
@@ -175,6 +152,14 @@ $(document).ready(function () {
 				}
 			}
 		});
+	}
+	initFancybox($("body"));
+	$window.on('extra.initFancybox', function(event, $parent) {
+		if($parent == null) {
+			return;
+		}
+		initFancybox($parent);
+	});
 	/*********************
 	 *
 	 * BACK TO TOP
@@ -202,6 +187,10 @@ $(document).ready(function () {
 		});
 		function initResponsiveImage(container) {
 
+			if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
+				console.log('responsiveBackgroundImagePlaceholder');
+			}
+
 			var datas = container.find("noscript"),
 				altTxt = datas.data("alt"),
 				itemProp = datas.data("img-itemprop"),
@@ -222,8 +211,14 @@ $(document).ready(function () {
 								if (itemProp) {
 									imgElement.attr('itemprop', itemProp);
 								}
-	              				// APPEND
-	              				imgElement.appendTo(container);
+								// APPEND
+								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
+									console.log('responsiveBackgroundImagePlaceholder');
+									container.css('background-image', "url('"+imgSrc+"')");
+								} else {
+									imgElement.appendTo(container);
+								}
+
 								// REMOVE EXISTING IMAGE
 								container.find("img").not(imgElement).remove();
 								container.trigger('complete.extra.responsiveImage');

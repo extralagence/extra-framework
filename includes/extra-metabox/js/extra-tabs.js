@@ -1,20 +1,45 @@
 jQuery(document).ready(function($){	
 		
-	$('.extra-tabs .wpa_loop').each(function(){
+	$('.extra-tabs .wpa_loop').each(function(index, element) {
+
+		initTabs($(element), index);
+
+	});
+
+	function initTabs($wrapper, index) {
+
+		if($wrapper.closest(".tocopy").length) {
+			return;
+		}
+		$wrapper.attr("id", $wrapper.attr("id") + '-' + index).data("extra-tabs-processed", "processed");
 		
-		var $wrapper = $(this),
-			$nav = $('<ul class="extra-tab-navigation"></ul>').prependTo($wrapper),
+		var $nav = $('<ul class="extra-tab-navigation"></ul>').prependTo($wrapper),
 			idBase = $wrapper.attr("id"),
 			first = true,
             wpautop = true,
-			textareaID, selectedEd, wpautop;
+			textareaID, selectedEd;
 	
 	
-		$.wpalchemy.bind('wpa_copy wpa_delete', function(e, elmt){
+		$.wpalchemy.bind('wpa_copy', function(event, $clone){
+			if($clone.parent()[0] !== $wrapper[0]) {
+				return;
+			}
 			updateMenu();
 			if($nav.children().size()) {
-				$nav.find(">li:last a").click();
+				$nav.find(" > li:last a").click();
 			}
+			if($clone.find(".extra-tabs .wpa_loop")) {
+				$clone.find(".extra-tabs .wpa_loop").not('.tocopy').each(function(index, element) {
+					var $item = $(element);
+					console.log($item);
+					if(!$item.data("extra-tabs-processed") || $item.data("extra-tabs-processed") != "processed") {
+						initTabs($item);
+					}
+				});
+			}
+		});
+		$.wpalchemy.bind('wpa_delete', function(event) {
+			updateMenu();
 		});
 		
 		function updateMenu() {
@@ -30,19 +55,19 @@ jQuery(document).ready(function($){
 			
 			
 			// LOOP THROUGH THE ITEMS 
-			$wrapper.find(".wpa_group:not('.tocopy')").each(function(i){
+			$wrapper.find(" > .wpa_group").not('.tocopy').each(function(i){
 				
-				var elmt = $(this);
-				var title = elmt.find("h2").first();
-				elmt.attr("id", idBase+i);
+				var $item = $(this);
+				var title = $item.find("h2").first();
+				$item.attr("id", (idBase + '' + i));
 				
-				if(!elmt.data("processed") || elmt.data("processed") != "processed") {					
-					title.text(title.text() + " " + (i+1));
-					elmt.data("processed", "processed");
+				if(!$item.data("extra-tabs-item-processed") || $item.data("extra-tabs-item-processed") != "processed") {
+					title.text(title.text() + " " + (i + 1));
+					$item.data("extra-tabs-item-processed", "processed");
 				}
 				
 				var link = $("<a></a>", {
-					"href": "#"+(idBase+""+i),
+					"href": "#" + (idBase + '' + i),
 					"text": title.text()
 				});
 				
@@ -61,39 +86,42 @@ jQuery(document).ready(function($){
 				forcePlaceholderSize: true,
 				opacity: 1,
 				placeholder: "extra-tabs-placeholder",
-				start: function(event, ui) { // turn tinymce off while sorting (if not, it won't work when resorted)
-					var item = ui.item,
-                        target = $("#"+item.attr("aria-controls")),
-                        editors = target.find('.extra-editor-processed');
-					
-					if(editors.length) {
-					    editors.each(function() {
-    						var textarea = $(this).find('textarea.extra-custom-editor'),
-                                textareaId = textarea.attr('id'),
-                                editor = tinymce.EditorManager.get(textareaId);
-                            textarea.data('tinymceSettings', editor.settings);
-    						tinymce.settings.wpautop = false;
-    						tinymce.execCommand('mceRemoveEditor', false, textarea.attr('id'));
-						});
-					}
+				start: function(event, ui) {
+					$nav.children().each(function(index, element) {
+						var item = $(element),
+							$target = $("#"+item.attr("aria-controls")),
+							$editors =  $target.find('.extra-editor-processed');
+						// shut down the editors
+						if($editors.length) {
+							$editors.each(function(index, element) {
+								var textarea = $(this).find('textarea.extra-custom-editor'),
+									textareaId = textarea.attr('id'),
+									editor = tinymce.EditorManager.get(textareaId);
+								textarea.data('tinymceSettings', editor.settings);
+								tinymce.settings.wpautop = false;
+								tinymce.execCommand('mceRemoveEditor', false, textareaId);
+							});
+						}
+					});
 				},
-				stop: function(event, ui) { // re-initialize tinymce when sort is completed
-                    var item = ui.item,
-                        target = $("#"+item.attr("aria-controls")),
-                        editors = target.find('.extra-editor-processed');
-                        
-                    // move the target
-					target.insertAfter($wrapper.children().eq(item.index()));
-					
-					// reset the editors
-					if(editors.length) {
-                        editors.each(function() {
-                            var textarea = $(this).find('textarea.extra-custom-editor'),
-                                textareaId = textarea.attr('id');
-                            tinymce.settings = textarea.data('tinymceSettings');
-                            tinymce.execCommand('mceAddEditor', false, textareaId);
-                        });
-                    }
+				stop: function(event, ui) {
+
+					$nav.children().each(function(index, element) {
+						var item = $(element),
+							$target = $("#"+item.attr("aria-controls")),
+							$editors =  $target.find('.extra-editor-processed');
+						$wrapper.append($target);
+
+						// reset the editors
+						if($editors.length) {
+							$editors.each(function() {
+								var textarea = $(this).find('textarea.extra-custom-editor'),
+									textareaId = textarea.attr('id');
+								tinymce.settings = textarea.data('tinymceSettings');
+								tinymce.execCommand('mceAddEditor', false, textareaId);
+							});
+						}
+					});
                     
                     // refresh the tabs
 					$wrapper.tabs( "refresh" );
@@ -109,6 +137,6 @@ jQuery(document).ready(function($){
 		
 		updateMenu();
 	        
-	});
+	}
 	
 });

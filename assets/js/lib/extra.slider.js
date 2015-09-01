@@ -39,7 +39,10 @@
 			'onUpdate'        : null,
 			'onUpdateClones'  : null,
 			'onPause'         : null,
-			'onResume'        : null
+			'onResume'        : null,
+			'onGotoNext'      : null,
+			'onGotoPrev'      : null,
+			'ease'            : Quad.easeOut
 		}, options);
 
 		this.each(function () {
@@ -170,7 +173,9 @@
 					$this.trigger('moveStart.extra.slider', [$items.eq(realCurrentItem + numClones), total + 1, $this]);
 
 					if (opt.paginate) {
-						$pagination.find("a").removeClass("active").eq(realCurrentItem).addClass("active");
+						$pagination.each(function () {
+							$(this).find("a").removeClass("active").eq(realCurrentItem).addClass("active");
+						});
 					}
 
 					switch (opt.type) {
@@ -184,7 +189,7 @@
 									left -= singleWidth * offset;
 								}
 							}
-							TweenMax.to($slider, time, {x: left, force3D: "auto", onComplete: endHandler, onCompleteParams: [time]});
+							TweenMax.to($slider, time, {x: left, force3D: "auto", onComplete: endHandler, onCompleteParams: [time], ease: opt.ease});
 							break;
 						case "fade":
 							$items.eq(previousItem).css("zIndex", 1);
@@ -281,11 +286,19 @@
 
 			/*********************************** HELPER FUNCTIONS ***********************************/
 			function gotoNext(time) {
+				$this.trigger('gotoNext.extra.slider', [$this]);
+				if (opt.onGotoNext) {
+					opt.onGotoNext($this);
+				}
 				time = (time !== undefined) ? time : opt.speed;
 				gotoPage(currentItem + 1, time);
 			}
 
 			function gotoPrev(time) {
+				$this.trigger('gotoPrev.extra.slider', [$this]);
+				if (opt.onGotoPrev) {
+					opt.onGotoPrev($this);
+				}
 				time = time !== undefined ? time : opt.speed;
 				gotoPage(currentItem - 1, time);
 			}
@@ -381,13 +394,17 @@
 				for (i = 0; i <= total; i += 1) {
 					$("<a>", {'href': '#'}).html(opt.paginateContent !== '' ? opt.paginateContent.replace("%d", (i + 1)) : i + 1).appendTo($pagination);
 				}
-				$pagination.find("a").removeClass('active').eq(currentItem).addClass('active');
-				$('a', $pagination).each(function (i) {
-					$(this).click(function () {
-						if (!$(this).hasClass('active')) {
-							gotoPage(i);
-						}
-						return false;
+
+				$pagination.each(function () {
+					$(this).find("a").removeClass('active').eq(currentItem).addClass('active');
+
+					$('a', $(this)).each(function (i) {
+						$(this).click(function () {
+							if (!$(this).hasClass('active') && !$(this).hasClass('disabled')) {
+								gotoPage(i);
+							}
+							return false;
+						});
 					});
 				});
 			}

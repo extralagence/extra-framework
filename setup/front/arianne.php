@@ -231,7 +231,7 @@ global $post;
 
 		// PAGINATE
 		if(get_query_var('paged')) {
-			$name = '';
+			$name = ' ';
 			if(is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author()) {
 				$name .= ' (';
 			}

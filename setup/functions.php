@@ -130,51 +130,51 @@ function extra_language_switcher(){
 		}
 	}
 }
-/**********************
- *
- *
- *
- * HOOK MENU CLASSES
- *
- *
- *
- *********************/
-function extra_nav_menu_css_class_home($classes, $item){
-
-	global $extra_options;
-
-	if(get_option("page_on_front") == $item->object_id) {
-		$classes[] = "menu-item-home";
-	}
-
-	/*if((is_singular("post") || is_singular("event")) && $extra_options["page-agenda"] == $item->object_id) {
-		$classes[] = "current-page-ancestor current-menu-ancestor current_page_ancestor";
-	}*/
-
-	return $classes;
-}
-add_filter('nav_menu_css_class' , 'extra_nav_menu_css_class_home' , 10 , 2);
-
-/**********************
- *
- *
- *
- * HOOK MENU TITLES
- *
- *
- *
- *********************/
-function extra_hook_nav_menu_footer ($items, $menu, $args) {
+///**********************
+// *
+// *
+// *
+// * HOOK MENU CLASSES
+// *
+// *
+// *
+// *********************/
+//function extra_nav_menu_css_class_home($classes, $item){
+//
 //	global $extra_options;
-
-	foreach ($items as $item) {
-		if ($item->object_id === get_option('page_on_front')) {
-			$item->title = '<span class="icon icon-home"></span><span class="text">'.$item->title.'</span>';
-		}
-	}
-	return $items;
-}
-add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
+//
+//	if(get_option("page_on_front") == $item->object_id) {
+//		$classes[] = "menu-item-home";
+//	}
+//
+//	/*if((is_singular("post") || is_singular("event")) && $extra_options["page-agenda"] == $item->object_id) {
+//		$classes[] = "current-page-ancestor current-menu-ancestor current_page_ancestor";
+//	}*/
+//
+//	return $classes;
+//}
+//add_filter('nav_menu_css_class' , 'extra_nav_menu_css_class_home' , 10 , 2);
+//
+///**********************
+// *
+// *
+// *
+// * HOOK MENU TITLES
+// *
+// *
+// *
+// *********************/
+//function extra_hook_nav_menu_footer ($items, $menu, $args) {
+////	global $extra_options;
+//
+//	foreach ($items as $item) {
+//		if ($item->object_id === get_option('page_on_front')) {
+//			$item->title = '<span class="icon icon-home"></span><span class="text">'.$item->title.'</span>';
+//		}
+//	}
+//	return $items;
+//}
+//add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
 
 function remove_parent_classes($class)
 {
@@ -193,34 +193,39 @@ function remove_parent_classes($class)
 add_action('init', 'extra_add_shortcode_submit', 10);
 function extra_add_shortcode_submit() {
 	if(function_exists('wpcf7_remove_shortcode')) {
-		wpcf7_remove_shortcode( 'submit', 'wpcf7_submit_shortcode_handler' );
+		wpcf7_remove_shortcode( 'submit' );
 		wpcf7_add_shortcode( 'submit', 'extra_submit_shortcode_handler' );
 	}
 }
-function extra_submit_shortcode_handler( $tag ) {
-	$tag = new WPCF7_Shortcode( $tag );
+if(!function_exists('extra_submit_shortcode_handler')) {
+	function extra_submit_shortcode_handler( $tag ) {
+		$tag = new WPCF7_Shortcode( $tag );
 
-	$class = wpcf7_form_controls_class( $tag->type );
+		$class = wpcf7_form_controls_class( $tag->type );
 
-	$atts = array();
+		$atts = array();
 
-	$atts['class'] = $tag->get_class_option( $class );
-	$atts['id'] = $tag->get_option( 'id', 'id', true );
-	$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
+		$atts['class']    = $tag->get_class_option( $class );
+		$atts['id']       = $tag->get_option( 'id', 'id', true );
+		$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
 
-	$value = isset( $tag->values[0] ) ? $tag->values[0] : '';
+		$value = isset( $tag->values[0] ) ? $tag->values[0] : '';
 
-	if ( empty( $value ) )
-		$value = __( 'Send', 'wpcf7' );
+		if ( empty( $value ) ) {
+			$value = __( 'Send', 'wpcf7' );
+		}
 
-	$atts['type'] = 'submit';
-	//$atts['value'] = $value;
+		$value = apply_filters('extra_cf7_submit_value', $value);
 
-	$atts = wpcf7_format_atts( $atts );
+		$atts['type'] = 'submit';
+		//$atts['value'] = $value;
 
-	$html = sprintf( '<button %1$s>%2$s</button>', $atts, $value );
+		$atts = wpcf7_format_atts( $atts );
 
-	return $html;
+		$html = sprintf( '<button %1$s>%2$s</button>', $atts, $value );
+
+		return $html;
+	}
 }
 
 /**
@@ -296,6 +301,50 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 }
 function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop= '', $caption = '') {
 	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop, $caption);
+}
+
+/**
+ * echo reponsive image
+ * @param $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
+ * @param string $alt
+ */
+function extra_get_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
+
+	// hook it to override available sizes
+	$sizes = apply_filters('extra_responsive_sizes', array(
+		'desktop' => 'only screen and (min-width: 961px)',
+		'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
+		'mobile' => 'only screen and (max-width: 690px)'
+	));
+
+	// SRC IS AN ID
+	if(!is_numeric($id)) {
+		throw new Exception(__("This must be an integer", 'extra'));
+	}
+	// START RENDERING
+	ob_start();
+	?>
+
+	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?>"
+		style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');" >
+		<noscript
+			<?php foreach($sizes as $size => $value): ?>
+				data-src-<?php echo $size; ?>="<?php
+				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
+				echo $src[0];?>"
+				<?php endforeach; ?>>
+		</noscript>
+	</div>
+	<?php $return = ob_get_contents(); ?>
+
+<?php
+	ob_end_clean();
+	return $return;
+}
+function extra_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
+	echo extra_get_responsive_background_image($id, $dimensions, $class);
 }
 /**
  * Shortify a string with "..."

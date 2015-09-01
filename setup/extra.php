@@ -50,6 +50,9 @@ function require_extra_module_setup ($module_name, $extra_module_path = EXTRA_MO
 		'..'
 	);
 
+    $is_framework = $extra_module_path == EXTRA_MODULES_PATH;
+    $extra_excluded_directories = apply_filters('extra_excluded_modules_directories', $extra_excluded_directories, $is_framework);
+
 	$require = false;
 	if(is_dir($extra_module_path.'/'.$module_name) && !in_array($module_name, $extra_excluded_directories)) {
 		$module_setup_file = $extra_module_path.'/'.$module_name.'/setup.php';

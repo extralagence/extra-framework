@@ -71,7 +71,7 @@ class Text extends AbstractField {
 
 	public function the_admin_column_value() {
 		//TODO
-		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
+		$meta = isset($this->mb->meta[$this->name]) ? $this->mb->meta[$this->name] : '-';
 		echo $meta;
 	}
 }

@@ -44,12 +44,19 @@ function extra_current_url($args = array()) {
 	return $pageURL;
 }
 
-function require_extra_module_setup ($module_name, $extra_module_path = EXTRA_MODULES_PATH) {
+function require_extra_module_setup ($module_name, $is_framework) {
 	$extra_excluded_directories = array(
 		'.',
 		'..'
 	);
 
+	if ($is_framework) {
+		$extra_module_path = EXTRA_MODULES_PATH;
+	} else {
+		$extra_module_path = THEME_MODULES_PATH;
+	}
+
+	$extra_excluded_directories = apply_filters('extra_excluded_modules_directories', $extra_excluded_directories, $is_framework);
 	$require = false;
 	if(is_dir($extra_module_path.'/'.$module_name) && !in_array($module_name, $extra_excluded_directories)) {
 		$module_setup_file = $extra_module_path.'/'.$module_name.'/setup.php';
@@ -121,14 +128,14 @@ require_extra_libraries();
 // SCAN AND REQUIRE ALL MODULE ADMIN SETUP FILES FOR EXTRA
 $modules = scandir(EXTRA_MODULES_PATH);
 foreach($modules as $module) {
-	require_extra_module_setup($module);
+	require_extra_module_setup($module, true);
 }
 
 if ('extra' != wp_get_theme()->stylesheet) {
 	// SCAN AND REQUIRE ALL MODULE ADMIN SETUP FILES FOR CURRENT THEME
 	$modules = scandir(THEME_MODULES_PATH);
 	foreach($modules as $module) {
-		require_extra_module_setup($module, THEME_MODULES_PATH);
+		require_extra_module_setup($module, false);
 	}
 }
 

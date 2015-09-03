@@ -26,6 +26,7 @@ jQuery(document).ready(function($) {
 
 			var $element	 = $(this),
 				$input 		 = $element.find('.file-input'),
+				$inputHidden = $element.find('.file-input-hidden'),
 				title        = $element.find("label:first").text(),
 				$fileName	 = $element.find('.file-name'),
 				file_frame;
@@ -50,12 +51,13 @@ jQuery(document).ready(function($) {
 					multiple: false
 				});
 
-			    file_frame.on( 'select', function() {
-			      attachment = file_frame.state().get('selection').first().toJSON();
-			      $input.val(attachment.url);
-			      $fileName.html(basename(attachment.url));
-			    });
-			    file_frame.open();
+				file_frame.on( 'select', function() {
+					attachment = file_frame.state().get('selection').first().toJSON();
+					$input.val(attachment.url);
+					$inputHidden.val(attachment.id);
+					$fileName.html(basename(attachment.url));
+				});
+				file_frame.open();
 
 			});
 

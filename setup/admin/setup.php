@@ -283,4 +283,28 @@ require_once 'dashboard.php';
  *
  *********************/
 require_once 'redux-options.php';
+/**********************
+ *
+ *
+ *
+ * CUSTOM POST STATE
+ *
+ *
+ *
+ *********************/
+function extra_display_post_states( $post_states, $post ) {
+	if($post->post_type === 'page') {
+		$template = get_post_meta($post->ID, '_wp_page_template', true);
+		if(isset($template) && !empty($template)) {
+			$template_name = array_search($template, get_page_templates($post));
+			if($template_name){
+				$post_states[] = $template_name;
+			}/* else {
+				$post_states[] = __("Page de contenu type", 'extra');
+			}*/
+		}
+	}
+	return $post_states;
+}
+add_filter( 'display_post_states', 'extra_display_post_states', 10, 2);
 ?>

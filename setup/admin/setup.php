@@ -307,4 +307,17 @@ function extra_display_post_states( $post_states, $post ) {
 	return $post_states;
 }
 add_filter( 'display_post_states', 'extra_display_post_states', 10, 2);
+/**********************
+ *
+ *
+ *
+ * ADMIN POST PER PAGE
+ *
+ *
+ *
+ *********************/
+function extra_edit_posts_per_page( $posts_per_page, $post_type ) {
+	return ($posts_per_page !== 20) ? $posts_per_page : 99;
+}
+add_filter( 'edit_posts_per_page', 'extra_edit_posts_per_page', 10, 2);
 ?>

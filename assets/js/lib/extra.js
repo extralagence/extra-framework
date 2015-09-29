@@ -177,6 +177,9 @@ $(document).ready(function () {
 	 *
 	 *********************/
 	$(window).load(function () {
+		var $responsiveImages = $(".responsiveImagePlaceholder"),
+			totalResponsivesImages = $responsiveImages.length,
+			currentResponsiveImagesLoaded = 0;
 		/**************************
 		 *
 		 *
@@ -184,7 +187,7 @@ $(document).ready(function () {
 		 *
 		 *
 		 *************************/
-		$(".responsiveImagePlaceholder").each(function () {
+		$responsiveImages.each(function () {
 			initResponsiveImage($(this).data("size", ""));
 		});
 		function initResponsiveImage(container) {
@@ -218,7 +221,12 @@ $(document).ready(function () {
 
 								// REMOVE EXISTING IMAGE
 								container.find("img").not(imgElement).remove();
-								container.trigger('complete.extra.responsiveImage');
+								currentResponsiveImagesLoaded++;
+								container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+								if(currentResponsiveImagesLoaded === totalResponsivesImages) {
+									container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+								}
+
 							}).attr({
 								alt: altTxt,
 								src: imgSrc

@@ -49,21 +49,22 @@ $(document).ready(function () {
 			$window.trigger('extra.resize');
 		}
 	}
+
 	/*********************
 	 *
 	 * MOBILE OR NOT MOBILE
 	 *
 	 *********************/
-	$(window).on('extra.resize',function () {
+	$(window).on('extra.resize', function () {
 		// IF STATE CHANGE, UPDATE
 		var _tmpExtraResponsiveSizesTests = $.extend({}, extraResponsiveSizesTests);
-		$.each(extraResponsiveSizes, function(index, value) {
+		$.each(extraResponsiveSizes, function (index, value) {
 			_tmpExtraResponsiveSizesTests[index] = matchMedia(value).matches;
 		});
-		if(extraResponsiveSizes['desktop'] !== undefined) {
+		if (extraResponsiveSizes['desktop'] !== undefined) {
 			small = !_tmpExtraResponsiveSizesTests['desktop'];
 		}
-		if(JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
+		if (JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
 			extraResponsiveSizesTests = $.extend({}, _tmpExtraResponsiveSizesTests);
 			$(document).trigger("extra.responsive-resize");
 		}
@@ -84,25 +85,25 @@ $(document).ready(function () {
 	extra.getImageVersion = function () {
 		// default value
 		var toReturn = 'desktop';
-		$.each(extraResponsiveSizesTests, function(index, value) {
-			if(value === true) {
+		$.each(extraResponsiveSizesTests, function (index, value) {
+			if (value === true) {
 				toReturn = index;
 			}
 		});
 		return toReturn;
 	};
 	/*********************
-	*
-	* EXTRA SLIDERS
-	*
-	*********************/
-	$window.on('updateClones.extra.slider', function(event, currentItem, total, slider) {
-		slider.find('.cloned .responsiveImagePlaceholder').each(function() {
+	 *
+	 * EXTRA SLIDERS
+	 *
+	 *********************/
+	$window.on('updateClones.extra.slider', function (event, currentItem, total, slider) {
+		slider.find('.cloned .responsiveImagePlaceholder').each(function () {
 			$window.trigger('extra.responsiveImage', [$(this).data("size", "")]);
 		});
 	});
-	$window.on('init.extra.slider', function(event, items, numItems, slider) {
-		slider.on('complete.extra.responsiveImage', function() {
+	$window.on('init.extra.slider', function (event, items, numItems, slider) {
+		slider.on('complete.extra.responsiveImage', function () {
 			slider.trigger('update');
 		});
 	});
@@ -123,7 +124,7 @@ $(document).ready(function () {
 	 *
 	 *********************/
 	var defaultOptions = {
-		fancyboxOptions : {
+		fancyboxOptions: {
 			margin: 50,
 			padding: 0,
 			type: 'image',
@@ -153,9 +154,10 @@ $(document).ready(function () {
 			}
 		});
 	}
+
 	initFancybox($("body"));
-	$window.on('extra.initFancybox', function(event, $parent) {
-		if($parent == null) {
+	$window.on('extra.initFancybox', function (event, $parent) {
+		if ($parent == null) {
 			return;
 		}
 		initFancybox($parent);
@@ -187,10 +189,6 @@ $(document).ready(function () {
 		});
 		function initResponsiveImage(container) {
 
-			if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
-				console.log('responsiveBackgroundImagePlaceholder');
-			}
-
 			var datas = container.find("noscript"),
 				altTxt = datas.data("alt"),
 				itemProp = datas.data("img-itemprop"),
@@ -213,8 +211,7 @@ $(document).ready(function () {
 								}
 								// APPEND
 								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
-									console.log('responsiveBackgroundImagePlaceholder');
-									container.css('background-image', "url('"+imgSrc+"')");
+									container.css('background-image', "url('" + imgSrc + "')");
 								} else {
 									imgElement.appendTo(container);
 								}
@@ -240,10 +237,10 @@ $(document).ready(function () {
 
 		}
 
-		$window.on('extra.responsiveImage', function(event, obj) {
-			obj.each(function() {
+		$window.on('extra.responsiveImage', function (event, obj) {
+			obj.each(function () {
 				var $elem = $(this);
-				if($elem.hasClass('responsiveImagePlaceholder')) {
+				if ($elem.hasClass('responsiveImagePlaceholder')) {
 					initResponsiveImage($elem.data("size", ""));
 				} else {
 					initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
@@ -286,32 +283,32 @@ $(document).ready(function () {
  *********************/
 window.matchMedia = window.matchMedia || (function (doc, undefined) {
 
-	"use strict";
+		"use strict";
 
-	var bool,
-		docElem = doc.documentElement,
-		refNode = docElem.firstElementChild || docElem.firstChild,
-	// fakeBody required for <FF4 when executed in <head>
-		fakeBody = doc.createElement("body"),
-		div = doc.createElement("div");
+		var bool,
+			docElem = doc.documentElement,
+			refNode = docElem.firstElementChild || docElem.firstChild,
+		// fakeBody required for <FF4 when executed in <head>
+			fakeBody = doc.createElement("body"),
+			div = doc.createElement("div");
 
-	div.id = "mq-test-1";
-	div.style.cssText = "position:absolute;top:-100em";
-	fakeBody.style.background = "none";
-	fakeBody.appendChild(div);
+		div.id = "mq-test-1";
+		div.style.cssText = "position:absolute;top:-100em";
+		fakeBody.style.background = "none";
+		fakeBody.appendChild(div);
 
-	return function (q) {
+		return function (q) {
 
-		div.innerHTML = "&shy;<style media=\"" + q + "\"> #mq-test-1 { width: 42px; }</style>";
+			div.innerHTML = "&shy;<style media=\"" + q + "\"> #mq-test-1 { width: 42px; }</style>";
 
-		docElem.insertBefore(fakeBody, refNode);
-		bool = div.offsetWidth === 42;
-		docElem.removeChild(fakeBody);
+			docElem.insertBefore(fakeBody, refNode);
+			bool = div.offsetWidth === 42;
+			docElem.removeChild(fakeBody);
 
-		return {
-			matches: bool,
-			media: q
+			return {
+				matches: bool,
+				media: q
+			};
+
 		};
-
-	};
-}(document));
+	}(document));

@@ -41,7 +41,7 @@ function extra_custom_share($id = 0) {
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-twitter"></use></svg>
 				<span class="text">' . __( 'Partager sur Twitter', 'extra' ) . '</span><span class="counter"></span>
 			</a>
-			<a target="_blank" href="https://plus.google.com/share?url=' . $link . '" class="extra-social-button extra-social-gplus" data-url="' . $link . '" data-counter="' . THEME_MODULES_URI . '/custom_share/gplus.php?url= ' . urlencode($link) . '">
+			<a target="_blank" href="https://plus.google.com/share?url=' . $link . '" class="extra-social-button extra-social-gplus" data-url="' . $link . '" data-counter="' . EXTRA_MODULES_URI . '/custom_share/gplus.php?url= ' . urlencode($link) . '">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-google"></use></svg>
 				<span class="text">' . __( 'Partager sur Google+', 'extra' ) . '</span><span class="counter"></span>
 			</a>';

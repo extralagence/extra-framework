@@ -49,7 +49,7 @@ class PageSelector extends AbstractField {
 			$posts = get_posts(array('post_type'=> $post_type, 'post_status'=> 'publish', 'suppress_filters' => false, 'posts_per_page'=>-1));
 			echo '<select name="'. $select_id .'" id="'.$select_id.'">';
 			if($option_none_text || $option_none_value) {
-				echo '<option value="'. ($option_none_value != null ? $option_none_value : 0) . '">' . ($option_none_text != null ? $option_none_text : __('Choisir dans la liste...', 'extra')) . '</option>';
+				echo '<option value="'. ($option_none_value !== null ? $option_none_value : 0) . '">' . ($option_none_text != null ? $option_none_text : __('Choisir dans la liste...', 'extra')) . '</option>';
 			}
 			foreach ($posts as $post) {
 				echo '<option value="', $post->ID, '"', $selected == $post->ID ? ' selected="selected"' : '', '>', $post->post_title, '</option>';

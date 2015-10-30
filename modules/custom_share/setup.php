@@ -112,13 +112,17 @@ add_filter('extra_add_global_options_section', 'extra_custom_share_add_global_op
  *
  *********************/
 function extra_share_contact_wpcf7_before_send_mail($cf7){
+	global $extra_options;
+	if(intval($cf7->id()) !== intval($extra_options['contact-form-select']) || !isset($cf7->posted_data['sender']) || !isset($cf7->posted_data['username'])) {
+		return;
+	}
 	$sender = $cf7->posted_data['sender'];
 	$sender_array = explode('@', $sender);
 
 	$username = $sender_array[0];
 	$username = preg_replace('/[^a-zA-Z0-9]+/', ' ', $username);
 	$username_array = explode(' ', $username);
-	$username_array = array_map(ucfirst, $username_array);
+	$username_array = array_map(function($word) { return ucfirst($word); }, $username_array);
 	$username = implode(' ', $username_array);
 
 	$cf7->posted_data['username'] = $username;

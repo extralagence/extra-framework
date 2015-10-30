@@ -10,3 +10,6 @@
 [submodule "includes/WP-OTF-Regenerate-Thumbnails"]
 	path = includes/WP-OTF-Regenerate-Thumbnails
 	url = https://github.com/gambitph/WP-OTF-Regenerate-Thumbnails.git
+[submodule "modules/extra.menu/inc"]
+	path = modules/extra.menu/inc
+	url = https://github.com/extralagence/extra.menu.git

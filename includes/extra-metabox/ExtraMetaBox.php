@@ -192,6 +192,8 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 	}
 
 	public function the_admin($current_level) {
+		// TODO check that it does not brake everything
+		$this->the_meta();
 		foreach($current_level as $properties) {
 			$field = $this->construct_field_from_properties($properties);
 			$field->the_admin();

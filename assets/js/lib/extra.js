@@ -187,6 +187,7 @@ $(document).ready(function () {
 		 *
 		 *
 		 *************************/
+		window.imageCount = 0;
 		$responsiveImages.each(function () {
 			initResponsiveImage($(this).data("size", ""));
 		});
@@ -203,7 +204,14 @@ $(document).ready(function () {
 						var imgSrc = datas.data("src-" + size);
 						if (imgSrc) {
 							var imgElement = $("<img />");
-							imgElement.load(function () {
+							imgElement.error(function() {
+								currentResponsiveImagesLoaded++;
+								container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+								if(currentResponsiveImagesLoaded === totalResponsivesImages) {
+									container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+								}
+								initResponsiveImage(container);
+							}).load(function () {
 								// CORRECT IMAGE SIZE
 								imgElement.attr({
 									'width': this.width,
@@ -231,6 +239,8 @@ $(document).ready(function () {
 								alt: altTxt,
 								src: imgSrc
 							});
+						} else {
+							totalResponsivesImages--;
 						}
 					}
 				};

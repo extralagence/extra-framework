@@ -34,8 +34,6 @@ function extra_template_enqueue_scripts() {
         'mobile' => 'only screen and (max-width: 690px)'
 	));
 	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
-    // EXTRA RESPONSIVE MENU
-    wp_enqueue_script('extra-responsive-menu', EXTRA_URI . '/assets/js/lib/extra.responsivemenu.js', array('jquery', 'tweenmax'), null, true);
 	// EXTRA-SLIDER
 	wp_enqueue_script('extra-slider', EXTRA_URI . '/assets/js/lib/extra.slider.js', array('jquery', 'extra', 'tweenmax'), null, true);
 	// EXTRA

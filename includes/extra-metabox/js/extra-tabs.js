@@ -9,8 +9,6 @@ jQuery(document).ready(function($){
 
 	function initTabs($wrapper, index) {
 
-		console.log('initTabs : '+$wrapper.data('extra-tabs-processed'));
-
 		if($wrapper.closest(".tocopy").length || $wrapper.data('extra-tabs-processed') == 'processed') {
 			return;
 		}
@@ -35,7 +33,6 @@ jQuery(document).ready(function($){
 			if($clone.find(".extra-tabs > .wpa_loop")) {
 				$clone.find(".extra-tabs > .wpa_loop").not('.tocopy').each(function(index, element) {
 					var $item = $(element);
-					console.log($item);
 					if(!$item.data("extra-tabs-processed") || $item.data("extra-tabs-processed") != "processed") {
 						initTabs($item);
 					}

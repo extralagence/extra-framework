@@ -9,8 +9,6 @@ jQuery(document).ready(function($){
 
 	function initAccordion($wrapper, index) {
 
-		console.log('initAccordion : '+$wrapper.data('extra-accordion-processed'));
-
 		if($wrapper.closest(".tocopy").length || $wrapper.data('extra-accordion-processed') == 'processed') {
 			return;
 		}
@@ -26,8 +24,6 @@ jQuery(document).ready(function($){
 			if($clone.parent()[0] !== $wrapper[0]) {
 				return;
 			}
-			console.log('accordion wpa_copy');
-
 			updateMenu();
 
 			//$wrapper.find('> .wpa_group:last-child > .extra-accordion-handle').trigger('click');
@@ -40,7 +36,6 @@ jQuery(document).ready(function($){
 		});
 
 		function refresh() {
-			console.log('refresh accordion');
 			$wrapper.accordion('refresh');
 		}
 
@@ -83,7 +78,6 @@ jQuery(document).ready(function($){
 			$wrapper.accordion({
 				header: '> .wpa_group > .extra-accordion-handle',
 				activate: function (event, ui) {
-					console.log('accordion activate');
 					$window.trigger('extra:admin:accordion:refresh');
 				}
 			}).sortable({

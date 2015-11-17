@@ -1,14 +1,17 @@
 jQuery(document).ready(function($){
+	var $window = $(window);
 
-	$('.extra-accordion > .wpa_loop').each(function(index, element) {
-
-		initAccordion($(element), index);
-
-	});
+	function initialize() {
+		$('.extra-accordion > .wpa_loop').each(function(index, element) {
+			initAccordion($(element), index);
+		});
+	}
 
 	function initAccordion($wrapper, index) {
 
-		if($wrapper.closest(".tocopy").length) {
+		console.log('initAccordion : '+$wrapper.data('extra-accordion-processed'));
+
+		if($wrapper.closest(".tocopy").length || $wrapper.data('extra-accordion-processed') == 'processed') {
 			return;
 		}
 		$wrapper.attr("id", $wrapper.attr("id") + '-' + index).data("extra-accordion-processed", "processed");
@@ -23,15 +26,23 @@ jQuery(document).ready(function($){
 			if($clone.parent()[0] !== $wrapper[0]) {
 				return;
 			}
+			console.log('accordion wpa_copy');
+
 			updateMenu();
 
 			//$wrapper.find('> .wpa_group:last-child > .extra-accordion-handle').trigger('click');
 			var last = $wrapper.find('> .wpa_group:not(.tocopy)').size() - 1;
 			$wrapper.accordion('option', 'active', last);
+			$window.trigger('extra:admin:accordion:newItem');
 		});
 		$.wpalchemy.bind('wpa_delete', function(event) {
 			updateMenu();
 		});
+
+		function refresh() {
+			console.log('refresh accordion');
+			$wrapper.accordion('refresh');
+		}
 
 		function updateMenu() {
 
@@ -70,7 +81,11 @@ jQuery(document).ready(function($){
 
 			// SET WRAPPER
 			$wrapper.accordion({
-				header: '> .wpa_group > .extra-accordion-handle'
+				header: '> .wpa_group > .extra-accordion-handle',
+				activate: function (event, ui) {
+					console.log('accordion activate');
+					$window.trigger('extra:admin:accordion:refresh');
+				}
 			}).sortable({
 				axis: "y",
 				handle: ".extra-accordion-handle",
@@ -83,59 +98,13 @@ jQuery(document).ready(function($){
 					$( this ).accordion( "refresh" );
 				}
 			});
-			console.log('sortable');
-
-			// MAKE IT SORTABLE
-			//$nav.sortable({
-			//	containment: "parent",
-			//	forcePlaceholderSize: true,
-			//	opacity: 1,
-			//	placeholder: "extra-accordion-placeholder",
-			//	start: function(event, ui) {
-			//		$nav.children().each(function(index, element) {
-			//			var item = $(element),
-			//				$target = $("#"+item.attr("aria-controls")),
-			//				$editors =  $target.find('.extra-editor-processed');
-			//			// shut down the editors
-			//			if($editors.length) {
-			//				$editors.each(function(index, element) {
-			//					var textarea = $(this).find('textarea.extra-custom-editor'),
-			//						textareaId = textarea.attr('id'),
-			//						editor = tinymce.EditorManager.get(textareaId);
-			//					textarea.data('tinymceSettings', editor.settings);
-			//					tinymce.settings.wpautop = false;
-			//					tinymce.execCommand('mceRemoveEditor', false, textareaId);
-			//				});
-			//			}
-			//		});
-			//	},
-			//	stop: function(event, ui) {
-			//
-			//		$nav.children().each(function(index, element) {
-			//			var item = $(element),
-			//				$target = $("#"+item.attr("aria-controls")),
-			//				$editors =  $target.find('.extra-editor-processed');
-			//			$wrapper.append($target);
-			//
-			//			// reset the editors
-			//			if($editors.length) {
-			//				$editors.each(function() {
-			//					var textarea = $(this).find('textarea.extra-custom-editor'),
-			//						textareaId = textarea.attr('id');
-			//					tinymce.settings = textarea.data('tinymceSettings');
-			//					tinymce.execCommand('mceAddEditor', false, textareaId);
-			//				});
-			//			}
-			//		});
-			 //
-			 //       // refresh the accordion
-			//		$wrapper.accordion( "refresh" );
-			//	}
-			//}).disableSelection();
 
 			// NO MORE FIRST
 			if(first) {
 				first = false;
+
+				$window.on('extra:admin:tabs:refresh', refresh);
+				$window.on('extra:admin:accordion:refresh', refresh);
 			}
 
 		}
@@ -143,4 +112,8 @@ jQuery(document).ready(function($){
 		updateMenu();
 	}
 
+
+	initialize();
+	$window.on('extra:admin:tabs:newItem', initialize);
+	$window.on('extra:admin:accordion:newItem', initialize);
 });

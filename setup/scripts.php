@@ -9,9 +9,11 @@
  *
  *********************/
 function extra_template_enqueue_scripts() {
+	// WEB FONT LOADER
+	wp_enqueue_script('webfontloader', EXTRA_URI.'/assets/js/lib/webfontloader.js', null, false, false);
 	// REPLACE JQUERY
 	wp_deregister_script('jquery');
-	wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-1.11.1.min.js', null, null, true);
+	wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-2.1.4.min.js', null, null, true);
 	// TWEENMAX
 	wp_enqueue_script('tweenmax', EXTRA_URI . '/assets/js/lib/TweenMax.min.js', array('jquery'), null, true);
 	// SCROLLTO
@@ -28,6 +30,7 @@ function extra_template_enqueue_scripts() {
 	wp_enqueue_script('fancybox', EXTRA_URI . '/assets/js/lib/jquery.fancybox.js', array('jquery'), null, true);
 	// EXTRA
 	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/extra.js', array('jquery', 'tweenmax', 'fancybox'), null, true);
+	// RESPONSIVE SIZES
 	$sizes = apply_filters('extra_responsive_sizes', array(
         'desktop' => 'only screen and (min-width: 961px)',
         'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',

@@ -129,7 +129,7 @@ function extra_tinymce($init) {
 
 	return $init;
 }
-add_filter('tiny_mce_before_init', 'extra_tinymce');
+add_filter('tiny_mce_before_init', 'extra_tinymce', 5);
 /**********************
  *
  *

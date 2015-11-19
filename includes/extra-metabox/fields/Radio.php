@@ -40,17 +40,21 @@ class Radio extends AbstractField {
 			<?php $this->mb->the_field($this->get_single_field_name('radio')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 
-			<?php foreach ($this->radios as $radio) : ?>
-			<label for="<?php $this->mb->the_name(); ?>-<?php echo $radio['value'] ?>"><?php echo $radio['label']; ?></label>
-			<input
-				class="extra-radio-group-input"
-				id="<?php $this->mb->the_name(); ?>-<?php echo $radio['value'] ?>"
+			<?php foreach ($this->radios as $radio) {
+				$label = '<label class="label-position-'.$this->label_position.'" for="' . $this->mb->get_the_name() . '-' . $radio['value'] . '">' . $radio['label'] . '</label>';
+				$input = '<input
+				class="extra-radio-group-input label-position-'.$this->label_position.'"
+				id="'.$this->mb->get_the_name().'-'.$radio['value'].'"
 				type="radio"
-				name="<?php $this->mb->the_name(); ?>"
-				value="<?php echo $radio['value'] ?>"<?php echo $this->mb->is_value($radio['value'])?' checked="checked"':''; ?>
-				>
-			<br>
-			<?php endforeach; ?>
+				name="'.$this->mb->get_the_name().'"
+				value="'.$radio['value'].'"'.($this->mb->is_value($radio['value'])?' checked="checked"':'').'>';
+				if($this->label_position == 'right') {
+					echo $label . $input  .'<br>';
+				} else {
+					echo $input . $label  .'<br>';
+				}
+			}
+			?>
 		</div>
 	<?php
 	}
@@ -58,6 +62,7 @@ class Radio extends AbstractField {
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
 		$this->radios = isset($properties['radios']) ? $properties['radios'] : array();
+		$this->label_position = isset($properties['label_position']) ? $properties['label_position'] : 'left';
 	}
 
 	public function the_admin_column_value() {

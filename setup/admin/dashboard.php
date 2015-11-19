@@ -69,8 +69,8 @@ function extra_dashboard_widgets() {
 	unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
 	unset($wp_meta_boxes['dashboard']['side']['high']['redux_dashboard_widget']);
 }
-add_action('wp_dashboard_setup', 'extra_dashboard_widgets');
-remove_action( 'welcome_panel', 'wp_welcome_panel' );
+add_action('wp_dashboard_setup', 'extra_dashboard_widgets', 99);
+remove_action( 'welcome_panel', 'wp_welcome_panel', 99 );
 /**********************
  *
  *

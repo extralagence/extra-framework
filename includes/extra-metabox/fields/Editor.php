@@ -18,6 +18,7 @@
  * - label (optional)
  * - icon (optional)
  * - title (optional): bigger than label
+ * - editor_args (optional): array of parameters to pass to editor
  */
 class Editor extends AbstractField {
 
@@ -49,15 +50,24 @@ class Editor extends AbstractField {
 				<p class="label"><?php echo $this->label; ?></p>
 			<?php endif; ?>
 
-			<?php $this->mb->the_field($this->get_single_field_name('editor'));
-			$value = html_entity_decode( $this->mb->get_the_value(), ENT_QUOTES, 'UTF-8' );
-			wp_editor($value, $editor_id, array(
+			<?php
+
+			$this->mb->the_field($this->get_single_field_name('editor'));
+
+			$editorParams = array(
 				'textarea_name' => $this->mb->get_the_name(),
 				'editor_height' => 500,
 				'tinymce' => array(
 					'body_class' => $this->name
 				)
-			)); ?>
+			);
+
+			if(isset($this->editor_args) && is_array($this->editor_args) && !empty($this->editor_args)) {
+				$editorParams = array_merge($editorParams, $this->editor_args);
+			}
+
+			$value = html_entity_decode( $this->mb->get_the_value(), ENT_QUOTES, 'UTF-8' );
+			wp_editor($value, $editor_id, $editorParams); ?>
             
             <table class="post-status-info">
                 <tbody>
@@ -73,6 +83,7 @@ class Editor extends AbstractField {
 	public function extract_properties( $properties ) {
 		parent::extract_properties( $properties );
 		$this->title = isset($properties['title']) ? $properties['title'] : null;
+		$this->editor_args = isset($properties['editor_args']) ? $properties['editor_args'] : null;
 	}
 
 	public function the_admin_column_value() {

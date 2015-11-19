@@ -22,9 +22,13 @@ class ColorPicker extends AbstractField {
 
 
 	public function the_admin() {
+//		echo '<pre>';
+//		print_r($this->mb->the_field($this->get_single_field_name('colorPicker')));
+//		print_r($this->mb->meta);
+//		echo '</pre>';
 		?>
 		<div class="<?php echo $this->css_class; ?> extra-text-container">
-			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
+			<?php $this->mb->the_field($this->get_single_field_name('colorpicker')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<input

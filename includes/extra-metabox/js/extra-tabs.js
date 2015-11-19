@@ -1,14 +1,15 @@
-jQuery(document).ready(function($){	
-		
-	$('.extra-tabs .wpa_loop').each(function(index, element) {
+jQuery(document).ready(function($){
+	var $window = $(window);
 
-		initTabs($(element), index);
-
-	});
+	function initialize() {
+		$('.extra-tabs > .wpa_loop').each(function(index, element) {
+			initTabs($(element), index);
+		});
+	}
 
 	function initTabs($wrapper, index) {
 
-		if($wrapper.closest(".tocopy").length) {
+		if($wrapper.closest(".tocopy").length || $wrapper.data('extra-tabs-processed') == 'processed') {
 			return;
 		}
 		$wrapper.attr("id", $wrapper.attr("id") + '-' + index).data("extra-tabs-processed", "processed");
@@ -24,14 +25,14 @@ jQuery(document).ready(function($){
 			if($clone.parent()[0] !== $wrapper[0]) {
 				return;
 			}
+
 			updateMenu();
 			if($nav.children().size()) {
 				$nav.find(" > li:last a").click();
 			}
-			if($clone.find(".extra-tabs .wpa_loop")) {
-				$clone.find(".extra-tabs .wpa_loop").not('.tocopy').each(function(index, element) {
+			if($clone.find(".extra-tabs > .wpa_loop")) {
+				$clone.find(".extra-tabs > .wpa_loop").not('.tocopy').each(function(index, element) {
 					var $item = $(element);
-					console.log($item);
 					if(!$item.data("extra-tabs-processed") || $item.data("extra-tabs-processed") != "processed") {
 						initTabs($item);
 					}
@@ -41,6 +42,10 @@ jQuery(document).ready(function($){
 		$.wpalchemy.bind('wpa_delete', function(event) {
 			updateMenu();
 		});
+
+		function refresh() {
+			$wrapper.tabs('refresh');
+		}
 		
 		function updateMenu() {
 			
@@ -73,12 +78,17 @@ jQuery(document).ready(function($){
 				
 				$nav.append(link);
 				link.wrap("<li />");
-				
+
+				$window.trigger('extra:admin:tabs:newItem');
 			});
 			
 			
 			// SET WRAPPER 
-			$wrapper.tabs();
+			$wrapper.tabs({
+				activate: function (event, ui) {
+					$window.trigger('extra:admin:tabs:refresh');
+				}
+			});
 	
 			// MAKE IT SORTABLE
 			$nav.sortable({
@@ -122,8 +132,7 @@ jQuery(document).ready(function($){
 							});
 						}
 					});
-                    
-                    // refresh the tabs
+					// refresh the tabs
 					$wrapper.tabs( "refresh" );
 				}
 			}).disableSelection();
@@ -131,12 +140,16 @@ jQuery(document).ready(function($){
 			// NO MORE FIRST
 			if(first) {
 				first = false;
+
+				$window.on('extra:admin:tabs:refresh', refresh);
+				$window.on('extra:admin:accordion:refresh', refresh);
 			}
-			
 		}
 		
 		updateMenu();
-	        
 	}
-	
+
+	initialize();
+	$window.on('extra:admin:tabs:newItem', initialize);
+	$window.on('extra:admin:accordion:newItem', initialize);
 });

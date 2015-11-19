@@ -32,7 +32,6 @@ function extra_custom_share($id = 0) {
 
 	// IF LINK, ECHO SHARE
 	if ( ! empty( $link ) ) {
-
 		$facebook = '
 		<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=' . $link . '" class="extra-social-button extra-social-facebook" data-url="' . $link . '" data-counter="https://graph.facebook.com/?ids=' . urlencode($link) . '">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-facebook"></use></svg>
@@ -64,6 +63,7 @@ function extra_custom_share($id = 0) {
 		$return .= $facebook;
 		$return .= $twitter;
 		$return .= $gplus;
+
 		if(array_key_exists('contact-form-select', $extra_options)) {
 			$email = '
 			<a href="#extra-social-share-' . $extra_sharer_counter . '-wrapper" class="extra-social-button extra-social-share">
@@ -139,13 +139,17 @@ add_filter('extra_add_global_options_section', 'extra_custom_share_add_global_op
  *
  *********************/
 function extra_share_contact_wpcf7_before_send_mail($cf7){
+	global $extra_options;
+	if(intval($cf7->id()) !== intval($extra_options['contact-form-select']) || !isset($cf7->posted_data['sender']) || !isset($cf7->posted_data['username'])) {
+		return;
+	}
 	$sender = $cf7->posted_data['sender'];
 	$sender_array = explode('@', $sender);
 
 	$username = $sender_array[0];
 	$username = preg_replace('/[^a-zA-Z0-9]+/', ' ', $username);
 	$username_array = explode(' ', $username);
-	$username_array = array_map(ucfirst, $username_array);
+	$username_array = array_map(function($word) { return ucfirst($word); }, $username_array);
 	$username = implode(' ', $username_array);
 
 	$cf7->posted_data['username'] = $username;

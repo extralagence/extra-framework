@@ -83,6 +83,16 @@ function require_extra_libraries () {
 	//remove_filter( 'image_resize_dimensions', 'bfi_image_resize_dimensions', 10, 5 );
 	//remove_filter( 'image_downsize', 'bfi_image_downsize', 1, 3 );
 
+	// LESS HOOK
+	if(defined('WP_DEBUG') && WP_DEBUG) {
+		add_filter( 'less_force_compile', function() {
+			return true;
+		});
+	}
+	add_filter( 'less_compression', function() {
+		return 'classic';
+	} );
+
     // LESS PHP
     require_once EXTRA_INCLUDES_PATH . '/lessphp/lessc.inc.php';
 

@@ -228,6 +228,7 @@ if(!function_exists('extra_submit_shortcode_handler')) {
 	}
 }
 
+
 /**
  * echo reponsive image
  * @param $src $source
@@ -257,6 +258,32 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 	}
 
 
+	if (is_array($dimensions)) {
+		$image_full_src = null;
+
+		$real_dimensions = array();
+		foreach ($dimensions as $dimension_name => $dimension) {
+			// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
+			if ($dimension[0] === null && $dimension[1] !== null) {
+				if ($image_full_src == null) {
+					$image_full_src = wp_get_attachment_image_src($id, 'full');
+				}
+				if (!empty($image_full_src)) {
+					$dimension[0] = min(floor($dimension[1] * $image_full_src[1] / $image_full_src[2]), $image_full_src[1]);
+				}
+			} else if ($dimension[1] === null && $dimension[0] !== null) {
+				if ($image_full_src == null) {
+					$image_full_src = wp_get_attachment_image_src($id, 'full');
+				}
+				if (!empty($image_full_src)) {
+					$dimension[1] = min(floor($dimension[0] * $image_full_src[2] / $image_full_src[1]), $image_full_src[2]);
+				}
+			}
+			$real_dimensions[$dimension_name] = $dimension;
+ 		}
+		$dimensions = $real_dimensions;
+	}
+
 	// START RENDERING
 	ob_start();
 
@@ -268,7 +295,8 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 			data-alt="<?php echo $alt; ?>"
 			<?php foreach($sizes as $size => $value): ?>
 			data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
+				$dimension = $dimensions[$size];
+				$src = wp_get_attachment_image_src($id, $dimension);
 				echo $src[0];
 			?>"
 			<?php endforeach; ?>>
@@ -276,7 +304,8 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 			<img alt="<?php echo $alt; ?>"
 				 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
 				 src="<?php
-					 $src = wp_get_attachment_image_src($id, reset($dimensions));
+					 $dimension = reset($dimensions);
+					 $src = wp_get_attachment_image_src($id, $dimension);
 					 echo $src[0];
 				?>">
 		</noscript>

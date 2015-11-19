@@ -24,6 +24,6 @@ var DOM = tinymce.DOM;
 			});
 			
 		}
-	});	
+	});
     tinymce.PluginManager.add('extra', tinymce.plugins.Extra);
 })();

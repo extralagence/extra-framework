@@ -7,6 +7,8 @@
  */
 // GET POST GLOBAL
 global $post;
+
+$current_post = apply_filters('extra_arianne_current_post', $post);
 ?>
 <div id="arianne">
 
@@ -14,8 +16,8 @@ global $post;
 
 	<?php
 
-	// if $post variable exists
-	if(isset($post) && !empty($post)) {
+	// if $current_post variable exists
+	if(isset($current_post) && !empty($current_post)) {
 
 		$home = array(
 			'class' => 'home',
@@ -25,7 +27,7 @@ global $post;
 
 		$parents = array();
 
-		$current_post = array(
+		$current_item = array(
 			'class' => 'current',
 			'name'  => '',
 			'link'  => null,
@@ -57,12 +59,12 @@ global $post;
 				'link'  => get_permalink($homeID),
 			);
 
-			$current_post['name'] = sprintf(__('Archive de la catégorie "%s"', 'extra'), single_cat_title('', false));
+			$current_item['name'] = sprintf(__('Archive de la catégorie "%s"', 'extra'), single_cat_title('', false));
 		}
 
 		// SEARCH
 		else if (is_search()) {
-			$current_post['name'] = sprintf(__('Résultats pour la recherche "%s"', 'extra'), get_search_query());
+			$current_item['name'] = sprintf(__('Résultats pour la recherche "%s"', 'extra'), get_search_query());
 		}
 
 		// TIME - DAY
@@ -86,7 +88,7 @@ global $post;
 				'name'  => get_the_time('F'),
 				'link'  => get_month_link(get_the_time('Y'), get_the_time('m')),
 			);
-			$current_post['name'] = get_the_time('d');
+			$current_item['name'] = get_the_time('d');
 		}
 
 		// TIME - MONTH
@@ -105,7 +107,7 @@ global $post;
 				'name'  => get_the_time('Y'),
 				'link'  => get_year_link(get_the_time('Y')),
 			);
-			$current_post['name'] = get_the_time('F');
+			$current_item['name'] = get_the_time('F');
 		}
 
 		// TIME - YEAR
@@ -119,14 +121,14 @@ global $post;
 					'link'  => get_permalink($homeID),
 				);
 			}
-			$current_post['name'] = get_the_time('Y');
+			$current_item['name'] = get_the_time('Y');
 		}
 
 		// NEWS HOME
 		else if(is_home()) {
 			$homeID = get_option("page_for_posts");
 			$home_post = get_post($homeID);
-			$current_post['name'] = $home_post->post_title;
+			$current_item['name'] = $home_post->post_title;
 		}
 
 		// SINGLE, NOT ATTACHMENT
@@ -141,7 +143,7 @@ global $post;
 					'name'  => $post_type->labels->singular_name,
 					'link'  => home_url("/").'/'.$slug['slug'],
 				);
-				$current_post['name'] = get_the_title();
+				$current_item['name'] = get_the_title();
 			}
 			// POST
 			else {
@@ -154,19 +156,19 @@ global $post;
 						'link'  => get_permalink($homeID),
 					);
 				}
-				$current_post['name'] = get_the_title();
+				$current_item['name'] = get_the_title();
 			}
 		}
 
 		// CUSTOM POST TYPE
 		else if (!is_single() && !is_page() && get_post_type() != 'post' && !is_404()) {
 			$post_type = get_post_type_object(get_post_type());
-			$current_post['name'] = $post_type->labels->singular_name;
+			$current_item['name'] = $post_type->labels->singular_name;
 		}
 
 		// ATTACHMENT
 		elseif (is_attachment()) {
-			$parent = get_post($post->post_parent);
+			$parent = get_post($current_post->post_parent);
 			$cat = get_the_category($parent->ID);
 			$cat = $cat[0];
 
@@ -188,17 +190,17 @@ global $post;
 				'name'  => $parent->post_title,
 				'link'  => get_permalink($parent),
 			);
-			$current_post['name'] = get_the_title();
+			$current_item['name'] = get_the_title();
 		}
 
 		// TOP LEVEL PAGE
-		elseif ( is_page() && !$post->post_parent ) {
-			$current_post['name'] = get_the_title();
+		elseif ( is_page() && !$current_post->post_parent ) {
+			$current_item['name'] = get_the_title();
 		}
 
 		// PAGE WITH ANCESTOR
 		else if(is_page()){
-			$ancestors_ids = get_ancestors($post-> ID, 'page');
+			$ancestors_ids = get_ancestors($current_post-> ID, 'page');
 			$ancestors_ids = array_reverse($ancestors_ids);
 			foreach ($ancestors_ids as $ancestor_id) {
 				$parents[] = array(
@@ -207,12 +209,12 @@ global $post;
 					'link'  => get_permalink($ancestor_id),
 				);
 			}
-			$current_post['name'] = get_the_title();
+			$current_item['name'] = get_the_title();
 		}
 
 		// TAG
 		else if(is_tag()) {
-			$current_post['name'] = sprintf(__('Actualités correspondant au tag %s', 'extra'), single_tag_title('', false));
+			$current_item['name'] = sprintf(__('Actualités correspondant au tag %s', 'extra'), single_tag_title('', false));
 		}
 
 
@@ -220,13 +222,13 @@ global $post;
 		else if(is_author()) {
 			global $author;
 			$userdata = get_userdata($author);
-			$current_post['name'] = sprintf(__('Actualités rédigées par %s', 'extra'), $userdata->display_name);
+			$current_item['name'] = sprintf(__('Actualités rédigées par %s', 'extra'), $userdata->display_name);
 		}
 
 
 		// 404
 		else if (is_404()) {
-			$current_post['name'] = __('Erreur 404', 'extra');
+			$current_item['name'] = __('Erreur 404', 'extra');
 		}
 
 		// PAGINATE
@@ -240,21 +242,21 @@ global $post;
 				$name .=  ')';
 			}
 
-			$current_post['name'] .= $name;
+			$current_item['name'] .= $name;
 		}
 
 		$home = apply_filters('extra_arianne_home', $home);
 
 		$parents = apply_filters('extra_arianne_parents', $parents);
 
-		$current_post = apply_filters('extra_arianne_current', $current_post);
+		$current_item = apply_filters('extra_arianne_current', $current_item);
 
 		$delimiter = apply_filters('extra_arianne_delimiter', '');
 
 		$breadcrumbs = array();
 		$breadcrumbs[] = $home;
 		$breadcrumbs = array_merge($breadcrumbs, $parents);
-		$breadcrumbs[] = $current_post;
+		$breadcrumbs[] = $current_item;
 
 		$first = true;
 

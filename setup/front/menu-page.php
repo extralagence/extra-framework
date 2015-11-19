@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vincent
- * Date: 11/02/2014
- * Time: 17:28
- */
 global $post;
+
+
+$current = apply_filters('set_submenu_current', $post);
 
 /**********************
  *
@@ -19,11 +16,11 @@ global $post;
 
 $has_no_children = false;
 // SET PARENT
-if ($post->post_parent !== 0){
-	$ancestors = get_post_ancestors($post->ID);
+if ($current->post_parent !== 0){
+	$ancestors = get_post_ancestors($current->ID);
 	$parent = get_post($ancestors[count($ancestors)-1]);
 } else {
-	$parent = $post;
+	$parent = $current;
 
 	$children = get_pages(
 		array(
@@ -38,7 +35,7 @@ if ($post->post_parent !== 0){
 $parent = apply_filters('set_submenu_parent', $parent);
 
 // SELECTED
-$selectedID = $post->ID;
+$selectedID = $current->ID;
 $selectedID = apply_filters('set_submenu_selected', $selectedID);
 
 
@@ -77,7 +74,7 @@ function menu_page($id, $current_parent, $level = 1) {
 ?>
 <div class="menu-page<?php echo ($has_no_children) ? ' menu-page-empty' : ''; ?>">
 	<?php
-	$selected = ($post->ID == $parent->ID) ? " current-page-item" : "";
+	$selected = ($current->ID == $parent->ID) ? " current-page-item" : "";
 	$parent_page_template = get_post_meta($parent->ID, '_wp_page_template', true);
 	echo '<div class="menu-title page-item-'.$parent->ID.$selected.'">';
 	if($parent_page_template == 'template-redirect.php') {

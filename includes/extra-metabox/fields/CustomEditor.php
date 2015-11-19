@@ -40,18 +40,25 @@ class CustomEditor extends AbstractField {
 			?>
 
 
+			<?php if ($this->title != null) : ?>
+				<h2><?php
+					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+					echo $this->title; ?>
+				</h2>
+			<?php endif; ?>
+
+
 			<?php
-                // ICON
-    			echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+				// ICON
+				echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
 			?>
 
 
 			<?php
-                // LABEL ?
-                if($this->label !== null): ?>
-                <label for="<?php echo $editor_id; ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+				// LABEL ?
+				if($this->label !== null): ?>
+				<label for="<?php echo $editor_id; ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<?php endif; ?>
-
 
 
 			<div id="wp-<?php echo $editor_id; ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active extra-custom-editor">

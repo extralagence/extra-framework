@@ -173,17 +173,7 @@ function extra_share_contact_wpcf7_form_tag($tags) {
 	global $post;
 
 	if($tags['name'] == 'share_message') {
-		$tags['values'] = array(
-			__('Bonjour,', 'extra').'
-
-		'.
-			__('Je vous invite à aller voir ', 'extra').$post->post_title.'
-		'
-			.get_permalink($post->ID).'
-		'.
-
-			__('Bien cordialement.', 'extra')
-		);
+		$tags['values'] = array(__("Bonjour,", 'extra')."\n\n".__("Je vous invite à aller voir ", 'extra').$post->post_title."\n".get_permalink($post->ID)."\n\n".__("Bien cordialement.", 'extra'));
 	}
 	return $tags;
 }

@@ -102,8 +102,8 @@ function extra_gallery_handler($atts, $content = null) {
 			$return .= ' <div class="wrapper">';
 			$return .= '     <ul>';
 			foreach ($ids as $id):
-				$src = wp_get_attachment_image_src($id, 'full');
-				$return .= '        <li><a href="'.bfi_thumb($src[0], array('width'=>1024)).'">';
+				$src = wp_get_attachment_image_src($id, array(1024));
+				$return .= '        <li><a href="'.$src[0].'">';
 				$sizes = apply_filters('extra_responsive_sizes', array(
 					'desktop' => 'only screen and (min-width: 961px)',
 					'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',

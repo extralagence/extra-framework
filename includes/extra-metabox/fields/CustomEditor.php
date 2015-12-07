@@ -96,7 +96,8 @@ class CustomEditor extends AbstractField {
 				        name="<?php $this->mb->the_name(); ?>">
 				            <?php
 				            remove_filter('the_content', 'do_shortcode', 11);
-				            echo apply_filters('the_content', html_entity_decode( $this->mb->get_the_value(), ENT_QUOTES, 'UTF-8' ));
+							$content = (!empty($this->mb->get_the_value()) ? $this->mb->get_the_value() : $this->default);
+				            echo apply_filters('the_content', html_entity_decode( ($content) , ENT_QUOTES, 'UTF-8' ));
 				            add_filter('the_content', 'do_shortcode', 100);
 				            ?>
 			             </textarea>
@@ -142,5 +143,6 @@ class CustomEditor extends AbstractField {
         parent::extract_properties($properties);
         $this->editor_class = isset($properties['editor_class']) ? $properties['editor_class'] : null;
         $this->custom_css = isset($properties['custom_css']) ? $properties['custom_css'] : null;
+        $this->default = isset($properties['default']) ? $properties['default'] : null;
     }
 }

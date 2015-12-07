@@ -59,6 +59,7 @@ class File extends AbstractField {
 
 	public function the_admin_column_value() {
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
-		echo $meta;
+		$name = basename($meta);
+		echo '<a href="'.$meta.'" target="_blank">'.$name.'</a>';
 	}
 }

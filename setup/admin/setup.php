@@ -116,7 +116,6 @@ function extra_tinymce($init) {
     $style_formats = array_merge($style_formats, array());
     $init['style_formats'] = json_encode( $style_formats );
 
-
     global $typenow;
 	global $post;
     if($typenow == 'page' || (isset($_REQUEST['post_id']) && get_post_type($_REQUEST['post_id']) == 'page')) {
@@ -129,7 +128,7 @@ function extra_tinymce($init) {
 
 	return $init;
 }
-add_filter('tiny_mce_before_init', 'extra_tinymce');
+add_filter('tiny_mce_before_init', 'extra_tinymce', 5);
 /**********************
  *
  *

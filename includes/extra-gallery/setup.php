@@ -102,7 +102,7 @@ function extra_gallery_handler($atts, $content = null) {
 			$return .= ' <div class="wrapper">';
 			$return .= '     <ul>';
 			foreach ($ids as $id):
-				$src = wp_get_attachment_image_src($id, array(1024));
+				$src = wp_get_attachment_image_src($id, 'large');
 				$return .= '        <li><a href="'.$src[0].'">';
 				$sizes = apply_filters('extra_responsive_sizes', array(
 					'desktop' => 'only screen and (min-width: 961px)',

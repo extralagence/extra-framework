@@ -508,7 +508,7 @@ if(!function_exists('extra_wp_title')) {
 		return $title;
 	}
 }
-add_filter('wp_title', 'extra_wp_title', 100, 2);
+add_filter('wp_title', 'extra_wp_title', 100, 3);
 /**********************
  *
  *

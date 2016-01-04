@@ -103,7 +103,8 @@ class CustomEditor extends AbstractField {
 				        name="<?php $this->mb->the_name(); ?>">
 				            <?php
 				            remove_filter('the_content', 'do_shortcode', 11);
-							$content = (!empty($this->mb->get_the_value()) ? $this->mb->get_the_value() : $this->default);
+							$current_value = $this->mb->get_the_value();
+							$content = (!empty($value) ? $current_value : $this->default);
 				            echo apply_filters('the_content', html_entity_decode( ($content) , ENT_QUOTES, 'UTF-8' ));
 				            add_filter('the_content', 'do_shortcode', 100);
 				            ?>

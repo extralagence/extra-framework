@@ -120,6 +120,13 @@ class Accordion extends AbstractBlock {
 	}
 
 	public static function get_front($block_data, $name_suffix, $block_height, $block_width) {
+
+		global $extra_page_builder_accordion_counter;
+
+		if (!isset($extra_page_builder_accordion_counter)) {
+			$extra_page_builder_accordion_counter = 1;
+		}
+
 		$html = '';
 		if (isset($block_data[$name_suffix])) {
 			$lines = $block_data[$name_suffix];
@@ -129,9 +136,12 @@ class Accordion extends AbstractBlock {
 				$html .= 	'	<h2 class="accordeon-title">'.$title.'</h2>';
 			}
 			$html .= '	<div class="accordeon-wrapper">';
-			foreach ($lines as $line) {
+			foreach ($lines as $key => $line) {
+
+				$unique_id = 'chapter_'.$extra_page_builder_accordion_counter.'_'.($key+1);
+
 				$html .= '	<div class="accordeon-element">';
-				$html .= '		<h3 class="tab-title">'.$line['section_title'].'</h3>';
+				$html .= '		<h3 class="tab-title"><a href="#/'.$unique_id.'" id="'.$unique_id.'">'.$line['section_title'].'</a></h3>';
 				$html .= '		<div class="tab-content">';
 				if (isset($line['section_content'])) {
 					$html .= '			<div class="inner">'.apply_filters('the_content', html_entity_decode( $line['section_content'], ENT_QUOTES, 'UTF-8' )).'</div>';
@@ -143,6 +153,8 @@ class Accordion extends AbstractBlock {
 			}
 			$html .= '	</div>';
 		}
+
+		$extra_page_builder_accordion_counter++;
 
 		return $html;
 	}

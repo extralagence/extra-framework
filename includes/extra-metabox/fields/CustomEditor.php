@@ -102,10 +102,11 @@ class CustomEditor extends AbstractField {
 				        id="<?php echo $editor_id; ?>"
 				        name="<?php $this->mb->the_name(); ?>">
 				            <?php
-				            remove_filter('the_content', 'do_shortcode', 11);
+				            //remove_filter('the_content', 'do_shortcode', 11);
 							$content = (!empty($this->mb->get_the_value()) ? $this->mb->get_the_value() : $this->default);
-				            echo apply_filters('the_content', html_entity_decode( ($content) , ENT_QUOTES, 'UTF-8' ));
-				            add_filter('the_content', 'do_shortcode', 100);
+//				            echo apply_filters('the_editor_content', html_entity_decode( ($content) , ENT_QUOTES, 'UTF-8' ));
+				            echo apply_filters('the_editor_content', $content);
+				            //add_filter('the_content', 'do_shortcode', 11);
 				            ?>
 			             </textarea>
 				</div>

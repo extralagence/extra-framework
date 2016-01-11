@@ -103,7 +103,11 @@ function extra_gallery_handler($atts, $content = null) {
 			$return .= '     <ul>';
 			foreach ($ids as $id):
 				$src = wp_get_attachment_image_src($id, 'large');
-				$return .= '        <li><a href="'.$src[0].'">';
+				$item_classes = apply_filters('extra_gallery_item_classes', '');
+				if (!empty($item_classes)) {
+					$item_classes = ' class="'.$item_classes.'"';
+				}
+				$return .= '        <li><a'.$item_classes.' href="'.$src[0].'">';
 				$sizes = apply_filters('extra_responsive_sizes', array(
 					'desktop' => 'only screen and (min-width: 961px)',
 					'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',

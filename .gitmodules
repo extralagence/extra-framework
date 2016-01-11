@@ -16,3 +16,6 @@
 [submodule "modules/extra.slider/inc"]
 	path = modules/extra.slider/inc
 	url = https://github.com/extralagence/extra.slider.git
+[submodule "modules/extra.cookies/inc"]
+	path = modules/extra.cookies/inc
+	url = git://github.com/extralagence/extra.cookies.git

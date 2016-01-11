@@ -508,7 +508,7 @@ if(!function_exists('extra_wp_title')) {
 		return $title;
 	}
 }
-add_filter('wp_title', 'extra_wp_title', 100, 2);
+add_filter('wp_title', 'extra_wp_title', 100, 3);
 /**********************
  *
  *
@@ -617,10 +617,56 @@ function dateformat_to_js($php_format)
     }
     return $jqueryui_format;
 }
-
+/**********************
+ *
+ *
+ *
+ * STR TO LOWER UTF8
+ *
+ *
+ *
+ *********************/
 function strtolower_utf8($inputString) {
 	$outputString    = utf8_decode($inputString);
 	$outputString    = strtolower($outputString);
 	$outputString    = utf8_encode($outputString);
 	return $outputString;
 }
+/**********************
+ *
+ *
+ *
+ * NO P AROUND IMAGES
+ *
+ *
+ *
+ *********************/
+function filter_ptags_on_images($content){
+	$content = preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+	$content = preg_replace('/<p>\s*(<iframe .*>)?\s*(<\/iframe>)?\s*<\/p>/iU', '\1\2', $content);
+	return $content;
+}
+add_filter('the_content', 'filter_ptags_on_images');
+/**********************
+ *
+ *
+ *
+ * ALLOW SVG
+ *
+ *
+ *
+ *********************/
+//function extra_upload_mimes_svg($mimes) {
+//	$mimes['svg'] = 'image/svg+xml';
+//	return $mimes;
+//}
+//add_filter('upload_mimes', 'extra_upload_mimes_svg');
+//function fix_svg_thumb_display() {
+//	echo '
+//    td.media-icon img[src$=".svg"], img[src$=".svg"].attachment-post-thumbnail {
+//      width: 100% !important;
+//      height: auto !important;
+//    }
+//  ';
+//}
+//add_action('admin_head', 'fix_svg_thumb_display');

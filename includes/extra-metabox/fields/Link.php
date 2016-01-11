@@ -224,11 +224,11 @@ class Link extends AbstractField {
 	}
 
 	public static function get_permalink_from_meta($meta, $name, $separator) {
-		$type = $meta[$name.$separator.'type'];
-		$url = $meta[$name.$separator.'url'];
-		$content = $meta[$name.$separator.'content'];
-		$taxonomy = $meta[$name.$separator.'taxonomy'];
-		$taxonomy_slug = $meta[$name.$separator.'taxonomy-slug'];
+		$type = isset($meta[$name.$separator.'type']) ? $meta[$name.$separator.'type'] : '';
+		$url = isset($meta[$name.$separator.'url']) ? $meta[$name.$separator.'url'] : '';
+		$content = isset($meta[$name.$separator.'content']) ? $meta[$name.$separator.'content'] : '';
+		$taxonomy = isset($meta[$name.$separator.'taxonomy']) ? $meta[$name.$separator.'taxonomy'] : '';
+		$taxonomy_slug = isset($meta[$name.$separator.'taxonomy-slug']) ? $meta[$name.$separator.'taxonomy-slug'] : '';
 
 		if ($type == 'content') {
 			return get_permalink($content);

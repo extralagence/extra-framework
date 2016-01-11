@@ -49,7 +49,7 @@ class Checkbox extends AbstractField {
 		if ($meta) {
 			_e("Oui", "extra-admin");
 		} else {
-			echo '-';
+			_e("Non", "extra-admin");
 		}
 	}
 }

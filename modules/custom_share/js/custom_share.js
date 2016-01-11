@@ -20,7 +20,10 @@ $(document).ready(function() {
 		});
 	});
 
-	$('.extra-social-share').fancybox();
+	$('.extra-social-share').fancybox({
+		margin: 0,
+		padding: 0
+	});
 
 
 });

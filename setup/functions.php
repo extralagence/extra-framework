@@ -646,7 +646,32 @@ function filter_ptags_on_images($content){
 	$content = preg_replace('/<p>\s*(<iframe .*>)?\s*(<\/iframe>)?\s*<\/p>/iU', '\1\2', $content);
 	return $content;
 }
-add_filter('the_content', 'filter_ptags_on_images');
+add_filter('the_content', 'filter_ptags_on_images', 10);
+
+/**********************
+ *
+ *
+ *
+ * CORRECT AUTO EMBED FOR YOUTUBE LINK
+ *
+ *
+ *
+ *********************/
+/**
+ * Add a new line around paragraph links
+ * @param string $content
+ * @return string $content
+ */
+function my_autoembed_adjustments( $content ){
+
+	$pattern = '|<p>\s*(https?://[^\s"]+)\s*</p>|im';    // your own pattern
+	$to      = "<p>\n$1\n</p>";                          // your own pattern
+	$content = preg_replace( $pattern, $to, $content );
+
+	return $content;
+
+}
+add_filter( 'the_content', 'my_autoembed_adjustments', 7 );
 /**********************
  *
  *

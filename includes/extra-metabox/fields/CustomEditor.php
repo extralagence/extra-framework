@@ -102,7 +102,8 @@ class CustomEditor extends AbstractField {
 				        id="<?php echo $editor_id; ?>"
 				        name="<?php $this->mb->the_name(); ?>">
 				            <?php
-							$content = (!empty($this->mb->get_the_value()) ? $this->mb->get_the_value() : $this->default);
+							$content_value = $this->mb->get_the_value();
+							$content = (!empty($content_value) ? $content_value : $this->default);
 							echo apply_filters('the_editor_content', $content);
 				            ?>
 			             </textarea>

@@ -122,7 +122,7 @@ function extra_custom_share_add_global_options_section($sections) {
 				'type'  => 'select',
 				'title' => __( 'Formulaire de contact', 'extra-admin' ),
 				'data' => 'post',
-				'args'  => array('post_type' => array('wpcf7_contact_form')),
+				'args'  => array('post_type' => array('wpcf7_contact_form'), 'posts_per_page' => -1),
 			)
 		)
 	);

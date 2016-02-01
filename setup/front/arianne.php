@@ -128,7 +128,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 		else if(is_home()) {
 			$homeID = get_option("page_for_posts");
 			$home_post = get_post($homeID);
-			$current_item['name'] = $home_post->post_title;
+			$current_item['name'] = ($home_post !== null) ? $home_post->post_title : '';
 		}
 
 		// SINGLE, NOT ATTACHMENT

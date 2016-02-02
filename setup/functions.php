@@ -632,7 +632,10 @@ function strtolower_utf8($inputString) {
 	$outputString    = utf8_encode($outputString);
 	return $outputString;
 }
-/**********************
+
+function _print_r($a) {
+	echo "<pre>", htmlspecialchars(print_r($a, true)), "</pre>";
+}/**********************
  *
  *
  *

@@ -78,11 +78,6 @@ function require_extra_libraries () {
 	// INCLUDE EXTRA GALLERY
 	require_once EXTRA_INCLUDES_PATH . '/extra-gallery/setup.php';
 
-	// BFI THUMB
-	require_once EXTRA_INCLUDES_PATH . '/WP-OTF-Regenerate-Thumbnails/otf_regen_thumbs.php';
-	//remove_filter( 'image_resize_dimensions', 'bfi_image_resize_dimensions', 10, 5 );
-	//remove_filter( 'image_downsize', 'bfi_image_downsize', 1, 3 );
-
 	// LESS HOOK
 	if(defined('WP_DEBUG') && WP_DEBUG) {
 		add_filter( 'less_force_compile', function() {
@@ -100,10 +95,6 @@ function require_extra_libraries () {
     require_once EXTRA_INCLUDES_PATH . '/wp-less/wp-less.php';
 
     // REDUX FRAMEWORK
-    if (!class_exists('ReduxFramework')) {
-        require_once EXTRA_INCLUDES_PATH . '/redux-framework/ReduxCore/framework.php';
-    }
-    // Modify {$redux_opt_name} to match your opt_name
     add_action("redux/extensions/extra_options/before", 'redux_register_custom_extension_loader', 0);
 }
 function redux_register_custom_extension_loader($ReduxFramework) {

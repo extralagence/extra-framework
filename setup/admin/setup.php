@@ -266,6 +266,16 @@ add_action( 'admin_head', 'extra_hide_update_notices', 1 );
  *
  *
  *
+ * PLUGIN DEPENCIES
+ *
+ *
+ *
+ *********************/
+require_once 'extra-plugin-dependencies.php';
+/**********************
+ *
+ *
+ *
  * WELCOME WIDGET
  *
  *

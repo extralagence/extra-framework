@@ -28,6 +28,7 @@ class Tabs extends AbstractGroup {
 	protected $add_label;
 	protected $delete_label;
 	protected $bloc_label;
+	protected $title_text_field;
 
 	public static function init () {
 		parent::init();
@@ -46,7 +47,7 @@ class Tabs extends AbstractGroup {
 				</h2>
 			<?php endif; ?>
 
-			<div class="repeatable extra-tabs">
+			<div class="repeatable extra-tabs" data-title_text_field="<?php echo $this->title_text_field; ?>">
 
                 <?php if($this->fixed === false): ?>
 				<div class="repeat-actions">
@@ -85,6 +86,7 @@ class Tabs extends AbstractGroup {
         $this->add_label = isset($properties['add_label']) ? $properties['add_label'] : null;
 		$this->bloc_label = isset($properties['bloc_label']) ? $properties['bloc_label'] : null;
         $this->delete_label = isset($properties['delete_label']) ? $properties['delete_label'] : null;
+		$this->title_text_field = isset($properties['title_text_field']) ? $properties['title_text_field'] : null;
 	}
 
 	public function the_admin_column_value() {

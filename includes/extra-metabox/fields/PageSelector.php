@@ -10,12 +10,17 @@
  * - name (required)
  * - label (optional)
  * - icon (optional)
+ * - post_type (optional)
+ * - option_none_value (optional)
+ * - option_none_text (optional)
  * - placeholder (optional): label when the field is empty
  * - regex (optional): regex checked for each changes
  */
 class PageSelector extends AbstractField {
 
 	protected $post_type;
+	protected $option_none_value;
+	protected $option_none_text;
 
 	public static function init () {
 		parent::init();

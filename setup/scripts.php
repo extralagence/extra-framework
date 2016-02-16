@@ -10,7 +10,7 @@
  *********************/
 function extra_template_enqueue_scripts() {
 	// WEB FONT LOADER
-	wp_enqueue_script('webfontloader', EXTRA_URI.'/assets/js/lib/webfontloader.js', null, false, false);
+//	wp_enqueue_script('webfontloader', EXTRA_URI.'/assets/js/lib/webfontloader.js', null, false, false);
 	// REPLACE JQUERY
 	wp_deregister_script('jquery');
 	wp_enqueue_script('jquery', 'http://code.jquery.com/jquery-2.2.0.min.js', null, null, true);

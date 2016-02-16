@@ -97,6 +97,10 @@ function extra_custom_share($id = 0) {
  *
  *********************/
 function extra_custom_social_enqueue_assets() {
+	$extra_enabled_custom_share = apply_filters('extra_enabled_custom_share', true);
+	if(!$extra_enabled_custom_share) {
+		return;
+	}
 	wp_enqueue_style('extra-custom-share', EXTRA_MODULES_URI.'/custom_share/css/custom_share.less');
 	wp_enqueue_script('extra-custom-share', EXTRA_MODULES_URI.'/custom_share/js/custom_share.js', array('jquery'), false, true);
 }
@@ -111,6 +115,10 @@ add_action('wp_enqueue_scripts', 'extra_custom_social_enqueue_assets');
  *
  *********************/
 function extra_custom_share_add_global_options_section($sections) {
+	$extra_enabled_custom_share = apply_filters('extra_enabled_custom_share', true);
+	if(!$extra_enabled_custom_share) {
+		return $sections;
+	}
 	// PAGES
 	$sections[] = array(
 		'icon'   => 'el-icon-share',

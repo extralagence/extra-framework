@@ -22,6 +22,7 @@
  * - add_label (optional): label for the add button
  * - delete_label (optional): label for the delete button
  * - bloc_label (optional): title for each child
+ * - title_text_field (optional): field name to use to name the tab
  */
 class Tabs extends AbstractGroup {
 

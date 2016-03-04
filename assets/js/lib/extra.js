@@ -221,6 +221,11 @@ $(document).ready(function () {
 								// APPEND
 								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
 									container.css('background-image', "url('" + imgSrc + "')");
+								}
+								else if (container.hasClass('responsiveSvgImagePlaceholder')) {
+									container.find('>svg').find('image').attr({
+										'xlink:href': imgSrc
+									});
 								} else {
 									imgElement.appendTo(container);
 								}

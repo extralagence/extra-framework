@@ -189,8 +189,7 @@ add_filter( 'attachment_fields_to_edit', function ($form_fields, $post) {
 		'label' => __( "Taille de l'image", "extra-admin" ),
 		'input' => 'html',
 		'value' => $value,
-		'html' => "<input checked='checked' type='radio' id='extra_image_size_{$post->ID}_auto' name='attachments[{$post->ID}][extra_image_size]' value='auto'> <label for='extra_image_size_{$post->ID}_auto'>".__("Taille automatique", "extra-admin")."</label><br>
-				   <input type='radio' id='extra_image_size_{$post->ID}_custom' name='attachments[{$post->ID}][extra_image_size]' value='custom'> <label for='extra_image_size_{$post->ID}_custom'>".__("Taille personnalisée", "extra-admin")."</label>",
+		'html' => "<input checked='checked' type='radio' id='extra_image_size_{$post->ID}_auto' name='attachments[{$post->ID}][extra_image_size]' value='auto'> <label for='extra_image_size_{$post->ID}_auto'>".__("Taille automatique", "extra-admin")."</label><br><input type='radio' id='extra_image_size_{$post->ID}_custom' name='attachments[{$post->ID}][extra_image_size]' value='custom'> <label for='extra_image_size_{$post->ID}_custom'>".__("Taille personnalisée", "extra-admin")."</label>",
 	);
 
 	return $form_fields;

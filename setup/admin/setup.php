@@ -319,4 +319,5 @@ function extra_edit_posts_per_page( $posts_per_page, $post_type ) {
 	return ($posts_per_page !== 20) ? $posts_per_page : 99;
 }
 add_filter( 'edit_posts_per_page', 'extra_edit_posts_per_page', 10, 2);
-?>
+
+include_once 'typekit.editor.php';

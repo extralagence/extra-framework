@@ -2097,9 +2097,11 @@ class WPAlchemy_MetaBox {
 
 		$length = is_null( $length ) ? $cnt : $length;
 
-		if ( $this->in_loop == 'multi' AND $cnt > $length ) {
-			$length = $cnt;
-		}
+		// Length is more important than the data count
+		// Strip away data surplus
+//		if ( $this->in_loop == 'multi' AND $cnt > $length ) {
+//			$length = $cnt;
+//		}
 
 		$this->length = $length;
 

@@ -8,14 +8,16 @@
  *
  *
  *********************/
-function extra_body_class($classes) {
-	if(is_page()) {
+function extra_body_class( $classes ) {
+	if ( is_page() ) {
 		global $post;
-		$classes[] = 'page-'.$post->post_name;
+		$classes[] = 'page-' . $post->post_name;
 	}
+
 	return $classes;
 }
-add_filter('body_class', 'extra_body_class');
+
+add_filter( 'body_class', 'extra_body_class' );
 /**********************
  *
  *
@@ -25,10 +27,11 @@ add_filter('body_class', 'extra_body_class');
  *
  *
  *********************/
-function extra_wpcf7_ajax_loader () {
+function extra_wpcf7_ajax_loader() {
 	return THEME_URI . '/assets/img/loading.gif';
 }
-add_filter('wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader');
+
+add_filter( 'wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader' );
 /**********************
  *
  *
@@ -38,17 +41,18 @@ add_filter('wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader');
  *
  *
  *********************/
-if(!function_exists('extra_search_form')) {
-    function extra_search_form($form) {
-    	$form = '
+if ( ! function_exists( 'extra_search_form' ) ) {
+	function extra_search_form( $form ) {
+		$form = '
     	<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
-    		<label for="s">'.__("Une recherche ?", "extra").'</label>
-    		<input type="text" value="'.get_search_query().'" name="s" id="s" />
-    		<button type="submit" id="searchsubmit"><span class="icon icon-search"></span><span class="text">'.__('Valider', 'extra').'</span></button>
+    		<label for="s">' . __( "Une recherche ?", "extra" ) . '</label>
+    		<input type="text" value="' . get_search_query() . '" name="s" id="s" />
+    		<button type="submit" id="searchsubmit"><span class="icon icon-search"></span><span class="text">' . __( 'Valider', 'extra' ) . '</span></button>
     	</form>
     	';
-    	return $form;
-    }
+
+		return $form;
+	}
 }
 add_filter( 'get_search_form', 'extra_search_form' );
 /**********************
@@ -61,15 +65,17 @@ add_filter( 'get_search_form', 'extra_search_form' );
  *
  *********************/
 // LENGTH
-function extra_excerpt_length($length) {
+function extra_excerpt_length( $length ) {
 	return 35;
 }
-add_filter('excerpt_length', 'extra_excerpt_length', 999);
+
+add_filter( 'excerpt_length', 'extra_excerpt_length', 999 );
 // TEXT
 function extra_excerpt_more( $more ) {
 	return '...';
 }
-add_filter('excerpt_more', 'extra_excerpt_more');
+
+add_filter( 'excerpt_more', 'extra_excerpt_more' );
 /**********************
  *
  *
@@ -79,19 +85,24 @@ add_filter('excerpt_more', 'extra_excerpt_more');
  *
  *
  *********************/
-function extra_img_caption_shortcode($x = null, $attr, $content){
-	extract(shortcode_atts(array(
-		'id'	=> '',
-		'align'	=> 'alignnone',
-		'width'	=> '',
+function extra_img_caption_shortcode( $x = null, $attr, $content ) {
+	extract( shortcode_atts( array(
+		'id'      => '',
+		'align'   => 'alignnone',
+		'width'   => '',
 		'caption' => ''
-	), $attr));
-	if ( 1 > (int) $width || empty($caption) )
+	), $attr ) );
+	if ( 1 > (int) $width || empty( $caption ) ) {
 		return $content;
-	if ( $id ) $id = 'id="' . $id . '" ';
-	return '<div ' . $id . 'class="wp-caption ' . $align . '" style="width: ' . (0 + (int) $width) . 'px">' . do_shortcode( $content ) . '<div class="wp-caption-text">' . $caption . '</div></div>';
+	}
+	if ( $id ) {
+		$id = 'id="' . $id . '" ';
+	}
+
+	return '<div ' . $id . 'class="wp-caption ' . $align . '" style="width: ' . ( 0 + (int) $width ) . 'px">' . do_shortcode( $content ) . '<div class="wp-caption-text">' . $caption . '</div></div>';
 }
-add_filter('img_caption_shortcode', 'extra_img_caption_shortcode', 10, 3);
+
+add_filter( 'img_caption_shortcode', 'extra_img_caption_shortcode', 10, 3 );
 /**********************
  *
  *
@@ -101,10 +112,10 @@ add_filter('img_caption_shortcode', 'extra_img_caption_shortcode', 10, 3);
  *
  *
  *********************/
-define('ICL_DONT_LOAD_NAVIGATION_CSS', true);
-define('ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS', true);
-define('ICL_DONT_LOAD_LANGUAGES_JS', true);
-define('ICL_DONT_PROMOTE', true);
+define( 'ICL_DONT_LOAD_NAVIGATION_CSS', true );
+define( 'ICL_DONT_LOAD_LANGUAGE_SELECTOR_CSS', true );
+define( 'ICL_DONT_LOAD_LANGUAGES_JS', true );
+define( 'ICL_DONT_PROMOTE', true );
 /**********************
  *
  *
@@ -114,22 +125,23 @@ define('ICL_DONT_PROMOTE', true);
  *
  *
  *********************/
-function extra_language_switcher(){
-	if(function_exists('icl_get_languages')) {
-		$languages = icl_get_languages('skip_missing=0&orderby=KEY');
-		if(1 < count($languages)){
+function extra_language_switcher() {
+	if ( function_exists( 'icl_get_languages' ) ) {
+		$languages = icl_get_languages( 'skip_missing=0&orderby=KEY' );
+		if ( 1 < count( $languages ) ) {
 			echo '<ul id="language-switcher">';
-			foreach($languages as $l){
-				if($l['active']) {
-				    echo '<li><span class="'.$l['language_code'].' active">'.$l['language_code'].'</span></li>';
-			    } else {
-                    echo '<li><a class="'.$l['language_code'].'" href="'.$l['url'].'">'.$l['language_code'].'</a></li>';
-                }
+			foreach ( $languages as $l ) {
+				if ( $l['active'] ) {
+					echo '<li><span class="' . $l['language_code'] . ' active">' . $l['language_code'] . '</span></li>';
+				} else {
+					echo '<li><a class="' . $l['language_code'] . '" href="' . $l['url'] . '">' . $l['language_code'] . '</a></li>';
+				}
 			}
 			echo '</ul>';
 		}
 	}
 }
+
 ///**********************
 // *
 // *
@@ -176,11 +188,11 @@ function extra_language_switcher(){
 //}
 //add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
 
-function remove_parent_classes($class)
-{
+function remove_parent_classes( $class ) {
 	// check for current page classes, return false if they exist.
-	return ($class == 'current_page_item' || $class == 'current_page_parent' || $class == 'current_page_ancestor'  || $class == 'current-menu-item') ? FALSE : TRUE;
+	return ( $class == 'current_page_item' || $class == 'current_page_parent' || $class == 'current_page_ancestor' || $class == 'current-menu-item' ) ? false : true;
 }
+
 /**********************
  *
  *
@@ -190,14 +202,15 @@ function remove_parent_classes($class)
  *
  *
  *********************/
-add_action('init', 'extra_add_shortcode_submit', 10);
+add_action( 'init', 'extra_add_shortcode_submit', 10 );
 function extra_add_shortcode_submit() {
-	if(function_exists('wpcf7_remove_shortcode')) {
+	if ( function_exists( 'wpcf7_remove_shortcode' ) ) {
 		wpcf7_remove_shortcode( 'submit' );
 		wpcf7_add_shortcode( 'submit', 'extra_submit_shortcode_handler' );
 	}
 }
-if(!function_exists('extra_submit_shortcode_handler')) {
+
+if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
 	function extra_submit_shortcode_handler( $tag ) {
 		$tag = new WPCF7_Shortcode( $tag );
 
@@ -215,7 +228,7 @@ if(!function_exists('extra_submit_shortcode_handler')) {
 			$value = __( 'Send', 'wpcf7' );
 		}
 
-		$value = apply_filters('extra_cf7_submit_value', $value);
+		$value = apply_filters( 'extra_cf7_submit_value', $value );
 
 		$atts['type'] = 'submit';
 		//$atts['value'] = $value;
@@ -231,56 +244,57 @@ if(!function_exists('extra_submit_shortcode_handler')) {
 
 /**
  * echo reponsive image
+ *
  * @param $src $source
  * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '') {
+function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
 
 	// hook it to override available sizes
-	$sizes = apply_filters('extra_responsive_sizes', array(
+	$sizes = apply_filters( 'extra_responsive_sizes', array(
 		'desktop' => 'only screen and (min-width: 961px)',
-		'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
-		'mobile' => 'only screen and (max-width: 690px)'
-	));
+		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
+		'mobile'  => 'only screen and (max-width: 690px)'
+	) );
 
 	// SRC IS AN ID
-	if(!is_numeric($id)) {
-		throw new Exception(__("This must be an integer", 'extra'));
+	if ( ! is_numeric( $id ) ) {
+		throw new Exception( __( "This must be an integer", 'extra' ) );
 	}
-	if (!isset($alt)) {
+	if ( ! isset( $alt ) ) {
 		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
-		if (empty($alt)) {
-			$attachment = get_post($id);
-			$alt = $attachment->post_title;
+		if ( empty( $alt ) ) {
+			$attachment = get_post( $id );
+			$alt        = $attachment->post_title;
 		}
 	}
 
 
-	if (is_array($dimensions)) {
+	if ( is_array( $dimensions ) ) {
 		$image_full_src = null;
 
 		$real_dimensions = array();
-		foreach ($dimensions as $dimension_name => $dimension) {
+		foreach ( $dimensions as $dimension_name => $dimension ) {
 			// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
-			if ($dimension[0] === null && $dimension[1] !== null) {
-				if ($image_full_src == null) {
-					$image_full_src = wp_get_attachment_image_src($id, 'full');
+			if ( $dimension[0] === null && $dimension[1] !== null ) {
+				if ( $image_full_src == null ) {
+					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
 				}
-				if (!empty($image_full_src)) {
-					$dimension[0] = min(floor($dimension[1] * $image_full_src[1] / $image_full_src[2]), $image_full_src[1]);
+				if ( ! empty( $image_full_src ) ) {
+					$dimension[0] = min( floor( $dimension[1] * $image_full_src[1] / $image_full_src[2] ), $image_full_src[1] );
 				}
-			} else if ($dimension[1] === null && $dimension[0] !== null) {
-				if ($image_full_src == null) {
-					$image_full_src = wp_get_attachment_image_src($id, 'full');
+			} else if ( $dimension[1] === null && $dimension[0] !== null ) {
+				if ( $image_full_src == null ) {
+					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
 				}
-				if (!empty($image_full_src)) {
-					$dimension[1] = min(floor($dimension[0] * $image_full_src[2] / $image_full_src[1]), $image_full_src[2]);
+				if ( ! empty( $image_full_src ) ) {
+					$dimension[1] = min( floor( $dimension[0] * $image_full_src[2] / $image_full_src[1] ), $image_full_src[2] );
 				}
 			}
-			$real_dimensions[$dimension_name] = $dimension;
- 		}
+			$real_dimensions[ $dimension_name ] = $dimension;
+		}
 		$dimensions = $real_dimensions;
 	}
 
@@ -289,34 +303,34 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 
 	?>
 
-	<figure class="responsiveImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?><?php echo (!empty($caption)) ? ' wp-caption' : ''; ?>">
+	<figure class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>">
 		<noscript
-			<?php echo ($img_itemprop) ? 'data-img-itemprop="'.$img_itemprop.'"' : ''; ?>
+			<?php echo ( $img_itemprop ) ? 'data-img-itemprop="' . $img_itemprop . '"' : ''; ?>
 			data-alt="<?php echo $alt; ?>"
-			<?php foreach($sizes as $size => $value): ?>
-			data-src-<?php echo $size; ?>="<?php
-				$dimension = $dimensions[$size];
-				$src = wp_get_attachment_image_src($id, $dimension);
+			<?php foreach ( $sizes as $size => $value ): ?>
+				data-src-<?php echo $size; ?>="<?php
+				$dimension = $dimensions[ $size ];
+				$src       = wp_get_attachment_image_src( $id, $dimension );
 				echo $src[0];
-			?>"
+				?>"
 			<?php endforeach; ?>>
 
 			<img alt="<?php echo $alt; ?>"
-				 <?php echo ($img_itemprop) ? 'itemprop="'.$img_itemprop.'"' : ''; ?>
+				<?php echo ( $img_itemprop ) ? 'itemprop="' . $img_itemprop . '"' : ''; ?>
 				 src="<?php
-					 $dimension = reset($dimensions);
-					 $src = wp_get_attachment_image_src($id, $dimension);
-					 echo $src[0];
-				?>">
+				 $dimension = reset( $dimensions );
+				 $src       = wp_get_attachment_image_src( $id, $dimension );
+				 echo $src[0];
+				 ?>">
 		</noscript>
 		<img class="placeholder-image"
-			 src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
-			 alt=""
-			 style="<?php
-			 $first_dimension = reset($dimensions);
-			 echo (!empty($first_dimension[0])) ? 'width: ' . $first_dimension[0] . 'px;' : '';
-			 echo (!empty($first_dimension[1])) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>" />
-		<?php if (!empty($caption)) : ?>
+		     src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
+		     alt=""
+		     style="<?php
+		     $first_dimension = reset( $dimensions );
+		     echo ( ! empty( $first_dimension[0] ) ) ? 'width: ' . $first_dimension[0] . 'px;' : '';
+		     echo ( ! empty( $first_dimension[1] ) ) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>"/>
+		<?php if ( ! empty( $caption ) ) : ?>
 			<figcaption class="wp-caption-text">
 				<?php echo $caption; ?>
 			</figcaption>
@@ -324,57 +338,115 @@ function extra_get_responsive_image($id = 0, $dimensions = 'thumbnail', $class =
 	</figure>
 	<?php $return = ob_get_contents(); ?>
 
-<?php
+	<?php
 	ob_end_clean();
+
 	return $return;
 }
-function extra_responsive_image($id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop= '', $caption = '') {
-	echo extra_get_responsive_image($id, $dimensions, $class, $alt, $img_itemprop, $caption);
+
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
+	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption );
 }
 
 /**
  * echo reponsive image
+ *
  * @param $src $source
  * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
  * @param string $class add custom classes
  * @param string $alt
  */
-function extra_get_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
+function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
 
 	// hook it to override available sizes
-	$sizes = apply_filters('extra_responsive_sizes', array(
+	$sizes = apply_filters( 'extra_responsive_sizes', array(
 		'desktop' => 'only screen and (min-width: 961px)',
-		'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
-		'mobile' => 'only screen and (max-width: 690px)'
-	));
+		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
+		'mobile'  => 'only screen and (max-width: 690px)'
+	) );
 
 	// SRC IS AN ID
-	if(!is_numeric($id)) {
-		throw new Exception(__("This must be an integer", 'extra'));
+	if ( ! is_numeric( $id ) ) {
+		throw new Exception( __( "This must be an integer", 'extra' ) );
 	}
 	// START RENDERING
 	ob_start();
 	?>
 
-	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo (!empty($class)) ? ' ' . $class : ''; ?>"
-		style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');" >
+	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>"
+	     style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');">
 		<noscript
-			<?php foreach($sizes as $size => $value): ?>
+			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src($id, $dimensions[$size]);
-				echo $src[0];?>"
-				<?php endforeach; ?>>
+				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+				echo $src[0]; ?>"
+			<?php endforeach; ?>>
 		</noscript>
 	</div>
 	<?php $return = ob_get_contents(); ?>
 
-<?php
+	<?php
 	ob_end_clean();
+
 	return $return;
 }
-function extra_responsive_background_image($id = 0, $dimensions = 'thumbnail', $class = '') {
-	echo extra_get_responsive_background_image($id, $dimensions, $class);
+
+function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
+	echo extra_get_responsive_background_image( $id, $dimensions, $class );
 }
+
+/**
+ * get svg responsive image
+ *
+ * @param $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
+ * @param string $alt
+ */
+function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
+
+	// hook it to override available sizes
+	$sizes = apply_filters( 'extra_responsive_sizes', array(
+		'desktop' => 'only screen and (min-width: 961px)',
+		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
+		'mobile'  => 'only screen and (max-width: 690px)'
+	) );
+
+	// SRC IS AN ID
+	if ( ! is_numeric( $id ) ) {
+		throw new Exception( __( "This must be an integer", 'extra' ) );
+	}
+	// START RENDERING
+	ob_start();
+	?>
+
+	<div class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
+		<svg width="100%"
+		     height="100%"
+		     xmlns="http://www.w3.org/2000/svg"
+		     xmlns:xlink="http://www.w3.org/1999/xlink">
+			<image xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png" x="0" y="0" width="100%" height="100%"></image>
+		</svg>
+		<noscript
+			<?php foreach ( $sizes as $size => $value ): ?>
+				data-src-<?php echo $size; ?>="<?php
+				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+				echo $src[0]; ?>"
+			<?php endforeach; ?>>
+		</noscript>
+	</div>
+	<?php $return = ob_get_contents(); ?>
+
+	<?php
+	ob_end_clean();
+
+	return $return;
+}
+
+function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
+	echo extra_get_responsive_svg_image( $id, $dimensions, $class );
+}
+
 /**
  * Shortify a string with "..."
  *
@@ -383,19 +455,19 @@ function extra_responsive_background_image($id = 0, $dimensions = 'thumbnail', $
  *
  * @return null|string
  */
-function extra_shortify_text ($text, $max_length) {
-	if (strlen($text) > $max_length) {
-		$text_array = explode(' ', $text);
-		$text = null;
-		foreach ($text_array as $text_part) {
-			if ($text == null) {
+function extra_shortify_text( $text, $max_length ) {
+	if ( strlen( $text ) > $max_length ) {
+		$text_array = explode( ' ', $text );
+		$text       = null;
+		foreach ( $text_array as $text_part ) {
+			if ( $text == null ) {
 				$text = $text_part;
-				if (strlen($text) > $max_length) {
-					$text = substr($text, 0, $max_length-1).'...';
+				if ( strlen( $text ) > $max_length ) {
+					$text = substr( $text, 0, $max_length - 1 ) . '...';
 					break;
 				}
-			} else if (strlen($text.' '.$text_part) <= $max_length) {
-				$text .= ' '.$text_part;
+			} else if ( strlen( $text . ' ' . $text_part ) <= $max_length ) {
+				$text .= ' ' . $text_part;
 			} else {
 				$text .= '...';
 				break;
@@ -406,40 +478,32 @@ function extra_shortify_text ($text, $max_length) {
 	return $text;
 }
 
-function extra_get_archive_title ($id = 0) {
+function extra_get_archive_title( $id = 0 ) {
 	global $post;
 	$old_post = $post;
 
-	if ($id != 0) {
-		$post = get_post($id);
+	if ( $id != 0 ) {
+		$post = get_post( $id );
 	}
 
 	$title = null;
-	if(isset($post) && !empty($post)) {
+	if ( isset( $post ) && ! empty( $post ) ) {
 		// CATEGORY
-		if (is_category()) {
-			$title = sprintf(__('Archive de la catégorie "%s"', 'extra'), single_cat_title('', false));
-		}
+		if ( is_category() ) {
+			$title = sprintf( __( 'Archive de la catégorie "%s"', 'extra' ), single_cat_title( '', false ) );
+		} // SEARCH
+		else if ( is_search() ) {
+			$title = sprintf( __( 'Résultats pour la recherche "%s"', 'extra' ), get_search_query() );
+		} // TIME - DAY
+		else if ( is_day() ) {
+			$title = sprintf( __( 'Archive du %s', 'extra' ), get_the_time( 'd F Y' ) );
 
-		// SEARCH
-		else if (is_search()) {
-			$title = sprintf(__('Résultats pour la recherche "%s"', 'extra'), get_search_query());
-		}
-
-		// TIME - DAY
-		else if (is_day()) {
-			$title = sprintf(__('Archive du %s', 'extra'), get_the_time('d F Y'));
-
-		}
-
-		// TIME - MONTH
-		else if (is_month()) {
-			$title = sprintf(__('Archive %s', 'extra'), get_the_time('F Y'));
-		}
-
-		// TIME - YEAR
-		else if (is_year()) {
-			$title = sprintf(__('Archive %s', 'extra'), get_the_time('Y'));
+		} // TIME - MONTH
+		else if ( is_month() ) {
+			$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'F Y' ) );
+		} // TIME - YEAR
+		else if ( is_year() ) {
+			$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'Y' ) );
 		}
 	}
 
@@ -448,8 +512,8 @@ function extra_get_archive_title ($id = 0) {
 	return $title;
 }
 
-function extra_the_archive_title ($id = 0) {
-	echo extra_get_archive_title($id);
+function extra_the_archive_title( $id = 0 ) {
+	echo extra_get_archive_title( $id );
 }
 
 
@@ -462,13 +526,14 @@ function extra_the_archive_title ($id = 0) {
  *
  *
  *********************/
-if(!function_exists('extra_post_limits')) {
-	add_filter('post_limits', 'extra_post_limits');
-	function extra_post_limits ($limits) {
-		if (is_search()) {
+if ( ! function_exists( 'extra_post_limits' ) ) {
+	add_filter( 'post_limits', 'extra_post_limits' );
+	function extra_post_limits( $limits ) {
+		if ( is_search() ) {
 			global $wp_query;
-			$wp_query->query_vars['posts_per_page'] = -1;
+			$wp_query->query_vars['posts_per_page'] = - 1;
 		}
+
 		return $limits;
 	}
 }
@@ -482,33 +547,35 @@ if(!function_exists('extra_post_limits')) {
  *
  *
  *********************/
-if(!function_exists('extra_wp_title')) {
-	function extra_wp_title ($title, $sep) {
+if ( ! function_exists( 'extra_wp_title' ) ) {
+	function extra_wp_title( $title, $sep ) {
 		global $paged, $page, $post;
 
-		if (!is_feed() && !is_front_page()) {
-			$title = get_bloginfo( 'name' );
+		$title = '';
 
-			if (is_singular()) {
-				if ($post != null) {
-					$title .= ' '.$sep.' '.$post->post_title;
+		if ( ! is_feed() && ! is_front_page() ) {
+
+			if ( is_singular() ) {
+				if ( $post != null ) {
+					$title .= $post->post_title . ' ' . $sep . ' ';
 				}
-			} else if (is_archive()) {
-				$title .= ' '.$sep.' '.__("Archive", "extra-admin");
+			} else if ( is_archive() ) {
+				$title .= ' ' . $sep . ' ' . __( "Archive", "extra-admin" );
 			}
 
 			// Add a page number if necessary.
 			if ( $paged >= 2 || $page >= 2 ) {
-				$title = "$title $sep " . sprintf( __( 'Page %s', 'extra-admin' ), max( $paged, $page ) );
+				$title .= "$title $sep " . sprintf( __( 'Page %s', 'extra-admin' ), max( $paged, $page ) );
 			}
-		} else if(is_front_page()) {
-		    $title = get_bloginfo('name');
+			$title .= get_bloginfo( 'name' );
+		} else if ( is_front_page() ) {
+			$title = get_bloginfo( 'name' );
 		}
 
 		return $title;
 	}
 }
-add_filter('wp_title', 'extra_wp_title', 100, 3);
+add_filter( 'wp_title', 'extra_wp_title', 100, 3 );
 /**********************
  *
  *
@@ -517,23 +584,25 @@ add_filter('wp_title', 'extra_wp_title', 100, 3);
  *
  *
  *********************/
-function extra_less_vars($vars, $handle) {
+function extra_less_vars( $vars, $handle ) {
 	global $epb_full_width, $epb_half_width, $epb_one_third_width, $epb_two_third_width, $epb_gap, $content_width;
-	$epb_full_width = apply_filters('extra_page_builder_full_width', 940);
-	$epb_half_width = apply_filters('extra_page_builder_half_width', 460);
-	$epb_one_third_width = apply_filters('extra_page_builder_one_third_width', 300);
-	$epb_two_third_width = apply_filters('extra_page_builder_two_third_width', 620);
-	$epb_gap = apply_filters('extra_page_builder_gap', 20);
+	$epb_full_width      = apply_filters( 'extra_page_builder_full_width', 940 );
+	$epb_half_width      = apply_filters( 'extra_page_builder_half_width', 460 );
+	$epb_one_third_width = apply_filters( 'extra_page_builder_one_third_width', 300 );
+	$epb_two_third_width = apply_filters( 'extra_page_builder_two_third_width', 620 );
+	$epb_gap             = apply_filters( 'extra_page_builder_gap', 20 );
 
-	$vars['epb_full_width'] = $epb_full_width.'px';
-	$vars['epb_half_width'] = $epb_half_width.'px';
-	$vars['epb_one_third_width'] = $epb_one_third_width.'px';
-	$vars['epb_two_third_width'] = $epb_two_third_width.'px';
-    $vars['epb_gap'] = $epb_gap.'px';
-    $vars['content_width'] = $content_width.'px';
+	$vars['epb_full_width']      = $epb_full_width . 'px';
+	$vars['epb_half_width']      = $epb_half_width . 'px';
+	$vars['epb_one_third_width'] = $epb_one_third_width . 'px';
+	$vars['epb_two_third_width'] = $epb_two_third_width . 'px';
+	$vars['epb_gap']             = $epb_gap . 'px';
+	$vars['content_width']       = $content_width . 'px';
+
 	return $vars;
 }
-add_filter('less_vars', 'extra_less_vars', 10, 2);
+
+add_filter( 'less_vars', 'extra_less_vars', 10, 2 );
 /**********************
  *
  *
@@ -543,12 +612,14 @@ add_filter('less_vars', 'extra_less_vars', 10, 2);
  *
  *********************/
 function extra_register_less_functions() {
-	register_less_function('extra_urlencode', function($arg) {
-		list($type, $value) = $arg;
-		return array('string', '', array (urlencode($value)));
-	});
+	register_less_function( 'extra_urlencode', function ( $arg ) {
+		list( $type, $value ) = $arg;
+
+		return array( 'string', '', array( urlencode( $value ) ) );
+	} );
 }
-add_action('init', 'extra_register_less_functions');
+
+add_action( 'init', 'extra_register_less_functions' );
 /**********************
  *
  *
@@ -557,66 +628,71 @@ add_action('init', 'extra_register_less_functions');
  *
  *
  *********************/
-function dateformat_to_js($php_format)
-{
-    $SYMBOLS_MATCHING = array(
-        // Day
-        'd' => 'dd',
-        'D' => 'D',
-        'j' => 'd',
-        'l' => 'DD',
-        'N' => '',
-        'S' => '',
-        'w' => '',
-        'z' => 'o',
-        // Week
-        'W' => '',
-        // Month
-        'F' => 'MM',
-        'm' => 'mm',
-        'M' => 'M',
-        'n' => 'm',
-        't' => '',
-        // Year
-        'L' => '',
-        'o' => '',
-        'Y' => 'yy',
-        'y' => 'y',
-        // Time
-        'a' => '',
-        'A' => '',
-        'B' => '',
-        'g' => '',
-        'G' => '',
-        'h' => '',
-        'H' => '',
-        'i' => '',
-        's' => '',
-        'u' => ''
-    );
-    $jqueryui_format = "";
-    $escaping = false;
-    for($i = 0; $i < strlen($php_format); $i++)
-    {
-        $char = $php_format[$i];
-        if($char === '\\') // PHP date format escaping character
-        {
-            $i++;
-            if($escaping) $jqueryui_format .= $php_format[$i];
-            else $jqueryui_format .= '\'' . $php_format[$i];
-            $escaping = true;
-        }
-        else
-        {
-            if($escaping) { $jqueryui_format .= "'"; $escaping = false; }
-            if(isset($SYMBOLS_MATCHING[$char]))
-                $jqueryui_format .= $SYMBOLS_MATCHING[$char];
-            else
-                $jqueryui_format .= $char;
-        }
-    }
-    return $jqueryui_format;
+function dateformat_to_js( $php_format ) {
+	$SYMBOLS_MATCHING = array(
+		// Day
+		'd' => 'dd',
+		'D' => 'D',
+		'j' => 'd',
+		'l' => 'DD',
+		'N' => '',
+		'S' => '',
+		'w' => '',
+		'z' => 'o',
+		// Week
+		'W' => '',
+		// Month
+		'F' => 'MM',
+		'm' => 'mm',
+		'M' => 'M',
+		'n' => 'm',
+		't' => '',
+		// Year
+		'L' => '',
+		'o' => '',
+		'Y' => 'yy',
+		'y' => 'y',
+		// Time
+		'a' => '',
+		'A' => '',
+		'B' => '',
+		'g' => '',
+		'G' => '',
+		'h' => '',
+		'H' => '',
+		'i' => '',
+		's' => '',
+		'u' => ''
+	);
+	$jqueryui_format  = "";
+	$escaping         = false;
+	for ( $i = 0; $i < strlen( $php_format ); $i ++ ) {
+		$char = $php_format[ $i ];
+		if ( $char === '\\' ) // PHP date format escaping character
+		{
+			$i ++;
+			if ( $escaping ) {
+				$jqueryui_format .= $php_format[ $i ];
+			} else {
+				$jqueryui_format .= '\'' . $php_format[ $i ];
+			}
+			$escaping = true;
+		} else {
+			if ( $escaping ) {
+				$jqueryui_format .= "'";
+				$escaping = false;
+			}
+			if ( isset( $SYMBOLS_MATCHING[ $char ] ) ) {
+				$jqueryui_format .= $SYMBOLS_MATCHING[ $char ];
+			} else {
+				$jqueryui_format .= $char;
+			}
+		}
+	}
+
+	return $jqueryui_format;
 }
+
 /**********************
  *
  *
@@ -626,12 +702,18 @@ function dateformat_to_js($php_format)
  *
  *
  *********************/
-function strtolower_utf8($inputString) {
-	$outputString    = utf8_decode($inputString);
-	$outputString    = strtolower($outputString);
-	$outputString    = utf8_encode($outputString);
+function strtolower_utf8( $inputString ) {
+	$outputString = utf8_decode( $inputString );
+	$outputString = strtolower( $outputString );
+	$outputString = utf8_encode( $outputString );
+
 	return $outputString;
 }
+
+function _print_r( $a ) {
+	echo "<pre>", htmlspecialchars( print_r( $a, true ) ), "</pre>";
+}
+
 /**********************
  *
  *
@@ -641,12 +723,14 @@ function strtolower_utf8($inputString) {
  *
  *
  *********************/
-function filter_ptags_on_images($content){
-	$content = preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
-	$content = preg_replace('/<p>\s*(<iframe .*>)?\s*(<\/iframe>)?\s*<\/p>/iU', '\1\2', $content);
+function filter_ptags_on_images( $content ) {
+	$content = preg_replace( '/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content );
+	$content = preg_replace( '/<p>\s*(<iframe .*>)?\s*(<\/iframe>)?\s*<\/p>/iU', '\1\2', $content );
+
 	return $content;
 }
-add_filter('the_content', 'filter_ptags_on_images', 10);
+
+add_filter( 'the_content', 'filter_ptags_on_images', 10 );
 
 /**********************
  *
@@ -659,10 +743,12 @@ add_filter('the_content', 'filter_ptags_on_images', 10);
  *********************/
 /**
  * Add a new line around paragraph links
+ *
  * @param string $content
+ *
  * @return string $content
  */
-function my_autoembed_adjustments( $content ){
+function my_autoembed_adjustments( $content ) {
 
 	$pattern = '|<p>\s*(https?://[^\s"]+)\s*</p>|im';    // your own pattern
 	$to      = "<p>\n$1\n</p>";                          // your own pattern
@@ -671,6 +757,7 @@ function my_autoembed_adjustments( $content ){
 	return $content;
 
 }
+
 add_filter( 'the_content', 'my_autoembed_adjustments', 7 );
 /**********************
  *

@@ -1,15 +1,9 @@
-[submodule "includes/redux-framework"]
-	path = includes/redux-framework
-	url = https://github.com/ReduxFramework/redux-framework
 [submodule "includes/lessphp"]
 	path = includes/lessphp
 	url = https://github.com/leafo/lessphp
 [submodule "includes/wp-less"]
 	path = includes/wp-less
 	url = https://github.com/sanchothefat/wp-less.git
-[submodule "includes/WP-OTF-Regenerate-Thumbnails"]
-	path = includes/WP-OTF-Regenerate-Thumbnails
-	url = https://github.com/gambitph/WP-OTF-Regenerate-Thumbnails.git
 [submodule "modules/extra.menu/inc"]
 	path = modules/extra.menu/inc
 	url = https://github.com/extralagence/extra.menu.git
@@ -19,3 +13,6 @@
 [submodule "modules/extra.cookies/inc"]
 	path = modules/extra.cookies/inc
 	url = git://github.com/extralagence/extra.cookies.git
+[submodule "includes/TGM-Plugin-Activation"]
+	path = includes/TGM-Plugin-Activation
+	url = https://github.com/TGMPA/TGM-Plugin-Activation.git

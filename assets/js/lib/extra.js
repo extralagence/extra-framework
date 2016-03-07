@@ -4,7 +4,7 @@
  *
  *********************/
 var extra = {},
-	$window,
+	$window = $(window),
 	wWidth,
 	wHeight,
 	resizeTimer;
@@ -15,7 +15,6 @@ var extra = {},
  *********************/
 var extraResponsiveSizesTests = {},
 	small = null;
-
 /*********************
  *
  * GLOBAL OPTIONS
@@ -35,7 +34,6 @@ $(document).ready(function () {
 	 *
 	 *
 	 *************************/
-	$window = $(window);
 	wWidth = $window.width();
 	wHeight = $window.height();
 	$window.on('resize', function () {
@@ -223,6 +221,11 @@ $(document).ready(function () {
 								// APPEND
 								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
 									container.css('background-image', "url('" + imgSrc + "')");
+								}
+								else if (container.hasClass('responsiveSvgImagePlaceholder')) {
+									container.find('>svg').find('image').attr({
+										'xlink:href': imgSrc
+									});
 								} else {
 									imgElement.appendTo(container);
 								}

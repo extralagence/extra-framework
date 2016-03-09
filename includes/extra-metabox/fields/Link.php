@@ -182,7 +182,7 @@ class Link extends AbstractField {
 				'ID' => $result->post_id,
 				'post_title' => html_entity_decode($result->post_title),
 				'post_type' => $type->labels->singular_name,
-				'url' => get_permalink($result->ID)
+				'url' => get_permalink($result->post_id)
 			);
 		}
 

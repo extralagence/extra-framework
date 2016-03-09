@@ -2,39 +2,39 @@ var firstCreation = false;
 jQuery(document).ready(function($) {
 
 	$.wpalchemy.on('wpa_copy', function(e, elmt) {
-        extra_process_editors($(elmt));
+		extra_process_editors($(elmt));
 	});
 
 	function extra_process_editors(elmt) {
-	    
-	    if(elmt === undefined) {
-	        elmt = $('.extra-custom-editor-wrapper:not(".extra-editor-processed")'); 
-	    }
-	    
-	    if(!elmt.hasClass('extra-custom-editor-wrapper')) {
-	        elmt = elmt.find('.extra-custom-editor-wrapper');
-	    }
-        
+
+		if(elmt === undefined) {
+			elmt = $('.extra-custom-editor-wrapper:not(".extra-editor-processed")');
+		}
+
+		if(!elmt.hasClass('extra-custom-editor-wrapper')) {
+			elmt = elmt.find('.extra-custom-editor-wrapper');
+		}
+
 		elmt.not('.extra-editor-processed').each(function() {
-            
-            if($(this).closest('.wpa_group.tocopy').length) {
-                return;
-            }
+
+			if($(this).closest('.wpa_group.tocopy').length) {
+				return;
+			}
 
 			// ELEMENTS
-			var $wrapper = $(this), 
-                $textarea = $wrapper.find("textarea.extra-custom-editor:first").addClass("mceEditor"),
-                id = $textarea.attr("id"),  
-                default_body_class = tinymce.settings.body_class,
-                default_id = tinymce.settings.id,
-                default_height = tinymce.settings.height,
-                default_content_css = tinymce.settings.content_css,
-                tempSettings = $.extend({}, tinymce.settings),
-                $handle = $("#" + id + "-resize-handle"), 
-                mce = false, 
-                editor, 
-                $document = $(document);
-			
+			var $wrapper = $(this),
+				$textarea = $wrapper.find("textarea.extra-custom-editor:first").addClass("mceEditor"),
+				id = $textarea.attr("id"),
+				default_body_class = tinymce.settings.body_class,
+				default_id = tinymce.settings.id,
+				default_height = tinymce.settings.height,
+				default_content_css = tinymce.settings.content_css,
+				tempSettings = $.extend({}, tinymce.settings),
+				$handle = $("#" + id + "-resize-handle"),
+				mce = false,
+				editor,
+				$document = $(document);
+
 			quicktags({
 				id : id,
 				buttons : 'strong,em,link,block,del,ins,img,ul,ol,li,code,more,close'
@@ -48,15 +48,15 @@ jQuery(document).ready(function($) {
 			tinymce.settings.id = id;
 			tinymce.settings.height = 300;
 			if($textarea.data('custom-css')) {
-                tinymce.settings.content_css = tinymce.settings.content_css + ',' + $textarea.data('custom-css');
+				tinymce.settings.content_css = tinymce.settings.content_css + ',' + $textarea.data('custom-css');
 			}
 			tinymce.settings.wpautop = false;
-			
+
 			// SET NEW EDITOR
 			tinymce.execCommand('mceAddEditor', false, id);
 
 			// MAKE IT RESIZABLE
-            $handle.on('mousedown.extra-editor-resize', function(event) {
+			$handle.on('mousedown.extra-editor-resize', function(event) {
 				if ( typeof tinymce !== 'undefined') {
 					editor = tinymce.get(id);
 				}
@@ -114,20 +114,20 @@ jQuery(document).ready(function($) {
 			$(document).trigger("extra-editor-processed", [$wrapper, id]);
 			$wrapper.addClass('extra-editor-processed');
 
-            // RESET DEFAULT VALUES
-            tinymce.settings.body_class = default_body_class;
-            tinymce.settings.id = default_id;
-            tinymce.settings.height = default_height;
-            tinymce.settings.content_css = default_content_css;
+			// RESET DEFAULT VALUES
+			tinymce.settings.body_class = default_body_class;
+			tinymce.settings.id = default_id;
+			tinymce.settings.height = default_height;
+			tinymce.settings.content_css = default_content_css;
 			tinymce.settings.resize = false;
 			tinymce.settings.wp_autoresize_on = true;
-            tinymce.settings = $.extend({}, tempSettings);
+			tinymce.settings = $.extend({}, tempSettings);
 
 			console.log(tempSettings);
 
 		});
 
 	}
-	
+
 	extra_process_editors($('.extra-custom-editor-wrapper'));
-}); 
+});

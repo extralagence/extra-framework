@@ -32,11 +32,11 @@ class CustomEditor extends AbstractField {
 		<div class="extra-custom-editor-wrapper <?php echo $this->css_class; ?>">
 
 			<?php
-                // SETUP
-    			$this->mb->the_field($this->get_single_field_name('editor'));
-    			$editor_id = $this->mb->get_the_name();
-                $editor_id = str_replace('[', '_', $editor_id);
-                $editor_id = str_replace(']', '-', $editor_id);
+			// SETUP
+			$this->mb->the_field($this->get_single_field_name('editor'));
+			$editor_id = $this->mb->get_the_name();
+			$editor_id = str_replace('[', '_', $editor_id);
+			$editor_id = str_replace(']', '-', $editor_id);
 			?>
 
 
@@ -49,14 +49,14 @@ class CustomEditor extends AbstractField {
 
 
 			<?php
-				// ICON
-				echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+			// ICON
+			echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
 			?>
 
 
 			<?php
-				// LABEL ?
-				if($this->label !== null): ?>
+			// LABEL ?
+			if($this->label !== null): ?>
 				<label for="<?php echo $editor_id; ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<?php endif; ?>
 
@@ -65,90 +65,90 @@ class CustomEditor extends AbstractField {
 
 				<div id="wp-<?php echo $editor_id; ?>-editor-tools" class="wp-editor-tools hide-if-no-js has-dfw">
 
-    			    <?php
-        			    if (!function_exists('media_buttons')) {
-                            include(ABSPATH . 'wp-admin/includes/media.php');
-                        }
-                    ?>
+					<?php
+					if (!function_exists('media_buttons')) {
+						include(ABSPATH . 'wp-admin/includes/media.php');
+					}
+					?>
 
-                    <div id="wp-<?php echo $editor_id; ?>-media-buttons" class="wp-media-buttons">
-                        <?php do_action( 'media_buttons', $editor_id ); ?>
-                    </div>
+					<div id="wp-<?php echo $editor_id; ?>-media-buttons" class="wp-media-buttons">
+						<?php do_action( 'media_buttons', $editor_id ); ?>
+					</div>
 
-    			    <div class="wp-editor-tabs">
+					<div class="wp-editor-tabs">
 						<!-- <a id="<?php echo $editor_id; ?>-html" class="wp-switch-editor switch-html" onclick="switchEditors.switchto(this);"><?php _e("Text"); ?></a>
                         <a id="<?php echo $editor_id; ?>-tmce" class="wp-switch-editor switch-tmce" onclick="switchEditors.switchto(this);"><?php _e("Visual"); ?></a>-->
-										        <button type="button" id="<?php echo $editor_id;?>-tmce" class="wp-switch-editor switch-tmce" data-wp-editor-id="<?php echo $editor_id;?>"><?php _e('Visual'); ?></button>
-										        <button type="button" id="<?php echo $editor_id;?>-html" class="wp-switch-editor switch-html" data-wp-editor-id="<?php echo $editor_id;?>"><?php _ex( 'Text', 'Name for the Text editor tab (formerly HTML)' ) ?></button>
-    				</div>
-    			</div>
-    			<?php
-    			if(isset($this->custom_css) && !empty($this->custom_css)) {
-    			     $stylesheets = $this->extract_stylesheets($this->custom_css);
-    			}
-    			?>
+						<button type="button" id="<?php echo $editor_id;?>-tmce" class="wp-switch-editor switch-tmce" data-wp-editor-id="<?php echo $editor_id;?>"><?php _e('Visual'); ?></button>
+						<button type="button" id="<?php echo $editor_id;?>-html" class="wp-switch-editor switch-html" data-wp-editor-id="<?php echo $editor_id;?>"><?php _ex( 'Text', 'Name for the Text editor tab (formerly HTML)' ) ?></button>
+					</div>
+				</div>
+				<?php
+				if(isset($this->custom_css) && !empty($this->custom_css)) {
+					$stylesheets = $this->extract_stylesheets($this->custom_css);
+				}
+				?>
 
-    			<div id="wp-<?php echo $editor_id; ?>-editor-container" class="wp-editor-container">
+				<div id="wp-<?php echo $editor_id; ?>-editor-container" class="wp-editor-container">
 					<div id="<?php echo 'qt_' . $editor_id . '_toolbar'; ?>" class="quicktags-toolbar"></div>
 				    <textarea
-				        class="wp-editor-area extra-custom-editor"
-				        <?php if(isset($stylesheets)): ?>
-				        data-custom-css="<?php echo $stylesheets; ?>"
-				        <?php endif; ?>
-				        data-extra-name="<?php
-				            echo $this->name;
-				            echo (isset($this->editor_class) && !empty($this->editor_class)) ? ' ' . $this->editor_class : '';
-			             ?>"
-				        id="<?php echo $editor_id; ?>"
-				        name="<?php $this->mb->the_name(); ?>">
+						class="wp-editor-area extra-custom-editor"
+						<?php if(isset($stylesheets)): ?>
+							data-custom-css="<?php echo $stylesheets; ?>"
+						<?php endif; ?>
+						data-extra-name="<?php
+						echo $this->name;
+						echo (isset($this->editor_class) && !empty($this->editor_class)) ? ' ' . $this->editor_class : '';
+						?>"
+						id="<?php echo $editor_id; ?>"
+						name="<?php $this->mb->the_name(); ?>">
 				            <?php
 							$content_value = $this->mb->get_the_value();
 							$content = (!empty($content_value) ? $content_value : $this->default);
 							echo apply_filters('the_editor_content', $content);
-				            ?>
+							?>
 			             </textarea>
 				</div>
 			</div>
 			<table class="post-status-info">
-			    <tbody>
-			        <tr>
-                        <td data-id="<?php echo $editor_id; ?>" id="<?php echo $editor_id; ?>-resize-handle" class="content-resize-handle hide-if-no-js"><br /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+				<tbody>
+				<tr>
+					<td data-id="<?php echo $editor_id; ?>" id="<?php echo $editor_id; ?>-resize-handle" class="content-resize-handle hide-if-no-js"><br /></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
 		<?php
 	}
 
-    private function extract_stylesheets($custom_css) {
-        $stylesheets = array();
-        $counter = 0;
-        $less = wp_less::instance();
-        if(is_array($custom_css)) {
-            foreach($custom_css as $css) {
-                $path = pathinfo($css);
-                if($path['extension'] === 'less') {
-                    $css = $less->parse_stylesheet($css, $this->name . '-' . $counter);
-                }
-                $stylesheets[] = $css;
-                $counter++;
-            }
-        } else {
-            $path = pathinfo($custom_css);
-            if($path['extension'] === 'less') {
-                $custom_css = $less->parse_stylesheet($custom_css, $this->name);
-            }
-            $stylesheets[] = $custom_css;
-        }
-        $stylesheets = implode(',', $stylesheets);
-        return $stylesheets;
-    }
+	private function extract_stylesheets($custom_css) {
+		$stylesheets = array();
+		$counter = 0;
+		$less = wp_less::instance();
+		if(is_array($custom_css)) {
+			foreach($custom_css as $css) {
+				$path = pathinfo($css);
+				if($path['extension'] === 'less') {
+					$css = $less->parse_stylesheet($css, $this->name . '-' . $counter);
+				}
+				$stylesheets[] = $css;
+				$counter++;
+			}
+		} else {
+			$path = pathinfo($custom_css);
+			if($path['extension'] === 'less') {
+				$custom_css = $less->parse_stylesheet($custom_css, $this->name);
+			}
+			$stylesheets[] = $custom_css;
+		}
+		$stylesheets = implode(',', $stylesheets);
+		return $stylesheets;
+	}
 
 
-    public function extract_properties($properties) {
-        parent::extract_properties($properties);
-        $this->editor_class = isset($properties['editor_class']) ? $properties['editor_class'] : null;
-        $this->custom_css = isset($properties['custom_css']) ? $properties['custom_css'] : null;
-        $this->default = isset($properties['default']) ? $properties['default'] : null;
-    }
+	public function extract_properties($properties) {
+		parent::extract_properties($properties);
+		$this->editor_class = isset($properties['editor_class']) ? $properties['editor_class'] : null;
+		$this->custom_css = isset($properties['custom_css']) ? $properties['custom_css'] : null;
+		$this->default = isset($properties['default']) ? $properties['default'] : null;
+	}
 }

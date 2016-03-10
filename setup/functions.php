@@ -447,6 +447,22 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
 	echo extra_get_responsive_svg_image( $id, $dimensions, $class );
 }
 
+///////////////////////////////////////
+//
+//
+// DEFAULT IMAGE
+//
+//
+///////////////////////////////////////
+function extra_get_default_image_id($small) {
+	global $extra_options;
+	$param = $small ? 'default-thumbnail-small' : 'default-thumbnail';
+	$default_image = (isset($extra_options[$param])) ? $extra_options[$param] : null;
+	$default_image_id = (isset($default_image['id'])) ? $default_image['id'] : null;
+
+	return $default_image_id;
+}
+
 /**
  * Shortify a string with "..."
  *

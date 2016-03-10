@@ -454,9 +454,16 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
 //
 //
 ///////////////////////////////////////
-function extra_get_default_image_id($small) {
+/**
+ * @param $param 'default-thumbnail' || 'default-thumbnail-small'
+ *
+ * @return image id
+ */
+function extra_get_default_image_id($param) {
+	if (!$param) {
+		$param = 'default-thumbnail';
+	}
 	global $extra_options;
-	$param = $small ? 'default-thumbnail-small' : 'default-thumbnail';
 	$default_image = (isset($extra_options[$param])) ? $extra_options[$param] : null;
 	$default_image_id = (isset($default_image['id'])) ? $default_image['id'] : null;
 

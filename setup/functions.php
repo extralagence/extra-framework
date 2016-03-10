@@ -459,10 +459,7 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
  *
  * @return image id
  */
-function extra_get_default_image_id($param) {
-	if (!$param) {
-		$param = 'default-thumbnail';
-	}
+function extra_get_default_image_id($param = 'default-thumbnail') {
 	global $extra_options;
 	$default_image = (isset($extra_options[$param])) ? $extra_options[$param] : null;
 	$default_image_id = (isset($default_image['id'])) ? $default_image['id'] : null;

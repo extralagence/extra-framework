@@ -1,12 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: vincent
- * Date: 27/02/2014
- * Time: 11:02
- */
-
-/**
  * Class Checkbox
  *
  * Define a radio button group input metabox
@@ -90,7 +83,13 @@ class Radio extends AbstractField {
 	public function the_admin_column_value() {
 		$meta = $this->mb->get_meta( $this->name, $this->mb->meta );
 		if ( ! empty( $meta ) ) {
-			echo $meta;
+
+			foreach ( $this->radios as $radio ) {
+				if ($radio['value'] == $meta) {
+					echo $radio['label'];
+					break;
+				}
+			}
 		} else {
 			echo '-';
 		}

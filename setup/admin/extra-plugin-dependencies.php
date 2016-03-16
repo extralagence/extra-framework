@@ -105,6 +105,11 @@ function extra_register_required_plugins() {
 			'name'      => 'Contact Form 7',
 			'slug'      => 'contact-form-7',
 			'required'  => true
+		),
+		array(
+			'name'      => 'Post Meta Revisions',
+			'slug'      => 'wp-post-meta-revisions',
+			'required'  => true
 		)
 
 		// This is an example of the use of 'is_callable' functionality. A user could - for instance -

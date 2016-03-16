@@ -61,8 +61,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $keys;
 	}
 
-	private
-	function init_field( $properties ) {
+	private function init_field( $properties ) {
 		$class = $this->construct_class_name( $properties );
 		$class::init();
 
@@ -72,8 +71,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		}
 	}
 
-	private
-	function get_subfields( $properties ) {
+	private function get_subfields( $properties ) {
 		$subfields = array();
 		if ( isset( $properties['subfields'] ) && !empty( $properties['subfields'] ) ) {
 			$subfields = array_merge( $subfields, $properties['subfields'] );
@@ -93,8 +91,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $subfields;
 	}
 
-	public
-	function extra_init() {
+	public function extra_init() {
 		if ( isset( $this->fields ) && !empty( $this->fields ) ) {
 			foreach ( $this->fields as $properties ) {
 				$this->init_field( $properties );
@@ -102,8 +99,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		}
 	}
 
-	private
-	function add_admin_column( $fields, $columns ) {
+	private function add_admin_column( $fields, $columns ) {
 		foreach ( $fields as $properties ) {
 			if ( isset( $properties['show_in_admin_column'] ) && $properties['show_in_admin_column'] == true && !empty( $properties['name'] ) ) {
 				$column_label = $properties['admin_column_label'];
@@ -123,8 +119,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $columns;
 	}
 
-	public
-	function add_admin_columns( $columns ) {
+	public function add_admin_columns( $columns ) {
 		$columns = array_merge( $columns, $this->add_admin_column( $this->fields, $columns ) );
 
 		return $columns;
@@ -137,8 +132,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 	 *
 	 * @return $field AbstractField
 	 */
-	private
-	function get_field_from_properties( $fields, $field_name, $post_id ) {
+	private function get_field_from_properties( $fields, $field_name, $post_id ) {
 		$field = null;
 		$i     = 0;
 		while ( $i < count( $fields ) && $field == null ) {
@@ -159,8 +153,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $field;
 	}
 
-	public
-	function get_meta( $meta_name, $metas ) {
+	public function get_meta( $meta_name, $metas ) {
 		$meta = null;
 		if ( is_array( $metas ) && !empty( $metas ) ) {
 			foreach ( $metas as $current_name => $current_value ) {
@@ -179,8 +172,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $meta;
 	}
 
-	public
-	function display_admin_columns( $column, $post_id ) {
+	public function display_admin_columns( $column, $post_id ) {
 		$field = $this->get_field_from_properties( $this->fields, $column, $post_id );
 		if ( $field != null ) {
 			$this->the_meta( $post_id );
@@ -188,8 +180,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		}
 	}
 
-	private
-	function construct_class_name( $properties ) {
+	private function construct_class_name( $properties ) {
 		if ( !isset( $properties['type'] ) ) {
 			var_dump( $properties );
 			throw new Exception ( 'Extra Meta box "type" required' );
@@ -211,8 +202,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 	 * @return AbstractField
 	 * @throws Exception
 	 */
-	protected
-	function construct_field_from_properties( $properties ) {
+	protected function construct_field_from_properties( $properties ) {
 		$class = $this->construct_class_name( $properties );
 		/**
 		 * @var $field AbstractField
@@ -226,8 +216,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		return $field;
 	}
 
-	public
-	function the_admin( $current_level ) {
+	public function the_admin( $current_level ) {
 		// TODO check that it does not brake everything
 		$this->the_meta();
 		foreach ( $current_level as $properties ) {
@@ -236,8 +225,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		}
 	}
 
-	public
-	function the_admin_from_field( $current_level, $name_suffix ) {
+	public function the_admin_from_field( $current_level, $name_suffix ) {
 		$this->the_admin( $current_level );
 	}
 }

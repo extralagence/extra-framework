@@ -21,7 +21,7 @@ function ExtraScrollAnimator (options) {
 					TweenMax.set($this, {autoAlpha: 1});
 				}
 			}
-			TweenMax.to(tween, time, {progress: percent, ease:Linear.easeNone, lazy: false});
+			TweenMax.to(tween, time, {progress: percent, ease:Linear.easeNone});
 		});
 	};
 

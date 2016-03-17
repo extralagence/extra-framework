@@ -125,22 +125,22 @@ define( 'ICL_DONT_PROMOTE', true );
  *
  *
  *********************/
-function extra_language_switcher() {
-	if ( function_exists( 'icl_get_languages' ) ) {
-		$languages = icl_get_languages( 'skip_missing=0&orderby=KEY' );
-		if ( 1 < count( $languages ) ) {
-			echo '<ul id="language-switcher">';
-			foreach ( $languages as $l ) {
-				if ( $l['active'] ) {
-					echo '<li><span class="' . $l['language_code'] . ' active">' . $l['language_code'] . '</span></li>';
-				} else {
-					echo '<li><a class="' . $l['language_code'] . '" href="' . $l['url'] . '">' . $l['language_code'] . '</a></li>';
-				}
-			}
-			echo '</ul>';
-		}
-	}
-}
+//function extra_language_switcher() {
+//	if ( function_exists( 'icl_get_languages' ) ) {
+//		$languages = icl_get_languages( 'skip_missing=0&orderby=KEY' );
+//		if ( 1 < count( $languages ) ) {
+//			echo '<ul id="language-switcher">';
+//			foreach ( $languages as $l ) {
+//				if ( $l['active'] ) {
+//					echo '<li><span class="' . $l['language_code'] . ' active">' . $l['language_code'] . '</span></li>';
+//				} else {
+//					echo '<li><a class="' . $l['language_code'] . '" href="' . $l['url'] . '">' . $l['language_code'] . '</a></li>';
+//				}
+//			}
+//			echo '</ul>';
+//		}
+//	}
+//}
 
 ///**********************
 // *
@@ -444,6 +444,26 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 
 function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
 	echo extra_get_responsive_svg_image( $id, $dimensions, $class );
+}
+
+///////////////////////////////////////
+//
+//
+// DEFAULT IMAGE
+//
+//
+///////////////////////////////////////
+/**
+ * @param $param 'default-thumbnail' || 'default-thumbnail-small'
+ *
+ * @return image id
+ */
+function extra_get_default_image_id($param = 'default-thumbnail') {
+	global $extra_options;
+	$default_image = (isset($extra_options[$param])) ? $extra_options[$param] : null;
+	$default_image_id = (isset($default_image['id'])) ? $default_image['id'] : null;
+
+	return $default_image_id;
 }
 
 /**

@@ -25,6 +25,7 @@ class Link extends AbstractField {
 	protected $target_label;
 	protected $search_label;
 	protected $select_label;
+	protected $has_title;
 
 	public static function init () {
 		parent::init();
@@ -34,6 +35,11 @@ class Link extends AbstractField {
 		wp_enqueue_script('extra-link-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-link.js', array('jquery', 'jquery-ui-autocomplete', 'extra-accent-fold-metabox'));
 
 		wp_localize_script('extra-link-metabox', 'ajax', array( 'url' => admin_url( 'admin-ajax.php' )));
+	}
+
+	public function extract_properties($properties) {
+		parent::extract_properties($properties);
+		$this->has_title = isset($properties['has_title']) ? $properties['has_title'] : true;
 	}
 
 	public function the_admin() {
@@ -99,9 +105,11 @@ class Link extends AbstractField {
 				</div>
 			</div>
 
-			<?php $this->mb->the_field($this->get_prefixed_field_name("title")); ?>
-			<label class="extra-link-title-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e("Titre", "extra-admin"); ?></label>
-			<input class="extra-link-title" id="<?php $this->mb->the_name(); ?>_manual" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" /><br>
+			<?php if ($this->has_title) : ?>
+				<?php $this->mb->the_field($this->get_prefixed_field_name("title")); ?>
+				<label class="extra-link-title-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e("Titre", "extra-admin"); ?></label>
+				<input class="extra-link-title" id="<?php $this->mb->the_name(); ?>_manual" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" /><br>
+			<?php endif; ?>
 
 			<?php $this->mb->the_field($this->get_prefixed_field_name("target")); ?>
 			<input class="extra-link-target" id="<?php $this->mb->the_name(); ?>_manual" type="checkbox" name="<?php $this->mb->the_name(); ?>" value="1"<?php if ($this->mb->get_the_value()) echo ' checked="checked"'; ?>/>
@@ -182,7 +190,7 @@ class Link extends AbstractField {
 				'ID' => $result->post_id,
 				'post_title' => html_entity_decode($result->post_title),
 				'post_type' => $type->labels->singular_name,
-				'url' => get_permalink($result->ID)
+				'url' => get_permalink($result->post_id)
 			);
 		}
 
@@ -244,6 +252,11 @@ class Link extends AbstractField {
 		} else {
 			return '_self';
 		}
+	}
+	public static function get_title_from_meta($meta, $name, $separator) {
+		$title = isset($meta[$name.$separator.'title']) ? $meta[$name.$separator.'title'] : '';
+
+		return $title;
 	}
 }
 

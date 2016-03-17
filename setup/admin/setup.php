@@ -329,4 +329,22 @@ function extra_edit_posts_per_page( $posts_per_page, $post_type ) {
 	return ($posts_per_page !== 20) ? $posts_per_page : 99;
 }
 add_filter( 'edit_posts_per_page', 'extra_edit_posts_per_page', 10, 2);
-?>
+
+include_once 'typekit.editor.php';
+///////////////////////////////////////
+//
+//
+// REDUX + WPML HOOK
+//
+//
+///////////////////////////////////////
+function extra_redux_wpml_checkup( WP_Screen $screen ) {
+	$current_language = apply_filters( 'wpml_current_language', "fr" );
+	$default_language = apply_filters( 'wpml_default_language', "fr" );
+	if ( $current_language !== $default_language ) {
+		$new_url = $_SERVER['REQUEST_URI'] . ( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_QUERY ) ? '&' : '?' ) . 'lang=' . $default_language;
+		$message = "<h3>Les paramètres ne sont pas disponibles dans cette langue.</h3><a class='button button-primary' href='" . $new_url . "'>Afficher dans la langue par défaut.</a>";
+		wp_die( $message );
+	}
+}
+add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );

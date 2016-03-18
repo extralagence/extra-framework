@@ -125,22 +125,22 @@ define( 'ICL_DONT_PROMOTE', true );
  *
  *
  *********************/
-function extra_language_switcher() {
-	if ( function_exists( 'icl_get_languages' ) ) {
-		$languages = icl_get_languages( 'skip_missing=0&orderby=KEY' );
-		if ( 1 < count( $languages ) ) {
-			echo '<ul id="language-switcher">';
-			foreach ( $languages as $l ) {
-				if ( $l['active'] ) {
-					echo '<li><span class="' . $l['language_code'] . ' active">' . $l['language_code'] . '</span></li>';
-				} else {
-					echo '<li><a class="' . $l['language_code'] . '" href="' . $l['url'] . '">' . $l['language_code'] . '</a></li>';
-				}
-			}
-			echo '</ul>';
-		}
-	}
-}
+//function extra_language_switcher() {
+//	if ( function_exists( 'icl_get_languages' ) ) {
+//		$languages = icl_get_languages( 'skip_missing=0&orderby=KEY' );
+//		if ( 1 < count( $languages ) ) {
+//			echo '<ul id="language-switcher">';
+//			foreach ( $languages as $l ) {
+//				if ( $l['active'] ) {
+//					echo '<li><span class="' . $l['language_code'] . ' active">' . $l['language_code'] . '</span></li>';
+//				} else {
+//					echo '<li><a class="' . $l['language_code'] . '" href="' . $l['url'] . '">' . $l['language_code'] . '</a></li>';
+//				}
+//			}
+//			echo '</ul>';
+//		}
+//	}
+//}
 
 ///**********************
 // *
@@ -421,11 +421,10 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	?>
 
 	<div class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
-		<svg width="100%"
-		     height="100%"
-		     xmlns="http://www.w3.org/2000/svg"
+		<svg  preserveAspectRatio="none"
+		      xmlns="http://www.w3.org/2000/svg"
 		     xmlns:xlink="http://www.w3.org/1999/xlink">
-			<image xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png" x="0" y="0" width="100%" height="100%"></image>
+			<image preserveAspectRatio="xMidYMid slice" xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
 		</svg>
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>

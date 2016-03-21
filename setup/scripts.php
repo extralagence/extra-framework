@@ -13,21 +13,15 @@ function extra_template_enqueue_scripts() {
 //	wp_enqueue_script('webfontloader', EXTRA_URI.'/assets/js/lib/webfontloader.js', null, false, false);
 	// REPLACE JQUERY
 	wp_deregister_script('jquery');
-	wp_enqueue_script('jquery', 'http://code.jquery.com/jquery-2.2.0.min.js', null, null, true);
+	wp_enqueue_script('jquery', '//code.jquery.com/jquery-2.2.2.min.js', null, null, true);
 	// TWEENMAX
 	wp_enqueue_script('tweenmax', EXTRA_URI . '/assets/js/lib/TweenMax.min.js', array('jquery'), null, true);
 	// SCROLLTO
 	wp_enqueue_script('tweenmax-scrollto', EXTRA_URI . '/assets/js/lib/ScrollToPlugin.min.js', array('jquery'), null, true);
-	// JQUERY GSAP
-	wp_enqueue_script('jquery-gsap', EXTRA_URI . '/assets/js/lib/jquery.gsap.min.js', array('jquery'), null, true);
 	// DAGGABLE
 	wp_enqueue_script('draggable', EXTRA_URI . '/assets/js/lib/Draggable.min.js', array('jquery', 'tweenmax'), null, true);
 	// THROWPROPS
 	wp_enqueue_script('throwprops', EXTRA_URI . '/assets/js/lib/ThrowPropsPlugin.min.js', array('jquery', 'tweenmax'), null, true);
-	// MOUSEWHEEL
-	wp_enqueue_script('mousewheel', EXTRA_URI . '/assets/js/lib/jquery.mousewheel.pack.js', array('jquery'), null, true);
-	// FANCYBOX
-	wp_enqueue_script('fancybox', EXTRA_URI . '/assets/js/lib/jquery.fancybox.js', array('jquery'), null, true);
 	// EXTRA
 	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/extra.js', array('jquery', 'tweenmax', 'fancybox'), null, true);
 	// RESPONSIVE SIZES

@@ -33,16 +33,6 @@ function extra_template_enqueue_scripts() {
 	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
 	// EXTRA
 	wp_enqueue_script('extra-gallery', EXTRA_URI . '/assets/js/lib/extra.gallery.js', array('jquery', 'extra-slider', 'tweenmax'), null, true);
-	// TO COPY IN THEME scripts.php IF NEEDED
-	//wp_enqueue_script('jquery', EXTRA_URI . '/assets/js/lib/fix_web_jquery.min.js', null, null, true);
-	// EXTRA FADE FROM BOTTOM
-	//wp_enqueue_script('extra-scroll-animator', EXTRA_URI . '/assets/js/lib/extra.scrollanimator.js', array('jquery', 'tweenmax', 'extra'), null, true);
-	// EXTRA FADE FROM BOTTOM
-	//wp_enqueue_script('extra-smooth-fit', EXTRA_URI . '/assets/js/lib/extra.smoothfit.js', array('jquery', 'tweenmax', 'extra'), null, true);
-	// EXTRA-SLIDER
-	//wp_enqueue_script('extra-tooltip', EXTRA_URI . '/assets/js/lib/extra.tooltip.js', array('jquery', 'extra', 'tweenmax'), null, true);
-	// FANCY SELECT
-	//wp_enqueue_script('fancyselect', EXTRA_URI . '/assets/js/lib/fancyselect.js', array('jquery'), null, true);
 }
 
 add_action('wp_enqueue_scripts', 'extra_template_enqueue_scripts');

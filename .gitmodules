@@ -16,3 +16,6 @@
 [submodule "includes/TGM-Plugin-Activation"]
 	path = includes/TGM-Plugin-Activation
 	url = https://github.com/TGMPA/TGM-Plugin-Activation.git
+[submodule "modules/fancybox/inc"]
+	path = modules/fancybox/inc
+	url = https://github.com/fancyapps/fancyBox.git

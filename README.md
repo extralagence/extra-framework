@@ -3,8 +3,7 @@
 ## Changelog
 
 ###2016/03/22
-####JS
-  *Events*
+  *JS Events*
   - renamed extra.resize to extra:resize
   - renamed extra.responsive-resize to extra:resize:responsive
   - renamed complete.extra.responsiveImage to extra:responsiveImage:load
@@ -12,7 +11,7 @@
   - renamed extra.initFancybox to extra:fancybox:init
 
 ###2016/03/21
-####MODULES
+*MODULES*
   - removed fancyselect
   - removed extra.checkbox
   - removed jquery.fracs
@@ -20,7 +19,7 @@
   - removed jquery.fracs
 
 ###2016/03/16
-####MODULES
+*MODULES*
   - removed extra language switcher
 
 ## How-to

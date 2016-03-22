@@ -65,11 +65,11 @@ $window.load(function () {
 			// ERROR
 				.error(function () {
 					currentResponsiveImagesLoaded++;
-					$container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+					// complete.extra.responsiveImage
 					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-						$container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-						$container.trigger('extra.responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+						// complete.extra.responsiveImageTotal
+						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
 					initResponsiveImage($container);
 				})
@@ -100,10 +100,10 @@ $window.load(function () {
 					// REMOVE EXISTING IMAGE
 					$container.find("img").not(imgElement).remove();
 					currentResponsiveImagesLoaded++;
-					$container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+					// complete.extra.responsiveImage
 					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-						$container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+						// complete.extra.responsiveImageTotal
 						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
 
@@ -114,7 +114,8 @@ $window.load(function () {
 
 		}
 
-		$window.on("extra.responsive-resize extra:resize:responsive", function () {
+		//extra.responsive-resize
+		$window.on("extra:resize:responsive", function () {
 			size = extra.getImageVersion();
 			addImage(size);
 		});

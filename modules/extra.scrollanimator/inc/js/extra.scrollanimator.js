@@ -128,7 +128,7 @@ function ExtraScrollAnimator (options) {
 	};
 
 	/*********************************** RESIZE ***********************************/
-	$window.on('extra.resize complete.extra.responsiveImage', function() {
+	$window.on('extra:resize extra:responsiveImage:load', function() {
 		self.options.target.each(function() {
 			// kill previous tween
 			$(this).data('tween').progress(1).kill();

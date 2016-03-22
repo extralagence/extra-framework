@@ -44,7 +44,7 @@ $(document).ready(function () {
 		if ($window.width() !== wWidth || $window.height() !== wHeight) {
 			wWidth = $window.width();
 			wHeight = $window.height();
-			$window.trigger('extra.resize');
+			// $window.trigger('extra.resize');
 			$window.trigger('extra:resize');
 		}
 	}
@@ -65,7 +65,7 @@ $(document).ready(function () {
 		}
 		if (JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
 			extraResponsiveSizesTests = $.extend({}, _tmpExtraResponsiveSizesTests);
-			$(document).trigger("extra.responsive-resize");
+			// $(document).trigger("extra.responsive-resize");
 			$(document).trigger("extra:resize:responsive");
 		}
 	}).trigger('extra:resize');

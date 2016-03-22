@@ -1,7 +1,8 @@
 $(document).ready(function () {
 	extraInitFancybox($("body"));
 });
-$window.on('extra.initFancybox extra:fancybox:init', function (event, $parent) {
+//extra.initFancybox
+$window.on('extra:fancybox:init', function (event, $parent) {
 	if ($parent && $parent.length) {
 		extraInitFancybox($parent);
 	}

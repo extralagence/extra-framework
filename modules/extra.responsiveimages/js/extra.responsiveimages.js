@@ -107,6 +107,8 @@ $window.load(function () {
 						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
 
+					$container.addClass("extra-responsive-image-loaded");
+
 				}).attr({
 				alt: altTxt,
 				src: imgSrc

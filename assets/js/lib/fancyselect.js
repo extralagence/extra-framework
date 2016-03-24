@@ -56,13 +56,26 @@
 				triggerHtml = settings.triggerTemplate(sel.find(':selected'));
 				return trigger.html(triggerHtml);
 			};
+			//sel.on('blur.fs', function() {
+			//	if (trigger.hasClass('open')) {
+			//		return setTimeout(function() {
+			//			return trigger.trigger('close.fs');
+			//		}, 120);
+			//	}
+			//});
 			sel.on('blur.fs', function() {
+				console.log('blurounet');
 				if (trigger.hasClass('open')) {
-					return setTimeout(function() {
-						return trigger.trigger('close.fs');
-					}, 120);
+					if (!options.is(':hover')) {
+						return setTimeout(function() {
+							return trigger.trigger('close.fs');
+						}, 120);
+					} else {
+						sel.focus();
+					}
 				}
 			});
+
 			trigger.on('close.fs', function() {
 				trigger.removeClass('open');
 				return options.removeClass('open');
@@ -199,6 +212,7 @@
 				wrapper.find('.options').empty();
 				return copyOptionsToList();
 			});
+
 			return copyOptionsToList();
 		});
 	};

@@ -9,8 +9,6 @@
  *
  *********************/
 function extra_template_enqueue_scripts() {
-	// WEB FONT LOADER
-//	wp_enqueue_script('webfontloader', EXTRA_URI.'/assets/js/lib/webfontloader.js', null, false, false);
 	// REPLACE JQUERY
 	wp_deregister_script('jquery');
 	wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js', null, null, false);
@@ -32,7 +30,7 @@ function extra_template_enqueue_scripts() {
 	));
 	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
 	// EXTRA
-	wp_enqueue_script('extra-gallery', EXTRA_URI . '/assets/js/lib/extra.gallery.js', array('jquery', 'extra-slider', 'tweenmax'), null, true);
+	wp_enqueue_script('extra-gallery', EXTRA_URI . '/assets/js/lib/extra.gallery.js', array('extra.slider'), null, true);
 }
 
 add_action('wp_enqueue_scripts', 'extra_template_enqueue_scripts');

@@ -1,95 +1,134 @@
-/*********************
- *
- * WINDOW LOAD
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// RESPONSIVE IMAGES
+//
+//
+///////////////////////////////////////
 $window.load(function () {
 	var $responsiveImages = $(".responsiveImagePlaceholder"),
 		totalResponsivesImages = $responsiveImages.length,
 		currentResponsiveImagesLoaded = 0;
-	/**************************
-	 *
-	 *
-	 * RESPONSIVE IMAGE
-	 *
-	 *
-	 *************************/
-	window.imageCount = 0;
+
+
+	///////////////////////////////////////
+	//
+	//
+	// LOOP THROUGH IMAGES
+	//
+	//
+	///////////////////////////////////////
 	$responsiveImages.each(function () {
 		initResponsiveImage($(this).data("size", ""));
 	});
-	function initResponsiveImage(container) {
 
-		var datas = container.find("noscript"),
+	///////////////////////////////////////
+	//
+	//
+	// INIT
+	//
+	//
+	///////////////////////////////////////
+	function initResponsiveImage($container) {
+
+		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),
 			itemProp = datas.data("img-itemprop"),
-			size = extra.getImageVersion(),
-			addImage = function (size) {
-				// SET NEW IMAGE
-				if (datas && container.data("size") != size) {
-					container.data("size", size);
-					var imgSrc = datas.data("src-" + size);
-					if (imgSrc) {
-						var imgElement = $("<img />");
-						imgElement.error(function () {
-							currentResponsiveImagesLoaded++;
-							container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-							if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-								container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-							}
-							initResponsiveImage(container);
-						}).load(function () {
-							// CORRECT IMAGE SIZE
-							imgElement.attr({
-								'width' : this.width,
-								'height': this.height
-							});
-							if (itemProp) {
-								imgElement.attr('itemprop', itemProp);
-							}
-							// APPEND
-							if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
-								container.css('background-image', "url('" + imgSrc + "')");
-							}
-							else if (container.hasClass('responsiveSvgImagePlaceholder')) {
-								container.find('>svg').find('image').attr({
-									'xlink:href': imgSrc
-								});
-							}
-							else {
-								imgElement.appendTo(container);
-							}
+			size = extra.getImageVersion();
 
-							// REMOVE EXISTING IMAGE
-							container.find("img").not(imgElement).remove();
-							currentResponsiveImagesLoaded++;
-							container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-							if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-								container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-							}
+		function addImage(size) {
+			// If image is the same, return
+			if ($container.data("size") == size) {
+				return;
+			}
 
-						}).attr({
-							alt: altTxt,
-							src: imgSrc
-						});
-					} else {
-						totalResponsivesImages--;
+			// Keep track of the current size
+			$container.data("size", size);
+
+			// Get new src
+			var imgSrc = datas.data("src-" + size);
+
+			// Do we have a src ?
+			if (!imgSrc || imgSrc == '') {
+				console.warn("Image src is empty");
+				console.warn($container);
+				currentResponsiveImagesLoaded--;
+				return;
+			}
+
+			// Create temporary image
+			var imgElement = $("<img />");
+
+			// EVENTS
+			imgElement
+
+			// ERROR
+				.error(function () {
+					currentResponsiveImagesLoaded++;
+					// complete.extra.responsiveImage
+					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
+						// complete.extra.responsiveImageTotal
+						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
-				}
-			};
+					initResponsiveImage($container);
+				})
 
-		$window.on("extra.responsive-resize", function () {
+				// LOAD
+				.load(function () {
+					// CORRECT IMAGE SIZE
+					imgElement.attr({
+						'width' : this.width,
+						'height': this.height
+					});
+					if (itemProp) {
+						imgElement.attr('itemprop', itemProp);
+					}
+					// APPEND
+					if ($container.hasClass('responsiveBackgroundImagePlaceholder')) {
+						$container.css('background-image', "url('" + imgSrc + "')");
+					}
+					else if ($container.hasClass('responsiveSvgImagePlaceholder')) {
+						$container.find('>svg').find('image').attr({
+							'xlink:href': imgSrc
+						});
+					}
+					else {
+						imgElement.appendTo($container);
+					}
+
+					// REMOVE EXISTING IMAGE
+					$container.find("img").not(imgElement).remove();
+					currentResponsiveImagesLoaded++;
+					// complete.extra.responsiveImage
+					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
+						// complete.extra.responsiveImageTotal
+						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+					}
+
+					$container.addClass("extra-responsive-image-loaded");
+
+				}).attr({
+				alt: altTxt,
+				src: imgSrc
+			});
+
+		}
+
+		//extra.responsive-resize
+		$window.on("extra:resize:responsive", function () {
 			size = extra.getImageVersion();
 			addImage(size);
 		});
 		addImage(size);
 
-		container.data('responsiveImageProcessed', true);
+		$container.data('responsiveImageProcessed', true);
 
 	}
 
-	$window.on('extra.responsiveImage', function (event, obj) {
-		obj.each(function () {
+	$window.on('extra:responsiveImage:init', function (event, $container) {
+		$container.each(function () {
 			var $elem = $(this);
 			if ($elem.hasClass('responsiveImagePlaceholder')) {
 				initResponsiveImage($elem.data("size", ""));

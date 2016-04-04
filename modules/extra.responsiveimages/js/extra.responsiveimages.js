@@ -9,8 +9,6 @@ $window.load(function () {
 	var $responsiveImages = $(".responsiveImagePlaceholder"),
 		totalResponsivesImages = $responsiveImages.length,
 		currentResponsiveImagesLoaded = 0;
-
-
 	///////////////////////////////////////
 	//
 	//
@@ -123,7 +121,7 @@ $window.load(function () {
 		});
 		addImage(size);
 
-		$container.data('responsiveImageProcessed', true);
+		$container.data('extra-responsiveImageProcessed', true);
 
 	}
 

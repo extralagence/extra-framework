@@ -92,14 +92,4 @@ $(document).ready(function () {
 		});
 		return toReturn;
 	};
-	/*********************
-	 *
-	 * EXTRA SLIDERS
-	 *
-	 *********************/
-	$window.on('extra:slider:updateClones', function (event, currentItem, total, slider) {
-		slider.find('.cloned .responsiveImagePlaceholder').each(function () {
-			$window.trigger('extra:responsiveImage:init', [$(this).data("size", "")]);
-		});
-	});
 });

@@ -137,4 +137,15 @@ $window.load(function () {
 			}
 		});
 	});
+
+	/*********************
+	 *
+	 * EXTRA SLIDERS
+	 *
+	 *********************/
+	$window.on('extra:slider:updateClones', function (event, currentItem, total) {
+		$(event.target).find('.cloned .responsiveImagePlaceholder').each(function () {
+			$window.trigger('extra:responsiveImage:init', [$(this).data("size", "")]);
+		});
+	});
 });

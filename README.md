@@ -8,6 +8,7 @@
   - renamed extra.responsive-resize to extra:resize:responsive
   - renamed complete.extra.responsiveImage to extra:responsiveImage:load
   - renamed complete.extra.responsiveImageTotal to extra.responsiveImage:complete
+  - renamed extra.responsiveImage to extra:responsiveImage:init
   - renamed extra.initFancybox to extra:fancybox:init
 
 ###2016/03/21

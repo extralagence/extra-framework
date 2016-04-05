@@ -129,6 +129,7 @@ require_extra_libraries();
 // SCAN AND REQUIRE ALL MODULE ADMIN SETUP FILES FOR EXTRA
 $modules = scandir(EXTRA_MODULES_PATH);
 foreach($modules as $module) {
+	if(substr($module, 0, 1) !== '#')
 	require_extra_module_setup($module, true);
 }
 

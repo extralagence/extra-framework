@@ -41,7 +41,7 @@ add_filter( 'wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader' );
  *
  *
  *********************/
-if ( ! function_exists( 'extra_search_form' ) ) {
+if ( !function_exists( 'extra_search_form' ) ) {
 	function extra_search_form( $form ) {
 		$form = '
     	<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
@@ -210,7 +210,7 @@ function extra_add_shortcode_submit() {
 	}
 }
 
-if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
+if ( !function_exists( 'extra_submit_shortcode_handler' ) ) {
 	function extra_submit_shortcode_handler( $tag ) {
 		$tag = new WPCF7_Shortcode( $tag );
 
@@ -241,211 +241,6 @@ if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
 	}
 }
 
-
-/**
- * echo reponsive image
- *
- * @param $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
- * @param string $alt
- */
-function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
-
-	// hook it to override available sizes
-	$sizes = apply_filters( 'extra_responsive_sizes', array(
-		'desktop' => 'only screen and (min-width: 961px)',
-		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
-		'mobile'  => 'only screen and (max-width: 690px)'
-	) );
-
-	// SRC IS AN ID
-	if ( ! is_numeric( $id ) ) {
-		throw new Exception( __( "This must be an integer", 'extra' ) );
-	}
-	if ( ! isset( $alt ) ) {
-		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
-		if ( empty( $alt ) ) {
-			$attachment = get_post( $id );
-			$alt        = $attachment->post_title;
-		}
-	}
-
-
-	if ( is_array( $dimensions ) ) {
-		$image_full_src = null;
-
-		$real_dimensions = array();
-		foreach ( $dimensions as $dimension_name => $dimension ) {
-			// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
-			if ( $dimension[0] === null && $dimension[1] !== null ) {
-				if ( $image_full_src == null ) {
-					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
-				}
-				if ( ! empty( $image_full_src ) ) {
-					$dimension[0] = min( floor( $dimension[1] * $image_full_src[1] / $image_full_src[2] ), $image_full_src[1] );
-				}
-			} else if ( $dimension[1] === null && $dimension[0] !== null ) {
-				if ( $image_full_src == null ) {
-					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
-				}
-				if ( ! empty( $image_full_src ) ) {
-					$dimension[1] = min( floor( $dimension[0] * $image_full_src[2] / $image_full_src[1] ), $image_full_src[2] );
-				}
-			}
-			$real_dimensions[ $dimension_name ] = $dimension;
-		}
-		$dimensions = $real_dimensions;
-	}
-
-	// START RENDERING
-	ob_start();
-
-	?>
-
-	<figure class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>">
-		<noscript
-			<?php echo ( $img_itemprop ) ? 'data-img-itemprop="' . $img_itemprop . '"' : ''; ?>
-			data-alt="<?php echo $alt; ?>"
-			<?php foreach ( $sizes as $size => $value ): ?>
-				data-src-<?php echo $size; ?>="<?php
-				$dimension = $dimensions[ $size ];
-				$src       = wp_get_attachment_image_src( $id, $dimension );
-				echo $src[0];
-				?>"
-			<?php endforeach; ?>>
-
-			<img alt="<?php echo $alt; ?>"
-				<?php echo ( $img_itemprop ) ? 'itemprop="' . $img_itemprop . '"' : ''; ?>
-				 src="<?php
-				 $dimension = reset( $dimensions );
-				 $src       = wp_get_attachment_image_src( $id, $dimension );
-				 echo $src[0];
-				 ?>">
-		</noscript>
-		<img class="placeholder-image"
-		     src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
-		     alt=""
-		     style="<?php
-		     $first_dimension = reset( $dimensions );
-		     echo ( ! empty( $first_dimension[0] ) ) ? 'width: ' . $first_dimension[0] . 'px;' : '';
-		     echo ( ! empty( $first_dimension[1] ) ) ? ' height: ' . $first_dimension[1] . 'px;' : ''; ?>"/>
-		<?php if ( ! empty( $caption ) ) : ?>
-			<figcaption class="wp-caption-text">
-				<?php echo $caption; ?>
-			</figcaption>
-		<?php endif; ?>
-	</figure>
-	<?php $return = ob_get_contents(); ?>
-
-	<?php
-	ob_end_clean();
-
-	return $return;
-}
-
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
-	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption );
-}
-
-/**
- * echo reponsive image
- *
- * @param $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
- * @param string $alt
- */
-function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-
-	// hook it to override available sizes
-	$sizes = apply_filters( 'extra_responsive_sizes', array(
-		'desktop' => 'only screen and (min-width: 961px)',
-		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
-		'mobile'  => 'only screen and (max-width: 690px)'
-	) );
-
-	// SRC IS AN ID
-	if ( ! is_numeric( $id ) ) {
-		throw new Exception( __( "This must be an integer", 'extra' ) );
-	}
-	// START RENDERING
-	ob_start();
-	?>
-
-	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>"
-	     style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');">
-		<noscript
-			<?php foreach ( $sizes as $size => $value ): ?>
-				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
-				echo $src[0]; ?>"
-			<?php endforeach; ?>>
-		</noscript>
-	</div>
-	<?php $return = ob_get_contents(); ?>
-
-	<?php
-	ob_end_clean();
-
-	return $return;
-}
-
-function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-	echo extra_get_responsive_background_image( $id, $dimensions, $class );
-}
-
-/**
- * get svg responsive image
- *
- * @param $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
- * @param string $alt
- */
-function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-
-	// hook it to override available sizes
-	$sizes = apply_filters( 'extra_responsive_sizes', array(
-		'desktop' => 'only screen and (min-width: 961px)',
-		'tablet'  => 'only screen and (min-width: 691px) and (max-width: 960px)',
-		'mobile'  => 'only screen and (max-width: 690px)'
-	) );
-
-	// SRC IS AN ID
-	if ( ! is_numeric( $id ) ) {
-		throw new Exception( __( "This must be an integer", 'extra' ) );
-	}
-	// START RENDERING
-	ob_start();
-	?>
-
-	<div class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
-		<svg  preserveAspectRatio="none"
-		      xmlns="http://www.w3.org/2000/svg"
-		     xmlns:xlink="http://www.w3.org/1999/xlink">
-			<image preserveAspectRatio="xMidYMid slice" xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
-		</svg>
-		<noscript
-			<?php foreach ( $sizes as $size => $value ): ?>
-				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
-				echo $src[0]; ?>"
-			<?php endforeach; ?>>
-		</noscript>
-	</div>
-	<?php $return = ob_get_contents(); ?>
-
-	<?php
-	ob_end_clean();
-
-	return $return;
-}
-
-function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-	echo extra_get_responsive_svg_image( $id, $dimensions, $class );
-}
-
 ///////////////////////////////////////
 //
 //
@@ -458,10 +253,10 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
  *
  * @return image id
  */
-function extra_get_default_image_id($param = 'default-thumbnail') {
+function extra_get_default_image_id( $param = 'default-thumbnail' ) {
 	global $extra_options;
-	$default_image = (isset($extra_options[$param])) ? $extra_options[$param] : null;
-	$default_image_id = (isset($default_image['id'])) ? $default_image['id'] : null;
+	$default_image    = ( isset( $extra_options[$param] ) ) ? $extra_options[$param] : null;
+	$default_image_id = ( isset( $default_image['id'] ) ) ? $default_image['id'] : null;
 
 	return $default_image_id;
 }
@@ -485,11 +280,13 @@ function extra_shortify_text( $text, $max_length ) {
 					$text = substr( $text, 0, $max_length - 1 ) . '...';
 					break;
 				}
-			} else if ( strlen( $text . ' ' . $text_part ) <= $max_length ) {
-				$text .= ' ' . $text_part;
 			} else {
-				$text .= '...';
-				break;
+				if ( strlen( $text . ' ' . $text_part ) <= $max_length ) {
+					$text .= ' ' . $text_part;
+				} else {
+					$text .= '...';
+					break;
+				}
 			}
 		}
 	}
@@ -506,23 +303,31 @@ function extra_get_archive_title( $id = 0 ) {
 	}
 
 	$title = null;
-	if ( isset( $post ) && ! empty( $post ) ) {
+	if ( isset( $post ) && !empty( $post ) ) {
 		// CATEGORY
 		if ( is_category() ) {
 			$title = sprintf( __( 'Archive de la catégorie "%s"', 'extra' ), single_cat_title( '', false ) );
 		} // SEARCH
-		else if ( is_search() ) {
-			$title = sprintf( __( 'Résultats pour la recherche "%s"', 'extra' ), get_search_query() );
-		} // TIME - DAY
-		else if ( is_day() ) {
-			$title = sprintf( __( 'Archive du %s', 'extra' ), get_the_time( 'd F Y' ) );
+		else {
+			if ( is_search() ) {
+				$title = sprintf( __( 'Résultats pour la recherche "%s"', 'extra' ), get_search_query() );
+			} // TIME - DAY
+			else {
+				if ( is_day() ) {
+					$title = sprintf( __( 'Archive du %s', 'extra' ), get_the_time( 'd F Y' ) );
 
-		} // TIME - MONTH
-		else if ( is_month() ) {
-			$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'F Y' ) );
-		} // TIME - YEAR
-		else if ( is_year() ) {
-			$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'Y' ) );
+				} // TIME - MONTH
+				else {
+					if ( is_month() ) {
+						$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'F Y' ) );
+					} // TIME - YEAR
+					else {
+						if ( is_year() ) {
+							$title = sprintf( __( 'Archive %s', 'extra' ), get_the_time( 'Y' ) );
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -545,7 +350,7 @@ function extra_the_archive_title( $id = 0 ) {
  *
  *
  *********************/
-if ( ! function_exists( 'extra_post_limits' ) ) {
+if ( !function_exists( 'extra_post_limits' ) ) {
 	add_filter( 'post_limits', 'extra_post_limits' );
 	function extra_post_limits( $limits ) {
 		if ( is_search() ) {
@@ -566,20 +371,22 @@ if ( ! function_exists( 'extra_post_limits' ) ) {
  *
  *
  *********************/
-if ( ! function_exists( 'extra_wp_title' ) ) {
+if ( !function_exists( 'extra_wp_title' ) ) {
 	function extra_wp_title( $title, $sep ) {
 		global $paged, $page, $post;
 
 		$title = '';
 
-		if ( ! is_feed() && ! is_front_page() ) {
+		if ( !is_feed() && !is_front_page() ) {
 
 			if ( is_singular() ) {
 				if ( $post != null ) {
 					$title .= $post->post_title . ' ' . $sep . ' ';
 				}
-			} else if ( is_archive() ) {
-				$title .= ' ' . $sep . ' ' . __( "Archive", "extra-admin" );
+			} else {
+				if ( is_archive() ) {
+					$title .= ' ' . $sep . ' ' . __( "Archive", "extra-admin" );
+				}
 			}
 
 			// Add a page number if necessary.
@@ -587,8 +394,10 @@ if ( ! function_exists( 'extra_wp_title' ) ) {
 				$title .= "$title $sep " . sprintf( __( 'Page %s', 'extra-admin' ), max( $paged, $page ) );
 			}
 			$title .= get_bloginfo( 'name' );
-		} else if ( is_front_page() ) {
-			$title = get_bloginfo( 'name' );
+		} else {
+			if ( is_front_page() ) {
+				$title = get_bloginfo( 'name' );
+			}
 		}
 
 		return $title;
@@ -686,14 +495,14 @@ function dateformat_to_js( $php_format ) {
 	$jqueryui_format  = "";
 	$escaping         = false;
 	for ( $i = 0; $i < strlen( $php_format ); $i ++ ) {
-		$char = $php_format[ $i ];
+		$char = $php_format[$i];
 		if ( $char === '\\' ) // PHP date format escaping character
 		{
 			$i ++;
 			if ( $escaping ) {
-				$jqueryui_format .= $php_format[ $i ];
+				$jqueryui_format .= $php_format[$i];
 			} else {
-				$jqueryui_format .= '\'' . $php_format[ $i ];
+				$jqueryui_format .= '\'' . $php_format[$i];
 			}
 			$escaping = true;
 		} else {
@@ -701,8 +510,8 @@ function dateformat_to_js( $php_format ) {
 				$jqueryui_format .= "'";
 				$escaping = false;
 			}
-			if ( isset( $SYMBOLS_MATCHING[ $char ] ) ) {
-				$jqueryui_format .= $SYMBOLS_MATCHING[ $char ];
+			if ( isset( $SYMBOLS_MATCHING[$char] ) ) {
+				$jqueryui_format .= $SYMBOLS_MATCHING[$char];
 			} else {
 				$jqueryui_format .= $char;
 			}

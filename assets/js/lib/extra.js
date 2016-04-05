@@ -44,7 +44,8 @@ $(document).ready(function () {
 		if ($window.width() !== wWidth || $window.height() !== wHeight) {
 			wWidth = $window.width();
 			wHeight = $window.height();
-			$window.trigger('extra.resize');
+			// $window.trigger('extra.resize');
+			$window.trigger('extra:resize');
 		}
 	}
 
@@ -53,7 +54,7 @@ $(document).ready(function () {
 	 * MOBILE OR NOT MOBILE
 	 *
 	 *********************/
-	$(window).on('extra.resize', function () {
+	$(window).on('extra:resize', function () {
 		// IF STATE CHANGE, UPDATE
 		var _tmpExtraResponsiveSizesTests = $.extend({}, extraResponsiveSizesTests);
 		$.each(extraResponsiveSizes, function (index, value) {
@@ -64,15 +65,16 @@ $(document).ready(function () {
 		}
 		if (JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
 			extraResponsiveSizesTests = $.extend({}, _tmpExtraResponsiveSizesTests);
-			$(document).trigger("extra.responsive-resize");
+			// $(document).trigger("extra.responsive-resize");
+			$(document).trigger("extra:resize:responsive");
 		}
-	}).trigger('extra.resize');
+	}).trigger('extra:resize');
 	/*********************
 	 *
-	 * EXTRA SLIDER RESIZE
+	 * EXTRA RESIZE
 	 *
 	 *********************/
-	extra.resizeEvent = 'extra.resize';
+	extra.resizeEvent = 'extra:resize';
 	/**************************
 	 *
 	 *
@@ -90,246 +92,4 @@ $(document).ready(function () {
 		});
 		return toReturn;
 	};
-	/*********************
-	 *
-	 * EXTRA SLIDERS
-	 *
-	 *********************/
-	$window.on('updateClones.extra.slider', function (event, currentItem, total, slider) {
-		slider.find('.cloned .responsiveImagePlaceholder').each(function () {
-			$window.trigger('extra.responsiveImage', [$(this).data("size", "")]);
-		});
-	});
-	$window.on('init.extra.slider', function (event, items, numItems, slider) {
-		slider.on('complete.extra.responsiveImage', function () {
-			slider.trigger('update');
-		});
-	});
-	/*********************
-	 *
-	 * LOGO HOVER
-	 *
-	 *********************/
-	var homeBtn = $("#main-menu .menu-item-home > a");
-	$(".site-title a").hover(function () {
-		homeBtn.addClass("hover");
-	}, function () {
-		homeBtn.removeClass("hover");
-	});
-	/*********************
-	 *
-	 * ALL LINKS TO IMAGES
-	 *
-	 *********************/
-	var defaultOptions = {
-		fancyboxOptions: {
-			margin: 50,
-			padding: 0,
-			type: 'image',
-			helpers: {
-				title: {
-					type: 'over'
-				}
-			}
-		}
-	};
-	$.extend(defaultOptions, extraOptions);
-
-	function initFancybox($parent) {
-		$parent.find("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
-			return $(this).attr("target") != "_blank";
-		}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
-			var $this = $(this),
-				$img = $this.find(" > img").first();
-			if ($img.length) {
-				$(this).addClass("zoom");
-				if ($img.hasClass("alignleft")) {
-					$this.addClass("alignleft");
-				}
-				if ($img.hasClass("alignright")) {
-					$this.addClass("alignright");
-				}
-			}
-		});
-	}
-
-	initFancybox($("body"));
-	$window.on('extra.initFancybox', function (event, $parent) {
-		if ($parent == null) {
-			return;
-		}
-		initFancybox($parent);
-	});
-	/*********************
-	 *
-	 * BACK TO TOP
-	 *
-	 *********************/
-	$(".totop").click(function () {
-		TweenMax.to($window, 0.5, {scrollTo: {y: 0}});
-		return false;
-	});
-	/*********************
-	 *
-	 * WINDOW LOAD
-	 *
-	 *********************/
-	$(window).load(function () {
-		var $responsiveImages = $(".responsiveImagePlaceholder"),
-			totalResponsivesImages = $responsiveImages.length,
-			currentResponsiveImagesLoaded = 0;
-		/**************************
-		 *
-		 *
-		 * RESPONSIVE IMAGE
-		 *
-		 *
-		 *************************/
-		window.imageCount = 0;
-		$responsiveImages.each(function () {
-			initResponsiveImage($(this).data("size", ""));
-		});
-		function initResponsiveImage(container) {
-
-			var datas = container.find("noscript"),
-				altTxt = datas.data("alt"),
-				itemProp = datas.data("img-itemprop"),
-				size = extra.getImageVersion(),
-				addImage = function (size) {
-					// SET NEW IMAGE
-					if (datas && container.data("size") != size) {
-						container.data("size", size);
-						var imgSrc = datas.data("src-" + size);
-						if (imgSrc) {
-							var imgElement = $("<img />");
-							imgElement.error(function() {
-								currentResponsiveImagesLoaded++;
-								container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-								if(currentResponsiveImagesLoaded === totalResponsivesImages) {
-									container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-								}
-								initResponsiveImage(container);
-							}).load(function () {
-								// CORRECT IMAGE SIZE
-								imgElement.attr({
-									'width': this.width,
-									'height': this.height
-								});
-								if (itemProp) {
-									imgElement.attr('itemprop', itemProp);
-								}
-								// APPEND
-								if (container.hasClass('responsiveBackgroundImagePlaceholder')) {
-									container.css('background-image', "url('" + imgSrc + "')");
-								}
-								else if (container.hasClass('responsiveSvgImagePlaceholder')) {
-									container.find('>svg').find('image').attr({
-										'xlink:href': imgSrc
-									});
-								} else {
-									imgElement.appendTo(container);
-								}
-
-								// REMOVE EXISTING IMAGE
-								container.find("img").not(imgElement).remove();
-								currentResponsiveImagesLoaded++;
-								container.trigger('complete.extra.responsiveImage', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-								if(currentResponsiveImagesLoaded === totalResponsivesImages) {
-									container.trigger('complete.extra.responsiveImageTotal', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-								}
-
-							}).attr({
-								alt: altTxt,
-								src: imgSrc
-							});
-						} else {
-							totalResponsivesImages--;
-						}
-					}
-				};
-
-			$window.on("extra.responsive-resize", function () {
-				size = extra.getImageVersion();
-				addImage(size);
-			});
-			addImage(size);
-
-			container.data('responsiveImageProcessed', true);
-
-		}
-
-		$window.on('extra.responsiveImage', function (event, obj) {
-			obj.each(function () {
-				var $elem = $(this);
-				if ($elem.hasClass('responsiveImagePlaceholder')) {
-					initResponsiveImage($elem.data("size", ""));
-				} else {
-					initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
-				}
-			});
-		});
-	});
 });
-/*********************
- *
- * NO BUG CONSOLE
- *
- *********************/
-(function () {
-	var method;
-	var noop = function () {
-	};
-	var methods = [
-		'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-		'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-		'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-		'timeStamp', 'trace', 'warn'
-	];
-	var length = methods.length;
-	var console = (window.console = window.console || {});
-
-	while (length--) {
-		method = methods[length];
-
-		// Only stub undefined methods.
-		if (!console[method]) {
-			console[method] = noop;
-		}
-	}
-}());
-/*********************
- *
- * MATCH MEDIA
- *
- *********************/
-window.matchMedia = window.matchMedia || (function (doc, undefined) {
-
-		"use strict";
-
-		var bool,
-			docElem = doc.documentElement,
-			refNode = docElem.firstElementChild || docElem.firstChild,
-		// fakeBody required for <FF4 when executed in <head>
-			fakeBody = doc.createElement("body"),
-			div = doc.createElement("div");
-
-		div.id = "mq-test-1";
-		div.style.cssText = "position:absolute;top:-100em";
-		fakeBody.style.background = "none";
-		fakeBody.appendChild(div);
-
-		return function (q) {
-
-			div.innerHTML = "&shy;<style media=\"" + q + "\"> #mq-test-1 { width: 42px; }</style>";
-
-			docElem.insertBefore(fakeBody, refNode);
-			bool = div.offsetWidth === 42;
-			docElem.removeChild(fakeBody);
-
-			return {
-				matches: bool,
-				media: q
-			};
-
-		};
-	}(document));

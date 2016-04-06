@@ -6,8 +6,7 @@
 var extra = {},
 	$window = $(window),
 	wWidth,
-	wHeight,
-	resizeTimer;
+	wHeight;
 /*********************
  *
  * RESPONSIVE
@@ -34,11 +33,18 @@ $(document).ready(function () {
 	 *
 	 *
 	 *************************/
+	var canResize = true;
 	wWidth = $window.width();
 	wHeight = $window.height();
 	$window.on('resize', function () {
-		clearTimeout(resizeTimer);
-		resizeTimer = setTimeout(resizeHandler, 300);
+		if (canResize) {
+			resizeHandler();
+			canResize = false;
+			setTimeout(function () {
+				resizeHandler();
+				canResize = true;
+			}, 300);
+		}
 	});
 	function resizeHandler() {
 		if ($window.width() !== wWidth || $window.height() !== wHeight) {

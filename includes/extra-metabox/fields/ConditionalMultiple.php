@@ -10,7 +10,7 @@
  * - name (required)
  * - label (optional)
  * - icon (optional)
- * - type (checkbox or radio) (optional, default radio)
+ * - input_type (checkbox or radio) (optional, default radio)
  * - values (array slug => value required)
  * - multiple_subfields (required)
  */

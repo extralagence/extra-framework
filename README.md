@@ -39,4 +39,4 @@ It must contains this folders :
 That's all folks !
 
 ###SNIPPETS
-[Extra Snippets](https://github.com/extralagence/extra-framework/edit/master/snippets.md)
+[Extra Snippets](https://github.com/extralagence/extra-framework/blob/master/snippets.md)

@@ -123,8 +123,6 @@ jQuery(document).ready(function($) {
 			tinymce.settings.wp_autoresize_on = true;
 			tinymce.settings = $.extend({}, tempSettings);
 
-			console.log(tempSettings);
-
 		});
 
 	}

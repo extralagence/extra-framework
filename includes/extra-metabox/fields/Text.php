@@ -48,7 +48,7 @@ class Text extends AbstractField {
 				id="<?php $this->mb->the_name(); ?>"
 				name="<?php $this->mb->the_name(); ?>"
 				type="text"
-				data-name="<?php echo $this->name; ?>"
+				data-extra-field-name="<?php echo $this->name; ?>"
 				value="<?php
 				$value = $this->mb->get_the_value();
                 if(empty($value)) {

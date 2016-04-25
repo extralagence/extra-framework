@@ -8,7 +8,7 @@ $window.on('extra:fancybox:init', function (event, $parent) {
 	}
 });
 function extraInitFancybox($parent) {
-	$parent.find("a[href$='.jpg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
+	$parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
 		return $(this).attr("target") != "_blank";
 	}).attr("data-fancybox-group", "gallery").fancybox(defaultOptions.fancyboxOptions).each(function () {
 		var $this = $(this),

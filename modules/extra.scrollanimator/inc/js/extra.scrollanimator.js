@@ -131,7 +131,10 @@ function ExtraScrollAnimator (options) {
 	$window.on('extra:resize extra:responsiveImage:load', function() {
 		self.options.target.each(function() {
 			// kill previous tween
-			$(this).data('tween').progress(1).kill();
+			var tween = $(this).data('tween');
+			if (tween) {
+				tween.progress(1).kill();
+			}
 			$(this).removeData('coords').removeData('tween');
 		});
 		self.init(self.options);

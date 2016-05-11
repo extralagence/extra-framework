@@ -141,7 +141,7 @@ function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = ''
  * @param string $class  add custom classes
  * @param string $alt
  */
-function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
+function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div') {
 
 	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array(
@@ -158,7 +158,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	ob_start();
 	?>
 
-	<div class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?>"
+	<<?php echo $tag; ?> class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?>"
 		 style="background-image: url('<?php echo EXTRA_URI ?>/assets/img/blank.png');">
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
@@ -167,7 +167,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 				echo $src[0]; ?>"
 			<?php endforeach; ?>>
 		</noscript>
-	</div>
+	</<?php echo $tag; ?>>
 	<?php $return = ob_get_contents(); ?>
 
 	<?php
@@ -176,8 +176,8 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	return $return;
 }
 
-function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-	echo extra_get_responsive_background_image( $id, $dimensions, $class );
+function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div' ) {
+	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag );
 }
 
 /**

@@ -37,3 +37,6 @@ It must contains this folders :
 * extra/setup
 
 That's all folks !
+
+###SNIPPETS
+[Extra Snippets](https://github.com/extralagence/extra-framework/blob/master/snippets.md)

@@ -50,7 +50,12 @@ $window.load(function () {
 			if (!imgSrc || imgSrc == '') {
 				console.warn("Image src is empty");
 				console.warn($container);
-				currentResponsiveImagesLoaded--;
+				// currentResponsiveImagesLoaded++;
+				totalResponsivesImages--;
+				$container.trigger('extra:responsiveImage:error', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+				if (currentResponsiveImagesLoaded === totalResponsivesImages) {
+					$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+				}
 				return;
 			}
 

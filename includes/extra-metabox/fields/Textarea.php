@@ -26,7 +26,10 @@ class Textarea extends AbstractField {
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
-			<textarea id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>"><?php $this->mb->the_value(); ?></textarea>
+			<textarea
+				id="<?php $this->mb->the_name(); ?>"
+				data-extra-field-name="<?php echo $this->name; ?>"
+				name="<?php $this->mb->the_name(); ?>"><?php $this->mb->the_value(); ?></textarea>
 		</p>
 		<?php
 	}

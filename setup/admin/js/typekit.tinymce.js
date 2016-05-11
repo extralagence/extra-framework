@@ -1,6 +1,4 @@
 (function() {
-	console.log('extra_admin_typekit_id');
-	console.log(extra_admin_typekit_id);
 	if (typeof(extra_admin_typekit_id) != 'undefined') {
 		tinymce.create('tinymce.plugins.typekit', {
 			init: function(ed, url) {

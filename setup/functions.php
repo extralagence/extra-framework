@@ -85,23 +85,24 @@ add_filter( 'excerpt_more', 'extra_excerpt_more' );
  *
  *
  *********************/
-function extra_img_caption_shortcode( $x = null, $attr, $content ) {
-	extract( shortcode_atts( array(
-		'id'      => '',
-		'align'   => 'alignnone',
-		'width'   => '',
-		'caption' => ''
-	), $attr ) );
-	if ( 1 > (int) $width || empty( $caption ) ) {
-		return $content;
-	}
-	if ( $id ) {
-		$id = 'id="' . $id . '" ';
-	}
+if(!function_exists('extra_img_caption_shortcode')) {
+	function extra_img_caption_shortcode( $x = null, $attr, $content ) {
+		extract( shortcode_atts( array(
+			'id'      => '',
+			'align'   => 'alignnone',
+			'width'   => '',
+			'caption' => ''
+		), $attr ) );
+		if ( 1 > (int) $width || empty( $caption ) ) {
+			return $content;
+		}
+		if ( $id ) {
+			$id = 'id="' . $id . '" ';
+		}
 
-	return '<div ' . $id . 'class="wp-caption ' . $align . '" style="width: ' . ( 0 + (int) $width ) . 'px">' . do_shortcode( $content ) . '<div class="wp-caption-text">' . $caption . '</div></div>';
+		return '<div ' . $id . 'class="wp-caption ' . $align . '">' . do_shortcode( $content ) . '<div class="wp-caption-text">' . $caption . '</div></div>';
+	}
 }
-
 add_filter( 'img_caption_shortcode', 'extra_img_caption_shortcode', 10, 3 );
 /**********************
  *
@@ -551,14 +552,14 @@ function _print_r( $a ) {
  *
  *
  *********************/
-function filter_ptags_on_images( $content ) {
+function extra_template_no_tags_around_medias( $content ) {
 	$content = preg_replace( '/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content );
 	$content = preg_replace( '/<p>\s*(<iframe .*>)?\s*(<\/iframe>)?\s*<\/p>/iU', '\1\2', $content );
 
 	return $content;
 }
 
-add_filter( 'the_content', 'filter_ptags_on_images', 10 );
+add_filter( 'the_content', 'extra_template_no_tags_around_medias', 10 );
 
 /**********************
  *
@@ -569,24 +570,13 @@ add_filter( 'the_content', 'filter_ptags_on_images', 10 );
  *
  *
  *********************/
-/**
- * Add a new line around paragraph links
- *
- * @param string $content
- *
- * @return string $content
- */
-function my_autoembed_adjustments( $content ) {
-
+function extra_template_youtube_formatting( $content ) {
 	$pattern = '|<p>\s*(https?://[^\s"]+)\s*</p>|im';    // your own pattern
 	$to      = "<p>\n$1\n</p>";                          // your own pattern
 	$content = preg_replace( $pattern, $to, $content );
-
 	return $content;
-
 }
-
-add_filter( 'the_content', 'my_autoembed_adjustments', 7 );
+//add_filter( 'the_content', 'extra_template_youtube_formatting', 7 );
 /**********************
  *
  *
@@ -610,3 +600,36 @@ add_filter( 'the_content', 'my_autoembed_adjustments', 7 );
 //  ';
 //}
 //add_action('admin_head', 'fix_svg_thumb_display');
+/**********************
+ *
+ *
+ *
+ * MORE VARS FOR LESS
+ *
+ *
+ *
+ *********************/
+function extra_framework_theme_less_vars($vars, $handle) {
+	$vars['extra_uri'] = '~"' . EXTRA_URI . '"';
+	$vars['extra_modules_uri'] = '~"' . EXTRA_MODULES_URI . '"';
+	$vars['extra_includes_uri'] = '~"' . EXTRA_INCLUDES_URI . '"';
+	$vars['extra_common_module_uri'] = '~"' . EXTRA_COMMON_MODULE_URI . '"';
+	$vars['theme_uri'] = '~"' . THEME_URI . '"';
+	$vars['theme_modules_uri'] = '~"' . THEME_MODULES_URI . '"';
+	$vars['theme_includes_uri'] = '~"' . THEME_INCLUDES_URI . '"';
+	$vars['theme_common_module_uri'] = '~"' . THEME_COMMON_MODULE_URI . '"';
+	return $vars;
+}
+add_filter('less_vars', 'extra_framework_theme_less_vars', 10, 2);
+/**********************
+ *
+ *
+ *
+ * NO MORE JS AND CSS LOADING FOR CONTACT FORM 7
+ *
+ *
+ *
+ *********************/
+// REMOVE JS FROM CONTACT FORM 7
+add_filter( 'wpcf7_load_js', '__return_false' );
+add_filter( 'wpcf7_load_css', '__return_false' );

@@ -267,22 +267,19 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				} else {
 					echo $delimiter;
 				}
-
-				if (!empty($breadcrumb['class'])) {
-					echo '<span class="'.$breadcrumb['class'].'">';
-				}
+				$class = (!empty($breadcrumb['class']) ? ' class="'.$breadcrumb['class'].'"' : '');
 
 				if (!empty($breadcrumb['link'])) {
-					echo '<a href="'.$breadcrumb['link'].'">';
+					echo '<a '. $class .' href="'.$breadcrumb['link'].'">';
+				} else {
+					echo '<span'. $class .'>';
 				}
 
 				echo $breadcrumb['name'];
 
 				if (!empty($breadcrumb['link'])) {
 					echo '</a>';
-				}
-
-				if (!empty($breadcrumb['class'])) {
+				} else {
 					echo '</span>';
 				}
 			}

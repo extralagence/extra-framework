@@ -8,14 +8,15 @@
  *
  *
  *********************/
-function extra_responsive_images_init () {
-	$extra_enabled_extra_responsive_images = apply_filters('extra_enabled_extra_responsive_images', true);
-	if(!$extra_enabled_extra_responsive_images) {
+function extra_responsive_images_init() {
+	$extra_enabled_extra_responsive_images = apply_filters( 'extra_enabled_extra_responsive_images', true );
+	if ( !$extra_enabled_extra_responsive_images ) {
 		return;
 	}
-	wp_enqueue_script('extra.responsiveimages', EXTRA_MODULES_URI.'/extra.responsiveimages/js/extra.responsiveimages.js', array('jquery', 'tweenmax', 'extra'), null, true);
+	wp_enqueue_script( 'extra.responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/js/extra.responsiveimages.js', array( 'jquery', 'tweenmax', 'extra' ), null, true );
 }
-add_action('init', 'extra_responsive_images_init');
+
+add_action( 'init', 'extra_responsive_images_init' );
 /**********************
  *
  *
@@ -43,10 +44,20 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	) );
 
 // SRC IS AN ID
-	if ( !is_numeric( $id ) ) {
-		throw new Exception( __( "This must be an integer", 'extra' ) );
+	if ( empty( $id ) || !is_numeric( $id ) ) {
+		//throw new Exception( __( "This must be an integer", 'extra' ) );
+		ob_start();
+		?>
+		<img
+			class="placeholder-image<?php echo !empty( $class ) ? ' ' . $class : ''; ?>"
+			src="<?php echo EXTRA_URI; ?>/assets/img/blank.png">
+		<?php
+		$return = ob_get_contents();
+		ob_end_clean();
+
+		return $return;
 	}
-	if ( !isset( $alt ) ) {
+	if ( !empty( $alt ) ) {
 		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
 		if ( empty( $alt ) ) {
 			$attachment = get_post( $id );
@@ -121,9 +132,9 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 			</figcaption>
 		<?php endif; ?>
 	</figure>
-	<?php $return = ob_get_contents(); ?>
 
 	<?php
+	$return = ob_get_contents();
 	ob_end_clean();
 
 	return $return;

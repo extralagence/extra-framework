@@ -40,6 +40,10 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 		add_filter( 'wp_post_revision_meta_keys', array( $this, 'metabox_revision' ) );
 	}
 
+	public function get_current_post_id() {
+		return $this->current_post_id;
+	}
+
 	public function metabox_revision( $keys ) {
 
 		if ( ( $postID = ExtraMetaBox::_get_post_id() ) ) {

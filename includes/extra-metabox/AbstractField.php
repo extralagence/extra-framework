@@ -12,6 +12,7 @@ abstract class AbstractField {
 	protected $name;
 	protected $name_suffix = '';
 	protected $label;
+	protected $description;
 	protected $icon;
 	protected $css_class;
 
@@ -60,6 +61,7 @@ abstract class AbstractField {
 	public function extract_properties($properties) {
 		$this->name = isset($properties['name']) ? $properties['name'] : null;
 		$this->label = isset($properties['label']) ? $properties['label'] : null;
+		$this->description = isset($properties['description']) ? $properties['description'] : '';
 		$this->title = isset($properties['title']) ? $properties['title'] : null;
 		$this->icon = isset($properties['icon']) ? $properties['icon'] : null;
 		$this->css_class = isset($properties['css_class']) ? $properties['css_class'] : null;

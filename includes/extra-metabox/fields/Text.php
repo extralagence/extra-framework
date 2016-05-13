@@ -74,7 +74,6 @@ class Text extends AbstractField {
 		$this->regex = isset($properties['regex']) ? $properties['regex'] : null;
         $this->placeholder = isset($properties['placeholder']) ? $properties['placeholder'] : null;
         $this->default = isset($properties['default']) ? $properties['default'] : '';
-        $this->description = isset($properties['description']) ? $properties['description'] : '';
 	}
 
 	public function the_admin_column_value() {

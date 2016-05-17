@@ -102,7 +102,7 @@ function extra_custom_social_enqueue_assets() {
 		return;
 	}
 	wp_enqueue_style('extra-custom-share', EXTRA_MODULES_URI.'/custom_share/css/custom_share.less');
-	wp_enqueue_script('extra-custom-share', EXTRA_MODULES_URI.'/custom_share/js/custom_share.js', array('jquery', 'fancybox'), false, true);
+	wp_enqueue_script('extra-custom-share', EXTRA_MODULES_URI.'/custom_share/js/custom_share.js', array('extra'), false, true);
 }
 add_action('wp_enqueue_scripts', 'extra_custom_social_enqueue_assets');
 /**********************

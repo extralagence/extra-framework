@@ -15,7 +15,6 @@
 *MODULES*
   - removed fancyselect
   - removed extra.checkbox
-  - removed jquery.fracs
   - removed jquery.gsap
   - removed jquery.fracs
 

@@ -12,7 +12,8 @@ function extra_custom_share($id = 0) {
 
 	global  $post,
 			$extra_options,
-			$extra_sharer_counter;
+			$extra_sharer_counter,
+			$extra_contact_form_printed;
 
 	if ( $id == 0 && isset($post->ID)) {
 		$id = $post->ID;
@@ -40,8 +41,10 @@ function extra_custom_share($id = 0) {
 		';
 		$facebook = apply_filters('extra_social_facebook_link', $facebook, $link);
 
+		// TODO Twitter api count no more valid
+		// data-counter="http://api.twitter.com/1/urls/count.json?url=' . urlencode($link) . '&amp;callback=?"
 		$twitter = '
-		<a target="_blank" href="https://twitter.com/home?status=' . utf8_uri_encode(sprintf(__('Lire l\'article intitulé %s sur %s : %s', 'extra'), $title, $blog_title, $link)) . '" class="extra-social-button extra-social-twitter" data-url="' . $link . '" data-counter="http://cdn.api.twitter.com/1/urls/count.json?url=' . urlencode($link) . '&amp;callback=?">
+		<a target="_blank" href="https://twitter.com/home?status=' . urlencode(sprintf(__('Lire l\'article intitulé %s sur %s : %s', 'extra'), $title, $blog_title, $link)) . '" class="extra-social-button extra-social-twitter" data-url="' . $link . '">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-twitter"></use></svg>
 			<span class="text">' . __( 'Partager sur Twitter', 'extra' ) . '</span><span class="counter"></span>
 		</a>
@@ -65,25 +68,27 @@ function extra_custom_share($id = 0) {
 		$return .= $gplus;
 
 		if(array_key_exists('contact-form-select', $extra_options)) {
+
 			$email = '
-			<a href="#extra-social-share-' . $extra_sharer_counter . '-wrapper" class="extra-social-button extra-social-share">
+			<a href="#extra-social-share-wrapper" class="extra-social-button extra-social-share">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-mail"></use></svg>
 				<span class="text">' . __( 'Partager par email', 'extra' ) . '</span>
 			</a>
 			';
 			$email = apply_filters('extra_social_share_link', $email, $extra_sharer_counter);
-
-			$email_popup = '<div class="js-custom-share-hidden">
-				<div class="extra-social-share-wrapper" id="extra-social-share-' . $extra_sharer_counter . '-wrapper">
-				<h3>' . __( 'Partager par email', 'extra' ) . '</h3>
-				' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
-				</div>
-			</div>';
-			$email_popup = apply_filters('extra_social_share_popup', $email_popup);
-
 			$return .= $email;
-			$return .= $email_popup;
 
+			if (!isset($extra_contact_form_printed)) {
+				$email_popup = '<div class="js-custom-share-hidden">
+					<div class="extra-social-share-wrapper" id="extra-social-share-wrapper">
+					<h3>' . __( 'Partager par email', 'extra' ) . '</h3>
+					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
+					</div>
+				</div>';
+				$email_popup = apply_filters('extra_social_share_popup', $email_popup);
+				$extra_contact_form_printed = true;
+				$return .= $email_popup;
+			}
 		}
 		$return .= '</div>';
 		echo $return;
@@ -182,6 +187,8 @@ function extra_share_contact_wpcf7_form_tag($tags) {
 
 	if($tags['name'] == 'share_message') {
 		$post_title = ($post !== null) ? $post->post_title : '';
+		$post_title = str_replace('<br>', ' ', $post_title);
+		$post_title = str_replace('&nbsp;', ' ', $post_title);
 		$post_id = ($post !== null) ? $post->ID : 0;
 		$tags['values'] = array(__("Bonjour,", 'extra')."\n\n".__("Je vous invite à aller voir ", 'extra').($post_title)."\n".get_permalink($post_id)."\n\n".__("Bien cordialement.", 'extra'));
 	}

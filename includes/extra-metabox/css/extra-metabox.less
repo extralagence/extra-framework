@@ -7,7 +7,7 @@
  **********************/
 #poststuff .extra-metabox-minimal-ui {
 	background: transparent;
-	border: 0px none;
+	border: 0 none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
@@ -19,6 +19,13 @@
 	margin: 0;
 	padding: 0;
 }
+.extra-input-wrapper {
+	display: inline-block;
+}
+.extra-field-wrapper {
+	margin-bottom: 10px;
+}
+
 /**********************
  *
  *
@@ -51,6 +58,10 @@
 	padding-top: 0;
 	text-align: left;
 }
+#side-sortables .extra-metabox label,
+#side-sortables .extra-metabox .label {
+	text-align: left;
+}
 #side-sortables .extra-metabox .extra-radio-group-container label,
 #side-sortables .extra-metabox .extra-radio-group-container .label{
 	padding-top: 0;
@@ -75,6 +86,13 @@
 	cursor: pointer;
 	vertical-align: -7px;
 }
+
+#side-sortables .extra-metabox input[type="text"],
+#side-sortables .extra-metabox select,
+#side-sortables .extra-metabox input[type="number"] {
+	width: 100%;
+}
+
 .extra-metabox .mediaInput {
 	float: left;
 	width: 200px;
@@ -88,13 +106,21 @@
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 20px;
-	margin: 0px;
+	margin: 0;
+	margin-bottom: 20px;
+}
+#poststuff #side-sortables .extra-metabox h2 {
+	color: #23282d;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 20px;
+	margin: 0;
 	margin-bottom: 20px;
 }
 #poststuff .extra-metabox h2 .dashicons {
 	line-height: 25px;
 	margin-right: 8px;
-	vertical-align: 0px;
+	vertical-align: 0;
 }
 #poststuff .bloc h3,
 .metabox-holder .bloc h3,
@@ -103,10 +129,10 @@
 	cursor: text;
 	-webkit-box-shadow: none;
 	box-shadow: none;
-	border: 0px none;
+	border: 0 none;
 	font-size: 15px;
 	margin: 50px 0 5px 0;
-	padding: 0px;
+	padding: 0;
 	padding-left: 20px;
 }
 .extra-metabox .title {
@@ -134,7 +160,7 @@
 	color: #000000;
 	display: inline-block;
 	line-height: 20px;
-	margin: 0px 5px 0 0;
+	margin: 0 5px 0 0;
 	padding: 10px;
 	text-decoration: none;
 	vertical-align: middle;
@@ -157,14 +183,14 @@
 	color: red;
 }
 .extra-metabox .dodelete {
-	border: 0px none;
+	border: 0 none;
 	color: red;
 	display: inline-block;
 	font-size: 12px;
 	height: 16px;
 	line-height: 17px;
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	padding-left: 18px;
 	text-decoration: none;
 	vertical-align: middle;
@@ -249,6 +275,17 @@
 .extra-checkbox-container,
 .extra-select-container {
 	margin: 1em 0;
+}
+/**********************
+ *
+ *
+ * COLOR PICKER
+ *
+ *
+ **********************/
+.extra-metabox .wp-picker-holder {
+	position: absolute;
+	z-index: 999;
 }
 /**********************
  *

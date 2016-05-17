@@ -82,7 +82,7 @@ jQuery(document).ready(function ($) {
 				});
 
 				if (titleTextField !== '') {
-					var $inputText = $item.find('.extra-text-input[data-name="' + titleTextField + '"]').first();
+					var $inputText = $item.find('[data-extra-field-name="' + titleTextField + '"]').first();
 
 					$inputText.on('keyup', function () {
 						link.text((($inputText.val() != '') ? $inputText.val() : link.data('default-text')));
@@ -94,10 +94,17 @@ jQuery(document).ready(function ($) {
 
 				$nav.append(link);
 				link.wrap("<li />");
-
 				$window.trigger('extra:admin:tabs:newItem');
 			});
 
+			$nav.on("click", "a", function (event) {
+				var $item = $(event.target).parent(),
+					$target = $("#" + $item.attr("aria-controls")),
+					$maps = $target.find(".extra-map-processed .map-container");
+				$maps.each(function (index, element) {
+					resizeMap($(element).data("map"));
+				});
+			});
 
 			// SET WRAPPER 
 			$wrapper.tabs({
@@ -108,11 +115,11 @@ jQuery(document).ready(function ($) {
 
 			// MAKE IT SORTABLE
 			$nav.sortable({
-				containment: "parent",
+				containment         : "parent",
 				forcePlaceholderSize: true,
-				opacity: 1,
-				placeholder: "extra-tabs-placeholder",
-				start: function (event, ui) {
+				opacity             : 1,
+				placeholder         : "extra-tabs-placeholder",
+				start               : function (event, ui) {
 					$nav.children().each(function (index, element) {
 						var item = $(element),
 							$target = $("#" + item.attr("aria-controls")),
@@ -130,12 +137,13 @@ jQuery(document).ready(function ($) {
 						}
 					});
 				},
-				stop: function (event, ui) {
+				stop                : function (event, ui) {
 
 					$nav.children().each(function (index, element) {
 						var item = $(element),
 							$target = $("#" + item.attr("aria-controls")),
-							$editors = $target.find('.extra-editor-processed');
+							$editors = $target.find('.extra-editor-processed'),
+							$maps = $target.find(".extra-map-processed .map-container");
 						$wrapper.append($target);
 
 						// reset the editors
@@ -145,6 +153,11 @@ jQuery(document).ready(function ($) {
 									textareaId = textarea.attr('id');
 								tinymce.settings = textarea.data('tinymceSettings');
 								tinymce.execCommand('mceAddEditor', false, textareaId);
+							});
+						}
+						if ($maps.length) {
+							$maps.each(function (index, element) {
+								resizeMap($(element).data("map"));
 							});
 						}
 					});
@@ -168,4 +181,12 @@ jQuery(document).ready(function ($) {
 	initialize();
 	$window.on('extra:admin:tabs:newItem', initialize);
 	$window.on('extra:admin:accordion:newItem', initialize);
+
+	function resizeMap(map) {
+		var zoom = map.getZoom(),
+			center = map.getCenter();
+		google.maps.event.trigger(map, 'resize');
+		map.setZoom(zoom);
+		map.setCenter(center);
+	}
 });

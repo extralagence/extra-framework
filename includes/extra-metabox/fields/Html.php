@@ -32,5 +32,12 @@ class Html extends AbstractField {
 		}
 
 		$this->template = isset($properties['template']) ? $properties['template'] : null;
+		$this->template_admin_column = isset($properties['template_admin_column']) ? $properties['template_admin_column'] : null;
+	}
+
+	public function the_admin_column_value() {
+		if ($this->template_admin_column !== null) {
+			include $this->template_admin_column;
+		}
 	}
 }

@@ -76,13 +76,16 @@ function menu_page($id, $current_parent, $level = 1) {
 	<?php
 	$selected = ($current->ID == $parent->ID) ? " current-page-item" : "";
 	$parent_page_template = get_post_meta($parent->ID, '_wp_page_template', true);
-	echo '<div class="menu-title page-item-'.$parent->ID.$selected.'">';
-	if($parent_page_template == 'template-redirect.php') {
-		echo '<span>'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</span>';
-	} else {
-		echo '<a href="'.get_permalink($parent->ID).'">'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</a>';
+	$show_title = apply_filters('extra_submenu_show_parent_title', true);
+	if ($show_title) {
+		echo '<div class="menu-title page-item-'.$parent->ID.$selected.'">';
+		if($parent_page_template == 'template-redirect.php') {
+			echo '<span>'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</span>';
+		} else {
+			echo '<a href="'.get_permalink($parent->ID).'">'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</a>';
+		}
+		echo '</div>';
 	}
-	echo '</div>';
 	menu_page($selectedID, $parent);
 	?>
 </div>

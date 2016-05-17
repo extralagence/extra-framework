@@ -195,6 +195,13 @@ class WPAlchemy_MetaBox {
 	 * @access    public
 	 * @var        bool
 	 */
+	var $exclude_parent_post_id;
+
+	/**
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
+	 */
 	var $include_template;
 
 	/**
@@ -231,6 +238,13 @@ class WPAlchemy_MetaBox {
 	 * @var        bool
 	 */
 	var $include_post_id;
+
+	/**
+	 * @since    1.0
+	 * @access    public
+	 * @var        bool
+	 */
+	var $include_parent_post_id;
 
 	/**
 	 * @since    EXTRA
@@ -499,12 +513,14 @@ class WPAlchemy_MetaBox {
 				'exclude_tag_id',
 				'exclude_tag',
 				'exclude_post_id',
+				'exclude_parent_post_id',
 				'include_template',
 				'include_category_id',
 				'include_category',
 				'include_tag_id',
 				'include_tag',
 				'include_post_id',
+				'include_parent_post_id',
 				'include_protected'
 			);
 
@@ -1103,6 +1119,7 @@ class WPAlchemy_MetaBox {
 	 */
 	function can_output() {
 		$post_id = WPAlchemy_MetaBox::_get_post_id();
+		$post = get_post($post_id);
 
 		if ( ! empty( $this->exclude_template ) OR ! empty( $this->include_template ) ) {
 			$template_file = get_post_meta( $post_id, '_wp_page_template', true );
@@ -1148,12 +1165,14 @@ class WPAlchemy_MetaBox {
 			! empty( $this->exclude_tag_id ) OR
 			! empty( $this->exclude_tag ) OR
 			! empty( $this->exclude_post_id ) OR
+			! empty( $this->exclude_parent_post_id ) OR
 			! empty( $this->include_template ) OR
 			! empty( $this->include_category_id ) OR
 			! empty( $this->include_category ) OR
 			! empty( $this->include_tag_id ) OR
 			! empty( $this->include_tag ) OR
-			! empty( $this->include_post_id )
+			! empty( $this->include_post_id ) OR
+			! empty( $this->include_parent_post_id )
 		) {
 			if ( ! empty( $this->exclude_template ) ) {
 				if ( in_array( $template_file, $this->exclude_template ) ) {
@@ -1211,6 +1230,12 @@ class WPAlchemy_MetaBox {
 				}
 			}
 
+			if ( ! empty( $this->exclude_parent_post_id ) ) {
+				if ( in_array( $post->post_parent, $this->exclude_post_id ) ) {
+					$can_output = false;
+				}
+			}
+
 			// excludes are not set use "include only" mode
 
 			if
@@ -1220,7 +1245,8 @@ class WPAlchemy_MetaBox {
 				empty( $this->exclude_category ) AND
 				empty( $this->exclude_tag_id ) AND
 				empty( $this->exclude_tag ) AND
-				empty( $this->exclude_post_id )
+				empty( $this->exclude_post_id ) AND
+				empty( $this->exclude_parent_post_id )
 			) {
 				$can_output = false;
 			}
@@ -1277,6 +1303,12 @@ class WPAlchemy_MetaBox {
 
 			if ( ! empty( $this->include_post_id ) ) {
 				if ( in_array( $post_id, $this->include_post_id ) ) {
+					$can_output = true;
+				}
+			}
+
+			if ( ! empty( $this->include_parent_post_id ) ) {
+				if ( in_array( $post->post_parent, $this->include_parent_post_id ) ) {
 					$can_output = true;
 				}
 			}

@@ -3,17 +3,21 @@ $(document).ready(function() {
 		var $this = $(this),
 			url = $this.data("url"),
 			counter = $this.data("counter");
-		$.getJSON($(this).data('counter'), function(data) {
-			if(data['count']) {
-				$this.find('.counter').text(data['count']);
-			} else {
-				$.each(data, function (key, val) {
-					if (val['shares']) {
-						$this.find('.counter').text(val['shares']);
-					}
-				});
-			}
-		});
+
+		if (counter) {
+			console.log(counter);
+			$.getJSON(counter, function(data) {
+				if(data['count']) {
+					$this.find('.counter').text(data['count']);
+				} else {
+					$.each(data, function (key, val) {
+						if (val['shares']) {
+							$this.find('.counter').text(val['shares']);
+						}
+					});
+				}
+			});
+		}
 		$this.on('click', function(e) {
 			e.preventDefault();
 			window.open($this.attr('href'),"Partage","menubar=no, status=no, scrollbars=no, menubar=no, width=600, height=500");

@@ -212,27 +212,31 @@ add_filter('sanitize_file_name', 'extra_sanitize_file_name', 10);
  *
  *********************/
 function extra_post_labels() {
-	global $wp_post_types;
-	$labels = $wp_post_types['post']->labels;
-	$labels->name = __('Actualités', 'extra');
-	$labels->singular_name = __('Actualité', 'extra');
-	$labels->add_new = __('Nouvelle actualité', 'extra');
-	$labels->add_new_item = __('Nouvelle actualité', 'extra');
-	$labels->edit_item = __('Éditer une actualité', 'extra');
-	$labels->new_item = __('Actualité', 'extra');
-	$labels->view_item = __('Voir l\'actualité', 'extra');
-	$labels->search_items = __('Rechercher une actualité', 'extra');
-	$labels->not_found = __('Aucune actualité trouvée', 'extra');
-	$labels->not_found_in_trash = __('Aucune actualité dans la corbeille', 'extra');
+	if (apply_filters('extra_rename_post', true)) {
+		global $wp_post_types;
+		$labels = $wp_post_types['post']->labels;
+		$labels->name = __('Actualités', 'extra');
+		$labels->singular_name = __('Actualité', 'extra');
+		$labels->add_new = __('Nouvelle actualité', 'extra');
+		$labels->add_new_item = __('Nouvelle actualité', 'extra');
+		$labels->edit_item = __('Éditer une actualité', 'extra');
+		$labels->new_item = __('Actualité', 'extra');
+		$labels->view_item = __('Voir l\'actualité', 'extra');
+		$labels->search_items = __('Rechercher une actualité', 'extra');
+		$labels->not_found = __('Aucune actualité trouvée', 'extra');
+		$labels->not_found_in_trash = __('Aucune actualité dans la corbeille', 'extra');
+	}
 }
 add_action( 'init', 'extra_post_labels' );
 function extra_post_menu_labels() {
-	global $menu;
-	global $submenu;
-	$menu[5][0] = __('Actualités', 'extra');
-	$submenu['edit.php'][5][0] = __('Toutes les actualités', 'extra');
-	$submenu['edit.php'][10][0] = __('Nouvelle actualité', 'extra');
-	echo '';
+	if (apply_filters('extra_rename_post', true)) {
+		global $menu;
+		global $submenu;
+		$menu[5][0] = __('Actualités', 'extra');
+		$submenu['edit.php'][5][0] = __('Toutes les actualités', 'extra');
+		$submenu['edit.php'][10][0] = __('Nouvelle actualité', 'extra');
+		echo '';
+	}
 }
 add_action( 'admin_menu', 'extra_post_menu_labels' );
 /**********************

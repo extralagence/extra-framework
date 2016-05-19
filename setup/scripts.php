@@ -16,10 +16,6 @@ function extra_template_enqueue_scripts() {
 	wp_enqueue_script('tweenmax', EXTRA_URI . '/assets/js/lib/TweenMax.min.js', array('jquery'), null, true);
 	// SCROLLTO
 	wp_enqueue_script('tweenmax-scrollto', EXTRA_URI . '/assets/js/lib/ScrollToPlugin.min.js', array('jquery'), null, true);
-	// DAGGABLE
-	wp_enqueue_script('draggable', EXTRA_URI . '/assets/js/lib/Draggable.min.js', array('jquery', 'tweenmax'), null, true);
-	// THROWPROPS
-	wp_enqueue_script('throwprops', EXTRA_URI . '/assets/js/lib/ThrowPropsPlugin.min.js', array('jquery', 'tweenmax'), null, true);
 	// EXTRA
 	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/extra.js', array('jquery', 'tweenmax'), null, true);
 	// RESPONSIVE SIZES

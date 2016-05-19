@@ -13,8 +13,11 @@ function extra_slider_init () {
 	if(!$extra_enabled_extra_slider) {
 		return;
 	}
+	// DRAGGABLE
+	wp_enqueue_script('draggable', EXTRA_URI . '/assets/js/lib/Draggable.min.js', array('jquery', 'tweenmax'), null, true);
+
 	// EXTRA SLIDER
-	wp_enqueue_script('extra.slider', EXTRA_MODULES_URI.'/extra.slider/inc/js/extra.slider.js', array('jquery', 'tweenmax'), null, true);
+	wp_enqueue_script('extra.slider', EXTRA_MODULES_URI.'/extra.slider/inc/js/extra.slider.js', array('jquery', 'tweenmax', 'draggable'), null, true);
 	wp_enqueue_style('extra.slider', EXTRA_MODULES_URI.'/extra.slider/inc/css/extra.slider.css', array(), false, 'all');
 	// EXTRA GALLERY
 	wp_enqueue_style( 'extra-gallery', EXTRA_URI . '/assets/css/extra.gallery.less', array(), false, 'all' );

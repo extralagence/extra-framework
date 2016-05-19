@@ -19,6 +19,7 @@
  * - icon (optional)
  * - placeholder (optional): label when the field is empty
  * - regex (optional): regex checked for each changes
+ * - description (optional)
  */
 class Text extends AbstractField {
 
@@ -33,7 +34,7 @@ class Text extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<p class="<?php echo $this->css_class; ?> extra-text-container">
+		<div class="<?php echo $this->css_class; ?> extra-text-container">
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php if ($this->title != null) : ?>
 				<h2><?php
@@ -43,22 +44,27 @@ class Text extends AbstractField {
 			<?php endif; ?>
 			<?php echo ($this->title == null && $this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
-			<input
-				class="extra-text-input"
-				id="<?php $this->mb->the_name(); ?>"
-				name="<?php $this->mb->the_name(); ?>"
-				type="text"
-				data-extra-field-name="<?php echo $this->name; ?>"
-				value="<?php
-				$value = $this->mb->get_the_value();
-                if(empty($value)) {
-                    $value = $this->default;
-                }
-				echo $value; ?>"
-				<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
-				<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
-            <?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
-		</p>
+			<div class="extra-input-wrapper">
+				<input
+					class="extra-text-input"
+					id="<?php $this->mb->the_name(); ?>"
+					name="<?php $this->mb->the_name(); ?>"
+					type="text"
+					data-extra-field-name="<?php echo $this->name; ?>"
+					value="<?php
+					$value = $this->mb->get_the_value();
+					if(empty($value)) {
+						$value = $this->default;
+					}
+					echo $value; ?>"
+					<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
+					<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
+				<?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
+				<?php if ($this->description != null) : ?>
+					<div><small><em><?php echo $this->description; ?></em></small></div>
+				<?php endif; ?>
+			</div>
+		</div>
 		<?php
 	}
 

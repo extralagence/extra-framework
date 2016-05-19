@@ -570,13 +570,13 @@ add_filter( 'the_content', 'extra_template_no_tags_around_medias', 10 );
  *
  *
  *********************/
-function extra_template_youtube_formatting( $content ) {
+function extra_template_embeded_videos_formatting( $content ) {
 	$pattern = '|<p>\s*(https?://[^\s"]+)\s*</p>|im';    // your own pattern
 	$to      = "<p>\n$1\n</p>";                          // your own pattern
 	$content = preg_replace( $pattern, $to, $content );
 	return $content;
 }
-//add_filter( 'the_content', 'extra_template_youtube_formatting', 7 );
+add_filter( 'the_content', 'extra_template_embeded_videos_formatting', 7 );
 /**********************
  *
  *

@@ -34,7 +34,7 @@ add_action( 'init', 'extra_responsive_images_init' );
  * @param string $class  add custom classes
  * @param string $alt
  */
-function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
+function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '' ) {
 
 // hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array(
@@ -99,9 +99,16 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 	?>
 
-	<figure class="responsiveImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( !empty( $caption ) ) ? ' wp-caption' : ''; ?>">
+	<figure class="responsiveImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( !empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ($img_itemprop) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
+		<?php if ($img_itemprop) :
+			$dimension = reset( $dimensions );
+			$src       = wp_get_attachment_image_src( $id, $dimension );
+			?>
+			<meta itemprop="url" content="<?php echo $src[0]; ?>">
+			<meta itemprop="width" content="<?php echo $src[1]; ?>">
+			<meta itemprop="height" content="<?php echo $src[2]; ?>">
+		<?php endif; ?>
 		<noscript
-			<?php echo ( $img_itemprop ) ? 'data-img-itemprop="' . $img_itemprop . '"' : ''; ?>
 			data-alt="<?php echo $alt; ?>"
 			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
@@ -111,13 +118,13 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 				?>"
 			<?php endforeach; ?>>
 
-			<img alt="<?php echo $alt; ?>"
-				<?php echo ( $img_itemprop ) ? 'itemprop="' . $img_itemprop . '"' : ''; ?>
-				 src="<?php
+			<img alt="<?php echo $alt; ?>" src="<?php
 				 $dimension = reset( $dimensions );
 				 $src       = wp_get_attachment_image_src( $id, $dimension );
 				 echo $src[0];
-				 ?>">
+				 ?>"
+				 width="<?php echo $src[1]; ?>"
+				 height="<?php echo $src[2]; ?>">
 		</noscript>
 		<img class="placeholder-image"
 			 src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
@@ -140,7 +147,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	return $return;
 }
 
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = '', $caption = '' ) {
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '' ) {
 	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption );
 }
 

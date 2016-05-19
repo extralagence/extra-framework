@@ -97,7 +97,7 @@ $window.load(function () {
 						});
 					}
 					else {
-						imgElement.appendTo($container);
+						$container.find("img").after(imgElement);
 					}
 
 					// REMOVE EXISTING IMAGE

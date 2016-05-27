@@ -39,7 +39,13 @@ class Gallery extends AbstractField {
 			<?php endif; ?>
 			<div class="extra-custom-gallery">
 				<?php $this->mb->the_field($this->get_single_field_name("gallery_shortcode")); ?>
-				<a href="#" class="button choose-button"><?php _e("Éditer la galerie d'images", "extra"); ?></a>
+				<div class="extra-input-wrapper">
+					<a href="#" class="button choose-button"><?php _e("Éditer la galerie d'images", "extra"); ?></a>
+					<?php if ($this->description != null) : ?>
+						<div><small><em><?php echo $this->description; ?></em></small></div>
+					<?php endif; ?>
+				</div>
+
 				<div class="thumbs"><?php
 					$ids = $this->mb->get_the_value();
 					if(isset($ids) && !empty($ids) && sizeof($ids) > 0) {

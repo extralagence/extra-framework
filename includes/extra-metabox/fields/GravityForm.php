@@ -1,53 +1,10 @@
 <?php
-if ( class_exists( 'GFAPI' ) ) {
-	global $extra_options;
-
-	$forms = GFAPI::get_forms();
-
-	$reservation_options  = array();
-	$notification_options = array();
-	foreach ( $forms as $form ) {
-		$reservation_options[$form['id']] = $form['title'];
-
-		$notifications = $form['notifications'];
-		foreach ( $notifications as $notification ) {
-			$notification_options[$notification['id']] = $form['title'] . ' - ' . $notification['name'];
-		}
-	}
-
-	$sections[] = array(
-		'icon'   => 'el-icon-briefcase',
-		'title'  => __( 'Réservation', 'extra-admin' ),
-		'desc'   => null,
-		'fields' => array(
-			array(
-				'id'      => 'reservation_form',
-				'type'    => 'select',
-				'options' => $reservation_options,
-				'title'   => __( 'Formulaire de reservation', 'extra-admin' ),
-			),
-			array(
-				'id'      => 'reservation_notification',
-				'type'    => 'select',
-				'options' => $notification_options,
-				'title'   => __( 'Notification cliente', 'extra-admin' ),
-			),
-			array(
-				'id'    => 'reservation_debit_authorization',
-				'type'  => 'media',
-				'mode'  => 'application',
-				'title' => __( 'Autorisation de prélèvement (pdf)', 'extra-admin' ),
-			)
-		)
-	);
-}
-
 /**
  * Class GravityFormSelector
  *
  * Define a gravity form selector input metabox
  *
- * type = page_selector
+ * type = gravity_form_selector
  *
  * Options :
  * - name (required)
@@ -56,7 +13,6 @@ if ( class_exists( 'GFAPI' ) ) {
  * - option_none_value (optional)
  * - option_none_text (optional)
  * - placeholder (optional): label when the field is empty
- * - regex (optional): regex checked for each changes
  */
 class GravityFormSelector extends AbstractField {
 

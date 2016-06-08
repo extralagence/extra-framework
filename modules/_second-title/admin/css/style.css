@@ -27,6 +27,10 @@
 	text-align: left;
 	font-size: 1.5em;
 }
+
+#_second_title_metabox .extra-input-wrapper {
+	width: 100%;
+}
 #_second_title_metabox textarea {
 	width: 100%;
 	height: 3em;

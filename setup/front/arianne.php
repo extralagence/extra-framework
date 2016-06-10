@@ -260,7 +260,9 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 
 		$first = true;
 
-		foreach ($breadcrumbs as $breadcrumb) {
+		foreach ($breadcrumbs as $breadcrumb_index => $breadcrumb) {
+			$breadcrumb = apply_filters('extra_arianne_item', $breadcrumb, $breadcrumb_index);
+
 			if (!empty($breadcrumb['name'])) {
 				if ($first) {
 					$first = false;
@@ -275,7 +277,9 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					echo '<span'. $class .'>';
 				}
 
+				echo apply_filters('extra_arianne_before_item_name', '', $breadcrumb, $breadcrumb_index);
 				echo $breadcrumb['name'];
+				echo apply_filters('extra_arianne_after_item_name', '', $breadcrumb, $breadcrumb_index);
 
 				if (!empty($breadcrumb['link'])) {
 					echo '</a>';

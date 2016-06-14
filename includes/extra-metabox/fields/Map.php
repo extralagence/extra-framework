@@ -82,6 +82,18 @@ class Map extends AbstractField {
 					data-default="4.8340262"
 				/>
 
+				<!-- ZOOM -->
+				<?php $this->mb->the_field( $this->get_prefixed_field_name( "zoom" ) );
+				$field = $this->mb->get_the_value(); ?>
+				<input
+					class="zoom"
+					type="hidden"
+					id="<?php $this->mb->the_name(); ?>"
+					name="<?php $this->mb->the_name(); ?>"
+					value="<?php echo ( !empty( $field ) ) ? $field : ''; ?>"
+					data-default="15"
+				/>
+
 				<!-- ADDRESS -->
 				<?php
 				$this->mb->the_field( $this->get_prefixed_field_name( "address_map" ) );

@@ -26,14 +26,15 @@ $window.load(function () {
 		initResponsiveImage($responsiveImage);
 	});
 
-	$responsiveLazyImages.each(initLazyAndCustomLoaded);
-	$responsiveCustomLoadedImages.each(initLazyAndCustomLoaded);
-
 	function initLazyAndCustomLoaded() {
 		var $responsiveImage = $(this);
 		$responsiveImage.data("size", "");
 		initPlaceholder($responsiveImage);
 	}
+
+	$responsiveLazyImages.each(initLazyAndCustomLoaded);
+	$responsiveCustomLoadedImages.each(initLazyAndCustomLoaded);
+
 
 	///////////////////////////////////////
 	//
@@ -125,6 +126,11 @@ $window.load(function () {
 					else {
 						$container.find('.placeholder-image').after(imgElement);
 					}
+
+					setTimeout(function () {
+						$container.find('.placeholder-image').remove();
+						$container.find('.placeholder-canvas').remove();
+					}, 500);
 
 					currentResponsiveImagesLoaded++;
 					// complete.extra.responsiveImage

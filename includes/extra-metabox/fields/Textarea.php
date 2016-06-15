@@ -22,7 +22,7 @@ class Textarea extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<div class="extra-field-wrapper <?php echo $this->css_class; ?>">
+		<div class="extra-field-wrapper <?php echo $this->css_class; ?><?php echo ($this->wide) ? ' extra-textarea-wide' : ''; ?>">
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
@@ -39,8 +39,13 @@ class Textarea extends AbstractField {
 		<?php
 	}
 
+	public function extract_properties($properties) {
+		parent::extract_properties($properties);
+		$this->wide = isset($properties['wide']) ? $properties['wide'] : false;
+	}
+
+
 	public function the_admin_column_value() {
-		//TODO
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
 		echo $meta;
 	}

@@ -304,10 +304,13 @@ function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', 
  * @param string $class  add custom classes
  * @param string $alt
  */
-function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
+function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false ) {
 
 	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
+
+	$class .= ($lazy_loading) ? ' responsiveImageLazy' : '';
+	$class .= ($custom_loading) ? ' extra-custom-loading' : '';
 
 	// SRC IS AN ID
 	if ( !is_numeric( $id ) ) {
@@ -340,8 +343,8 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	return $return;
 }
 
-function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '' ) {
-	echo extra_get_responsive_svg_image( $id, $dimensions, $class );
+function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false) {
+	echo extra_get_responsive_svg_image( $id, $dimensions, $class, $lazy_loading, $custom_loading );
 }
 
 

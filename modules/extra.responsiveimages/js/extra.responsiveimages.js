@@ -187,10 +187,14 @@ $window.load(function () {
 		$container.fracs(function (fracs, previousFracs) {
 			if(fracs.visible > 0) {
 				var $elem = $(this);
+
 				if ($elem.hasClass('responsiveImagePlaceholder')) {
 					initResponsiveImage($elem.data("size", ""));
 				} else {
-					initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
+					var $responsiveImages = $elem.find('.responsiveImagePlaceholder');
+					$responsiveImages.each(function () {
+						initResponsiveImage($(this).data("size", ""));
+					});
 				}
 				$elem.fracs('unbind');
 			}

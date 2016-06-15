@@ -2,6 +2,15 @@
 
 ## Changelog
 
+###2016/06/14
+  *JS trigger events in extra slider*
+  - renamed "update" to "extra:slider:update"
+  - renamed "next" to "extra:slider:next"
+  - renamed "prev" to "extra:slider:prev"
+  - renamed "goto" to "extra:slider:goto"
+  - renamed "pause" to "extra:slider:pause"
+  - renamed "resume" to "extra:slider:resume"
+
 ###2016/03/22
   *JS Events*
   - renamed extra.resize to extra:resize

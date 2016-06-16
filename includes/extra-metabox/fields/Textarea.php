@@ -32,7 +32,7 @@ class Textarea extends AbstractField {
 					data-extra-field-name="<?php echo $this->name; ?>"
 					name="<?php $this->mb->the_name(); ?>"><?php $this->mb->the_value(); ?></textarea>
 				<?php if ($this->description != null) : ?>
-					<div><small><em><?php echo $this->description; ?></em></small></div>
+					<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
 				<?php endif; ?>
 			</div>
 		</div>

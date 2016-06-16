@@ -61,7 +61,7 @@ class Text extends AbstractField {
 					<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
 				<?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
 				<?php if ($this->description != null) : ?>
-					<div><small><em><?php echo $this->description; ?></em></small></div>
+					<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
 				<?php endif; ?>
 			</div>
 		</div>

@@ -42,7 +42,7 @@ class Gallery extends AbstractField {
 				<div class="extra-input-wrapper">
 					<a href="#" class="button choose-button"><?php _e("Éditer la galerie d'images", "extra"); ?></a>
 					<?php if ($this->description != null) : ?>
-						<div><small><em><?php echo $this->description; ?></em></small></div>
+						<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
 					<?php endif; ?>
 				</div>
 

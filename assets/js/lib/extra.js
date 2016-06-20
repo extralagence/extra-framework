@@ -1,7 +1,7 @@
 var styleLog1 = "padding: 0; color:#000000; line-height:30px; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;",
-	styleLog2 = styleLog1+" color: red;",
-	styleLog3 = styleLog1+" font-weight: 700;";
-console.log("%c\n          Made with %c♥ %cby       \n    %cwww.extralagence.com    \n \n ",styleLog1, styleLog2, styleLog1, styleLog3);
+	styleLog2 = styleLog1 + " color: red;",
+	styleLog3 = styleLog1 + " font-weight: 700;";
+console.log("%c\n          Made with %c♥ %cby       \n    %cwww.extralagence.com    \n \n ", styleLog1, styleLog2, styleLog1, styleLog3);
 
 /*********************
  *
@@ -11,13 +11,13 @@ console.log("%c\n          Made with %c♥ %cby       \n    %cwww.extralagence.c
 var extra = {},
 	$window = $(window),
 	wWidth,
-	wHeight;
-/*********************
- *
- * RESPONSIVE
- *
- *********************/
-var extraResponsiveSizesTests = {},
+	wHeight,
+	/*********************
+	 *
+	 * RESPONSIVE
+	 *
+	 *********************/
+	extraResponsiveSizesTests = {},
 	small = null;
 /*********************
  *
@@ -65,7 +65,7 @@ $(document).ready(function () {
 	 * MOBILE OR NOT MOBILE
 	 *
 	 *********************/
-	$(window).on('extra:resize', function () {
+	$window.on('extra:resize', function () {
 		// IF STATE CHANGE, UPDATE
 		var _tmpExtraResponsiveSizesTests = $.extend({}, extraResponsiveSizesTests);
 		$.each(extraResponsiveSizes, function (index, value) {
@@ -86,21 +86,21 @@ $(document).ready(function () {
 	 *
 	 *********************/
 	extra.resizeEvent = 'extra:resize';
-	/**************************
-	 *
-	 *
-	 * GET SCREEN SIZE
-	 *
-	 *
-	 *************************/
-	extra.getImageVersion = function () {
-		// default value
-		var toReturn = 'desktop';
-		$.each(extraResponsiveSizesTests, function (index, value) {
-			if (value === true) {
-				toReturn = index;
-			}
-		});
-		return toReturn;
-	};
 });
+/**************************
+ *
+ *
+ * GET SCREEN SIZE
+ *
+ *
+ *************************/
+extra.getImageVersion = function () {
+	// default value
+	var toReturn = 'desktop';
+	$.each(extraResponsiveSizesTests, function (index, value) {
+		if (value === true) {
+			toReturn = index;
+		}
+	});
+	return toReturn;
+};

@@ -5,7 +5,7 @@
 //
 //
 ///////////////////////////////////////
-$window.load(function () {
+$window.on("load", function () {
 	var $responsiveImages = $(".responsiveImagePlaceholder"),
 		totalResponsivesImages = $responsiveImages.length,
 		currentResponsiveImagesLoaded = 0;
@@ -66,7 +66,7 @@ $window.load(function () {
 			imgElement
 
 			// ERROR
-				.error(function () {
+				.on("error", function () {
 					currentResponsiveImagesLoaded++;
 					// complete.extra.responsiveImage
 					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
@@ -78,7 +78,7 @@ $window.load(function () {
 				})
 
 				// LOAD
-				.load(function () {
+				.on("load", function () {
 					// CORRECT IMAGE SIZE
 					imgElement.attr({
 						'width' : this.width,

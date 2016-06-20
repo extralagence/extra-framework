@@ -46,7 +46,7 @@ $window.on("load", function () {
 	function initPlaceholder($container) {
 		var $placeholderImage = $container.find('.placeholder-image'),
 			$placeholderCanvas = $container.find('.placeholder-canvas');
-		if ($placeholderImage.size() > 0 && $placeholderCanvas.size() > 0) {
+		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
 			if (typeof stackBlurImage == 'function') {
 				stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
 			}

@@ -80,11 +80,7 @@ function extra_gallery_handler($atts, $content = null) {
 				$src = wp_get_attachment_image_src($id, 'large');
 
 				$return .= '    <li><a href="'.$src[0].'" class="zoom">';
-				$sizes = apply_filters('extra_responsive_sizes', array(
-					'desktop' => 'only screen and (min-width: 961px)',
-					'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
-					'mobile' => 'only screen and (max-width: 690px)'
-				));
+				$sizes = apply_filters('extra_responsive_sizes', array());
 				$params = array();
 				foreach($sizes as $size => $value) {
 					$params[$size] = array(
@@ -108,11 +104,7 @@ function extra_gallery_handler($atts, $content = null) {
 					$item_classes = ' class="'.$item_classes.'"';
 				}
 				$return .= '        <li><a'.$item_classes.' href="'.$src[0].'">';
-				$sizes = apply_filters('extra_responsive_sizes', array(
-					'desktop' => 'only screen and (min-width: 961px)',
-					'tablet' => 'only screen and (min-width: 691px) and (max-width: 960px)',
-					'mobile' => 'only screen and (max-width: 690px)'
-				));
+				$sizes = apply_filters('extra_responsive_sizes', array());
 				$params = array();
 				foreach($sizes as $size => $value) {
 					$params[$size] = array(

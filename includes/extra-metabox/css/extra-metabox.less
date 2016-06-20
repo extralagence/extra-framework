@@ -105,6 +105,18 @@
 	width: 100%;
 	height: 350px;
 }
+//.extra-metabox .extra-textarea-wide label {
+//	text-align: left;
+//}
+.extra-textarea-wide .extra-input-wrapper {
+	width: ~"calc(100% - 155px)";
+}
+.extra-textarea-wide textarea {
+	padding: 3px 8px;
+	width: 100%;
+	outline: 0;
+}
+
 
 #poststuff .extra-metabox h2 {
 	color: #777;
@@ -291,6 +303,22 @@
 .extra-metabox .wp-picker-holder {
 	position: absolute;
 	z-index: 999;
+}
+#ui-datepicker-div {
+	z-index: 1000 !important;
+}
+/**********************
+ *
+ *
+ * DESCRIPTION
+ *
+ *
+ **********************/
+.extra-metabox .extra-input-description {
+	margin-bottom: 5px;
+}
+.extra-metabox textarea + .extra-input-description {
+	margin-top: -3px;
 }
 /**********************
  *

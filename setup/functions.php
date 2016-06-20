@@ -100,7 +100,7 @@ if(!function_exists('extra_img_caption_shortcode')) {
 			$id = 'id="' . $id . '" ';
 		}
 
-		return '<div ' . $id . 'class="wp-caption ' . $align . '">' . do_shortcode( $content ) . '<div class="wp-caption-text">' . $caption . '</div></div>';
+		return '<figure ' . $id . 'class="wp-caption ' . $align . '">' . do_shortcode( $content ) . '<figcaption class="wp-caption-text">' . $caption . '</figcaption></figure>';
 	}
 }
 add_filter( 'img_caption_shortcode', 'extra_img_caption_shortcode', 10, 3 );

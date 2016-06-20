@@ -33,8 +33,12 @@ jQuery(document).ready(function ($) {
 				$address = $element.find(".address"),
 				$lat = $element.find(".lat"),
 				$lon = $element.find(".lon"),
+				$zoom = $element.find(".zoom"),
 				lat = $lat.val() != '' ? $lat.val() : $lat.data("default"),
-				lon = $lon.val() != '' ? $lon.val() : $lon.data("default");
+				lon = $lon.val() != '' ? $lon.val() : $lon.data("default"),
+				zoom = $zoom.val() != '' ? $zoom.val() : $zoom.data("default");
+
+			zoom = parseInt(zoom);
 
 			$element.addClass("extra-map-processed");
 			/***********************
@@ -46,7 +50,7 @@ jQuery(document).ready(function ($) {
 			 ***********************/
 			var mapOptions = {
 				center   : new google.maps.LatLng(lat, lon),
-				zoom     : 15,
+				zoom     : zoom,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			var map = new google.maps.Map($mapContainer[0], mapOptions);
@@ -75,6 +79,12 @@ jQuery(document).ready(function ($) {
 				marker.setPosition(event.latLng);
 				update();
 			});
+			google.maps.event.addListener(map, "zoom_changed", function (event) {
+				update();
+			});
+			// map.addListener('zoom_changed', function () {
+			// 	update();
+			// });
 			google.maps.event.addListener(marker, "dragend", function () {
 				update();
 			});
@@ -89,6 +99,9 @@ jQuery(document).ready(function ($) {
 				var latlng = marker.getPosition();
 				$lat.val(latlng.lat());
 				$lon.val(latlng.lng());
+				$zoom.val(map.getZoom());
+
+				console.log('$zoom.val(map.getZoom());')
 			}
 
 			if ($address.val() == "") {

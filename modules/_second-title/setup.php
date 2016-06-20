@@ -26,6 +26,7 @@ function extra_second_title_metabox_init () {
 		'fields' => array(
 			array(
 				'type' => 'textarea',
+				'wide' => true,
 				'css_class' => 'second_title',
 				'name' => 'second_title',
 				'label' => __("Titre alternatif", "extra")

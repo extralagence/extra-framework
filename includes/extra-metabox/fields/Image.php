@@ -51,7 +51,7 @@ class Image extends AbstractField {
 						<input class="image-input" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
 						<input class="choose-button button" type="button" value="<?php _e("Ouvrir le gestionnaire d'images", "extra-admin"); ?>" />
 						<?php if ($this->description != null) : ?>
-							<div><small><em><?php echo $this->description; ?></em></small></div>
+							<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
 						<?php endif; ?>
 					</div>
 				</div>

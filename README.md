@@ -4,8 +4,11 @@
 
 ###2016/06/20
   *Updated to jQuery 3.0.0*
+  - https://jquery.com/upgrade-guide/3.0/#summary-of-important-changes
   
-  https://jquery.com/upgrade-guide/3.0/#summary-of-important-changes
+  *JS trigger events in extra slider*
+  - renamed extra:slider:update to extra:slider:paused
+  - renamed extra:slider:resume to extra:slider:resumed
 
 ###2016/06/14
   *JS trigger events in extra slider*

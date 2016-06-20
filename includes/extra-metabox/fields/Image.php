@@ -45,16 +45,7 @@ class Image extends AbstractField {
 			<?php $this->mb->the_field($this->get_single_field_name("image")); ?>
 			<div class="extra-custom-image">
 
-				<div class="floater">
-					<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? __('Sélectionner une image', 'extra-admin') : $this->label; ?></label>
-					<div class="extra-input-wrapper">
-						<input class="image-input" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
-						<input class="choose-button button" type="button" value="<?php _e("Ouvrir le gestionnaire d'images", "extra-admin"); ?>" />
-						<?php if ($this->description != null) : ?>
-							<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
-						<?php endif; ?>
-					</div>
-				</div>
+
 
 				<?php
 				$imgid = $this->mb->get_the_value();
@@ -70,7 +61,7 @@ class Image extends AbstractField {
 
 				if(!empty($imgid)){
 					// TODO IF YOU WANT A FULL SIZE IMAGE USE SIZE CASE !
-					$src =  wp_get_attachment_image_src( $imgid, 'thumbnail' );
+					$src =  wp_get_attachment_image_src( $imgid, array(250) );
 					$width = ($width == null) ? $src[1] : $width;
 					$height = ($height == null) ? $src[2] : $height;
 
@@ -79,6 +70,17 @@ class Image extends AbstractField {
 					echo '<div class="image empty"><img src="" width="'.$width.'" height="'.$height.'" /></div>';
 				}
 				?>
+
+				<div class="floater">
+<!--					<label for="--><?php //$this->mb->the_name(); ?><!--">--><?php //echo ($this->label == null) ? __('Sélectionner une image', 'extra-admin') : $this->label; ?><!--</label>-->
+					<div class="extra-input-wrapper">
+						<input class="image-input" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
+						<input class="choose-button button" type="button" value="<?php _e("Sélectionner une image", "extra-admin"); ?>" />
+						<?php if ($this->description != null) : ?>
+							<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+						<?php endif; ?>
+					</div>
+				</div>
 
 				<?php if (!empty($this->sizes)) : ?>
 					<?php

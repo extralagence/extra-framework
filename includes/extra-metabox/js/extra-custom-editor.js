@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
 			if($textarea.data('custom-css')) {
 				tinymce.settings.content_css = tinymce.settings.content_css + ',' + $textarea.data('custom-css');
 			}
-			tinymce.settings.wpautop = false;
+			// tinymce.settings.wpautop = false;
 
 			// SET NEW EDITOR
 			tinymce.execCommand('mceAddEditor', false, id);

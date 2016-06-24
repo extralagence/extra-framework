@@ -576,7 +576,7 @@ function extra_template_embeded_videos_formatting( $content ) {
 	$content = preg_replace( $pattern, $to, $content );
 	return $content;
 }
-add_filter( 'the_content', 'extra_template_embeded_videos_formatting', 7 );
+//add_filter( 'the_content', 'extra_template_embeded_videos_formatting', 7 );
 /**********************
  *
  *

@@ -87,9 +87,6 @@
 							anchor: new google.maps.Point(parseInt(extra_map_options.icon_anchor_x), parseInt(extra_map_options.icon_anchor_y))
 						};
 					}
-					console.log('iconMarker');
-					console.log(iconMarker);
-					console.log(extra_map_options);
 				}
 
 				this.marker = new google.maps.Marker({

@@ -19,3 +19,6 @@
 [submodule "modules/fancybox/inc"]
 	path = modules/fancybox/inc
 	url = https://github.com/fancyapps/fancyBox.git
+[submodule "includes/WP-OTF-Regenerate-Thumbnails"]
+	path = includes/WP-OTF-Regenerate-Thumbnails
+	url = https://github.com/extralagence/WP-OTF-Regenerate-Thumbnails.git

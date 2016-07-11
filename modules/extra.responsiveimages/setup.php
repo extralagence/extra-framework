@@ -142,11 +142,13 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 		return $return;
 	}
-	if ( !empty( $alt ) ) {
+	if ( empty( $alt ) ) {
 		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
 		if ( empty( $alt ) ) {
 			$attachment = get_post( $id );
 			$alt        = $attachment->post_title;
+		} else {
+			$alt = reset($alt);
 		}
 	}
 

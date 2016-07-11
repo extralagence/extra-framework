@@ -352,3 +352,20 @@ function extra_redux_wpml_checkup( WP_Screen $screen ) {
 	}
 }
 add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );
+///////////////////////////////////////
+//
+//
+// WP ROCKET FOR ADMINISTRATOR
+//
+//
+///////////////////////////////////////
+function rocket_for_editor( $capability ) {
+
+	if ( !current_user_can( 'administrator' ) ) {
+		return false;
+	}
+
+	return $capability;
+}
+add_filter( 'option_page_capability_wp_rocket', 'rocket_for_administrator' );
+add_filter( 'rocket_capacity', 'rocket_for_administrator' );

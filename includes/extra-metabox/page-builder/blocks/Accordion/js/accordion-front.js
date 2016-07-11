@@ -17,7 +17,10 @@ $(document).ready(function(){
 				TweenMax.to(content, 0.3, {css:{height:0}});
 			} else {
 				wrapper.addClass("open");
-				TweenMax.to(content, 0.3, {css:{height:height}});
+				var timeline = new TimelineMax();
+				timeline.to(content, 0.3, {css:{height:height}});
+				timeline.set(content, {clearProps: 'all'});
+
 				window.location.hash = '/'+$(this).attr('id');
 			}
 		});
@@ -30,7 +33,7 @@ $(document).ready(function(){
 			hash = hash.substr(2);
 			var $trigger = $('#'+hash);
 
-			if ($trigger.size() > 0) {
+			if ($trigger.length > 0) {
 				$trigger.trigger('click');
 				TweenMax.to($window, 0, {
 					scrollTo: {

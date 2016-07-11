@@ -51,8 +51,13 @@ class Select extends AbstractField {
 
 	public function the_admin_column_value() {
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
+
+		if (array_key_exists($meta, $this->values)) {
+			$meta = $this->values[$meta];
+		}
+
 		if ($meta) {
-            echo $meta;
+			echo $meta;
 		}
 	}
 

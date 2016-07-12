@@ -244,8 +244,8 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	return $return;
 }
 
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false ) {
-	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption, $tag, $lazy_loading );
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption, $tag, $lazy_loading, $custom_loading );
 }
 
 /**

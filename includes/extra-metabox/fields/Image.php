@@ -61,8 +61,7 @@ class Image extends AbstractField {
 				}
 
 				if(!empty($imgid)){
-					// TODO IF YOU WANT A FULL SIZE IMAGE USE SIZE CASE !
-					$src =  wp_get_attachment_image_src( $imgid, array(250) );
+					$src =  wp_get_attachment_image_src( $imgid, array(250, null) );
 					$width = ($width == null) ? $src[1] : $width;
 					$height = ($height == null) ? $src[2] : $height;
 

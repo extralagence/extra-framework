@@ -91,11 +91,11 @@ function extra_register_required_plugins() {
 		),*/
 
 		// This is an example of how to include a plugin from the WordPress Plugin Repository.
-		array(
-			'name'      => 'OTF Regenerate Thumbnails',
-			'slug'      => 'otf-regenerate-thumbnails',
-			'required'  => true
-		),
+//		array(
+//			'name'      => 'OTF Regenerate Thumbnails',
+//			'slug'      => 'otf-regenerate-thumbnails',
+//			'required'  => true
+//		),
 		array(
 			'name'      => 'Redux Framework',
 			'slug'      => 'redux-framework',

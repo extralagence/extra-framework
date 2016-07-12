@@ -42,10 +42,10 @@ class CustomEditor extends AbstractField {
 
 
 			<?php if ($this->title != null) : ?>
-				<h2><?php
+				<h3><?php
 					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
 					echo $this->title; ?>
-				</h2>
+				</h3>
 			<?php endif; ?>
 
 

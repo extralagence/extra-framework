@@ -22,3 +22,6 @@
 [submodule "includes/WP-OTF-Regenerate-Thumbnails"]
 	path = includes/WP-OTF-Regenerate-Thumbnails
 	url = https://github.com/extralagence/WP-OTF-Regenerate-Thumbnails.git
+[submodule "includes/intuitive-custom-post-order"]
+	path = includes/intuitive-custom-post-order
+	url = https://github.com/extralagence/intuitive-custom-post-order.git

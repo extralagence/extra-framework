@@ -96,6 +96,9 @@ function require_extra_libraries() {
 	// WP LESS
 	require_once EXTRA_INCLUDES_PATH . '/wp-less/wp-less.php';
 
+	// CUSTOM POST ORDER
+	require_once EXTRA_INCLUDES_PATH . '/intuitive-custom-post-order/intuitive-custom-post-order.php';
+
 	// REDUX FRAMEWORK
 	add_action( "redux/extensions/extra_options/before", 'redux_register_custom_extension_loader', 0 );
 }

@@ -19,6 +19,7 @@
  * - icon (optional)
  * - editor_class (optional)
  */
+namespace ExtraMetabox;
 class CustomEditor extends AbstractField {
 
 	public static function init () {

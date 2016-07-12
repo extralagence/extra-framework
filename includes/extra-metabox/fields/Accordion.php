@@ -16,6 +16,7 @@
  * - delete_label (optional): label for the delete button
  * - bloc_label (optional): title for each child
  */
+namespace ExtraMetabox;
 class Accordion extends AbstractGroup {
 
 	protected $add_label;

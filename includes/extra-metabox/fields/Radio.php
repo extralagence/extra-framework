@@ -23,6 +23,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Radio extends AbstractField {
 
 	protected $radios = array();

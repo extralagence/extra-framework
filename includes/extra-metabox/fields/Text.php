@@ -21,6 +21,7 @@
  * - regex (optional): regex checked for each changes
  * - description (optional)
  */
+namespace ExtraMetabox;
 class Text extends AbstractField {
 
 	protected $suffix;

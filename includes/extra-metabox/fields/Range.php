@@ -23,6 +23,7 @@
  * - label_max (optional): label before maximum text input
  * - suffix_max (optional): text after maximum text input
  */
+namespace ExtraMetabox;
 class Range extends AbstractField {
 
 	protected $label_min;

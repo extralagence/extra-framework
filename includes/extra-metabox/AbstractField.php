@@ -6,6 +6,7 @@
  * Time: 11:01
  */
 
+namespace ExtraMetabox;
 abstract class AbstractField {
 
 	protected $mb;
@@ -19,7 +20,7 @@ abstract class AbstractField {
 	protected $show_in_admin_column;
 	protected $admin_column_label;
 
-	function __construct(WPAlchemy_MetaBox $mb) {
+	function __construct(\WPAlchemy_MetaBox $mb) {
 		$this->mb = $mb;
 	}
 

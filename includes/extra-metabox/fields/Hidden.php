@@ -18,6 +18,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Hidden extends AbstractField {
 
 	protected $id;

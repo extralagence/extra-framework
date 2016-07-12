@@ -14,6 +14,7 @@
  * - option_none_text (optional)
  * - placeholder (optional): label when the field is empty
  */
+namespace ExtraMetabox;
 class GravityFormSelector extends AbstractField {
 
 	protected $option_none_value;

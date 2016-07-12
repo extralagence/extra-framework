@@ -9,6 +9,7 @@
  * Options :
  * - template (optionnal)
  */
+namespace ExtraMetabox;
 class Html extends AbstractField {
 
 	protected $template;

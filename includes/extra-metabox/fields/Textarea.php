@@ -18,6 +18,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Textarea extends AbstractField {
 
 	public function the_admin() {

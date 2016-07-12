@@ -18,6 +18,7 @@
  * - label (required)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Label extends AbstractField {
 
 	public function the_admin() {

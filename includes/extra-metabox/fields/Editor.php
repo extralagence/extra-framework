@@ -20,6 +20,7 @@
  * - title (optional): bigger than label
  * - editor_args (optional): array of parameters to pass to editor
  */
+namespace ExtraMetabox;
 class Editor extends AbstractField {
 
 	protected $title;

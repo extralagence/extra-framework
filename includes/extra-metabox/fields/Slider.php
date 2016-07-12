@@ -20,6 +20,7 @@
  * - min (required): min value
  * - max (required): max value
  */
+namespace ExtraMetabox;
 class Slider extends AbstractField {
 
 	protected $suffix;

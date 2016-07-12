@@ -18,6 +18,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Custom extends AbstractField {
 
 	protected $template;

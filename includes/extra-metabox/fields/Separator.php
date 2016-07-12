@@ -11,6 +11,7 @@
  * - title (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Separator extends AbstractField {
 
 	public function the_admin() {

@@ -20,6 +20,7 @@
  * - subfields_false (required)
  * - subfields_true (required)
  */
+namespace ExtraMetabox;
 class Conditional extends AbstractField {
 
 	protected $subfields_false;

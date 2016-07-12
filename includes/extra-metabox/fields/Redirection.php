@@ -18,6 +18,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Redirection extends AbstractField {
 
 	public static function init () {

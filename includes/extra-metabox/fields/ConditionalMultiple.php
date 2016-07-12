@@ -14,6 +14,7 @@
  * - values (array slug => value required)
  * - multiple_subfields (required)
  */
+namespace ExtraMetabox;
 class ConditionalMultiple extends AbstractField {
 
     protected $input_type;

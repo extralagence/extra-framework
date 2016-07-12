@@ -20,6 +20,7 @@
  * - placeholder (optional): label when the field is empty
  * - regex (optional): regex checked for each changes
  */
+namespace ExtraMetabox;
 class Number extends AbstractField {
 
 	protected $suffix;

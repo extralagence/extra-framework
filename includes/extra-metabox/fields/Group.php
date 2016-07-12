@@ -20,6 +20,7 @@
  * - label_level
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Group extends AbstractGroup {
 
 	public function the_admin() {

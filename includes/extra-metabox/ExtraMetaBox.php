@@ -195,7 +195,7 @@ class ExtraMetaBox extends WPAlchemy_MetaBox {
 			$class .= ucfirst( $type );
 		}
 
-		return $class;
+		return '\\ExtraMetabox\\'.$class;
 	}
 
 	/**

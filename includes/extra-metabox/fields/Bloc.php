@@ -19,6 +19,7 @@
  * - title (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Bloc extends AbstractGroup {
 
 	public function the_admin() {

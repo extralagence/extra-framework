@@ -26,6 +26,7 @@
  * - max_tabs (optional): maximum tabs allowed
  * - title_text_field (optional): field name to use to name the tab
  */
+namespace ExtraMetabox;
 class Tabs extends AbstractGroup {
 
 	protected $add_label;

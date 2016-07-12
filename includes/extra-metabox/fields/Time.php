@@ -23,6 +23,7 @@
  * - required (optional): true|false
  * - error_label (optional): label displayed in case of error
  */
+namespace ExtraMetabox;
 class Time extends AbstractField {
 
 	protected $format;

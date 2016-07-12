@@ -6,6 +6,7 @@
  * Time: 12:01
  */
 
+namespace ExtraMetabox;
 abstract class AbstractGroup extends AbstractField {
 	protected $subfields;
 

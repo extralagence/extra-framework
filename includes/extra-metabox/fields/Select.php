@@ -19,6 +19,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class Select extends AbstractField {
 
 	public function the_admin() {

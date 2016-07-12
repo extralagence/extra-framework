@@ -11,6 +11,7 @@
  * - label (optional)
  * - icon (optional)
  */
+namespace ExtraMetabox;
 class ColorPicker extends AbstractField {
 
 	public static function init () {

@@ -207,7 +207,7 @@ class Link extends AbstractField {
 		echo '-';
 	}
 
-	public static function get_permalink($name, ExtraMetaBox $mb) {
+	public static function get_permalink($name, $mb) {
 		$type = $mb->get_the_value(AbstractField::get_field_name($name, 'type', '_'));
 		$url = $mb->get_the_value(AbstractField::get_field_name($name, 'url', '_'));
 		$content = $mb->get_the_value(AbstractField::get_field_name($name, 'content', '_'));
@@ -223,11 +223,11 @@ class Link extends AbstractField {
 		//TODO MANAGE TAXONOMY PERMALINK
 	}
 
-	public static function get_title($name, ExtraMetaBox $mb) {
+	public static function get_title($name, $mb) {
 		return $mb->get_the_value(AbstractField::get_field_name($name, 'title', '_'));
 	}
 
-	public static function get_target($name, ExtraMetaBox $mb) {
+	public static function get_target($name, $mb) {
 		if($mb->get_the_value(AbstractField::get_field_name($name, 'target', '_'))) {
 			return '_blank';
 		} else {
@@ -235,7 +235,7 @@ class Link extends AbstractField {
 		}
 	}
 
-	public static function get_permalink_from_meta($meta, $name, $separator) {
+	public static function get_permalink_from_meta($meta, $name, $separator = '_') {
 		$type = isset($meta[$name.$separator.'type']) ? $meta[$name.$separator.'type'] : '';
 		$url = isset($meta[$name.$separator.'url']) ? $meta[$name.$separator.'url'] : '';
 		$content = isset($meta[$name.$separator.'content']) ? $meta[$name.$separator.'content'] : '';
@@ -250,19 +250,19 @@ class Link extends AbstractField {
 			return $url;
 		}
 	}
-	public static function get_target_from_meta($meta, $name, $separator) {
+	public static function get_target_from_meta($meta, $name, $separator = '_') {
 		if (isset($meta[$name.$separator.'target']) && $meta[$name.$separator.'target']) {
 			return '_blank';
 		} else {
 			return '_self';
 		}
 	}
-	public static function get_title_from_meta($meta, $name, $separator) {
+	public static function get_title_from_meta($meta, $name, $separator = '_') {
 		$title = isset($meta[$name.$separator.'title']) ? $meta[$name.$separator.'title'] : '';
 
 		return $title;
 	}
 }
 
-add_action('wp_ajax_extra-link', array('Link', 'extra_link_wp_ajax'));
-add_action('wp_ajax_extra-link-taxonomy', array('Link', 'extra_link_taxonomy_wp_ajax'));
+add_action('wp_ajax_extra-link', array('\\ExtraMetabox\\Link', 'extra_link_wp_ajax'));
+add_action('wp_ajax_extra-link-taxonomy', array('\\ExtraMetabox\\Link', 'extra_link_taxonomy_wp_ajax'));

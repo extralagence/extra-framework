@@ -96,6 +96,9 @@ function require_extra_libraries() {
 	// WP LESS
 	require_once EXTRA_INCLUDES_PATH . '/wp-less/wp-less.php';
 
+	// OTF
+	require_once EXTRA_INCLUDES_PATH . '/WP-OTF-Regenerate-Thumbnails/otf_regen_thumbs.php';
+
 	// CUSTOM POST ORDER
 	require_once EXTRA_INCLUDES_PATH . '/intuitive-custom-post-order/intuitive-custom-post-order.php';
 

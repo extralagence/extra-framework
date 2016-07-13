@@ -147,7 +147,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		if ( empty( $alt ) ) {
 			$attachment = get_post( $id );
 			$alt        = $attachment->post_title;
-		} else {
+		} else if(is_array($alt)) {
 			$alt = reset($alt);
 		}
 	}

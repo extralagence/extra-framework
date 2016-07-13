@@ -38,10 +38,10 @@ class Image extends AbstractField {
 		?>
 		<div class="<?php echo $this->css_class; ?>">
 			<?php if (!empty($this->title)) : ?>
-				<h2>
+				<h3>
 					<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 					<?php echo ($this->title == null) ? __('Image', 'extra-admin') : $this->title; ?>
-				</h2>
+				</h3>
 			<?php endif; ?>
 			<?php $this->mb->the_field($this->get_single_field_name("image")); ?>
 			<div class="extra-custom-image">

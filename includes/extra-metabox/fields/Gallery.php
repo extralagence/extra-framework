@@ -33,10 +33,10 @@ class Gallery extends AbstractField {
 		?>
 		<div class="<?php echo $this->css_class; ?>">
 			<?php if ($this->title != null) : ?>
-				<h2><?php
+				<h3><?php
 					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
 					echo $this->title; ?>
-				</h2>
+				</h3>
 			<?php endif; ?>
 			<div class="extra-custom-gallery">
 				<?php $this->mb->the_field($this->get_single_field_name("gallery_shortcode")); ?>
@@ -64,10 +64,18 @@ class Gallery extends AbstractField {
 		<?php
 	}
 
-	public static function explodeGalleryShortCode($shortcodes) {
+	/**
+	 * @deprecated
+	 */
+	public static function explodeGalleryShortCode($ids) {
+
+		return \ExtraMetabox\Gallery::get_gallery_ids($ids);
+	}
+
+	public static function get_gallery_ids($ids) {
 		$data = array();
-		if (!empty($shortcodes)) {
-			$data = explode(',', $shortcodes);
+		if (!empty($ids)) {
+			$data = explode(',', $ids);
 		}
 
 		return $data;

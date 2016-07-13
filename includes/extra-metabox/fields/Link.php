@@ -47,10 +47,13 @@ class Link extends AbstractField {
 		?>
 		<div class="extra-link-container <?php echo $this->css_class; ?>">
 			<?php if ($this->title != null) : ?>
-				<h2><?php
+				<h3><?php
 					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
 					echo $this->title; ?>
-				</h2>
+				</h3>
+			<?php endif; ?>
+			<?php if ($this->label != null) : ?>
+				<label><?php echo $this->label; ?></label>
 			<?php endif; ?>
 			<div class="extra-link-manual">
 				<?php

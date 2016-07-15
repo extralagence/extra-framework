@@ -37,7 +37,7 @@ class Time extends AbstractField {
 		wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 		wp_enqueue_style('extra-date-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/css/extra-date.less');
 
-		wp_enqueue_script('jquery-ui-timepicker');
+		wp_enqueue_script('jquery-ui-timepicker', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-time.js', array( 'jquery' ), null, true );
 		wp_enqueue_script('jquery-ui-slider');
 
 		wp_enqueue_script('extra-time-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-time.js', array('jquery-ui-timepicker', 'jquery-ui-slider', 'jquery'), null, true);

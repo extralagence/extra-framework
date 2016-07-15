@@ -100,8 +100,6 @@ jQuery(document).ready(function ($) {
 				$lat.val(latlng.lat());
 				$lon.val(latlng.lng());
 				$zoom.val(map.getZoom());
-
-				console.log('$zoom.val(map.getZoom());')
 			}
 
 			if ($address.val() == "") {

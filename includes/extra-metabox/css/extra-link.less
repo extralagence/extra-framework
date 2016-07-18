@@ -1,3 +1,8 @@
+.extra-link-wrapper {}
+
+
+
+
 .extra-link-container .extra-highlight {
 	background-color: rgb(68, 68, 68);
 	color: rgb(255, 255, 255);
@@ -22,18 +27,15 @@
 	line-height: 26px;
 }
 
-.extra-metabox .extra-link-container input.extra-link-target {
-	margin-left: 164px;
-}
-
 .extra-link-choice {
 	color: #999;
 	font-style: italic;
-	margin-left: 164px;
 	padding: 5px 0;
 	word-break: break-all;
 }
-
+.extra-link-checkbox-wrapper {
+	display: block;
+}
 .extra-link-form {
 	padding: 10px 10px 10px 0;
 }
@@ -45,7 +47,16 @@
 .extra-link-container input:disabled {
 	background-color: #f1f1f1;
 }
-
-.extra-link-container label.extra-link-radio-label {
-	min-width: 127px;
+.extra-link-container label {
+	display: inline-block;
+	vertical-align: 2px;
+}
+.extra-link-container .extra-link-target-label {
+	vertical-align: -2px;
+}
+.extra-link-container .extra-link-title-label {
+	display: block;
+}
+.extra-link-taxonomy {
+	margin-bottom: 10px;
 }

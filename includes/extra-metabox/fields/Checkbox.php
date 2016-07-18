@@ -53,7 +53,7 @@ class Checkbox extends AbstractField {
 
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
-		$this->label_right = isset($properties['label_right']) ? $properties['label_right'] : false;
+		$this->label_right = isset($properties['label_right']) ? $properties['label_right'] : true;
 	}
 
 	public function the_admin_column_value() {

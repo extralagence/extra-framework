@@ -20,7 +20,7 @@
 	padding: 0;
 }
 .extra-input-wrapper {
-	display: inline-block;
+	//display: inline-block;
 }
 .extra-field-wrapper {
 	margin-bottom: 10px;
@@ -45,18 +45,18 @@
 }
 .extra-metabox label,
 .extra-metabox .label {
-	display: inline-block;
-	min-width: 150px;
-	padding-top: 5px;
-	text-align: right;
+	display: block;
+	//min-width: 150px;
+	padding: 15px 0 5px;
+	text-align: left;
 	vertical-align: top;
 }
 .extra-metabox .extra-label-checkbox {
+	display: inline-block;
 	padding-top: 0;
+	vertical-align: -2px;
 }
 .extra-metabox .extra-label-right-checkbox {
-	padding-top: 0;
-	text-align: left;
 }
 #side-sortables .extra-metabox label,
 #side-sortables .extra-metabox .label {
@@ -84,7 +84,7 @@
 .extra-metabox .bloc input[type="checkbox"],
 .extra-metabox .bloc input[type="radio"] {
 	cursor: pointer;
-	vertical-align: -7px;
+	vertical-align: -6px;
 }
 
 #side-sortables .extra-metabox input[type="text"],
@@ -98,8 +98,9 @@
 	width: 200px;
 }
 .extra-metabox textarea {
-	min-width: 250px;
-	height: 100px;
+	width: 50%;
+	max-width: none;
+	height: 150px;
 }
 .extra-metabox .fullsize textarea {
 	width: 100%;
@@ -109,7 +110,7 @@
 //	text-align: left;
 //}
 .extra-textarea-wide .extra-input-wrapper {
-	width: ~"calc(100% - 155px)";
+	//width: ~"calc(100% - 155px)";
 }
 .extra-textarea-wide textarea {
 	padding: 3px 8px;
@@ -125,6 +126,7 @@
 	line-height: 20px;
 	margin: 0;
 	margin-bottom: 20px;
+	padding: 0;
 }
 #poststuff #side-sortables .extra-metabox h2 {
 	color: #23282d;

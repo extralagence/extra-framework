@@ -176,16 +176,30 @@ $window.on("load", function () {
 	 * EXTRA SLIDERS
 	 *
 	 *********************/
-	$window.on('extra:slider:updateClones', function (event, currentItem, total) {
-		$(event.target).find('.cloned .responsiveImagePlaceholder').each(function () {
-			$window.trigger('extra:responsiveImage:init', [$(this).data("size", "")]);
+	$window.on('extra:slider:updateClones', function (event, currentItem, currentIndex) {
+
+		var $slider = $(event.target),
+			$responsiveImages = $slider.find('.cloned .responsiveImagePlaceholder').data("size", ""),
+			$lazy = $responsiveImages.filter('.responsiveImageLazy');
+
+		$responsiveImages.each(function () {
+			initResponsiveImage($(this));
 		});
+		$lazy.each(initLazyAndCustomLoaded);
+
+		$window.trigger('extra:responsiveImage:startFollowScroll', [$lazy]);
 	});
 
+
+	/*********************
+	 *
+	 * ON SCROLL
+	 *
+	 *********************/
 	$window.on('extra:responsiveImage:startFollowScroll', startFollowScroll);
 	function startFollowScroll(event, $container) {
 		$container.fracs(function (fracs, previousFracs) {
-			if(fracs.visible > 0) {
+			if (fracs.visible > 0) {
 				var $elem = $(this);
 
 				if ($elem.hasClass('responsiveImagePlaceholder')) {

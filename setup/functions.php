@@ -59,27 +59,6 @@ add_filter( 'get_search_form', 'extra_search_form' );
  *
  *
  *
- * EXCERPT
- *
- *
- *
- *********************/
-// LENGTH
-function extra_excerpt_length( $length ) {
-	return 35;
-}
-
-add_filter( 'excerpt_length', 'extra_excerpt_length', 999 );
-// TEXT
-function extra_excerpt_more( $more ) {
-	return '...';
-}
-
-add_filter( 'excerpt_more', 'extra_excerpt_more' );
-/**********************
- *
- *
- *
  * NO 10px MARGIN CAPTION
  *
  *

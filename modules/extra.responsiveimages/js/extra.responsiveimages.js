@@ -44,6 +44,7 @@ $window.on("load", function () {
 	//
 	///////////////////////////////////////
 	function initPlaceholder($container) {
+
 		var $placeholderImage = $container.find('.placeholder-image'),
 			$placeholderCanvas = $container.find('.placeholder-canvas');
 		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
@@ -55,6 +56,10 @@ $window.on("load", function () {
 
 
 	function initResponsiveImage($container) {
+
+		/*if ($container.data("extraResponsiveImageProcessed") === true) {
+			return;
+		}*/
 
 		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),
@@ -124,11 +129,12 @@ $window.on("load", function () {
 						});
 					}
 					else {
-						$container.find('.placeholder-image').after(imgElement);
+						$container.find('img').last().after(imgElement);
+						$container.find('img').not(imgElement).remove();
 					}
 
 					setTimeout(function () {
-						$container.find('.placeholder-image').remove();
+
 						$container.find('.placeholder-canvas').remove();
 					}, 500);
 
@@ -156,7 +162,7 @@ $window.on("load", function () {
 		});
 		addImage(size);
 
-		$container.data('extra-responsiveImageProcessed', true);
+		$container.data('extraResponsiveImageProcessed', true);
 
 	}
 
@@ -179,15 +185,10 @@ $window.on("load", function () {
 	$window.on('extra:slider:updateClones', function (event, currentItem, currentIndex) {
 
 		var $slider = $(event.target),
-			$responsiveImages = $slider.find('.cloned .responsiveImagePlaceholder').data("size", ""),
-			$lazy = $responsiveImages.filter('.responsiveImageLazy');
-
+			$responsiveImages = $slider.find('.extra-slider-clone .responsiveImagePlaceholder:not(.responsiveImageLazy)').data("size", "");
 		$responsiveImages.each(function () {
-			initResponsiveImage($(this));
+			$window.trigger('extra:responsiveImage:init', [$(this)]);
 		});
-		$lazy.each(initLazyAndCustomLoaded);
-
-		$window.trigger('extra:responsiveImage:startFollowScroll', [$lazy]);
 	});
 
 

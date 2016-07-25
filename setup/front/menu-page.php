@@ -58,9 +58,10 @@ function menu_page($id, $current_parent, $level = 1) {
 				$selected = ($id == $child->ID) ? " current-page-item" : "";
 				echo '<li class="page-item page-item-'.$child->ID.$selected.'">';
 				if($id == $child->ID) {
-					echo '<a href="'.get_permalink($child->ID).'">'.apply_filters('set_current_submenu_title', $child->post_title).'</a>';
+					echo '<a href="'.get_permalink($child->ID).'">'.apply_filters('extra_submenu_current_title', $child->post_title, $child->ID).'</a>';
 				} else {
-					echo '<a href="'.get_permalink($child->ID).'">'.apply_filters('set_'.$child->ID.'_submenu_title', $child->post_title).'</a>';
+					$child_title = apply_filters('extra_submenu_child_title', $child->post_title, $child->ID);
+					echo '<a href="'.get_permalink($child->ID).'">'.$child_title.'</a>';
 				}
 
 				menu_page($id, $child, ($level+1));
@@ -80,9 +81,9 @@ function menu_page($id, $current_parent, $level = 1) {
 	if ($show_title) {
 		echo '<div class="menu-title page-item-'.$parent->ID.$selected.'">';
 		if($parent_page_template == 'template-redirect.php') {
-			echo '<span>'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</span>';
+			echo '<span>'.apply_filters('extra_submenu_parent_title', $parent->post_title, $child->ID).'</span>';
 		} else {
-			echo '<a href="'.get_permalink($parent->ID).'">'.apply_filters('extra_set_submenu_parent_title', $parent->post_title).'</a>';
+			echo '<a href="'.get_permalink($parent->ID).'">'.apply_filters('extra_submenu_parent_title', $parent->post_title, $child->ID).'</a>';
 		}
 		echo '</div>';
 	}

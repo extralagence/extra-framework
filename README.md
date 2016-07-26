@@ -2,6 +2,10 @@
 
 ## Changelog
 
+###2016/07/25
+*Updated the menu page template*
+- Hooks have been edited or added
+
 ###2016/06/20
 *Updated to jQuery 3.0.0*
 - https://jquery.com/upgrade-guide/3.0/#summary-of-important-changes

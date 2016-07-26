@@ -29,5 +29,13 @@ $(document).ready(function() {
 		padding: 0
 	});
 
+	// AJAX SVG SPRITE
+	$.get(extra_custom_share_params.assets_uri + "/img/sprite.svg", function (data) {
+		var div = document.createElement("div");
+		div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
+		document.body.insertBefore(div, document.body.childNodes[0]);
+		$("html").addClass("extra-custom-share-svg-loaded");
+	});
+
 
 });

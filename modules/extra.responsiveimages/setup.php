@@ -154,6 +154,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 				$alt = reset( $alt );
 			}
 		}
+		$alt = str_replace('"', '', $alt);
 	}
 
 

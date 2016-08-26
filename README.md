@@ -12,7 +12,7 @@
 
 
 *JS trigger events in extra slider*
-- renamed extra:slider:update to extra:slider:paused
+- renamed extra:slider:pause to extra:slider:paused
 - renamed extra:slider:resume to extra:slider:resumed
 
 ###2016/06/14

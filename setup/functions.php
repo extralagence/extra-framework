@@ -64,7 +64,7 @@ add_filter( 'get_search_form', 'extra_search_form' );
  *
  *
  *********************/
-if(!function_exists('extra_img_caption_shortcode')) {
+if ( !function_exists( 'extra_img_caption_shortcode' ) ) {
 	function extra_img_caption_shortcode( $x = null, $attr, $content ) {
 		extract( shortcode_atts( array(
 			'id'      => '',
@@ -553,8 +553,10 @@ function extra_template_embeded_videos_formatting( $content ) {
 	$pattern = '|<p>\s*(https?://[^\s"]+)\s*</p>|im';    // your own pattern
 	$to      = "<p>\n$1\n</p>";                          // your own pattern
 	$content = preg_replace( $pattern, $to, $content );
+
 	return $content;
 }
+
 //add_filter( 'the_content', 'extra_template_embeded_videos_formatting', 7 );
 /**********************
  *
@@ -588,18 +590,20 @@ function extra_template_embeded_videos_formatting( $content ) {
  *
  *
  *********************/
-function extra_framework_theme_less_vars($vars, $handle) {
-	$vars['extra_uri'] = '~"' . EXTRA_URI . '"';
-	$vars['extra_modules_uri'] = '~"' . EXTRA_MODULES_URI . '"';
-	$vars['extra_includes_uri'] = '~"' . EXTRA_INCLUDES_URI . '"';
+function extra_framework_theme_less_vars( $vars, $handle ) {
+	$vars['extra_uri']               = '~"' . EXTRA_URI . '"';
+	$vars['extra_modules_uri']       = '~"' . EXTRA_MODULES_URI . '"';
+	$vars['extra_includes_uri']      = '~"' . EXTRA_INCLUDES_URI . '"';
 	$vars['extra_common_module_uri'] = '~"' . EXTRA_COMMON_MODULE_URI . '"';
-	$vars['theme_uri'] = '~"' . THEME_URI . '"';
-	$vars['theme_modules_uri'] = '~"' . THEME_MODULES_URI . '"';
-	$vars['theme_includes_uri'] = '~"' . THEME_INCLUDES_URI . '"';
+	$vars['theme_uri']               = '~"' . THEME_URI . '"';
+	$vars['theme_modules_uri']       = '~"' . THEME_MODULES_URI . '"';
+	$vars['theme_includes_uri']      = '~"' . THEME_INCLUDES_URI . '"';
 	$vars['theme_common_module_uri'] = '~"' . THEME_COMMON_MODULE_URI . '"';
+
 	return $vars;
 }
-add_filter('less_vars', 'extra_framework_theme_less_vars', 10, 2);
+
+add_filter( 'less_vars', 'extra_framework_theme_less_vars', 10, 2 );
 /**********************
  *
  *
@@ -612,3 +616,19 @@ add_filter('less_vars', 'extra_framework_theme_less_vars', 10, 2);
 // REMOVE JS FROM CONTACT FORM 7
 add_filter( 'wpcf7_load_js', '__return_false' );
 add_filter( 'wpcf7_load_css', '__return_false' );
+/**********************
+ *
+ *
+ *
+ * REMOVE API
+ *
+ *
+ *
+ *********************/
+function remove_api() {
+	remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
+	remove_action( 'wp_head', 'wp_oembed_add_discovery_links', 10 );
+	remove_action( 'template_redirect', 'rest_output_link_header', 11 );
+}
+
+add_action( 'after_setup_theme', 'remove_api' );

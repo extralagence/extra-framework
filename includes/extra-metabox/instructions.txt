@@ -152,7 +152,7 @@ wp_enqueue_script('extra-editor', get_template_directory_uri() . '/includes/extr
  * 
  *************************************/
 // SCRIPTS
-wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpFeTSnmCMi1Vb3LuLoAivc4D4CeA2YJs&sensor=false', array('jquery'), null, true);
+wp_enqueue_script('google-maps-api', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDZjYzF37s1QZofV1dnVnSezTQ_xdZlkxA&sensor=false', array('jquery'), null, true);
 wp_enqueue_script('extra-map', get_template_directory_uri() . '/includes/extra-metabox/extra-map.js', array('jquery'), null, true);
 
 <div class="wpa_group bloc">

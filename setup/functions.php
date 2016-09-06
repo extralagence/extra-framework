@@ -212,6 +212,7 @@ if ( !function_exists( 'extra_submit_shortcode_handler' ) ) {
 
 		$atts['type'] = 'submit';
 		//$atts['value'] = $value;
+		$atts = apply_filters( 'extra_cf7_submit_atts', $atts );
 
 		$atts = wpcf7_format_atts( $atts );
 

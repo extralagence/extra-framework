@@ -140,7 +140,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				$slug = $post_type->rewrite;
 				$parents[] = array(
 					'class' => '',
-					'name'  => $post_type->labels->singular_name,
+					'name'  => $post_type->labels->menu_name,
 					'link'  => home_url("/").'/'.$slug['slug'],
 				);
 				$current_item['name'] = get_the_title();
@@ -163,7 +163,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 		// CUSTOM POST TYPE
 		else if (!is_single() && !is_page() && get_post_type() != 'post' && !is_404()) {
 			$post_type = get_post_type_object(get_post_type());
-			$current_item['name'] = $post_type->labels->singular_name;
+			$current_item['name'] = $post_type->labels->menu_name;
 		}
 
 		// ATTACHMENT

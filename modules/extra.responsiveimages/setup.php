@@ -416,7 +416,7 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
 	// IF IS WRAP WITH LINK
 	if ( !empty( $matches[1] ) || !empty( $matches[2] ) || !empty( $matches[3] ) ) {
-		$html .= '<a ' . $matches[1] . 'class="';
+		$html .= '<a ' . $matches[1] . 'class="link-image ';
 		if ( !empty( $align_class ) ) {
 			$html .= 'link-' . $align_class[1] . ' ';
 		}

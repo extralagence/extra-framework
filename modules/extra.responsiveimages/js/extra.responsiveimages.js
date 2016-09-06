@@ -58,8 +58,8 @@ $window.on("load", function () {
 	function initResponsiveImage($container) {
 
 		/*if ($container.data("extraResponsiveImageProcessed") === true) {
-			return;
-		}*/
+		 return;
+		 }*/
 
 		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),
@@ -174,6 +174,7 @@ $window.on("load", function () {
 			} else {
 				initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
 			}
+			totalResponsivesImages++;
 		});
 	});
 

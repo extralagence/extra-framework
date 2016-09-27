@@ -96,7 +96,7 @@ if (!class_exists("Extra_Redux_Framework")) {
 				// OPTIONAL -> Give you extra features
 				'page_priority' => 58, // Order where the menu appears in the admin area. If there is any conflict, something will not show. Warning.
 				'page_parent' => 'themes.php', // For a full list of options, visit: http://codex.wordpress.org/Function_Reference/add_submenu_page#Parameters
-				'page_permissions' => 'manage_options', // Permissions needed to access the options panel.
+				'page_permissions' => 'publish_pages', // Permissions needed to access the options panel.
 				'menu_icon' => 'dashicons-admin-tools', // Specify a custom URL to an icon
 				'last_tab' => '', // Force your panel to always open to a specific tab (by id)
 				'page_icon' => 'icon-themes', // Icon displayed in the admin panel next to your menu_title

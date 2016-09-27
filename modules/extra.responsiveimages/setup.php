@@ -230,8 +230,8 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	<img class="placeholder-image"
 		 src="<?php echo $placeholder_src[0]; ?>"
 		 alt=""
-		 width="<?php echo ( !empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
-		 height="<?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>" />
+		 <?php if(!empty( $placeholder_src[1])): ?>width="<?php echo $placeholder_src[1]; ?>"<?php endif; ?>
+		 <?php if(!empty( $placeholder_src[2])): ?>height="<?php echo $placeholder_src[2]; ?>"<?php endif; ?> />
 	<?php if ( $use_placeholder ) : ?>
 		<canvas class="placeholder-canvas"></canvas>
 	<?php endif; ?>
@@ -384,7 +384,7 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	// Extract Alt
 	$current_matches = array();
 	preg_match( '/alt="(.*?)"/', $img, $current_matches );
-	$alt = $current_matches[1];
+	if(!empty($current_matches[1])) $alt = $current_matches[1];
 
 	// Extract Class
 	$current_matches = array();

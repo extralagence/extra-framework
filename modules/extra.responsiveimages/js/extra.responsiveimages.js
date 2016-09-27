@@ -57,9 +57,10 @@ $window.on("load", function () {
 
 	function initResponsiveImage($container) {
 
-		/*if ($container.data("extraResponsiveImageProcessed") === true) {
+		if ($container.data("extraResponsiveImageProcessed") === true) {
 		 return;
-		 }*/
+		 }
+		//$container.data('extraResponsiveImageProcessed', true);
 
 		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),

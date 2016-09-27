@@ -29,7 +29,7 @@ function extra_second_title_metabox_init () {
 				'wide' => true,
 				'css_class' => 'second_title',
 				'name' => 'second_title',
-				'label' => __("Titre alternatif", "extra")
+				'label' => __("Titre alternatif (optionnel)", "extra")
 			)
 		)
 	));

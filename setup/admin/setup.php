@@ -273,7 +273,9 @@ add_action( 'admin_menu', 'extra_post_menu_labels' );
  *
  *********************/
 add_action( 'init', function () {
-	set_user_setting( 'editor', 'tinymce' );
+	if ( get_user_setting( 'editor' ) !== 'tinymce' ) {
+		set_user_setting( 'editor', 'tinymce' );
+	}
 } );
 /**********************
  *

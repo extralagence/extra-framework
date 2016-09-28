@@ -2,6 +2,10 @@
 
 ## Changelog
 
+###2016/09/27
+*Updated the menu page template*
+- Hooks have been edited or added
+
 ###2016/07/25
 *Updated the menu page template*
 - Hooks have been edited or added

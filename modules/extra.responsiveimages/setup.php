@@ -364,6 +364,8 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
 ///////////////////////////////////////
 function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
+	$alt = '';
+
 	$img = $matches[4];
 
 	// Extract ID

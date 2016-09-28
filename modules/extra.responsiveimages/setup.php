@@ -69,7 +69,7 @@ function extra_responsive_images_init() {
 	wp_enqueue_script( 'extra.responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/js/extra.responsiveimages.js', array( 'jquery', 'tweenmax', 'extra', 'extra.blur', 'extra.jfracs', 'extra.slider' ), null, true );
 }
 
-add_action( 'init', 'extra_responsive_images_init' );
+add_action( 'wp_enqueue_scripts', 'extra_responsive_images_init' );
 /**********************
  *
  *

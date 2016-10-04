@@ -26,7 +26,7 @@ $has_no_children = false;
 $current_ancestors = array();
 if ( $current_post->post_parent !== 0 ) {
 	$current_ancestors = get_post_ancestors( $current_post->ID );
-	$top_parent        = get_post( $current_ancestors[count( $current_ancestors ) - 1] );
+	$top_parent        = get_post( $current_ancestors[ count( $current_ancestors ) - 1 ] );
 }
 ///////////////////////////////////////
 //
@@ -56,7 +56,7 @@ else {
 $top_parent      = apply_filters( 'extra_menu_page__top_parent', $top_parent );
 $current_post_id = $current_post->ID;
 $current_post_id = apply_filters( 'extra_menu_page__current_post_id', $current_post_id );
-$post_status = apply_filters( 'extra_menu_page__post_status', 'publish' );
+$post_status     = apply_filters( 'extra_menu_page__post_status', 'publish' );
 ///////////////////////////////////////
 //
 //
@@ -74,24 +74,23 @@ function menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_status
 	);
 	$children = get_pages( $args );
 
-	if ( !empty( $children ) ) {
+	if ( ! empty( $children ) ) {
 		echo '<ul class="menu level' . $level . '">';
 		foreach ( $children as $child ) {
 
 			if ( $child->post_parent == $parent->ID ) {
 				$selected = '';
-				$selected .= ( $id == $child->ID ) ? " current-page-item current-menu-item" : "";
+				$selected .= ( $id == $child->ID ) ? " current-{$child->post_type}-item current-menu-item" : "";
 				if ( in_array( $child->ID, $ancestors ) ) {
 					$selected .= " parent-page-item";
 				}
 				$sub_children = get_pages( array( 'parent' => $child->ID ) );
-				if ( !empty( $sub_children ) ) {
+				if ( ! empty( $sub_children ) ) {
 					$selected .= " menu-has-children";
 				}
-				$selected .= ( $id == $child->ID ) ? " current-page-item current-menu-item" : "";
 
 
-				echo '<li class="page-item page-item-' . $child->ID . $selected . '">';
+				echo '<li class="menu-item ' . $child->post_type . '-item page-item-' . $child->ID . $selected . '">';
 				if ( $id == $child->ID ) {
 					echo '<a href="' . get_permalink( $child->ID ) . '">' . apply_filters( 'extra_menu_page__current_title', $child->post_title, $child->ID ) . '</a>';
 				} else {

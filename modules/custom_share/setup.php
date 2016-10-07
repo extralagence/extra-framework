@@ -15,7 +15,7 @@ function extra_custom_share( $id = 0 ) {
 		   $extra_sharer_counter,
 		   $extra_contact_form_printed;
 
-	if ( $id == 0 && isset( $post->ID ) ) {
+	if ( $id === 0 && isset( $post->ID ) ) {
 		$id = $post->ID;
 	}
 
@@ -29,7 +29,7 @@ function extra_custom_share( $id = 0 ) {
 
 	$title      = get_the_title();
 	$blog_title = get_bloginfo( 'name' );
-	$link       = get_permalink( $id );
+	$link       = is_int($id) ? get_permalink( $id ) : $id;
 
 	// IF LINK, ECHO SHARE
 	if ( !empty( $link ) ) {

@@ -163,7 +163,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 		$real_dimensions = array();
 		foreach ( $dimensions as $dimension_name => $dimension ) {
-// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
+			// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
 			if ( $dimension[0] === null && $dimension[1] !== null ) {
 				if ( $image_full_src == null ) {
 					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
@@ -231,7 +231,9 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		 src="<?php echo $placeholder_src[0]; ?>"
 		 alt=""
 		 width="<?php echo ( !empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
-		 height="<?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>" />
+		 height="<?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
+		 style="height: <?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
+	/>
 	<?php if ( $use_placeholder ) : ?>
 		<canvas class="placeholder-canvas"></canvas>
 	<?php endif; ?>
@@ -424,6 +426,8 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 			$html .= 'link-' . $size_class[1] . ' ';
 		}
 		$html .= $matches[2] . '"' . $matches[3] . '>';
+
+		$html .= apply_filters('extra_responsive_images__the_content_replace__before_link_image', '');
 	}
 
 	// RESPONSIVE IMAGE
@@ -440,6 +444,7 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
 	// IF IS WRAP WITH LINK
 	if ( !empty( $matches[1] ) || !empty( $matches[2] ) || !empty( $matches[3] ) ) {
+		$html .= apply_filters('extra_responsive_images__the_content_replace__after_link_image', '');
 		$html .= '</a>';
 	}
 

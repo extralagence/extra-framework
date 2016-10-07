@@ -1,26 +1,5 @@
 ﻿/*********************
  *
- * OTHER
- *
- ********************/
-body.login {
-	position: relative;
-}
-body.login #login h1 {
-	margin: 30px 0;
-}
-body.login #login h1 a {
-	background-image: url(@{lessurl}/../img/extra.svg);
-	background-size: 100% auto;
-	margin: 0 20%;
-	width: auto;
-}
-.login #nav,
-.login #backtoblog {
-	text-align: center;
-}
-/*********************
- *
  * BETTER SIDEBAR
  *
  ********************/
@@ -85,11 +64,11 @@ body.login #login h1 a {
 	display: none;
 }
 #welcome-panel .extra-welcome-wrapper:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }
 .welcome-panel .welcome-panel-column ul {
 	margin: 20px 0 0 0;
@@ -103,5 +82,14 @@ body.login #login h1 a {
 }
 body.index-php #screen-meta,
 body.index-php #screen-meta-links {
+	display: none;
+}
+/*********************
+ *
+ * NO MORE ATTACHMENT PAGE LINK
+ *
+ ********************/
+.post-php select.link-to option[value="post"],
+.post-php select[data-setting="link"] option[value="post"] {
 	display: none;
 }

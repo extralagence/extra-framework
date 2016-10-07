@@ -1,16 +1,16 @@
 #_second_title_metabox {
 	background: transparent;
-	border: 0px none;
+	border: 0 none;
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
+	-webkit-border-radius: 0;
+	border-radius: 0;
 	margin: 20px 0;
 }
 #_second_title_metabox .inside {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 #_second_title_metabox .hndle {
 	display: none;
@@ -24,8 +24,10 @@
 }
 #_second_title_metabox label {
 	color: #777;
+	font-size: 1em;
+	margin: 0;
+	padding: 0;
 	text-align: left;
-	font-size: 1.5em;
 }
 
 #_second_title_metabox .extra-input-wrapper {
@@ -37,6 +39,14 @@
 	padding: 3px 8px;
 	font-size: 1.5em;
 	line-height: 1.25em;
-	width: 100%;
 	outline: 0;
+}
+
+#titlediv #title-prompt-text {
+	color: #777;
+	font-size: 1em;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	text-align: left;
 }

@@ -5,7 +5,7 @@ $(document).ready(function() {
 			counter = $this.data("counter");
 
 		if (counter) {
-			console.log(counter);
+			// console.log(counter);
 			$.getJSON(counter, function(data) {
 				if(data['count']) {
 					$this.find('.counter').text(data['count']);

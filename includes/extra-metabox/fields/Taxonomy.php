@@ -98,8 +98,8 @@ class Taxonomy extends AbstractField {
 
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
-		$this->taxonomy = isset($properties['taxonomy']) ? $properties['taxonomy'] : null;
-		$this->label_default_taxomony = $properties['label_default_taxomony'];
+		$this->taxonomy = isset($properties['taxonomy']) ? $properties['taxonomy'] : 'post_category';
+		$this->label_default_taxomony = !empty($properties['label_default_taxomony']) ? $properties['label_default_taxomony'] : 'Catégorie';
 	}
 
 	public function the_admin_column_value() {

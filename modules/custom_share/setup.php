@@ -51,13 +51,13 @@ function extra_custom_share( $id = 0 ) {
 		';
 		$twitter = apply_filters( 'extra_social_twitter_link', $twitter, $link, $title, $blog_title );
 
-		$gplus = '
+		/*$gplus = '
 		<a target="_blank" href="https://plus.google.com/share?url=' . $link . '" class="extra-social-button extra-social-gplus" data-url="' . $link . '" data-counter="' . THEME_MODULES_URI . '/custom_share/gplus.php?url= ' . urlencode( $link ) . '">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-google"></use></svg>
 			<span class="text">' . __( 'Partager sur Google+', 'extra' ) . '</span><span class="counter"></span>
 		</a>
 		';
-		$gplus = apply_filters( 'extra_social_gplus_link', $gplus, $link );
+		$gplus = apply_filters( 'extra_social_gplus_link', $gplus, $link );*/
 
 
 		// AJAXIFIED
@@ -67,7 +67,7 @@ function extra_custom_share( $id = 0 ) {
 
 		$return .= $facebook;
 		$return .= $twitter;
-		$return .= $gplus;
+		//$return .= $gplus;
 
 		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
 

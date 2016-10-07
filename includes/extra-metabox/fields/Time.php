@@ -60,7 +60,7 @@ class Time extends AbstractField {
 				/>
 
 			<span class="extra-error-message" style="display: none;">
-				<?php echo ($this->error_label == null) ? _("Ce champs est requis", "extra") : $this->error_label; ?>
+				<?php echo $this->error_label; ?>
 			</span>
 			<?php $this->mb->the_field($this->get_prefixed_field_name('en', '-')); ?>
 			<input class="extra-timepicker-en" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
@@ -70,13 +70,9 @@ class Time extends AbstractField {
 
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
-		$this->format = $properties['format'];
-		$this->required = $properties['required'] == true;
-		$this->error_label = $properties['error_label'];
-
-		if ($this->format == null) {
-			$this->format = 'h:i';
-		}
+		$this->format = !empty($properties['format']) ? $properties['format'] : 'h:i';
+		$this->required = !empty($properties['required']) ? $properties['required'] : false;
+		$this->error_label = !empty($properties['error_label']) ? $properties['error_label'] : __("Ce champs est requis", "extra");
 	}
 
 	public function the_admin_column_value() {

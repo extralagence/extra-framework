@@ -119,20 +119,20 @@ function extra_get_placeholder( $id, $dimensions ) {
 /**
  * echo reponsive image
  *
- * @param        $src            $source
- * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class          add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
- * @param bool   $img_itemprop   true if you want to use itemprop
- * @param string $caption        html for the caption
- * @param string $tag            used to wrap the image (figure, span, etc.)
- * @param bool   $lazy_loading   true if loading start only when element is in viewport
- * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param bool $img_itemprop true if you want to use itemprop
+ * @param string $caption html for the caption
+ * @param string $tag used to wrap the image (figure, span, etc.)
+ * @param bool $lazy_loading true if loading start only when element is in viewport
+ * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
 // hook it to override available sizes
-	$sizes   = apply_filters( 'extra_responsive_sizes', array() );
+	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
 	$class .= ( $lazy_loading ) ? ' responsiveImageLazy' : '';
 	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
@@ -165,7 +165,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	}
 
 	// ADJUST DIMENSIONS
-	$dimensions = extra_responsive_image__adjust_dimensions($id, $dimensions);
+	$dimensions = extra_responsive_image__adjust_dimensions( $id, $dimensions );
 
 	// START RENDERING
 	ob_start();
@@ -178,7 +178,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
 	<?php if ( $img_itemprop ) :
 		$dimension = reset( $dimensions );
-		$src = wp_get_attachment_image_src( $id, $dimension );
+		$src    = wp_get_attachment_image_src( $id, $dimension );
 		?>
 		<meta itemprop="url" content="<?php echo $src[0]; ?>">
 		<meta itemprop="width" content="<?php echo $src[1]; ?>">
@@ -207,11 +207,11 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	?>
 	<img class="placeholder-image"
-		 src="<?php echo $placeholder_src[0]; ?>"
-		 alt=""
-		 width="<?php echo ( !empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
-		 height="<?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
-		 style="height: <?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
+	     src="<?php echo $placeholder_src[0]; ?>"
+	     alt=""
+	     width="<?php echo ( ! empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
+	     height="<?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
+	     style="height: <?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
 	/>
 	<?php if ( $use_placeholder ) : ?>
 		<canvas class="placeholder-canvas"></canvas>
@@ -237,13 +237,13 @@ function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = ''
 /**
  * echo reponsive image
  *
- * @param        $src            $source
- * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class          add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
- * @param string $tag            used to be carry the background image
- * @param bool   $lazy_loading   true if loading start only when element is in viewport
- * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param string $tag used to be carry the background image
+ * @param bool $lazy_loading true if loading start only when element is in viewport
+ * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
 
@@ -259,7 +259,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	}
 
 	// ADJUST DIMENSIONS
-	$dimensions = extra_responsive_image__adjust_dimensions($id, $dimensions);
+	$dimensions = extra_responsive_image__adjust_dimensions( $id, $dimensions );
 
 	// START RENDERING
 	ob_start();
@@ -291,9 +291,9 @@ function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', 
 /**
  * get svg responsive image
  *
- * @param        $src    $source
- * @param array  $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class  add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
  */
 function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false ) {
@@ -315,12 +315,14 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	ob_start();
 	?>
 
-	<div class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
+	<div
+		class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
 		<svg width="100%" height="100%"
 		     preserveAspectRatio="none"
 		     xmlns="http://www.w3.org/2000/svg"
 		     xmlns:xlink="http://www.w3.org/1999/xlink">
-			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
+			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
+			       xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
 		</svg>
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
@@ -417,7 +419,7 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 		}
 		$html .= $matches[2] . '"' . $matches[3] . '>';
 
-		$html .= apply_filters('extra_responsive_images__the_content_replace__before_link_image', '');
+		$html .= apply_filters( 'extra_responsive_images__the_content_replace__before_link_image', '' );
 	}
 
 	// RESPONSIVE IMAGE
@@ -433,8 +435,8 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	);
 
 	// IF IS WRAP WITH LINK
-	if ( !empty( $matches[1] ) || !empty( $matches[2] ) || !empty( $matches[3] ) ) {
-		$html .= apply_filters('extra_responsive_images__the_content_replace__after_link_image', '');
+	if ( ! empty( $matches[1] ) || ! empty( $matches[2] ) || ! empty( $matches[3] ) ) {
+		$html .= apply_filters( 'extra_responsive_images__the_content_replace__after_link_image', '' );
 		$html .= '</a>';
 	}
 
@@ -445,30 +447,18 @@ function extra_responsive_images__the_content_replace_with_span( $matches ) {
 	return extra_responsive_images__the_content_replace( $matches, 'span' );
 }
 
-/*function extra_responsive_images__the_content($content) {
-//	return $content;
-
-	$content = preg_replace_callback(
-		'/<img.*?class=".*?(wp-image-[0-9]+).*?".*?>/',
-		'extra_responsive_images__the_content_replace_with_span',
-		$content);
-
-	return $content;
-}
-add_filter('the_content', 'extra_responsive_images__the_content', 99);*/
-
 function extra_responsive_images__the_content( $content ) {
 //	return $content;
 
 	$content = preg_replace_callback(
-		'/(?:<a(.*?)?(?:class="(.*?)")?(.*?)?>)?(<img.*?class=".*?(?:wp-image).*?".*?>)(?:<\/a>)?/',
+		'/(?><a(.*?)?(?:class="(.*?)")?(.*?)?>)?(<img.*?class=".*?(?:wp-image).*?".*?>)(?><\/a>)?/',
 		'extra_responsive_images__the_content_replace_with_span',
 		$content );
 
 	return $content;
 }
 
-//add_filter( 'the_content', 'extra_responsive_images__the_content', 99 );
+add_filter( 'the_content', 'extra_responsive_images__the_content', 99 );
 
 
 // DISABLED SRCSET FOR IMG

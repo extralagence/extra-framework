@@ -1,4 +1,5 @@
 <?php
+return;
 header('content-type: application/json');
 //Sharrre by Julien Hany
 $json = array('url'=>'','count'=>0);

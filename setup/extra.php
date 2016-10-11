@@ -215,6 +215,39 @@ add_filter( 'template_include', array(
  *
  *
  *
+ * REDUX > Default thumbnails
+ *
+ *
+ *
+ *********************/
+if ( ! function_exists( 'extra_default_image_thumbnail_options' ) ) {
+	function extra_default_image_thumbnails_options( $sections ) {
+		$sections[] = array(
+			'icon'   => 'el-icon-picture',
+			'title'  => __( 'Images par défaut', 'extra-admin' ),
+			'desc'   => null,
+			'fields' => array(
+				array(
+					'id'    => 'default-thumbnail',
+					'type'  => 'media',
+					'title' => __( 'Image générique par défaut', 'extra-admin' ),
+				),
+				array(
+					'id'    => 'default-thumbnail-small',
+					'type'  => 'media',
+					'title' => __( 'Image générique par défaut (petite taille)', 'extra-admin' ),
+				)
+			)
+		);
+
+		return $sections;
+	}
+}
+add_filter( 'extra_default_global_options_section', 'extra_default_image_thumbnails_options' );
+/**********************
+ *
+ *
+ *
  * EXTRA INIT
  *
  *

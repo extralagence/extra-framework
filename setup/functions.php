@@ -520,7 +520,7 @@ function strtolower_utf8( $inputString ) {
 }
 
 function _print_r( $a ) {
-	echo '<pre style="white-space: normal;">', htmlspecialchars( print_r( $a, true ) ), '</pre>';
+	echo '<pre style="white-space: pre-wrap;">', htmlspecialchars( print_r( $a, true ) ), '</pre>';
 }
 
 /**********************

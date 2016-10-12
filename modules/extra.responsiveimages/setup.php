@@ -129,7 +129,7 @@ function extra_get_placeholder( $id, $dimensions ) {
  * @param bool $lazy_loading true if loading start only when element is in viewport
  * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
-function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
 // hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
@@ -230,7 +230,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	return $return;
 }
 
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption, $tag, $lazy_loading, $custom_loading );
 }
 

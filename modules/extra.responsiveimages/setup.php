@@ -468,7 +468,7 @@ function extra_responsive_images__the_content( $content ) {
 	return $content;
 }
 
-//add_filter( 'the_content', 'extra_responsive_images__the_content', 99 );
+add_filter( 'the_content', 'extra_responsive_images__the_content', 99 );
 
 
 // DISABLED SRCSET FOR IMG

@@ -173,7 +173,10 @@ $window.on("load", function () {
 			if ($elem.hasClass('responsiveImagePlaceholder')) {
 				initResponsiveImage($elem.data("size", ""));
 			} else {
-				initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
+				$elem = $elem.find('.responsiveImagePlaceholder');
+				if ($elem.length > 0) {
+					initResponsiveImage($elem.data("size", ""));
+				}
 			}
 			totalResponsivesImages++;
 		});

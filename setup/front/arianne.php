@@ -191,7 +191,7 @@ $current_post = apply_filters( 'extra_arianne_current_post', $post );
 				$current_item['name'] = get_the_title();
 			} // TAG
 			else if ( is_tag() ) {
-				$current_item['name'] = sprintf( __( 'Actualités correspondant au tag %s', 'extra' ), single_tag_title( '', false ) );
+				$current_item['name'] = sprintf( apply_filters('extra_arianne_tag_label', __( 'Actualités correspondant au tag %s', 'extra' )), single_tag_title( '', false ) );
 			} // AUTHOR
 			else if ( is_author() ) {
 				global $author;

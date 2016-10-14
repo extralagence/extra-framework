@@ -35,7 +35,7 @@ class Text extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<div class="<?php echo $this->css_class; ?> extra-text-container">
+		<div class="<?php echo $this->css_class; ?> extra-text-container<?php echo ($this->wide) ? ' extra-wide' : ''; ?>">
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php if ($this->title != null) : ?>
 				<h2><?php
@@ -75,6 +75,7 @@ class Text extends AbstractField {
 		$this->regex = isset($properties['regex']) ? $properties['regex'] : null;
         $this->placeholder = isset($properties['placeholder']) ? $properties['placeholder'] : null;
         $this->default = isset($properties['default']) ? $properties['default'] : '';
+		$this->wide = isset($properties['wide']) ? $properties['wide'] : false;
 	}
 
 	public function the_admin_column_value() {

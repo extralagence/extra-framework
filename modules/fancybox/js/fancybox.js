@@ -8,6 +8,19 @@ $window.on('extra:fancybox:init', function (event, $parent) {
 	}
 });
 function extraInitFancybox($parent) {
+	var extraFacyboxDefaultOptions = {
+		margin : 50,
+		padding: 0,
+		type   : 'image',
+		helpers: {
+			title: {
+				type: 'over'
+			}
+		}
+	};
+	if (window.extraFancyboxOverrideOptions) {
+		$.extend(extraFacyboxDefaultOptions, window.extraFancyboxOverrideOptions);
+	}
 	$parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
 		return $(this).attr("target") != "_blank";
 	}).attr("data-fancybox-group", "gallery").each(function () {
@@ -17,34 +30,9 @@ function extraInitFancybox($parent) {
 			$(this).addClass("zoom");
 		}
 		if ($this.next(".wp-caption-text").length) {
-			console.log(defaultOptions);
-			defaultOptions['fancyboxOptions']['beforeShow'] = function () {
+			extraFacyboxDefaultOptions['beforeShow'] = function () {
 				this.title = $this.next(".wp-caption-text").html();
 			}
 		}
-		/*if ($img.hasClass("alignleft")) {
-		 $this.addClass("alignleft");
-		 }
-		 if ($img.hasClass("alignright")) {
-		 $this.addClass("alignright");
-		 }*/
-	}).fancybox(defaultOptions.fancyboxOptions);
+	}).fancybox(extraFacyboxDefaultOptions);
 }
-/*********************
- *
- * ALL LINKS TO IMAGES
- *
- *********************/
-var defaultOptions = {
-	fancyboxOptions: {
-		margin : 50,
-		padding: 0,
-		type   : 'image',
-		helpers: {
-			title: {
-				type: 'over'
-			}
-		}
-	}
-};
-$.extend(defaultOptions, extraOptions);

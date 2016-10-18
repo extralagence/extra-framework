@@ -188,8 +188,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		data-alt="<?php echo $alt; ?>"
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$dimension = $dimensions[ $size ];
-			$src       = wp_get_attachment_image_src( $id, $dimension );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0];
 			?>"
 		<?php endforeach; ?>>
@@ -271,7 +270,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	<noscript
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0]; ?>"
 		<?php endforeach; ?>>
 	</noscript>
@@ -327,7 +326,7 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+				$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 				echo $src[0]; ?>"
 			<?php endforeach; ?>>
 		</noscript>

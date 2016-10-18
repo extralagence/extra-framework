@@ -29,10 +29,12 @@ function extraInitFancybox($parent) {
 		if ($img.length) {
 			$(this).addClass("zoom");
 		}
-		if ($this.next(".wp-caption-text").length) {
-			extraFacyboxDefaultOptions['beforeShow'] = function () {
-				this.title = $this.next(".wp-caption-text").html();
+		$(document).on('afterLoad', function () {
+			if ($.fancybox.coming.element.next(".wp-caption-text").length) {
+				$.fancybox.coming.title = $.fancybox.coming.element.next(".wp-caption-text").html();
+			} else {
+				$.fancybox.coming.title = '';
 			}
-		}
+		});
 	}).fancybox(extraFacyboxDefaultOptions);
 }

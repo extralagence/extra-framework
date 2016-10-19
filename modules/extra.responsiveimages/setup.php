@@ -87,18 +87,15 @@ add_action( 'wp_enqueue_scripts', 'extra_responsive_images_init' );
  *
  *********************/
 
-function extra_get_placeholder( $id, $dimensions ) {
-	$first_dimension = reset( $dimensions );
+function extra_get_placeholder( $id, $width, $height ) {
 
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	if ( $use_placeholder ) {
-		$first_width      = ! empty( $first_dimension[0] ) ? $first_dimension[0] : 0;
-		$first_height     = ! empty( $first_dimension[1] ) ? $first_dimension[1] : 0;
 		$placeholder_size = apply_filters( 'extra_responsive_images_placeholder_size', 30 );
-		if ( $first_width >= $first_height ) {
-			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $first_height / $first_width ) );
+		if ( $width >= $height ) {
+			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $height / $width ) );
 		} else {
-			$placeholder_size = array( round( $placeholder_size * $first_width / $first_height ), $placeholder_size );
+			$placeholder_size = array( round( $placeholder_size * $width / $height ), $placeholder_size );
 		}
 
 		$placeholder_src = wp_get_attachment_image_src( $id, $placeholder_size );
@@ -110,8 +107,8 @@ function extra_get_placeholder( $id, $dimensions ) {
 		$placeholder_src    = array();
 		$placeholder_src[0] = EXTRA_URI . '/assets/img/blank.png';
 	}
-	$placeholder_src[1] = $first_dimension[0];
-	$placeholder_src[2] = $first_dimension[1];
+	$placeholder_src[1] = $width;
+	$placeholder_src[2] = $height;
 
 	return $placeholder_src;
 }
@@ -119,15 +116,15 @@ function extra_get_placeholder( $id, $dimensions ) {
 /**
  * echo reponsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src            $source
+ * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class          add custom classes
  * @param string $alt
- * @param bool $img_itemprop true if you want to use itemprop
- * @param string $caption html for the caption
- * @param string $tag used to wrap the image (figure, span, etc.)
- * @param bool $lazy_loading true if loading start only when element is in viewport
- * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param bool   $img_itemprop   true if you want to use itemprop
+ * @param string $caption        html for the caption
+ * @param string $tag            used to wrap the image (figure, span, etc.)
+ * @param bool   $lazy_loading   true if loading start only when element is in viewport
+ * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
@@ -177,7 +174,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
 	<?php if ( $img_itemprop ) :
-		$dimension = reset( $dimensions );
+		$dimension = is_array( $dimensions ) ? reset( $dimensions ) : $dimensions;
 		$src    = wp_get_attachment_image_src( $id, $dimension );
 		?>
 		<meta itemprop="url" content="<?php echo $src[0]; ?>">
@@ -202,7 +199,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		     height="<?php echo $src[2]; ?>">
 	</noscript>
 	<?php
-	$placeholder_src = extra_get_placeholder( $id, $dimensions );
+	$placeholder_src = extra_get_placeholder( $id, $src[1], $src[2] );
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	?>
 	<img class="placeholder-image"
@@ -236,13 +233,13 @@ function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = ''
 /**
  * echo reponsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src            $source
+ * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class          add custom classes
  * @param string $alt
- * @param string $tag used to be carry the background image
- * @param bool $lazy_loading true if loading start only when element is in viewport
- * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param string $tag            used to be carry the background image
+ * @param bool   $lazy_loading   true if loading start only when element is in viewport
+ * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
 
@@ -290,9 +287,9 @@ function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', 
 /**
  * get svg responsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src    $source
+ * @param array  $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class  add custom classes
  * @param string $alt
  */
 function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false ) {

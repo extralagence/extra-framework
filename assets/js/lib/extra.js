@@ -41,6 +41,7 @@ $(document).ready(function () {
 	var canResize = true;
 	wWidth = $window.width();
 	wHeight = $window.height();
+	small = extra_responsive_small_width_limit.value > wWidth;
 	$window.on('resize', function () {
 		if (canResize) {
 			resizeHandler();
@@ -55,6 +56,7 @@ $(document).ready(function () {
 		if ($window.width() !== wWidth || $window.height() !== wHeight) {
 			wWidth = $window.width();
 			wHeight = $window.height();
+			small = extra_responsive_small_width_limit.value > wWidth;
 			// $window.trigger('extra.resize');
 			$window.trigger('extra:resize');
 		}
@@ -65,7 +67,7 @@ $(document).ready(function () {
 	 * MOBILE OR NOT MOBILE
 	 *
 	 *********************/
-	$window.on('extra:resize', function () {
+	/*$window.on('extra:resize', function () {
 		// IF STATE CHANGE, UPDATE
 		var _tmpExtraResponsiveSizesTests = $.extend({}, extraResponsiveSizesTests);
 		$.each(extraResponsiveSizes, function (index, value) {
@@ -79,7 +81,7 @@ $(document).ready(function () {
 			// $(document).trigger("extra.responsive-resize");
 			$(document).trigger("extra:resize:responsive");
 		}
-	}).trigger('extra:resize');
+	}).trigger('extra:resize');*/
 	/*********************
 	 *
 	 * EXTRA RESIZE

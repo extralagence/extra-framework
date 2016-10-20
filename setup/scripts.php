@@ -19,8 +19,10 @@ function extra_template_enqueue_scripts() {
 	// EXTRA
 	wp_enqueue_script('extra', EXTRA_URI . '/assets/js/lib/extra.js', array('jquery', 'tweenmax'), null, true);
 	// RESPONSIVE SIZES
-	$sizes = apply_filters('extra_responsive_sizes', array());
-	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
+	$small_size = apply_filters('extra_responsive_small_width_limit', 1200);
+	wp_localize_script('extra', 'extra_responsive_small_width_limit', array(
+		'value' => $small_size
+	));
 }
 
 add_action('wp_enqueue_scripts', 'extra_template_enqueue_scripts');

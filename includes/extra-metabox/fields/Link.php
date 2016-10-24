@@ -258,18 +258,6 @@ class Link extends AbstractField {
 		echo '-';
 	}
 
-	public static function get_title( $name, $mb ) {
-		return $mb->get_the_value( AbstractField::get_field_name( $name, 'title', '_' ) );
-	}
-
-	public static function get_target( $name, $mb ) {
-		if ( $mb->get_the_value( AbstractField::get_field_name( $name, 'target', '_' ) ) ) {
-			return '_blank';
-		} else {
-			return '_self';
-		}
-	}
-
 	public static function get_permalink_from_meta( $meta, $name ) {
 		$type      = isset( $meta[ $name ]['type'] ) ? $meta[ $name ]['type'] : '';
 		$url       = isset( $meta[ $name ]['url'] ) ? $meta[ $name ]['url'] : '';
@@ -289,7 +277,7 @@ class Link extends AbstractField {
 	}
 
 	public static function get_target_from_meta( $meta, $name ) {
-		if ( isset( $meta[ $name ]['target'] ) && $meta[ $name ]['target'] ) {
+		if ( ! empty( $meta[ $name ]['target'] ) && $meta[ $name ]['target'] ) {
 			return '_blank';
 		} else {
 			return '_self';
@@ -297,7 +285,7 @@ class Link extends AbstractField {
 	}
 
 	public static function get_title_from_meta( $meta, $name ) {
-		$title = isset( $meta[ $name ]['title'] ) ? $meta[ $name ]['title'] : '';
+		$title = ! empty( $meta[ $name ]['title'] ) ? $meta[ $name ]['title'] : '';
 
 		return $title;
 	}

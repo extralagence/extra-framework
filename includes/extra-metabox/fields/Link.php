@@ -258,23 +258,6 @@ class Link extends AbstractField {
 		echo '-';
 	}
 
-	public static function get_permalink( $name, $mb ) {
-		$type    = $mb->get_the_value( AbstractField::get_field_name( $name, 'type', '_' ) );
-		$url     = $mb->get_the_value( AbstractField::get_field_name( $name, 'url', '_' ) );
-		$content = $mb->get_the_value( AbstractField::get_field_name( $name, 'content', '_' ) );
-
-		if ( $type == 'content' ) {
-			return get_permalink( $content );
-		}
-		if ( $type == 'taxonomy' ) {
-			return '#/coucou';
-		} else {
-			return $url;
-		}
-
-		//TODO MANAGE TAXONOMY PERMALINK
-	}
-
 	public static function get_title( $name, $mb ) {
 		return $mb->get_the_value( AbstractField::get_field_name( $name, 'title', '_' ) );
 	}
@@ -287,15 +270,15 @@ class Link extends AbstractField {
 		}
 	}
 
-	public static function get_permalink_from_meta( $meta, $name, $separator = '_' ) {
-		$type      = isset( $meta[ $name . $separator . 'type' ] ) ? $meta[ $name . $separator . 'type' ] : '';
-		$url       = isset( $meta[ $name . $separator . 'url' ] ) ? $meta[ $name . $separator . 'url' ] : '';
-		$content   = isset( $meta[ $name . $separator . 'content' ] ) ? $meta[ $name . $separator . 'content' ] : '';
-		$taxonomy  = isset( $meta[ $name . $separator . 'taxonomy' ] ) ? $meta[ $name . $separator . 'taxonomy' ] : '';
-		$term_slug = isset( $meta[ $name . $separator . 'taxonomy-slug' ] ) ? $meta[ $name . $separator . 'taxonomy-slug' ] : '';
+	public static function get_permalink_from_meta( $meta, $name ) {
+		$type      = isset( $meta[ $name ]['type'] ) ? $meta[ $name ]['type'] : '';
+		$url       = isset( $meta[ $name ]['url'] ) ? $meta[ $name ]['url'] : '';
+		$post_id   = isset( $meta[ $name ]['post_id'] ) ? $meta[ $name ]['post_id'] : '';
+		$taxonomy  = isset( $meta[ $name ]['taxonomy'] ) ? $meta[ $name ]['taxonomy'] : '';
+		$term_slug = isset( $meta[ $name ]['term_slug'] ) ? $meta[ $name ]['term_slug'] : '';
 
 		if ( $type == 'content' ) {
-			return get_permalink( $content );
+			return get_permalink( $post_id );
 		} else {
 			if ( $type == 'taxonomy' ) {
 				return get_term_link( $term_slug, $taxonomy );
@@ -305,16 +288,16 @@ class Link extends AbstractField {
 		}
 	}
 
-	public static function get_target_from_meta( $meta, $name, $separator = '_' ) {
-		if ( isset( $meta[ $name . $separator . 'target' ] ) && $meta[ $name . $separator . 'target' ] ) {
+	public static function get_target_from_meta( $meta, $name ) {
+		if ( isset( $meta[ $name ]['target'] ) && $meta[ $name ]['target'] ) {
 			return '_blank';
 		} else {
 			return '_self';
 		}
 	}
 
-	public static function get_title_from_meta( $meta, $name, $separator = '_' ) {
-		$title = isset( $meta[ $name . $separator . 'title' ] ) ? $meta[ $name . $separator . 'title' ] : '';
+	public static function get_title_from_meta( $meta, $name ) {
+		$title = isset( $meta[ $name ]['title'] ) ? $meta[ $name ]['title'] : '';
 
 		return $title;
 	}

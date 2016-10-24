@@ -8,7 +8,7 @@
 Subfields now stored with an array
 
 Structure details :
-```
+```php
 array (
   'type', // manual content or taxonomy
   'url', // url content if type is manuel

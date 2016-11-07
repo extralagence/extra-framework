@@ -61,8 +61,8 @@ class Link extends AbstractField {
 			<?php
 			$this->mb->the_field( $this->get_single_field_name( 'link' ) );
 			$value                    = $this->mb->get_the_value();
-			$content_type             = 'manual';
-			$is_content_type_manual   = true;
+			$content_type             = '';
+			$is_content_type_manual   = false;
 			$is_content_type_content  = false;
 			$is_content_type_taxonomy = false;
 			if ( ! empty( $value['type'] ) ) {

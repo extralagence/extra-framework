@@ -38,7 +38,7 @@ function extraInitShare($wrapper) {
 	});
 
 	var extraFancyboxCustomShareOptions = {
-		margin: 0,
+		margin : 0,
 		padding: 0
 	};
 	if (window.extraFancyboxCustomShareOptions) {
@@ -54,6 +54,4 @@ function extraInitShare($wrapper) {
 		document.body.insertBefore(div, document.body.childNodes[0]);
 		$("html").addClass("extra-custom-share-svg-loaded");
 	});
-
-
-});
+}

@@ -24,10 +24,15 @@ $(document).ready(function() {
 		});
 	});
 
-	$('.extra-social-share').fancybox({
+	var extraFancyboxCustomShareOptions = {
 		margin: 0,
 		padding: 0
-	});
+	};
+	if (window.extraFancyboxCustomShareOptions) {
+		$.extend(extraFancyboxCustomShareOptions, window.extraFancyboxCustomShareOptions);
+	}
+
+	$('.extra-social-share').fancybox(extraFancyboxCustomShareOptions);
 
 	// AJAX SVG SPRITE
 	$.get(extra_custom_share_params.assets_uri + "/img/sprite.svg", function (data) {

@@ -8,7 +8,7 @@ $window.on('extra:fancybox:init', function (event, $parent) {
 	}
 });
 function extraInitFancybox($parent) {
-	var extraFacyboxDefaultOptions = {
+	var extraFancyboxDefaultOptions = {
 		margin : 50,
 		padding: 0,
 		type   : 'image',
@@ -19,7 +19,7 @@ function extraInitFancybox($parent) {
 		}
 	};
 	if (window.extraFancyboxOverrideOptions) {
-		$.extend(extraFacyboxDefaultOptions, window.extraFancyboxOverrideOptions);
+		$.extend(extraFancyboxDefaultOptions, window.extraFancyboxOverrideOptions);
 	}
 	$parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
 		return $(this).attr("target") != "_blank";
@@ -36,5 +36,5 @@ function extraInitFancybox($parent) {
 				$.fancybox.coming.title = '';
 			}
 		});
-	}).fancybox(extraFacyboxDefaultOptions);
+	}).fancybox(extraFancyboxDefaultOptions);
 }

@@ -61,7 +61,7 @@ function extraInitFancybox($parent) {
 	}
 
 	// SETUP FANCYBOX
-	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFacyboxDefaultOptions);
+	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFancyboxDefaultOptions);
 
 	if (duplicates.length) {
 		$(duplicates).each(function () {

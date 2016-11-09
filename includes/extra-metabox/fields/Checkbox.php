@@ -47,6 +47,9 @@ class Checkbox extends AbstractField {
 			<?php if ($this->label_right) : ?>
 				<label class="extra-label-checkbox extra-label-right-checkbox" for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<?php endif; ?>
+			<?php if ($this->description != null) : ?>
+				<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+			<?php endif; ?>
 		</div>
 		<?php
 	}

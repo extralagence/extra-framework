@@ -169,13 +169,16 @@ $window.on("load", function () {
 
 	$window.on('extra:responsiveImage:init', function (event, $container) {
 		$container.each(function () {
-			var $elem = $(this);
-			if ($elem.hasClass('responsiveImagePlaceholder')) {
-				initResponsiveImage($elem.data("size", ""));
+			var $elem = $(this),
+				$responsiveImage = $elem;
+			if ($responsiveImage.hasClass('responsiveImagePlaceholder')) {
+				initResponsiveImage($responsiveImage.data("size", ""));
 			} else {
-				$elem = $elem.find('.responsiveImagePlaceholder');
-				if ($elem.length > 0) {
-					initResponsiveImage($elem.data("size", ""));
+				$responsiveImage = $elem.find('.responsiveImagePlaceholder');
+				if ($responsiveImage.length > 0) {
+					initResponsiveImage($responsiveImage.data("size", ""));
+				} else {
+					$elem.trigger("extra:responsiveImage:error");
 				}
 			}
 			totalResponsivesImages++;

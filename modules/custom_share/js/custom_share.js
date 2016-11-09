@@ -37,8 +37,21 @@ function extraInitShare($wrapper) {
 		});
 	});
 
-	$wrapper.find('.extra-social-share').fancybox({
+	var extraFancyboxCustomShareOptions = {
 		margin : 0,
 		padding: 0
+	};
+	if (window.extraFancyboxCustomShareOptions) {
+		$.extend(extraFancyboxCustomShareOptions, window.extraFancyboxCustomShareOptions);
+	}
+
+	$wrapper.find('.extra-social-share').fancybox(extraFancyboxCustomShareOptions);
+
+	// AJAX SVG SPRITE
+	$.get(extra_custom_share_params.assets_uri + "/img/sprite.svg", function (data) {
+		var div = document.createElement("div");
+		div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
+		document.body.insertBefore(div, document.body.childNodes[0]);
+		$("html").addClass("extra-custom-share-svg-loaded");
 	});
 }

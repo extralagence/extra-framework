@@ -87,7 +87,7 @@ function extra_custom_share( $id = 0 ) {
 					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
 					</div>
 				</div>';
-				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup );
+				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup, $extra_options['contact-form-select'] );
 				$extra_contact_form_printed = true;
 				$return .= $email_popup;
 			}

@@ -19,10 +19,8 @@ $window.on('extra:fancybox:init', function (event, $parent) {
 	}
 });
 function extraInitFancybox($parent) {
-
-
 	// DEFAULT OPTIONS
-	var extraFacyboxDefaultOptions = {
+	var extraFancyboxDefaultOptions = {
 			margin : 50,
 			padding: 0,
 			// type   : 'image',
@@ -59,11 +57,11 @@ function extraInitFancybox($parent) {
 
 	// OPTIONS EXTENDER
 	if (window.extraFancyboxOverrideOptions) {
-		$.extend(extraFacyboxDefaultOptions, window.extraFancyboxOverrideOptions);
+		$.extend(extraFancyboxDefaultOptions, window.extraFancyboxOverrideOptions);
 	}
 
 	// SETUP FANCYBOX
-	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFacyboxDefaultOptions);
+	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFancyboxDefaultOptions);
 
 	if (duplicates.length) {
 		$(duplicates).each(function () {

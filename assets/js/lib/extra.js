@@ -67,21 +67,21 @@ $(document).ready(function () {
 	 * MOBILE OR NOT MOBILE
 	 *
 	 *********************/
-	/*$window.on('extra:resize', function () {
+	$window.on('extra:resize', function () {
 		// IF STATE CHANGE, UPDATE
 		var _tmpExtraResponsiveSizesTests = $.extend({}, extraResponsiveSizesTests);
 		$.each(extraResponsiveSizes, function (index, value) {
 			_tmpExtraResponsiveSizesTests[index] = matchMedia(value).matches;
 		});
-		if (extraResponsiveSizes['desktop'] !== undefined) {
+		/*if (extraResponsiveSizes['desktop'] !== undefined) {
 			small = !_tmpExtraResponsiveSizesTests['desktop'];
-		}
+		}*/
 		if (JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
 			extraResponsiveSizesTests = $.extend({}, _tmpExtraResponsiveSizesTests);
 			// $(document).trigger("extra.responsive-resize");
 			$(document).trigger("extra:resize:responsive");
 		}
-	}).trigger('extra:resize');*/
+	}).trigger('extra:resize');
 	/*********************
 	 *
 	 * EXTRA RESIZE

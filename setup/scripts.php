@@ -23,6 +23,9 @@ function extra_template_enqueue_scripts() {
 	wp_localize_script('extra', 'extra_responsive_small_width_limit', array(
 		'value' => $small_size
 	));
+	// All sizes
+	$sizes = apply_filters('extra_responsive_sizes', array());
+	wp_localize_script('extra', 'extraResponsiveSizes', $sizes);
 }
 
 add_action('wp_enqueue_scripts', 'extra_template_enqueue_scripts');

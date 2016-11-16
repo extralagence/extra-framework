@@ -471,9 +471,16 @@ function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions 
 
 		// Get full size
 		$image_full_src = wp_get_attachment_image_src( $attachment_id, 'full' );
-		if (!$image_full_src) {
+
+		if ( ! $image_full_src ) {
 			return $dimensions;
 		}
+
+		$filetype = wp_check_filetype( $image_full_src[0] );
+		if ( ! empty( $filetype ) && $filetype['ext'] === 'svg' ) {
+			return $dimensions;
+		}
+
 		$full_dimension = array( $image_full_src[1], $image_full_src[2] );
 
 		// Real dimensions returned

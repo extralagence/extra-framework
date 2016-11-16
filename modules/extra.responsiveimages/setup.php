@@ -281,7 +281,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 }
 
 function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
-	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading );
+	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading, $custom_loading );
 }
 
 /**

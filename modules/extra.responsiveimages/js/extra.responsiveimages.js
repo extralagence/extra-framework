@@ -135,9 +135,7 @@ $window.on("load", function () {
 					}
 
 					setTimeout(function () {
-
 						$container.find('.placeholder-canvas').remove();
-						$container.addClass("extra-responsive-image-loaded");
 					}, 500);
 
 					currentResponsiveImagesLoaded++;
@@ -148,8 +146,7 @@ $window.on("load", function () {
 						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
 
-
-					// $container.addClass("extra-responsive-image-loaded");
+					$container.addClass("extra-responsive-image-loaded");
 
 				}).attr({
 				alt: altTxt,

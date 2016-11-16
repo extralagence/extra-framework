@@ -205,6 +205,13 @@ function extra_share_contact_wpcf7_form_tag( $tags ) {
 		$tags['values'] = array( __( "Bonjour,", 'extra' ) . "\n\n" . __( "Je vous invite à aller voir ", 'extra' ) . ( $post_title ) . "\n" . get_permalink( $post_id ) . "\n\n" . __( "Bien cordialement.", 'extra' ) );
 	}
 
+	if ( $tags['name'] == 'sender' ) {
+		if (is_user_logged_in()) {
+			$logged_user = wp_get_current_user();
+			$tags['values'] = array($logged_user->user_email);
+		}
+	}
+
 	return $tags;
 }
 

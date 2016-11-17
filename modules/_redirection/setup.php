@@ -30,19 +30,18 @@ function extra_redirect() {
 	if ( is_page_template( 'template-redirect.php' ) ) {
 		global $post, $redirection_metabox;
 		the_post();
-		$meta = $redirection_metabox->the_meta();
-		$data = $redirection_metabox->meta;
+		$meta = $redirection_metabox->the_meta($post->ID);
 
 		$redirection_type = 'auto';
-		if ( isset( $data['redirection_type'] ) && !empty( $data['redirection_type'] ) ) {
-			$redirection_type  = $data['redirection_type'];
-			$redirection_value = $data['redirection_content'];
+		if ( isset( $meta['redirection_type'] ) && !empty( $meta['redirection_type'] ) ) {
+			$redirection_type  = $meta['redirection_type'];
+			$redirection_value = isset($meta['redirection_content']) ? $meta['redirection_content'] : '';
 		}
 
 		switch ( $redirection_type ) {
 			case 'auto' :
 
-				$pagekids = get_pages( "child_of=" . $post->ID . "&sort_column=menu_order" );
+				$pagekids = get_pages( array('child_of' => $post->ID, 'sort_column' => 'menu_order', 'post_status'      => 'publish,private') );
 				if ( !empty( $pagekids ) ) {
 					$firstchild = $pagekids[0];
 					wp_redirect( get_permalink( $firstchild->ID ) );
@@ -71,7 +70,7 @@ function extra_redirect() {
 
 			case 'post-type' :
 
-				$redirection_value = $data['redirection_post-type'];
+				$redirection_value = $meta['redirection_post-type'];
 				if ( !empty( $redirection_value ) ) {
 
 					$targets = get_posts( array(
@@ -79,6 +78,7 @@ function extra_redirect() {
 						'numberposts'      => 1,
 						'orderby'          => 'menu_order',
 						'order'            => 'ASC',
+						'post_status'      => 'publish,private',
 						'suppress_filters' => 0
 					) );
 

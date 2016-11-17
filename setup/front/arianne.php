@@ -161,8 +161,8 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 		}
 
 		// CUSTOM POST TYPE
-		else if (!is_single() && !is_page() && get_post_type() != 'post' && !is_404()) {
-			$post_type = get_post_type_object(get_post_type());
+		else if (!is_single($current_post->ID) && !is_page($current_post->ID) && get_post_type($current_post->ID) != 'post' && !is_404()) {
+			$post_type = get_post_type_object(get_post_type($current_post->ID));
 			$current_item['name'] = $post_type->labels->singular_name;
 		}
 

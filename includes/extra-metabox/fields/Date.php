@@ -46,7 +46,7 @@ class Date extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<div class="<?php echo $this->css_class; ?> extra-date-container <?php echo ($this->required) ? 'required' : '' ?>">
+		<div class="<?php echo $this->css_class; ?> extra-date-wrapper extra-date-container <?php echo ($this->required) ? 'required' : '' ?>">
 
 			<?php $this->mb->the_field($this->get_single_field_name('date')); ?>
 

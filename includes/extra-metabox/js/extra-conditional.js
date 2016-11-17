@@ -12,11 +12,20 @@ jQuery(function ($) {
 			$containerTrue = $container.find('.extra-conditional-field-true').first();
 
 		if ($checkbox.is(':checked')) {
-			$containerFalse.hide();
-			$containerTrue.show();
+			$containerFalse.slideUp(300, function() {
+				$container.closest('.ui-accordion').accordion('refresh');
+			});
+			$containerTrue.slideDown(300, function() {
+				$container.closest('.ui-accordion').accordion('refresh');
+			});
 		} else {
-			$containerFalse.show();
-			$containerTrue.hide();
+			$containerFalse.slideDown(300, function() {
+				$container.closest('.ui-accordion').accordion('refresh');
+			});
+			$containerTrue.slideUp(300, function() {
+				$container.closest('.ui-accordion').accordion('refresh');
+			});
 		}
+		$container.closest('.ui-accordion').accordion('refresh');
 	});
 });

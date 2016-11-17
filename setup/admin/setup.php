@@ -399,5 +399,5 @@ function rocket_for_administrator( $capability ) {
 	return $capability;
 }
 
-add_filter( 'option_page_capability_wp_rocket', 'rocket_for_editor' );
-add_filter( 'rocket_capacity', 'rocket_for_editor' );
+add_filter( 'option_page_capability_wp_rocket', 'rocket_for_administrator' );
+add_filter( 'rocket_capacity', 'rocket_for_administrator' );

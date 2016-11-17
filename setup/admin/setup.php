@@ -359,7 +359,7 @@ add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );
 //
 //
 ///////////////////////////////////////
-function rocket_for_editor( $capability ) {
+function rocket_for_administrator( $capability ) {
 
 	if ( !current_user_can( 'administrator' ) ) {
 		return false;

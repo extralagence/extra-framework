@@ -82,7 +82,7 @@ function extra_custom_share( $id = 0 ) {
 
 			if ( !isset( $extra_contact_form_printed ) ) {
 				$email_popup                = '<div class="js-custom-share-hidden">
-					<div class="extra-social-share-wrapper" id="extra-social-share-wrapper">
+					<div class="extra-form extra-social-share-wrapper" id="extra-social-share-1-wrapper">
 					<h3>' . __( 'Partager par email', 'extra' ) . '</h3>
 					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
 					</div>

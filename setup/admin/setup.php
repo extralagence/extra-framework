@@ -8,10 +8,11 @@
  *
  *
  *********************/
-function extra_url_login(){
+function extra_url_login() {
 	return "http://www.extralagence.com/";
 }
-add_filter('login_headerurl', 'extra_url_login');
+
+add_filter( 'login_headerurl', 'extra_url_login' );
 /**********************
  *
  *
@@ -21,11 +22,18 @@ add_filter('login_headerurl', 'extra_url_login');
  *
  *
  *********************/
-function extra_css_admin() {
-	wp_enqueue_style( 'extra-admin-css', EXTRA_COMMON_MODULE_URI . '/admin/css/style.less' );
+if ( !function_exists( 'extra_css_admin' ) ) {
+	function extra_css_admin() {
+		wp_enqueue_style( 'extra-admin-css', EXTRA_COMMON_MODULE_URI . '/admin/css/style.less' );
+	}
 }
-add_action('admin_enqueue_scripts', 'extra_css_admin');
-add_action('login_head', 'extra_css_admin');
+add_action( 'admin_enqueue_scripts', 'extra_css_admin' );
+if ( !function_exists( 'extra_css_login' ) ) {
+	function extra_css_login() {
+		wp_enqueue_style( 'extra-login-css', EXTRA_COMMON_MODULE_URI . '/admin/css/login.less' );
+	}
+}
+add_action( 'login_init', 'extra_css_login' );
 /**********************
  *
  *
@@ -37,36 +45,38 @@ add_action('login_head', 'extra_css_admin');
  *********************/
 // SCRIPTS
 function extra_admin_bar_scripts() {
-	if(is_admin_bar_showing()) {
+	if ( is_admin_bar_showing() ) {
 		wp_enqueue_style( 'extra-custom-admin-bar-css', EXTRA_COMMON_MODULE_URI . '/admin/css/adminbar.less' );
 	}
 }
-add_action('admin_enqueue_scripts', 'extra_admin_bar_scripts');
-add_action('wp_enqueue_scripts', 'extra_admin_bar_scripts');
-add_action('login_enqueue_scripts', 'extra_admin_bar_scripts');
+
+add_action( 'admin_enqueue_scripts', 'extra_admin_bar_scripts' );
+add_action( 'wp_enqueue_scripts', 'extra_admin_bar_scripts' );
+add_action( 'login_enqueue_scripts', 'extra_admin_bar_scripts' );
 // ADMIN BAR
-function extra_admin_bar( $wp_admin_bar ){
-	$wp_admin_bar->remove_menu('wp-logo');
-	$wp_admin_bar->add_menu(array(
-		'id'     => 'extra',
+function extra_admin_bar( $wp_admin_bar ) {
+	$wp_admin_bar->remove_menu( 'wp-logo' );
+	$wp_admin_bar->add_menu( array(
+		'id'    => 'extra',
 		'title' => '<span class="extra-icon extra-icon-e"></span>',
 		'href'  => 'http://www.extralagence.com',
 		'meta'  => array(
-			'title' => __("À propos d'Extra l'agence"),
+			'title'  => __( "À propos d'Extra l'agence" ),
 			'target' => '_blank',
 		)
-	));
+	) );
 	$wp_admin_bar->add_menu( array(
 		'parent' => 'extra',
 		'id'     => 'extra-url',
-		'title'  => __("Extra l'agence", 'extra'),
-		'href'  => 'http://www.extralagence.com',
-		'meta'  => array(
-			'title' => __("À propos d'Extra l'agence"),
+		'title'  => __( "Extra l'agence", 'extra' ),
+		'href'   => 'http://www.extralagence.com',
+		'meta'   => array(
+			'title'  => __( "À propos d'Extra l'agence" ),
 			'target' => '_blank',
 		)
 	) );
 }
+
 add_action( 'admin_bar_menu', 'extra_admin_bar', 20 );
 /**********************
  *
@@ -77,10 +87,11 @@ add_action( 'admin_bar_menu', 'extra_admin_bar', 20 );
  *
  *
  *********************/
-function extra_footer_admin () {
-	printf(__('&copy; %s - <a href="http://www.extralagence.com" target="_blank">Extra l\'agence</a> - Propulsé par WordPress', 'extra-admin'), date("Y"));
+function extra_footer_admin() {
+	printf( __( '&copy; %s - <a href="http://www.extralagence.com" target="_blank">Extra l\'agence</a> - Propulsé par WordPress', 'extra-admin' ), date( "Y" ) );
 }
-add_filter('admin_footer_text', 'extra_footer_admin');
+
+add_filter( 'admin_footer_text', 'extra_footer_admin' );
 /**********************
  *
  *
@@ -90,45 +101,46 @@ add_filter('admin_footer_text', 'extra_footer_admin');
  *
  *
  *********************/
-function extra_tinymce($init) {
+function extra_tinymce( $init ) {
 
-    $toolbar1 = apply_filters('extra_tinymce_toolbar1', 'formatselect,styleselect,alignleft,aligncenter,alignright,bold,italic,link,unlink,separator,outdent,indent,blockquote,quote,hr,extra_cleaner,separator,charmap,separator,bullist,numlist,removeformat');
-    $toolbar2 = apply_filters('extra_tinymce_toolbar2', '');
-    $toolbar3 = apply_filters('extra_tinymce_toolbar3', '');
-    $toolbar4 = apply_filters('extra_tinymce_toolbar4', '');
+	$toolbar1 = apply_filters( 'extra_tinymce_toolbar1', 'formatselect,styleselect,alignleft,aligncenter,alignright,bold,italic,link,unlink,separator,outdent,indent,blockquote,quote,hr,extra_cleaner,separator,charmap,separator,bullist,numlist,removeformat' );
+	$toolbar2 = apply_filters( 'extra_tinymce_toolbar2', '' );
+	$toolbar3 = apply_filters( 'extra_tinymce_toolbar3', '' );
+	$toolbar4 = apply_filters( 'extra_tinymce_toolbar4', '' );
 
-    $init['theme_advanced_buttons1'] = $init['toolbar1'] = $toolbar1;
-    $init['theme_advanced_buttons2'] = $init['toolbar2'] = $toolbar2;
-    $init['theme_advanced_buttons3'] = $init['toolbar3'] = $toolbar3;
-    $init['theme_advanced_buttons4'] = $init['toolbar4'] = $toolbar4;
+	$init['theme_advanced_buttons1'] = $init['toolbar1'] = $toolbar1;
+	$init['theme_advanced_buttons2'] = $init['toolbar2'] = $toolbar2;
+	$init['theme_advanced_buttons3'] = $init['toolbar3'] = $toolbar3;
+	$init['theme_advanced_buttons4'] = $init['toolbar4'] = $toolbar4;
 
-    $init['theme_advanced_blockformats'] = 'p,h2,h3,h4';
-    $init['block_formats'] = 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6';
-    $init['theme_advanced_styles'] = "";
+	$init['theme_advanced_blockformats'] = 'p,h2,h3,h4';
+	$init['block_formats']               = 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6';
+	$init['theme_advanced_styles']       = "";
 
-    //$init['resize'] = false;
-    unset($init['preview_styles']);
+	//$init['resize'] = false;
+	unset( $init['preview_styles'] );
 
 	$style_formats = array();
-	if(isset($init['style_formats'])) {
-    	$style_formats = json_decode($init['style_formats']);
+	if ( isset( $init['style_formats'] ) ) {
+		$style_formats = json_decode( $init['style_formats'] );
 	}
-    $style_formats = array_merge($style_formats, array());
-    $init['style_formats'] = json_encode( $style_formats );
+	$style_formats         = array_merge( $style_formats, array() );
+	$init['style_formats'] = json_encode( $style_formats );
 
-    global $typenow;
+	global $typenow;
 	global $post;
-    if($typenow == 'page' || (isset($_REQUEST['post_id']) && get_post_type($_REQUEST['post_id']) == 'page')) {
-        $init['body_class'] .= ' page-'.$post->post_name;
-        $page_template = substr(basename(get_page_template_slug($post->id)), 0, -4);
-        if(!empty($page_template)) {
-            $init['body_class'] .= ' ' . $page_template;
-        }
+	if ( $typenow == 'page' || ( isset( $_REQUEST['post_id'] ) && get_post_type( $_REQUEST['post_id'] ) == 'page' ) ) {
+		$init['body_class'] .= ' page-' . $post->post_name;
+		$page_template = substr( basename( get_page_template_slug( $post->id ) ), 0, - 4 );
+		if ( !empty( $page_template ) ) {
+			$init['body_class'] .= ' ' . $page_template;
+		}
 	}
 
 	return $init;
 }
-add_filter('tiny_mce_before_init', 'extra_tinymce', 5);
+
+add_filter( 'tiny_mce_before_init', 'extra_tinymce', 5 );
 /**********************
  *
  *
@@ -140,17 +152,21 @@ add_filter('tiny_mce_before_init', 'extra_tinymce', 5);
  *********************/
 // INSERT BUTTON
 function extra_add_insert_plugin() {
-	if(!current_user_can('edit_posts') && !current_user_can('edit_pages'))
+	if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
 		return;
-	if(get_user_option('rich_editing') == 'true') {
-		add_filter("mce_external_plugins", "extra_add_tinymce_button");
+	}
+	if ( get_user_option( 'rich_editing' ) == 'true' ) {
+		add_filter( "mce_external_plugins", "extra_add_tinymce_button" );
 	}
 }
-function extra_add_tinymce_button($plugin_array) {
-   $plugin_array['extra'] = EXTRA_COMMON_MODULE_URI.'/admin/js/extra-editor-plugin.js';
-   return $plugin_array;
+
+function extra_add_tinymce_button( $plugin_array ) {
+	$plugin_array['extra'] = EXTRA_COMMON_MODULE_URI . '/admin/js/extra-editor-plugin.js';
+
+	return $plugin_array;
 }
-add_action('init', 'extra_add_insert_plugin');
+
+add_action( 'init', 'extra_add_insert_plugin' );
 /**********************
  *
  *
@@ -160,14 +176,16 @@ add_action('init', 'extra_add_insert_plugin');
  *
  *
  *********************/
-function addUploadMimes($mimes) {
-    $mimes = array_merge($mimes, array(
-	    'swf|kml|kmz|gpx' => 'application/octet-stream',
-        'xml' => 'text/xml'
-    ));
-    return $mimes;
+function addUploadMimes( $mimes ) {
+	$mimes = array_merge( $mimes, array(
+		'swf|kml|kmz|gpx' => 'application/octet-stream',
+		'xml'             => 'text/xml'
+	) );
+
+	return $mimes;
 }
-add_filter('upload_mimes', 'addUploadMimes');
+
+add_filter( 'upload_mimes', 'addUploadMimes' );
 /**********************
  *
  *
@@ -181,12 +199,14 @@ function extra_gettext_filter( $translated, $original, $domain ) {
 	$strings = array(
 		'Déplacer dans la Corbeille' => 'Mettre à la corbeille'
 	);
-	if(isset( $strings[$translated])) {
-		$translations = get_translations_for_domain($domain);
-		$translated = $translations->translate($strings[$translated]);
+	if ( isset( $strings[$translated] ) ) {
+		$translations = get_translations_for_domain( $domain );
+		$translated   = $translations->translate( $strings[$translated] );
 	}
+
 	return $translated;
 }
+
 add_filter( 'gettext', 'extra_gettext_filter', 10, 3 );
 /**********************
  *
@@ -197,11 +217,13 @@ add_filter( 'gettext', 'extra_gettext_filter', 10, 3 );
  *
  *
  *********************/
-function extra_sanitize_file_name ($filename) {
-	$filename = preg_replace('/[^a-zA-Z0-9_\.-]/s', '', $filename);
-	return remove_accents($filename);
+function extra_sanitize_file_name( $filename ) {
+	$filename = preg_replace( '/[^a-zA-Z0-9_\.-]/s', '', $filename );
+
+	return remove_accents( $filename );
 }
-add_filter('sanitize_file_name', 'extra_sanitize_file_name', 10);
+
+add_filter( 'sanitize_file_name', 'extra_sanitize_file_name', 10 );
 /**********************
  *
  *
@@ -212,32 +234,34 @@ add_filter('sanitize_file_name', 'extra_sanitize_file_name', 10);
  *
  *********************/
 function extra_post_labels() {
-	if (apply_filters('extra_rename_post', true)) {
+	if ( apply_filters( 'extra_rename_post', true ) ) {
 		global $wp_post_types;
-		$labels = $wp_post_types['post']->labels;
-		$labels->name = __('Actualités', 'extra');
-		$labels->singular_name = __('Actualité', 'extra');
-		$labels->add_new = __('Nouvelle actualité', 'extra');
-		$labels->add_new_item = __('Nouvelle actualité', 'extra');
-		$labels->edit_item = __('Éditer une actualité', 'extra');
-		$labels->new_item = __('Actualité', 'extra');
-		$labels->view_item = __('Voir l\'actualité', 'extra');
-		$labels->search_items = __('Rechercher une actualité', 'extra');
-		$labels->not_found = __('Aucune actualité trouvée', 'extra');
-		$labels->not_found_in_trash = __('Aucune actualité dans la corbeille', 'extra');
+		$labels                     = $wp_post_types['post']->labels;
+		$labels->name               = __( 'Actualités', 'extra' );
+		$labels->singular_name      = __( 'Actualité', 'extra' );
+		$labels->add_new            = __( 'Nouvelle actualité', 'extra' );
+		$labels->add_new_item       = __( 'Nouvelle actualité', 'extra' );
+		$labels->edit_item          = __( 'Éditer une actualité', 'extra' );
+		$labels->new_item           = __( 'Actualité', 'extra' );
+		$labels->view_item          = __( 'Voir l\'actualité', 'extra' );
+		$labels->search_items       = __( 'Rechercher une actualité', 'extra' );
+		$labels->not_found          = __( 'Aucune actualité trouvée', 'extra' );
+		$labels->not_found_in_trash = __( 'Aucune actualité dans la corbeille', 'extra' );
 	}
 }
+
 add_action( 'init', 'extra_post_labels' );
 function extra_post_menu_labels() {
-	if (apply_filters('extra_rename_post', true)) {
+	if ( apply_filters( 'extra_rename_post', true ) ) {
 		global $menu;
 		global $submenu;
-		$menu[5][0] = __('Actualités', 'extra');
-		$submenu['edit.php'][5][0] = __('Toutes les actualités', 'extra');
-		$submenu['edit.php'][10][0] = __('Nouvelle actualité', 'extra');
+		$menu[5][0]                 = __( 'Actualités', 'extra' );
+		$submenu['edit.php'][5][0]  = __( 'Toutes les actualités', 'extra' );
+		$submenu['edit.php'][10][0] = __( 'Nouvelle actualité', 'extra' );
 		echo '';
 	}
 }
+
 add_action( 'admin_menu', 'extra_post_menu_labels' );
 /**********************
  *
@@ -248,9 +272,11 @@ add_action( 'admin_menu', 'extra_post_menu_labels' );
  *
  *
  *********************/
-add_action( 'init', function() {
-    set_user_setting('editor', 'tinymce');
-});
+add_action( 'init', function () {
+	if ( get_user_setting( 'editor' ) !== 'tinymce' ) {
+		set_user_setting( 'editor', 'tinymce' );
+	}
+} );
 /**********************
  *
  *
@@ -261,10 +287,11 @@ add_action( 'init', function() {
  *
  *********************/
 function extra_hide_update_notices() {
-	if (!current_user_can('update_core')) {
+	if ( !current_user_can( 'update_core' ) ) {
 		remove_action( 'admin_notices', 'update_nag', 3 );
 	}
 }
+
 add_action( 'admin_head', 'extra_hide_update_notices', 1 );
 /**********************
  *
@@ -306,20 +333,22 @@ require_once 'redux-options.php';
  *
  *********************/
 function extra_display_post_states( $post_states, $post ) {
-	if($post->post_type === 'page') {
-		$template = get_post_meta($post->ID, '_wp_page_template', true);
-		if(isset($template) && !empty($template)) {
-			$template_name = array_search($template, get_page_templates($post));
-			if($template_name){
+	if ( $post->post_type === 'page' ) {
+		$template = get_post_meta( $post->ID, '_wp_page_template', true );
+		if ( isset( $template ) && !empty( $template ) ) {
+			$template_name = array_search( $template, get_page_templates( $post ) );
+			if ( $template_name ) {
 				$post_states[] = $template_name;
 			}/* else {
 				$post_states[] = __("Page de contenu type", 'extra');
 			}*/
 		}
 	}
+
 	return $post_states;
 }
-add_filter( 'display_post_states', 'extra_display_post_states', 10, 2);
+
+add_filter( 'display_post_states', 'extra_display_post_states', 10, 2 );
 /**********************
  *
  *
@@ -330,9 +359,10 @@ add_filter( 'display_post_states', 'extra_display_post_states', 10, 2);
  *
  *********************/
 function extra_edit_posts_per_page( $posts_per_page, $post_type ) {
-	return ($posts_per_page !== 20) ? $posts_per_page : 99;
+	return ( $posts_per_page !== 20 ) ? $posts_per_page : 99;
 }
-add_filter( 'edit_posts_per_page', 'extra_edit_posts_per_page', 10, 2);
+
+add_filter( 'edit_posts_per_page', 'extra_edit_posts_per_page', 10, 2 );
 
 include_once 'typekit.editor.php';
 ///////////////////////////////////////
@@ -351,6 +381,7 @@ function extra_redux_wpml_checkup( WP_Screen $screen ) {
 		wp_die( $message );
 	}
 }
+
 add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );
 ///////////////////////////////////////
 //
@@ -367,5 +398,6 @@ function rocket_for_administrator( $capability ) {
 
 	return $capability;
 }
-add_filter( 'option_page_capability_wp_rocket', 'rocket_for_administrator' );
-add_filter( 'rocket_capacity', 'rocket_for_administrator' );
+
+add_filter( 'option_page_capability_wp_rocket', 'rocket_for_editor' );
+add_filter( 'rocket_capacity', 'rocket_for_editor' );

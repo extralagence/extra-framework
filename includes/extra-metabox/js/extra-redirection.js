@@ -23,7 +23,7 @@ jQuery(function ($) {
 				type: 'get',
 				dataType: 'json',
 				data: {
-					'action': 'extra-redirection',
+					'action': 'extra_redirection',
 					'term': req.term
 				},
 				async: true,

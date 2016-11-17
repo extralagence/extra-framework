@@ -59,7 +59,7 @@ jQuery(document).ready(function($){
 
 				if(!$item.data("extra-accordion-item-processed") || $item.data("extra-accordion-item-processed") != "processed") {
 					if (titleTextField !== '') {
-						var $inputText = $item.find('.extra-text-input[data-name="'+titleTextField+'"]').first();
+						var $inputText = $item.find('.extra-text-input[data-extra-field-name="'+titleTextField+'"]').first();
 
 						$inputText.on('keyup', function () {
 							title.text(title.data('default-text') + (($inputText.val() != '') ? ' - ' + $inputText.val() : ' ' + (i + 1)) );

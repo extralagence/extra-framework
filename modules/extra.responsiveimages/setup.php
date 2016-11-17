@@ -36,8 +36,8 @@ function extra_responsive_images__default_responsive_sizes( $sizes ) {
 		if ( $max_width !== null ) {
 			$current = ' and (max-width: ' . $max_width . 'px)';
 		}
-		$sizes[$rule_name] = 'only screen' . $previous . $current;
-		$previous_max      = $max_width;
+		$sizes[ $rule_name ] = 'only screen' . $previous . $current;
+		$previous_max        = $max_width;
 	}
 
 	$sizes = array_reverse( $sizes );
@@ -59,17 +59,24 @@ add_filter( 'extra_responsive_sizes', 'extra_responsive_images__default_responsi
  *********************/
 function extra_responsive_images_init() {
 	$extra_enabled_extra_responsive_images = apply_filters( 'extra_enabled_extra_responsive_images', true );
-	if ( !$extra_enabled_extra_responsive_images ) {
+	if ( ! $extra_enabled_extra_responsive_images ) {
 		return;
 	}
 	wp_enqueue_style( 'extra-responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/css/extra.responsiveimages.less', null, false, 'all' );
 
 	wp_enqueue_script( 'extra.jfracs', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/jquery.fracs.js', array( 'jquery' ), null, true );
 	wp_enqueue_script( 'extra.blur', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/blur.js', null, null, true );
-	wp_enqueue_script( 'extra.responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/js/extra.responsiveimages.js', array( 'jquery', 'tweenmax', 'extra', 'extra.blur', 'extra.jfracs', 'extra.slider' ), null, true );
+	wp_enqueue_script( 'extra.responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/js/extra.responsiveimages.js', array(
+		'jquery',
+		'tweenmax',
+		'extra',
+		'extra.blur',
+		'extra.jfracs',
+		'extra.slider'
+	), null, true );
 }
 
-add_action( 'init', 'extra_responsive_images_init' );
+add_action( 'wp_enqueue_scripts', 'extra_responsive_images_init' );
 /**********************
  *
  *
@@ -80,18 +87,15 @@ add_action( 'init', 'extra_responsive_images_init' );
  *
  *********************/
 
-function extra_get_placeholder( $id, $dimensions ) {
-	$first_dimension = reset( $dimensions );
+function extra_get_placeholder( $id, $width, $height ) {
 
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	if ( $use_placeholder ) {
-		$first_width      = !empty( $first_dimension[0] ) ? $first_dimension[0] : 0;
-		$first_height     = !empty( $first_dimension[1] ) ? $first_dimension[1] : 0;
 		$placeholder_size = apply_filters( 'extra_responsive_images_placeholder_size', 30 );
-		if ( $first_width >= $first_height ) {
-			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $first_height / $first_width ) );
+		if ( $width >= $height ) {
+			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $height / $width ) );
 		} else {
-			$placeholder_size = array( round( $placeholder_size * $first_width / $first_height ), $placeholder_size );
+			$placeholder_size = array( round( $placeholder_size * $width / $height ), $placeholder_size );
 		}
 
 		$placeholder_src = wp_get_attachment_image_src( $id, $placeholder_size );
@@ -103,8 +107,8 @@ function extra_get_placeholder( $id, $dimensions ) {
 		$placeholder_src    = array();
 		$placeholder_src[0] = EXTRA_URI . '/assets/img/blank.png';
 	}
-	$placeholder_src[1] = $first_dimension[0];
-	$placeholder_src[2] = $first_dimension[1];
+	$placeholder_src[1] = $width;
+	$placeholder_src[2] = $height;
 
 	return $placeholder_src;
 }
@@ -122,21 +126,21 @@ function extra_get_placeholder( $id, $dimensions ) {
  * @param bool   $lazy_loading   true if loading start only when element is in viewport
  * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
-function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
 // hook it to override available sizes
-	$sizes   = apply_filters( 'extra_responsive_sizes', array() );
+	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
 	$class .= ( $lazy_loading ) ? ' responsiveImageLazy' : '';
 	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
 
 // SRC IS AN ID
-	if ( empty( $id ) || !is_numeric( $id ) ) {
+	if ( empty( $id ) || ! is_numeric( $id ) ) {
 		//throw new Exception( __( "This must be an integer", 'extra' ) );
 		ob_start();
 		?>
 		<img
-			class="placeholder-image<?php echo !empty( $class ) ? ' ' . $class : ''; ?>"
+			class="placeholder-image<?php echo ! empty( $class ) ? ' ' . $class : ''; ?>"
 			src="<?php echo EXTRA_URI; ?>/assets/img/blank.png">
 		<?php
 		$return = ob_get_contents();
@@ -154,38 +158,11 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 				$alt = reset( $alt );
 			}
 		}
+		$alt = str_replace( '"', '', $alt );
 	}
 
-
-	if ( is_array( $dimensions ) ) {
-		$image_full_src = null;
-
-		$real_dimensions = array();
-		foreach ( $dimensions as $dimension_name => $dimension ) {
-// IF ONE DIMENSION IS NULL, CALCULATE IT FROM FULL DIMENSION RATIO
-			if ( $dimension[0] === null && $dimension[1] !== null ) {
-				if ( $image_full_src == null ) {
-					$image_full_src = wp_get_attachment_image_src( $id, 'full' );
-				}
-				if ( !empty( $image_full_src ) ) {
-					$dimension[0] = min( floor( $dimension[1] * $image_full_src[1] / $image_full_src[2] ), $image_full_src[1] );
-				}
-			} else {
-				if ( $dimension[1] === null && $dimension[0] !== null ) {
-					if ( $image_full_src == null ) {
-						$image_full_src = wp_get_attachment_image_src( $id, 'full' );
-					}
-					if ( !empty( $image_full_src ) ) {
-						$dimension[1] = min( floor( $dimension[0] * $image_full_src[2] / $image_full_src[1] ), $image_full_src[2] );
-					}
-				}
-			}
-			$real_dimensions[$dimension_name] = $dimension;
-		}
-		$dimensions = $real_dimensions;
-
-
-	}
+	// ADJUST DIMENSIONS
+	$dimensions = extra_responsive_image__adjust_dimensions( $id, $dimensions );
 
 	// START RENDERING
 	ob_start();
@@ -195,10 +172,10 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	 */
 	?>
 
-	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( !empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
+	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
 	<?php if ( $img_itemprop ) :
-		$dimension = reset( $dimensions );
-		$src = wp_get_attachment_image_src( $id, $dimension );
+		$dimension = is_array( $dimensions ) ? reset( $dimensions ) : $dimensions;
+		$src    = wp_get_attachment_image_src( $id, $dimension );
 		?>
 		<meta itemprop="url" content="<?php echo $src[0]; ?>">
 		<meta itemprop="width" content="<?php echo $src[1]; ?>">
@@ -208,8 +185,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		data-alt="<?php echo $alt; ?>"
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$dimension = $dimensions[$size];
-			$src       = wp_get_attachment_image_src( $id, $dimension );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0];
 			?>"
 		<?php endforeach; ?>>
@@ -219,22 +195,24 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		$src       = wp_get_attachment_image_src( $id, $dimension );
 		echo $src[0];
 		?>"
-			 width="<?php echo $src[1]; ?>"
-			 height="<?php echo $src[2]; ?>">
+		     width="<?php echo $src[1]; ?>"
+		     height="<?php echo $src[2]; ?>">
 	</noscript>
 	<?php
-	$placeholder_src = extra_get_placeholder( $id, $dimensions );
+	$placeholder_src = extra_get_placeholder( $id, $src[1], $src[2] );
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	?>
 	<img class="placeholder-image"
-		 src="<?php echo $placeholder_src[0]; ?>"
-		 alt=""
-		 width="<?php echo ( !empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
-		 height="<?php echo ( !empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>" />
+	     src="<?php echo $placeholder_src[0]; ?>"
+	     alt=""
+	     width="<?php echo ( ! empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
+	     height="<?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
+	     style="height: <?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
+	/>
 	<?php if ( $use_placeholder ) : ?>
 		<canvas class="placeholder-canvas"></canvas>
 	<?php endif; ?>
-	<?php if ( !empty( $caption ) ) : ?>
+	<?php if ( ! empty( $caption ) ) : ?>
 		<figcaption class="wp-caption-text">
 			<?php echo $caption; ?>
 		</figcaption>
@@ -248,7 +226,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	return $return;
 }
 
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption, $tag, $lazy_loading, $custom_loading );
 }
 
@@ -272,20 +250,24 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
 
 	// SRC IS AN ID
-	if ( !is_numeric( $id ) ) {
+	if ( ! is_numeric( $id ) ) {
 		throw new Exception( __( "This must be an integer", 'extra' ) );
 	}
+
+	// ADJUST DIMENSIONS
+	$dimensions = extra_responsive_image__adjust_dimensions( $id, $dimensions );
+
 	// START RENDERING
 	ob_start();
 
 	?>
 
-	<<?php echo $tag; ?> class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?>"
+	<<?php echo $tag; ?> class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>"
 	style="background-image: url('<?php echo EXTRA_URI . '/assets/img/blank.png'; ?>');">
 	<noscript
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$src = wp_get_attachment_image_src( $id, $dimensions[$size] );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0]; ?>"
 		<?php endforeach; ?>>
 	</noscript>
@@ -299,7 +281,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 }
 
 function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
-	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading );
+	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading, $custom_loading );
 }
 
 /**
@@ -319,24 +301,29 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
 
 	// SRC IS AN ID
-	if ( !is_numeric( $id ) ) {
+	if ( ! is_numeric( $id ) ) {
 		throw new Exception( __( "This must be an integer", 'extra' ) );
 	}
+
+	$dimensions = extra_responsive_image__adjust_dimensions( $id, $dimensions );
+
 	// START RENDERING
 	ob_start();
 	?>
 
-	<div class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( !empty( $class ) ) ? ' ' . $class : ''; ?>">
+	<div
+		class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
 		<svg width="100%" height="100%"
-			 preserveAspectRatio="none"
-			 xmlns="http://www.w3.org/2000/svg"
-			 xmlns:xlink="http://www.w3.org/1999/xlink">
-			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
+		     preserveAspectRatio="none"
+		     xmlns="http://www.w3.org/2000/svg"
+		     xmlns:xlink="http://www.w3.org/1999/xlink">
+			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
+			       xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
 		</svg>
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, $dimensions[$size] );
+				$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 				echo $src[0]; ?>"
 			<?php endforeach; ?>>
 		</noscript>
@@ -363,6 +350,8 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
 ///////////////////////////////////////
 function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
+	$alt = '';
+
 	$img = $matches[4];
 
 	// Extract ID
@@ -383,7 +372,9 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	// Extract Alt
 	$current_matches = array();
 	preg_match( '/alt="(.*?)"/', $img, $current_matches );
-	$alt = !empty($current_matches[1]) ? $current_matches[1] : '';
+	if ( ! empty( $current_matches[1] ) ) {
+		$alt = $current_matches[1];
+	}
 
 	// Extract Class
 	$current_matches = array();
@@ -403,8 +394,8 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 		} else {
 			$current_width = $width;
 		}
-		$current_height               = floor( $height * $current_width / $width );
-		$responsive_sizes[$rule_name] = array( $current_width, $current_height );
+		$current_height                 = floor( $height * $current_width / $width );
+		$responsive_sizes[ $rule_name ] = array( $current_width, $current_height );
 	}
 
 	$responsive_sizes = apply_filters( 'extra_responsive_images_sizes', $responsive_sizes, $width, $height );
@@ -414,15 +405,17 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
 
 	// IF IS WRAP WITH LINK
-	if ( !empty( $matches[1] ) || !empty( $matches[2] ) || !empty( $matches[3] ) ) {
-		$html .= '<a ' . $matches[1] . 'class="';
-		if ( !empty( $align_class ) ) {
+	if ( ! empty( $matches[1] ) || ! empty( $matches[2] ) || ! empty( $matches[3] ) ) {
+		$html .= '<a ' . $matches[1] . 'class="link-image ';
+		if ( ! empty( $align_class ) ) {
 			$html .= 'link-' . $align_class[1] . ' ';
 		}
-		if ( !empty( $size_class ) ) {
+		if ( ! empty( $size_class ) ) {
 			$html .= 'link-' . $size_class[1] . ' ';
 		}
 		$html .= $matches[2] . '"' . $matches[3] . '>';
+
+		$html .= apply_filters( 'extra_responsive_images__the_content_replace__before_link_image', '' );
 	}
 
 	// RESPONSIVE IMAGE
@@ -438,7 +431,8 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	);
 
 	// IF IS WRAP WITH LINK
-	if ( !empty( $matches[1] ) || !empty( $matches[2] ) || !empty( $matches[3] ) ) {
+	if ( ! empty( $matches[1] ) || ! empty( $matches[2] ) || ! empty( $matches[3] ) ) {
+		$html .= apply_filters( 'extra_responsive_images__the_content_replace__after_link_image', '' );
 		$html .= '</a>';
 	}
 
@@ -449,23 +443,11 @@ function extra_responsive_images__the_content_replace_with_span( $matches ) {
 	return extra_responsive_images__the_content_replace( $matches, 'span' );
 }
 
-/*function extra_responsive_images__the_content($content) {
-//	return $content;
-
-	$content = preg_replace_callback(
-		'/<img.*?class=".*?(wp-image-[0-9]+).*?".*?>/',
-		'extra_responsive_images__the_content_replace_with_span',
-		$content);
-
-	return $content;
-}
-add_filter('the_content', 'extra_responsive_images__the_content', 99);*/
-
 function extra_responsive_images__the_content( $content ) {
 //	return $content;
 
 	$content = preg_replace_callback(
-		'/(?:<a(.*?)?(?:class="(.*?)")?(.*?)?>)?(<img.*?class=".*?(?:wp-image).*?".*?>)(?:<\/a>)?/',
+		'/(?><a(.*?)?(?:class="(.*?)")?(.*?)?>)?(<img.*?class=".*?(?:wp-image).*?".*?>)(?><\/a>)?/',
 		'extra_responsive_images__the_content_replace_with_span',
 		$content );
 
@@ -481,3 +463,73 @@ function extra_responsive_images__wp_calculate_image_srcset( $sources ) {
 }
 
 add_filter( 'wp_calculate_image_srcset', 'extra_responsive_images__wp_calculate_image_srcset' );
+
+function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions ) {
+
+	// Assuming we have key values of sizes (desktop, tablet, ...)
+	if ( is_array( $dimensions ) ) {
+
+		// Get full size
+		$image_full_src = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+		if ( ! $image_full_src ) {
+			return $dimensions;
+		}
+
+		$filetype = wp_check_filetype( $image_full_src[0] );
+		if ( ! empty( $filetype ) && $filetype['ext'] === 'svg' ) {
+			return $dimensions;
+		}
+
+		$full_dimension = array( $image_full_src[1], $image_full_src[2] );
+
+		// Real dimensions returned
+		$real_dimensions = array();
+
+		// Loop thgrough screen dimensions
+		foreach ( $dimensions as $dimension_name => $dimension ) {
+
+			// Dimensions is array of int [width, height]
+			if ( is_array( $dimension ) ) {
+
+				// We need a width
+				if ( empty( $dimension[0] ) ) {
+					wp_die( "Image Responsive error" );
+				}
+
+				// If desired width > max width available
+				if ( $dimension[0] > $full_dimension[0] ) {
+
+					// We have height, adjust it
+					if ( ! empty( $dimension[1] ) ) {
+						$dimension[1] = ( $full_dimension[0] * $dimension[1] ) / $dimension[0];
+					}
+
+					// Set width
+					$dimension[0] = $full_dimension[0];
+				}
+
+				// If desired height > max height available
+				if ( ! empty( $dimension[1] ) && $dimension[1] > $full_dimension[1] ) {
+
+					// Adjust width
+					$dimension[0] = ( $full_dimension[1] * $dimension[0] ) / $dimension[1];
+
+					// Set height
+					$dimension[1] = $full_dimension[1];
+				}
+
+
+				if ( empty( $dimension[1] ) ) {
+					$dimension[1] = min( floor( ( $dimension[0] * $full_dimension[1] ) / $full_dimension[0] ), $full_dimension[1] );
+				}
+
+				$real_dimensions[ $dimension_name ] = $dimension;
+			}
+		}
+
+		$dimensions = $real_dimensions;
+	}
+
+	return $dimensions;
+}

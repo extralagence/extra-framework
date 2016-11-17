@@ -5,6 +5,8 @@
 jQuery(function ($) {
 	'use strict';
 
+	var $window = $(window);
+
 	$(document).on('change', '.extra-conditional-input', function () {
 		var $checkbox = $(this),
 			$container = $checkbox.closest('.extra-conditional-container'),
@@ -26,6 +28,7 @@ jQuery(function ($) {
 				$container.closest('.ui-accordion').accordion('refresh');
 			});
 		}
-		$container.closest('.ui-accordion').accordion('refresh');
-	});
+		$window.trigger('extra:admin:tabs:refresh');
+		$window.trigger('extra:admin:accordion:refresh');
+	}).change();
 });

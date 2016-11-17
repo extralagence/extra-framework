@@ -33,7 +33,11 @@ class Link extends AbstractField {
 		wp_enqueue_style( 'extra-link-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/css/extra-link.less' );
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'extra-accent-fold-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-accent-fold.js', array( 'jquery' ) );
-		wp_enqueue_script( 'extra-link-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-link.js', array( 'jquery', 'jquery-ui-autocomplete', 'extra-accent-fold-metabox' ) );
+		wp_enqueue_script( 'extra-link-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-link.js', array(
+			'jquery',
+			'jquery-ui-autocomplete',
+			'extra-accent-fold-metabox'
+		) );
 
 		wp_localize_script( 'extra-link-metabox', 'ajax', array( 'url' => admin_url( 'admin-ajax.php' ) ) );
 	}
@@ -54,91 +58,116 @@ class Link extends AbstractField {
 				</h3>
 			<?php endif; ?>
 
+			<?php
+			$this->mb->the_field( $this->get_single_field_name( 'link' ) );
+			$value                    = $this->mb->get_the_value();
+			$content_type             = '';
+			$is_content_type_manual   = false;
+			$is_content_type_content  = false;
+			$is_content_type_taxonomy = false;
+			if ( ! empty( $value['type'] ) ) {
+				$content_type             = $value['type'];
+				$is_content_type_manual   = $content_type == 'manual';
+				$is_content_type_content  = $content_type == 'content';
+				$is_content_type_taxonomy = $content_type == 'taxonomy';
+			}
+			$url             = ! empty( $value['url'] ) ? $value['url'] : '';
+			$content_search  = ! empty( $value['content_search'] ) ? $value['content_search'] : '';
+			$post_id         = ! empty( $value['post_id'] ) ? $value['post_id'] : '';
+			$taxonomy_search = ! empty( $value['taxonomy_search'] ) ? $value['taxonomy_search'] : '';
+			$taxonomy        = ! empty( $value['taxonomy'] ) ? $value['taxonomy'] : '';
+			$term_slug       = ! empty( $value['term_slug'] ) ? $value['term_slug'] : '';
+			$title           = ! empty( $value['title'] ) ? $value['title'] : '';
+			$target          = ! empty( $value['target'] ) ? $value['target'] : '';
+			?>
+
 
 
 			<?php if ( $this->label != null ) : ?>
 				<label><?php echo $this->label; ?></label>
 			<?php endif; ?>
 
+			<!--
 
+			MANUAL TYPE
+
+			-->
 			<div class="extra-link-manual extra-link-wrapper">
-				<?php
-				$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
-				$this->mb->is_value( 'content' );
-				?>
 				<div class="extra-link-checkbox-wrapper">
-					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_manual" type="radio" name="<?php $this->mb->the_name(); ?>" value="manual" <?php echo ( $this->mb->is_selected( 'manual' ) ) ? ' checked="checked"' : ''; ?>>
-					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e( "Adresse web", "extra-admin" ); ?></label>
+					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_type_manual" type="radio" name="<?php $this->mb->the_name(); ?>[type]" value="manual" <?php echo $is_content_type_manual ? ' checked="checked"' : ''; ?>>
+					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_type_manual"><?php _e( "Adresse web", "extra-admin" ); ?></label>
 				</div>
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "url" ) ); ?>
-				<input class="extra-link-url" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>"<?php echo ( $this->mb->is_selected( 'manual' ) ) ? ' checked="checked"' : ''; ?>/>
+				<input class="extra-link-url" id="<?php $this->mb->the_name(); ?>_url" name="<?php $this->mb->the_name(); ?>[url]" type="text" value="<?php echo $url; ?>"<?php echo $is_content_type_manual ? '' : ' disabled' ?> />
 			</div>
 
 
+			<!--
+
+			CONTENT TYPE
+
+			-->
 			<div class="extra-link-content extra-link-wrapper">
-				<?php
-				$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
-				$show_content = $this->mb->is_value( 'content' );
-				?>
 
 				<div class="extra-link-checkbox-wrapper">
-					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_content" type="radio" name="<?php $this->mb->the_name(); ?>" value="content" <?php echo ( $show_content ) ? ' checked="checked"' : ''; ?>>
-					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_content"><?php _e( "Lien vers un contenu", "extra-admin" ); ?></label>
+					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_type_content" type="radio" name="<?php $this->mb->the_name(); ?>[type]" value="content" <?php echo $is_content_type_content ? ' checked="checked"' : ''; ?>>
+					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_type_content"><?php _e( "Lien vers un contenu", "extra-admin" ); ?></label>
 				</div>
 
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "content_search" ) ); ?>
-				<input class="extra-link-autocomplete" type="text" name="<?php $this->mb->the_name(); ?>" value="<?php $this->mb->the_value(); ?>"<?php echo ( $show_content ) ? '' : ' disabled' ?> />
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "content" ) ); ?>
-				<?php $post_id = $this->mb->get_the_value(); ?>
-				<input class="extra-link-autocomplete-hidden" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
+				<input class="extra-link-autocomplete" type="text" name="<?php $this->mb->the_name(); ?>[content_search]" value="<?php echo $content_search; ?>"<?php echo $is_content_type_content ? '' : ' disabled' ?> />
+				<input class="extra-link-autocomplete-hidden" id="<?php $this->mb->the_name(); ?>_post_id" name="<?php $this->mb->the_name(); ?>[post_id]" type="hidden" value="<?php echo $post_id; ?>" />
 
-				<div class="extra-link-choice" <?php echo ( empty( $post_id ) || !$show_content ) ? 'style="display: none;"' : ''; ?>>
-					<?php echo ( !empty( $post_id ) ) ? get_permalink( $this->mb->get_the_value() ) : ''; ?>
+
+				<div class="extra-link-choice" <?php echo ( empty( $post_id ) || ! $is_content_type_content ) ? 'style="display: none;"' : ''; ?>>
+					<?php echo ( ! empty( $post_id ) ) ? get_permalink( $post_id ) : ''; ?>
 				</div>
 			</div>
 
 
+			<!--
+
+			TAXONOMY TYPE
+
+			-->
 			<div class="extra-link-taxonomy extra-link-wrapper">
-				<?php
-				$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
-				$show_content = $this->mb->is_value( 'taxonomy' );
-				?>
 
 				<div class="extra-link-checkbox-wrapper">
-					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_taxonomy" type="radio" name="<?php $this->mb->the_name(); ?>" value="taxonomy" <?php echo ( $show_content ) ? ' checked="checked"' : ''; ?>>
-					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_taxonomy"><?php _e( "Vers une taxonomie", "extra-admin" ); ?></label>
+					<input class="extra-link-radio" id="<?php $this->mb->the_name(); ?>_type_taxonomy" type="radio" name="<?php $this->mb->the_name(); ?>[type]" value="taxonomy" <?php echo $is_content_type_taxonomy ? ' checked="checked"' : ''; ?>>
+					<label class="extra-link-radio-label extra-link-label" for="<?php $this->mb->the_name(); ?>_type_taxonomy"><?php _e( "Vers une taxonomie", "extra-admin" ); ?></label>
 				</div>
 
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "taxonomy_search" ) ); ?>
-				<input class="extra-link-autocomplete-taxonomy" type="text" name="<?php $this->mb->the_name(); ?>" value="<?php $this->mb->the_value(); ?>"<?php echo ( $show_content ) ? '' : ' disabled' ?> />
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "taxonomy" ) ); ?>
-				<?php $taxonomy = $this->mb->get_the_value(); ?>
-				<input class="extra-link-autocomplete-taxonomy-hidden" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "taxonomy-slug" ) ); ?>
-				<?php $taxonomy_slug = $this->mb->get_the_value(); ?>
-				<input class="extra-link-autocomplete-taxonomy-slug-hidden" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
+				<input class="extra-link-autocomplete-taxonomy" type="text" name="<?php $this->mb->the_name(); ?>[taxonomy_search]" value="<?php echo $taxonomy_search; ?>"<?php echo $is_content_type_taxonomy ? '' : ' disabled' ?> />
 
-				<div class="extra-link-choice-taxonomy" <?php echo ( empty( $post_id ) || !$show_content ) ? 'style="display: none;"' : ''; ?>>
-					<?php echo ( !empty( $taxonomy_slug ) && !empty( $taxonomy ) ) ? get_term_link( $taxonomy_slug, $taxonomy ) : ''; ?>
+
+				<input class="extra-link-autocomplete-taxonomy-hidden" id="<?php $this->mb->the_name(); ?>_taxonomy" name="<?php $this->mb->the_name(); ?>[taxonomy]" type="hidden" value="<?php echo $taxonomy; ?>" />
+				<input class="extra-link-autocomplete-taxonomy-slug-hidden" id="<?php $this->mb->the_name(); ?>_term_slug" name="<?php $this->mb->the_name(); ?>[term_slug]" type="hidden" value="<?php echo $term_slug; ?>" />
+
+				<div class="extra-link-choice-taxonomy" <?php echo ( empty( $term_slug ) || ! $is_content_type_taxonomy ) ? 'style="display: none;"' : ''; ?>>
+					<?php echo ( ! empty( $term_slug ) && ! empty( $taxonomy ) ) ? get_term_link( $term_slug, $taxonomy ) : ''; ?>
 				</div>
 			</div>
 
 
+			<!--
+
+			TITLE
+
+			-->
 			<?php if ( $this->has_title ) : ?>
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "title" ) ); ?>
 				<div class="extra-link-title-container extra-link-wrapper">
-					<label class="extra-link-title-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e( "Titre", "extra-admin" ); ?></label>
-					<input class="extra-link-title" id="<?php $this->mb->the_name(); ?>_manual" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" />
+					<label class="extra-link-title-label" for="<?php $this->mb->the_name(); ?>_title"><?php _e( "Titre", "extra-admin" ); ?></label>
+					<input class="extra-link-title" id="<?php $this->mb->the_name(); ?>_title" name="<?php $this->mb->the_name(); ?>[title]" type="text" value="<?php echo $title; ?>" />
 				</div>
 			<?php endif; ?>
 
 
+			<!--
+
+			TARGET
+
+			-->
 			<div class="extra-link-target-container extra-link-wrapper">
-				<?php $this->mb->the_field( $this->get_prefixed_field_name( "target" ) ); ?>
-				<input class="extra-link-target-input" id="<?php $this->mb->the_name(); ?>_manual" type="checkbox" name="<?php $this->mb->the_name(); ?>" value="1"<?php if ( $this->mb->get_the_value() ) {
-					echo ' checked="checked"';
-				} ?>/>
-				<label class="extra-link-target-label" for="<?php $this->mb->the_name(); ?>_manual"><?php _e( "Ouvrir le lien dans un nouvel onglet", "extra-admin" ); ?></label>
+				<input class="extra-link-target-input" id="<?php $this->mb->the_name(); ?>_target" type="checkbox" name="<?php $this->mb->the_name(); ?>[target]" value="1"<?php echo ! empty( $target ) ? ' checked="checked"' : ''; ?>/>
+				<label class="extra-link-target-label" for="<?php $this->mb->the_name(); ?>_target"><?php _e( "Ouvrir le lien dans un nouvel onglet", "extra-admin" ); ?></label>
 			</div>
 		</div>
 		<?php
@@ -229,63 +258,34 @@ class Link extends AbstractField {
 		echo '-';
 	}
 
-	public static function get_permalink( $name, $mb ) {
-		$type    = $mb->get_the_value( AbstractField::get_field_name( $name, 'type', '_' ) );
-		$url     = $mb->get_the_value( AbstractField::get_field_name( $name, 'url', '_' ) );
-		$content = $mb->get_the_value( AbstractField::get_field_name( $name, 'content', '_' ) );
+	public static function get_permalink_from_meta( $meta, $name ) {
+		$type      = isset( $meta[ $name ]['type'] ) ? $meta[ $name ]['type'] : '';
+		$url       = isset( $meta[ $name ]['url'] ) ? $meta[ $name ]['url'] : '';
+		$post_id   = isset( $meta[ $name ]['post_id'] ) ? $meta[ $name ]['post_id'] : '';
+		$taxonomy  = isset( $meta[ $name ]['taxonomy'] ) ? $meta[ $name ]['taxonomy'] : '';
+		$term_slug = isset( $meta[ $name ]['term_slug'] ) ? $meta[ $name ]['term_slug'] : '';
 
 		if ( $type == 'content' ) {
-			return get_permalink( $content );
-		}
-		if ( $type == 'taxonomy' ) {
-			return '#/coucou';
-		} else {
-			return $url;
-		}
-
-		//TODO MANAGE TAXONOMY PERMALINK
-	}
-
-	public static function get_title( $name, $mb ) {
-		return $mb->get_the_value( AbstractField::get_field_name( $name, 'title', '_' ) );
-	}
-
-	public static function get_target( $name, $mb ) {
-		if ( $mb->get_the_value( AbstractField::get_field_name( $name, 'target', '_' ) ) ) {
-			return '_blank';
-		} else {
-			return '_self';
-		}
-	}
-
-	public static function get_permalink_from_meta( $meta, $name, $separator = '_' ) {
-		$type          = isset( $meta[$name . $separator . 'type'] ) ? $meta[$name . $separator . 'type'] : '';
-		$url           = isset( $meta[$name . $separator . 'url'] ) ? $meta[$name . $separator . 'url'] : '';
-		$content       = isset( $meta[$name . $separator . 'content'] ) ? $meta[$name . $separator . 'content'] : '';
-		$taxonomy      = isset( $meta[$name . $separator . 'taxonomy'] ) ? $meta[$name . $separator . 'taxonomy'] : '';
-		$taxonomy_slug = isset( $meta[$name . $separator . 'taxonomy-slug'] ) ? $meta[$name . $separator . 'taxonomy-slug'] : '';
-
-		if ( $type == 'content' ) {
-			return get_permalink( $content );
+			return get_permalink( $post_id );
 		} else {
 			if ( $type == 'taxonomy' ) {
-				return get_term_link( $taxonomy_slug, $taxonomy );
+				return get_term_link( $term_slug, $taxonomy );
 			} else {
 				return $url;
 			}
 		}
 	}
 
-	public static function get_target_from_meta( $meta, $name, $separator = '_' ) {
-		if ( isset( $meta[$name . $separator . 'target'] ) && $meta[$name . $separator . 'target'] ) {
+	public static function get_target_from_meta( $meta, $name ) {
+		if ( ! empty( $meta[ $name ]['target'] ) && $meta[ $name ]['target'] ) {
 			return '_blank';
 		} else {
 			return '_self';
 		}
 	}
 
-	public static function get_title_from_meta( $meta, $name, $separator = '_' ) {
-		$title = isset( $meta[$name . $separator . 'title'] ) ? $meta[$name . $separator . 'title'] : '';
+	public static function get_title_from_meta( $meta, $name ) {
+		$title = ! empty( $meta[ $name ]['title'] ) ? $meta[ $name ]['title'] : '';
 
 		return $title;
 	}

@@ -59,15 +59,15 @@ jQuery(document).ready(function($) {
 							size = attachment.sizes.full;
 						}
 
-						if (selectedSize != undefined && selectedSize != 'undefined' && selectedSize != null) {
+						/*if (selectedSize != undefined && selectedSize != 'undefined' && selectedSize != null) {
 							size.width = selectedSize.width;
 							size.height = selectedSize.height;
-						}
+						}*/
 
 						var $img = $("<img />", {
 							src: size.url,
-							width: size.width,
-							height: size.height
+							width: 250,
+							height: 'auto'
 						});
 						$element.find(".image:first").removeClass("empty").html("").append($img).append('<a class="close" href="#close"><span class="dashicons dashicons-no"></span></a>');
 					}

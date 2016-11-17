@@ -51,12 +51,14 @@
 	text-align: left;
 	vertical-align: top;
 }
+.extra-metabox .extra-conditional-container label {
+	display: inline-block;
+	vertical-align: -3px;
+}
 .extra-metabox .extra-label-checkbox {
 	display: inline-block;
 	padding-top: 0;
 	vertical-align: -2px;
-}
-.extra-metabox .extra-label-right-checkbox {
 }
 #side-sortables .extra-metabox label,
 #side-sortables .extra-metabox .label {
@@ -65,6 +67,7 @@
 #side-sortables .extra-metabox .extra-radio-group-container label,
 #side-sortables .extra-metabox .extra-radio-group-container .label{
 	padding-top: 0;
+	display: inline-block;
 }
 
 .extra-metabox label.label-position-left {
@@ -116,7 +119,7 @@
 //.extra-metabox .extra-textarea-wide label {
 //	text-align: left;
 //}
-.extra-textarea-wide .extra-input-wrapper {
+.extra-wide .extra-input-wrapper {
 	//width: ~"calc(100% - 155px)";
 }
 .extra-textarea-wide textarea {
@@ -124,9 +127,17 @@
 	width: 100%;
 	outline: 0;
 }
+.extra-wide input[type="number"],
+.extra-wide input[type="password"],
+.extra-wide input[type="email"],
+.extra-wide input[type="text"] {
+	width: 100%;
+	outline: 0;
+}
 
 
-#poststuff .extra-metabox h2 {
+
+#poststuff .extra-metabox h2:not(.hndle):not(.extra-accordion-handle) {
 	color: #777;
 	font-size: 18px;
 	font-weight: bold;
@@ -142,6 +153,7 @@
 	line-height: 20px;
 	margin: 0;
 	margin-bottom: 20px;
+	padding: 8px 12px;
 }
 #poststuff .extra-metabox h2 .dashicons {
 	line-height: 25px;

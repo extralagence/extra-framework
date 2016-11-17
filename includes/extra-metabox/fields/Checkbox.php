@@ -47,6 +47,9 @@ class Checkbox extends AbstractField {
 			<?php if ($this->label_right) : ?>
 				<label class="extra-label-checkbox extra-label-right-checkbox" for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
 			<?php endif; ?>
+			<?php if ($this->description != null) : ?>
+				<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+			<?php endif; ?>
 		</div>
 		<?php
 	}
@@ -57,8 +60,7 @@ class Checkbox extends AbstractField {
 	}
 
 	public function the_admin_column_value() {
-		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
-		if ($meta) {
+		if (!empty($this->mb->get_the_value($this->name))) {
 			_e("Oui", "extra-admin");
 		} else {
 			_e("Non", "extra-admin");

@@ -57,9 +57,10 @@ $window.on("load", function () {
 
 	function initResponsiveImage($container) {
 
-		/*if ($container.data("extraResponsiveImageProcessed") === true) {
-			return;
-		}*/
+		if ($container.data("extraResponsiveImageProcessed") === true) {
+		 return;
+		 }
+		//$container.data('extraResponsiveImageProcessed', true);
 
 		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),
@@ -134,7 +135,6 @@ $window.on("load", function () {
 					}
 
 					setTimeout(function () {
-
 						$container.find('.placeholder-canvas').remove();
 					}, 500);
 
@@ -168,12 +168,19 @@ $window.on("load", function () {
 
 	$window.on('extra:responsiveImage:init', function (event, $container) {
 		$container.each(function () {
-			var $elem = $(this);
-			if ($elem.hasClass('responsiveImagePlaceholder')) {
-				initResponsiveImage($elem.data("size", ""));
+			var $elem = $(this),
+				$responsiveImage = $elem;
+			if ($responsiveImage.hasClass('responsiveImagePlaceholder')) {
+				initResponsiveImage($responsiveImage.data("size", ""));
 			} else {
-				initResponsiveImage($elem.find('.responsiveImagePlaceholder').data("size", ""));
+				$responsiveImage = $elem.find('.responsiveImagePlaceholder');
+				if ($responsiveImage.length > 0) {
+					initResponsiveImage($responsiveImage.data("size", ""));
+				} else {
+					$elem.trigger("extra:responsiveImage:error");
+				}
 			}
+			totalResponsivesImages++;
 		});
 	});
 

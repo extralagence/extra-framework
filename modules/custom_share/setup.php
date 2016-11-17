@@ -15,7 +15,7 @@ function extra_custom_share( $id = 0 ) {
 		   $extra_sharer_counter,
 		   $extra_contact_form_printed;
 
-	if ( $id == 0 && isset( $post->ID ) ) {
+	if ( $id === 0 && isset( $post->ID ) ) {
 		$id = $post->ID;
 	}
 
@@ -29,7 +29,7 @@ function extra_custom_share( $id = 0 ) {
 
 	$title      = get_the_title();
 	$blog_title = get_bloginfo( 'name' );
-	$link       = get_permalink( $id );
+	$link       = is_int($id) ? get_permalink( $id ) : $id;
 
 	// IF LINK, ECHO SHARE
 	if ( !empty( $link ) ) {
@@ -51,13 +51,13 @@ function extra_custom_share( $id = 0 ) {
 		';
 		$twitter = apply_filters( 'extra_social_twitter_link', $twitter, $link, $title, $blog_title );
 
-		$gplus = '
+		/*$gplus = '
 		<a target="_blank" href="https://plus.google.com/share?url=' . $link . '" class="extra-social-button extra-social-gplus" data-url="' . $link . '" data-counter="' . THEME_MODULES_URI . '/custom_share/gplus.php?url= ' . urlencode( $link ) . '">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-google"></use></svg>
 			<span class="text">' . __( 'Partager sur Google+', 'extra' ) . '</span><span class="counter"></span>
 		</a>
 		';
-		$gplus = apply_filters( 'extra_social_gplus_link', $gplus, $link );
+		$gplus = apply_filters( 'extra_social_gplus_link', $gplus, $link );*/
 
 
 		// AJAXIFIED
@@ -67,7 +67,7 @@ function extra_custom_share( $id = 0 ) {
 
 		$return .= $facebook;
 		$return .= $twitter;
-		$return .= $gplus;
+		//$return .= $gplus;
 
 		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
 
@@ -87,7 +87,7 @@ function extra_custom_share( $id = 0 ) {
 					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
 					</div>
 				</div>';
-				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup );
+				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup, $extra_options['contact-form-select'] );
 				$extra_contact_form_printed = true;
 				$return .= $email_popup;
 			}
@@ -203,6 +203,13 @@ function extra_share_contact_wpcf7_form_tag( $tags ) {
 		$post_title     = str_replace( '&nbsp;', ' ', $post_title );
 		$post_id        = ( $post !== null ) ? $post->ID : 0;
 		$tags['values'] = array( __( "Bonjour,", 'extra' ) . "\n\n" . __( "Je vous invite à aller voir ", 'extra' ) . ( $post_title ) . "\n" . get_permalink( $post_id ) . "\n\n" . __( "Bien cordialement.", 'extra' ) );
+	}
+
+	if ( $tags['name'] == 'sender' ) {
+		if (is_user_logged_in()) {
+			$logged_user = wp_get_current_user();
+			$tags['values'] = array($logged_user->user_email);
+		}
 	}
 
 	return $tags;

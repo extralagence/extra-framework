@@ -30,38 +30,40 @@ class Conditional extends AbstractField {
 		parent::init();
 		add_action( 'admin_enqueue_scripts', function () {
 			wp_enqueue_script( 'extra-conditional-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-conditional.js', array( 'jquery' ), null, true );
-		});
+		} );
 	}
 
 	public function the_admin() {
 		?>
 		<div class="<?php echo $this->css_class; ?> extra-conditional-container">
-			<?php if ($this->title != null) : ?>
+			<?php if ( $this->title != null ) : ?>
 				<h2><?php
-					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+					echo ( $this->icon != null ) ? '<div class="dashicons ' . $this->icon . '"></div>' : '';
 					echo $this->title; ?>
 				</h2>
 			<?php endif; ?>
 
-			<?php $this->mb->the_field($this->get_single_field_name('conditional')); ?>
-			<?php $checked =$this->mb->get_the_value(); ?>
-			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
-            <p>
-	            <label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+			<?php $this->mb->the_field( $this->get_single_field_name( 'conditional' ) ); ?>
+			<?php $checked = $this->mb->get_the_value(); ?>
+			<?php echo ( $this->icon != null ) ? '<div class="dashicons ' . $this->icon . '"></div>' : ''; ?>
+			<p>
 				<input
 					class="extra-conditional-input"
 					id="<?php $this->mb->the_name(); ?>"
 					name="<?php $this->mb->the_name(); ?>"
 					type="checkbox"
 					value="1"
-					<?php if ($checked) echo ' checked="checked"'; ?>>
-            </p>
+					<?php if ( $checked ) {
+						echo ' checked="checked"';
+					} ?>>
+				<label for="<?php $this->mb->the_name(); ?>"><?php echo ( $this->label == null ) ? $this->name : $this->label; ?></label>
+			</p>
 
-			<div class="extra-conditional-field-false"<?php echo ($checked) ? ' style="display:none;"' : ''; ?>>
-				<?php $this->mb->the_admin_from_field($this->subfields_false, $this->name_suffix); ?>
+			<div class="extra-conditional-field-false"<?php echo ( $checked ) ? ' style="display:none;"' : ''; ?>>
+				<?php $this->mb->the_admin_from_field( $this->subfields_false, $this->name_suffix ); ?>
 			</div>
-			<div class="extra-conditional-field-true"<?php echo ($checked) ? '' : ' style="display:none;"'; ?>>
-				<?php $this->mb->the_admin_from_field($this->subfields_true, $this->name_suffix); ?>
+			<div class="extra-conditional-field-true"<?php echo ( $checked ) ? '' : ' style="display:none;"'; ?>>
+				<?php $this->mb->the_admin_from_field( $this->subfields_true, $this->name_suffix ); ?>
 			</div>
 		</div>
 		<?php
@@ -70,18 +72,22 @@ class Conditional extends AbstractField {
 	public function extract_properties( $properties ) {
 		parent::extract_properties( $properties );
 		$this->subfields_false = $properties['subfields_false'];
-		$this->subfields_true = $properties['subfields_true'];
+		$this->subfields_true  = $properties['subfields_true'];
 
-		if (!isset($this->subfields_false)) throw new Exception('Extra Meta box subfields_false properties required for'.get_class($this));
-		if (!isset($this->subfields_true)) throw new Exception('Extra Meta box subfields_true properties required for'.get_class($this));
+		if ( ! isset( $this->subfields_false ) ) {
+			throw new Exception( 'Extra Meta box subfields_false properties required for' . get_class( $this ) );
+		}
+		if ( ! isset( $this->subfields_true ) ) {
+			throw new Exception( 'Extra Meta box subfields_true properties required for' . get_class( $this ) );
+		}
 	}
 
 	public function the_admin_column_value() {
-		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
-		if ($meta) {
-			_e("Oui", "extra-admin");
+		$meta = $this->mb->get_meta( $this->name, $this->mb->meta );
+		if ( $meta ) {
+			_e( "Oui", "extra-admin" );
 		} else {
-			_e("Non", "extra-admin");
+			_e( "Non", "extra-admin" );
 		}
 	}
 }

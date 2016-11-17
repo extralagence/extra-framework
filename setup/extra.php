@@ -60,7 +60,7 @@ function require_extra_module_setup( $module_name, $is_framework ) {
 
 	$extra_excluded_directories = apply_filters( 'extra_excluded_modules_directories', $extra_excluded_directories, $is_framework );
 	$require                    = false;
-	if ( is_dir( $extra_module_path . '/' . $module_name ) && !in_array( $module_name, $extra_excluded_directories ) ) {
+	if ( is_dir( $extra_module_path . '/' . $module_name ) && ! in_array( $module_name, $extra_excluded_directories ) ) {
 		$module_setup_file = $extra_module_path . '/' . $module_name . '/setup.php';
 		if ( file_exists( $module_setup_file ) ) {
 			require_once $module_setup_file;
@@ -110,11 +110,11 @@ function redux_register_custom_extension_loader( $ReduxFramework ) {
 	$path    = EXTRA_INCLUDES_PATH . '/redux-extensions/';
 	$folders = scandir( $path, 1 );
 	foreach ( $folders as $folder ) {
-		if ( $folder === '.' or $folder === '..' or !is_dir( $path . $folder ) ) {
+		if ( $folder === '.' or $folder === '..' or ! is_dir( $path . $folder ) ) {
 			continue;
 		}
 		$extension_class = 'ReduxFramework_Extension_' . $folder;
-		if ( !class_exists( $extension_class ) ) {
+		if ( ! class_exists( $extension_class ) ) {
 			// In case you wanted override your override, hah.
 			$class_file = $path . $folder . '/extension_' . $folder . '.php';
 			$class_file = apply_filters( 'redux/extension/' . $ReduxFramework->args['opt_name'] . '/' . $folder, $class_file );
@@ -211,6 +211,39 @@ add_filter( 'template_include', array(
 	'Extra_Wrapping',
 	'wrap'
 ), 99 );
+/**********************
+ *
+ *
+ *
+ * REDUX > Default thumbnails
+ *
+ *
+ *
+ *********************/
+if ( ! function_exists( 'extra_default_image_thumbnail_options' ) ) {
+	function extra_default_image_thumbnails_options( $sections ) {
+		$sections[] = array(
+			'icon'   => 'el-icon-picture',
+			'title'  => __( 'Images par défaut', 'extra-admin' ),
+			'desc'   => null,
+			'fields' => array(
+				array(
+					'id'    => 'default-thumbnail',
+					'type'  => 'media',
+					'title' => __( 'Image générique par défaut', 'extra-admin' ),
+				),
+				array(
+					'id'    => 'default-thumbnail-small',
+					'type'  => 'media',
+					'title' => __( 'Image générique par défaut (petite taille)', 'extra-admin' ),
+				)
+			)
+		);
+
+		return $sections;
+	}
+}
+add_filter( 'extra_default_global_options_section', 'extra_default_image_thumbnails_options' );
 /**********************
  *
  *

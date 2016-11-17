@@ -383,7 +383,7 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	// Extract Alt
 	$current_matches = array();
 	preg_match( '/alt="(.*?)"/', $img, $current_matches );
-	$alt = $current_matches[1];
+	$alt = !empty($current_matches[1]) ? $current_matches[1] : '';
 
 	// Extract Class
 	$current_matches = array();

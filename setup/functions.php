@@ -519,8 +519,12 @@ function strtolower_utf8( $inputString ) {
 	return $outputString;
 }
 
-function _print_r( $a ) {
-	echo '<pre style="white-space: pre-wrap;">', htmlspecialchars( print_r( $a, true ) ), '</pre>';
+function _print_r( $a, $wrap = true ) {
+	echo '<pre';
+	if ( $wrap ) {
+		echo ' style="white-space: pre-wrap;"';
+	}
+	echo '>', htmlspecialchars( print_r( $a, true ) ), '</pre>';
 }
 
 /**********************

@@ -36,8 +36,12 @@ function extra_redirect() {
 
 		switch ( $redirection_type ) {
 			case 'auto' :
-
-				$pagekids = get_pages( array('child_of' => $post->ID, 'sort_column' => 'menu_order', 'post_status' => 'publish,private') );
+				$redirect_params = array(
+					'child_of'    => $post->ID,
+					'sort_column' => 'menu_oder'
+				);
+				$redirect_params = apply_filters( 'extra_redirection_get_pages_params', $redirect_params );
+				$pagekids        = get_pages( $redirect_params );
 				if ( ! empty( $pagekids ) ) {
 					$firstchild = $pagekids[0];
 					wp_redirect( get_permalink( $firstchild->ID ) );

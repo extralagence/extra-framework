@@ -48,6 +48,8 @@ class Link extends AbstractField {
 	}
 
 	public function the_admin() {
+
+
 		?>
 
 		<div class="extra-link-container <?php echo $this->css_class; ?>">
@@ -59,8 +61,76 @@ class Link extends AbstractField {
 			<?php endif; ?>
 
 			<?php
+			$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
+			$is_deprecated = $this->mb->is_value( 'content' );
+
+
+			// RETRO COMPATIBILITY CHECKING !e
+			if ( $is_deprecated ) {
+
+				$value = array();
+
+				// WE MIGHT BE IN A DEPRECATED CASE !
+				// Type
+				$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
+				if ( ( ! array_key_exists( 'type', $value ) || empty( $value['type'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['type'] = $this->mb->get_the_value();
+				}
+
+				// Url
+				$this->mb->the_field( $this->get_prefixed_field_name( "url" ) );
+				if ( ( ! array_key_exists( 'url', $value ) || empty( $value['url'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['type'] = $this->mb->get_the_value();
+				}
+
+				// Content search
+				$this->mb->the_field( $this->get_prefixed_field_name( "content_search" ) );
+				if ( ( ! array_key_exists( 'content_search', $value ) || empty( $value['content_search'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['content_search'] = $this->mb->get_the_value();
+				}
+
+				// Post id
+				$this->mb->the_field( $this->get_prefixed_field_name( "post_id" ) );
+				if ( ( ! array_key_exists( 'post_id', $value ) || empty( $value['post_id'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['post_id'] = $this->mb->get_the_value();
+				}
+
+				// Taxonomy search
+				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy_search" ) );
+				if ( ( ! array_key_exists( 'taxonomy_search', $value ) || empty( $value['taxonomy_search'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['taxonomy_search'] = $this->mb->get_the_value();
+				}
+
+				// Taxonomy
+				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy" ) );
+				if ( ( ! array_key_exists( 'taxonomy', $value ) || empty( $value['taxonomy'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['taxonomy_search'] = $this->mb->get_the_value();
+				}
+
+				// Term slug
+				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy-slug" ) );
+				if ( ( ! array_key_exists( 'term_slug', $value ) || empty( $value['term_slug'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['term_slug'] = $this->mb->get_the_value();
+				}
+
+				// Title
+				$this->mb->the_field( $this->get_prefixed_field_name( "title" ) );
+				if ( ( ! array_key_exists( 'title', $value ) || empty( $value['title'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['title'] = $this->mb->get_the_value();
+				}
+
+				// Target
+				$this->mb->the_field( $this->get_prefixed_field_name( "target" ) );
+				if ( ( ! array_key_exists( 'target', $value ) || empty( $value['target'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+					$value['target'] = $this->mb->get_the_value();
+				}
+			} else {
+				$this->mb->the_field( $this->get_single_field_name( 'link' ) );
+				$value = $this->mb->get_the_value();
+			}
+
+
 			$this->mb->the_field( $this->get_single_field_name( 'link' ) );
-			$value                    = $this->mb->get_the_value();
 			$content_type             = '';
 			$is_content_type_manual   = false;
 			$is_content_type_content  = false;
@@ -79,6 +149,8 @@ class Link extends AbstractField {
 			$term_slug       = ! empty( $value['term_slug'] ) ? $value['term_slug'] : '';
 			$title           = ! empty( $value['title'] ) ? $value['title'] : '';
 			$target          = ! empty( $value['target'] ) ? $value['target'] : '';
+
+
 			?>
 
 

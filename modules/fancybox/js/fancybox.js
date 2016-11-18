@@ -1,50 +1,77 @@
 $(document).ready(function () {
+
+	// SETUP FANCYBOX TITLE
+	$(document).on('afterLoad', function () {
+		if ($.fancybox.coming.element.next(".wp-caption-text").length) {
+			$.fancybox.coming.title = $.fancybox.coming.element.next(".wp-caption-text").html();
+		} else {
+			$.fancybox.coming.title = '';
+		}
+	});
+
 	extraInitFancybox($("body"));
 });
 //extra.initFancybox
 $window.on('extra:fancybox:init', function (event, $parent) {
+
 	if ($parent && $parent.length) {
 		extraInitFancybox($parent);
 	}
 });
 function extraInitFancybox($parent) {
-	$parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').filter(function () {
-		return $(this).attr("target") != "_blank";
-	}).attr("data-fancybox-group", "gallery").each(function () {
-		var $this = $(this),
-			$img = $this.find(" > img").first();
-		if ($img.length) {
-			$(this).addClass("zoom");
-		}
-		if ($this.next(".wp-caption-text").length) {
-			console.log(defaultOptions);
-			defaultOptions['fancyboxOptions']['beforeShow'] = function () {
-				this.title = $this.next(".wp-caption-text").html();
+	// DEFAULT OPTIONS
+	var extraFancyboxDefaultOptions = {
+			margin : 50,
+			padding: 0,
+			// type   : 'image',
+			helpers: {
+				title: {
+					type: 'over'
+				},
+				media: {}
 			}
+		},
+
+
+		// GET ALL ELEMENTS
+		$toShow = $parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').not('.extra-fancybox-processed').filter(function () {
+			return $(this).attr("target") != "_blank";
+		}),
+
+		// STORE UNIQUE VALUES
+		uniques = {},
+		duplicates = [];
+
+
+	// REMOVE DUPLICATES
+	$toShow.each(function () {
+		var $this = $(this);
+		if (uniques[$this.attr('href')]) {
+			duplicates.push(this);
+			$toShow = $toShow.not($this);
 		}
-		/*if ($img.hasClass("alignleft")) {
-		 $this.addClass("alignleft");
-		 }
-		 if ($img.hasClass("alignright")) {
-		 $this.addClass("alignright");
-		 }*/
-	}).fancybox(defaultOptions.fancyboxOptions);
-}
-/*********************
- *
- * ALL LINKS TO IMAGES
- *
- *********************/
-var defaultOptions = {
-	fancyboxOptions: {
-		margin : 50,
-		padding: 0,
-		type   : 'image',
-		helpers: {
-			title: {
-				type: 'over'
-			}
+		else {
+			uniques[$this.attr('href')] = true;
 		}
+	});
+
+	// OPTIONS EXTENDER
+	if (window.extraFancyboxOverrideOptions) {
+		$.extend(extraFancyboxDefaultOptions, window.extraFancyboxOverrideOptions);
 	}
-};
-$.extend(defaultOptions, extraOptions);
+
+	// SETUP FANCYBOX
+	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFancyboxDefaultOptions);
+
+	if (duplicates.length) {
+		$(duplicates).each(function () {
+			var $duplicate = $(this);
+			$duplicate.on("click", function (event) {
+				event.preventDefault();
+				$toShow.filter(function (index, element) {
+					return $duplicate.attr('href') == $(element).attr('href');
+				}).trigger("click");
+			});
+		});
+	}
+}

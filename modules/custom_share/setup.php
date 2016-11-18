@@ -82,12 +82,12 @@ function extra_custom_share( $id = 0 ) {
 
 			if ( !isset( $extra_contact_form_printed ) ) {
 				$email_popup                = '<div class="js-custom-share-hidden">
-					<div class="extra-social-share-wrapper" id="extra-social-share-wrapper">
+					<div class="extra-form extra-social-share-wrapper" id="extra-social-share-1-wrapper">
 					<h3>' . __( 'Partager par email', 'extra' ) . '</h3>
 					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
 					</div>
 				</div>';
-				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup );
+				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup, $extra_options['contact-form-select'] );
 				$extra_contact_form_printed = true;
 				$return .= $email_popup;
 			}
@@ -109,8 +109,8 @@ function extra_custom_social_enqueue_assets() {
 	if ( !$extra_enabled_custom_share ) {
 		return;
 	}
-	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less' );
-	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), false, true );
+	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less', array(), EXTRA_VERSION, 'all' );
+	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), EXTRA_VERSION, true );
 	wp_localize_script( 'extra-custom-share', 'extra_custom_share_params', array(
 		'assets_uri' => EXTRA_MODULES_URI . '/custom_share/'
 	) );
@@ -203,6 +203,13 @@ function extra_share_contact_wpcf7_form_tag( $tags ) {
 		$post_title     = str_replace( '&nbsp;', ' ', $post_title );
 		$post_id        = ( $post !== null ) ? $post->ID : 0;
 		$tags['values'] = array( __( "Bonjour,", 'extra' ) . "\n\n" . __( "Je vous invite à aller voir ", 'extra' ) . ( $post_title ) . "\n" . get_permalink( $post_id ) . "\n\n" . __( "Bien cordialement.", 'extra' ) );
+	}
+
+	if ( $tags['name'] == 'sender' ) {
+		if (is_user_logged_in()) {
+			$logged_user = wp_get_current_user();
+			$tags['values'] = array($logged_user->user_email);
+		}
 	}
 
 	return $tags;

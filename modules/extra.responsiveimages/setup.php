@@ -62,10 +62,10 @@ function extra_responsive_images_init() {
 	if ( ! $extra_enabled_extra_responsive_images ) {
 		return;
 	}
-	wp_enqueue_style( 'extra-responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/css/extra.responsiveimages.less', null, false, 'all' );
+	wp_enqueue_style( 'extra-responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/css/extra.responsiveimages.less', null, EXTRA_VERSION, 'all' );
 
-	wp_enqueue_script( 'extra.jfracs', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/jquery.fracs.js', array( 'jquery' ), null, true );
-	wp_enqueue_script( 'extra.blur', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/blur.js', null, null, true );
+	wp_enqueue_script( 'extra.jfracs', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/jquery.fracs.js', array( 'jquery' ), EXTRA_VERSION, true );
+	wp_enqueue_script( 'extra.blur', EXTRA_MODULES_URI . '/extra.responsiveimages/js/lib/blur.js', null, EXTRA_VERSION, true );
 	wp_enqueue_script( 'extra.responsiveimages', EXTRA_MODULES_URI . '/extra.responsiveimages/js/extra.responsiveimages.js', array(
 		'jquery',
 		'tweenmax',
@@ -73,7 +73,7 @@ function extra_responsive_images_init() {
 		'extra.blur',
 		'extra.jfracs',
 		'extra.slider'
-	), null, true );
+	), EXTRA_VERSION, true );
 }
 
 add_action( 'wp_enqueue_scripts', 'extra_responsive_images_init' );
@@ -87,18 +87,15 @@ add_action( 'wp_enqueue_scripts', 'extra_responsive_images_init' );
  *
  *********************/
 
-function extra_get_placeholder( $id, $dimensions ) {
-	$first_dimension = reset( $dimensions );
+function extra_get_placeholder( $id, $width, $height ) {
 
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	if ( $use_placeholder ) {
-		$first_width      = ! empty( $first_dimension[0] ) ? $first_dimension[0] : 0;
-		$first_height     = ! empty( $first_dimension[1] ) ? $first_dimension[1] : 0;
 		$placeholder_size = apply_filters( 'extra_responsive_images_placeholder_size', 30 );
-		if ( $first_width >= $first_height ) {
-			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $first_height / $first_width ) );
+		if ( $width >= $height ) {
+			$placeholder_size = array( $placeholder_size, round( $placeholder_size * $height / $width ) );
 		} else {
-			$placeholder_size = array( round( $placeholder_size * $first_width / $first_height ), $placeholder_size );
+			$placeholder_size = array( round( $placeholder_size * $width / $height ), $placeholder_size );
 		}
 
 		$placeholder_src = wp_get_attachment_image_src( $id, $placeholder_size );
@@ -110,8 +107,8 @@ function extra_get_placeholder( $id, $dimensions ) {
 		$placeholder_src    = array();
 		$placeholder_src[0] = EXTRA_URI . '/assets/img/blank.png';
 	}
-	$placeholder_src[1] = $first_dimension[0];
-	$placeholder_src[2] = $first_dimension[1];
+	$placeholder_src[1] = $width;
+	$placeholder_src[2] = $height;
 
 	return $placeholder_src;
 }
@@ -119,17 +116,17 @@ function extra_get_placeholder( $id, $dimensions ) {
 /**
  * echo reponsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src            $source
+ * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class          add custom classes
  * @param string $alt
- * @param bool $img_itemprop true if you want to use itemprop
- * @param string $caption html for the caption
- * @param string $tag used to wrap the image (figure, span, etc.)
- * @param bool $lazy_loading true if loading start only when element is in viewport
- * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param bool   $img_itemprop   true if you want to use itemprop
+ * @param string $caption        html for the caption
+ * @param string $tag            used to wrap the image (figure, span, etc.)
+ * @param bool   $lazy_loading   true if loading start only when element is in viewport
+ * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
-function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
 // hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
@@ -177,7 +174,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
 	<?php if ( $img_itemprop ) :
-		$dimension = reset( $dimensions );
+		$dimension = is_array( $dimensions ) ? reset( $dimensions ) : $dimensions;
 		$src    = wp_get_attachment_image_src( $id, $dimension );
 		?>
 		<meta itemprop="url" content="<?php echo $src[0]; ?>">
@@ -188,8 +185,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		data-alt="<?php echo $alt; ?>"
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$dimension = $dimensions[ $size ];
-			$src       = wp_get_attachment_image_src( $id, $dimension );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0];
 			?>"
 		<?php endforeach; ?>>
@@ -203,7 +199,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		     height="<?php echo $src[2]; ?>">
 	</noscript>
 	<?php
-	$placeholder_src = extra_get_placeholder( $id, $dimensions );
+	$placeholder_src = extra_get_placeholder( $id, $src[1], $src[2] );
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 	?>
 	<img class="placeholder-image"
@@ -230,20 +226,20 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 	return $return;
 }
 
-function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = false, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
+function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 	echo extra_get_responsive_image( $id, $dimensions, $class, $alt, $img_itemprop, $caption, $tag, $lazy_loading, $custom_loading );
 }
 
 /**
  * echo reponsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src            $source
+ * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class          add custom classes
  * @param string $alt
- * @param string $tag used to be carry the background image
- * @param bool $lazy_loading true if loading start only when element is in viewport
- * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param string $tag            used to be carry the background image
+ * @param bool   $lazy_loading   true if loading start only when element is in viewport
+ * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
 
@@ -271,7 +267,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	<noscript
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 			echo $src[0]; ?>"
 		<?php endforeach; ?>>
 	</noscript>
@@ -285,15 +281,15 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 }
 
 function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
-	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading );
+	echo extra_get_responsive_background_image( $id, $dimensions, $class, $tag, $lazy_loading, $custom_loading );
 }
 
 /**
  * get svg responsive image
  *
- * @param        $src $source
- * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class add custom classes
+ * @param        $src    $source
+ * @param array  $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class  add custom classes
  * @param string $alt
  */
 function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false ) {
@@ -327,7 +323,7 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, $dimensions[ $size ] );
+				$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
 				echo $src[0]; ?>"
 			<?php endforeach; ?>>
 		</noscript>
@@ -475,6 +471,16 @@ function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions 
 
 		// Get full size
 		$image_full_src = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+		if ( ! $image_full_src ) {
+			return $dimensions;
+		}
+
+		$filetype = wp_check_filetype( $image_full_src[0] );
+		if ( ! empty( $filetype ) && $filetype['ext'] === 'svg' ) {
+			return $dimensions;
+		}
+
 		$full_dimension = array( $image_full_src[1], $image_full_src[2] );
 
 		// Real dimensions returned

@@ -2,6 +2,26 @@
 
 ## Changelog
 
+###2016/10/24
+*Updated link field metabox*
+
+Subfields now stored with an array
+
+Structure details :
+```php
+array (
+  'type', // manual content or taxonomy
+  'url', // url content if type is manuel
+  'content_search', // content search if type is content (for admin use only)
+  'post_id', // post id if type is content
+  'taxonomy_search', // taxonomy search if type is taxonomy (for admin use only)
+  'taxonomy', // taxonomy if type is taxonomy
+  'term_slug', // term slug if type is taxonomy
+  'title',
+  'target'
+);
+```
+
 ###2016/09/27
 *Updated the menu page template*
 - Hooks have been edited or added

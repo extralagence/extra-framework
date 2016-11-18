@@ -13,7 +13,7 @@ function extra_menu_init () {
 	if(!$extra_enabled_extra_menu) {
 		return;
 	}
-	wp_enqueue_script('extra.menu', EXTRA_MODULES_URI.'/extra.menu/inc/js/extra.menu.js', array('jquery', 'tweenmax'), null, true);
-	wp_enqueue_style('extra.menu', EXTRA_MODULES_URI.'/extra.menu/inc/css/extra.menu.css', array(), false, 'all');
+	wp_enqueue_script('extra.menu', EXTRA_MODULES_URI.'/extra.menu/inc/js/extra.menu.js', array('jquery', 'tweenmax'), EXTRA_VERSION, true);
+	wp_enqueue_style('extra.menu', EXTRA_MODULES_URI.'/extra.menu/inc/css/extra.menu.css', array(), EXTRA_VERSION, 'all');
 }
 add_action('init', 'extra_menu_init');

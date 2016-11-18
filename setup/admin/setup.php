@@ -24,13 +24,13 @@ add_filter( 'login_headerurl', 'extra_url_login' );
  *********************/
 if ( !function_exists( 'extra_css_admin' ) ) {
 	function extra_css_admin() {
-		wp_enqueue_style( 'extra-admin-css', EXTRA_COMMON_MODULE_URI . '/admin/css/style.less' );
+		wp_enqueue_style( 'extra-admin-css', EXTRA_COMMON_MODULE_URI . '/admin/css/style.less', array(), EXTRA_VERSION, 'all' );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'extra_css_admin' );
 if ( !function_exists( 'extra_css_login' ) ) {
 	function extra_css_login() {
-		wp_enqueue_style( 'extra-login-css', EXTRA_COMMON_MODULE_URI . '/admin/css/login.less' );
+		wp_enqueue_style( 'extra-login-css', EXTRA_COMMON_MODULE_URI . '/admin/css/login.less', array(), EXTRA_VERSION, 'all' );
 	}
 }
 add_action( 'login_init', 'extra_css_login' );
@@ -46,7 +46,7 @@ add_action( 'login_init', 'extra_css_login' );
 // SCRIPTS
 function extra_admin_bar_scripts() {
 	if ( is_admin_bar_showing() ) {
-		wp_enqueue_style( 'extra-custom-admin-bar-css', EXTRA_COMMON_MODULE_URI . '/admin/css/adminbar.less' );
+		wp_enqueue_style( 'extra-custom-admin-bar-css', EXTRA_COMMON_MODULE_URI . '/admin/css/adminbar.less', array(), EXTRA_VERSION, 'all' );
 	}
 }
 
@@ -390,7 +390,7 @@ add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );
 //
 //
 ///////////////////////////////////////
-function rocket_for_editor( $capability ) {
+function rocket_for_administrator( $capability ) {
 
 	if ( !current_user_can( 'administrator' ) ) {
 		return false;
@@ -399,5 +399,5 @@ function rocket_for_editor( $capability ) {
 	return $capability;
 }
 
-add_filter( 'option_page_capability_wp_rocket', 'rocket_for_editor' );
-add_filter( 'rocket_capacity', 'rocket_for_editor' );
+add_filter( 'option_page_capability_wp_rocket', 'rocket_for_administrator' );
+add_filter( 'rocket_capacity', 'rocket_for_administrator' );

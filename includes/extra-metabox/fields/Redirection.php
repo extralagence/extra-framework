@@ -26,7 +26,11 @@ class Redirection extends AbstractField {
 		wp_enqueue_style( 'extra-redirection-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/css/extra-redirection.less' );
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'extra-accent-fold-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-accent-fold.js', array( 'jquery' ) );
-		wp_enqueue_script( 'extra-redirection-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-redirection.js', array( 'jquery', 'jquery-ui-autocomplete', 'extra-accent-fold-metabox' ) );
+		wp_enqueue_script( 'extra-redirection-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-redirection.js', array(
+			'jquery',
+			'jquery-ui-autocomplete',
+			'extra-accent-fold-metabox'
+		) );
 
 		wp_localize_script( 'extra-redirection-metabox', 'ajax', array( 'url' => admin_url( 'admin-ajax.php' ) ) );
 	}
@@ -40,9 +44,11 @@ class Redirection extends AbstractField {
 				-webkit-box-shadow: none;
 				box-shadow: none;
 			}
+
 			#<?php echo $this->mb->id; ?>_metabox .hndle {
 				display: none;
 			}
+
 			#<?php echo $this->mb->id; ?>_metabox .inside {
 				font-size: 14px;
 				padding: 8px 0;
@@ -59,57 +65,72 @@ class Redirection extends AbstractField {
 
 			<div class="extra-checkbox">
 				<?php $this->mb->the_field( $this->get_prefixed_field_name( "type" ) ); ?>
-				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-auto" value="auto" <?php echo ( $this->mb->is_value( 'auto' ) || $this->mb->get_the_value() == null ) ? ' checked="checked"' : ''; ?>>
+				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-auto"
+				       value="auto" <?php echo ( $this->mb->is_value( 'auto' ) || $this->mb->get_the_value() == null ) ? ' checked="checked"' : ''; ?>>
 				<label class="extra-label-checkbox " for="redirection-type-auto">Redirection automatique</label>
 			</div>
 
 			<div class="extra-checkbox">
 				<?php $this->mb->the_field( $this->get_prefixed_field_name( "type" ) ); ?>
-				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-manual" value="manual" <?php echo $this->mb->is_value( 'manual' ) ? ' checked="checked"' : ''; ?>>
+				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-manual"
+				       value="manual" <?php echo $this->mb->is_value( 'manual' ) ? ' checked="checked"' : ''; ?>>
 				<label class="extra-label-checkbox " for="redirection-type-manual">Redirection manuelle</label>
 
 				<div class="extra-conditional bloc">
 					<?php $this->mb->the_field( $this->get_prefixed_field_name( "manual" ) ); ?>
 					<label for="<?php $this->mb->the_name(); ?>"><?php _e( "Url de la redirection :" ); ?></label>
-					<input id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" />
+					<input id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="text"
+					       value="<?php $this->mb->the_value(); ?>"/>
 				</div>
 
 			</div>
 
 			<div class="extra-checkbox">
 				<?php $this->mb->the_field( $this->get_prefixed_field_name( "type" ) ); ?>
-				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-content" value="content" <?php echo $this->mb->is_value( 'content' ) ? ' checked="checked"' : ''; ?>>
+				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-content"
+				       value="content" <?php echo $this->mb->is_value( 'content' ) ? ' checked="checked"' : ''; ?>>
 				<label class="extra-label-checkbox " for="redirection-type-content">Redirection vers un contenu</label>
 
 				<div class="extra-conditional bloc">
 					<?php $this->mb->the_field( $this->get_prefixed_field_name( "content" ) ); ?>
 					<?php $post_id = $this->mb->get_the_value(); ?>
 
-					<div class="extra-search-choice" <?php echo ( empty( $post_id ) ) ? 'style="display: none;"' : ''; ?>>
+					<div
+						class="extra-search-choice" <?php echo ( empty( $post_id ) ) ? 'style="display: none;"' : ''; ?>>
 						<span><?php _e( "Votre sélection :" ); ?></span>
-						<div id="extra-search-choice-title"><?php echo ( !empty( $post_id ) ) ? get_the_title( $this->mb->get_the_value() ) : ''; ?></div>
-						<div id="extra-search-choice-url"><?php echo ( !empty( $post_id ) ) ? get_permalink( $this->mb->get_the_value() ) : ''; ?></div>
+						<div
+							id="extra-search-choice-title"><?php echo ( ! empty( $post_id ) ) ? get_the_title( $this->mb->get_the_value() ) : ''; ?></div>
+						<div
+							id="extra-search-choice-url"><?php echo ( ! empty( $post_id ) ) ? get_permalink( $this->mb->get_the_value() ) : ''; ?></div>
 					</div>
 
 					<label for="content-autocomplete"><?php _e( "Recherchez un contenu :" ); ?></label>
-					<input id="content-autocomplete" type="text" value="" />
-					<input id="hidden-content-autocomplete" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
+					<input id="content-autocomplete" type="text" value=""/>
+					<input id="hidden-content-autocomplete" name="<?php $this->mb->the_name(); ?>" type="hidden"
+					       value="<?php $this->mb->the_value(); ?>"/>
 				</div>
 			</div>
 
 			<div class="extra-checkbox">
 				<?php $this->mb->the_field( $this->get_prefixed_field_name( "type" ) ); ?>
-				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-post-type" value="post-type" <?php echo $this->mb->is_value( 'post-type' ) ? ' checked="checked"' : ''; ?>>
-				<label class="extra-label-checkbox " for="redirection-type-post-type">Redirection vers un type de contenu</label>
+				<input type="radio" name="<?php $this->mb->the_name(); ?>" id="redirection-type-post-type"
+				       value="post-type" <?php echo $this->mb->is_value( 'post-type' ) ? ' checked="checked"' : ''; ?>>
+				<label class="extra-label-checkbox " for="redirection-type-post-type">Redirection vers un type de
+					contenu</label>
 
 				<div class="extra-conditional bloc">
 					<?php $this->mb->the_field( $this->get_prefixed_field_name( "post-type" ) ); ?>
-					<label for="<?php $this->mb->the_name(); ?>"><?php _e( "Choisissez un type de contenu :", "extra-admin" ); ?></label>
+					<label
+						for="<?php $this->mb->the_name(); ?>"><?php _e( "Choisissez un type de contenu :", "extra-admin" ); ?></label>
 					<select name="<?php $this->mb->the_name(); ?>" id="<?php $this->mb->the_name(); ?>">
 						<?php
-						$post_types = get_post_types( '', 'objects' );
+						$post_types = get_post_types( array(
+//							'public'             => true,
+//							'publicly_queryable' => true
+						), 'objects' );
 						foreach ( $post_types as $post_type ): ?>
-							<option value="<?php echo esc_attr( $post_type->name ); ?>"<?php echo $this->mb->is_value( $post_type->name ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $post_type->labels->name ); ?></option>
+							<option
+								value="<?php echo esc_attr( $post_type->name ); ?>"<?php echo $this->mb->is_value( $post_type->name ) ? ' selected="selected"' : ''; ?>><?php echo esc_html( $post_type->labels->name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 
@@ -166,4 +187,4 @@ class Redirection extends AbstractField {
 	}
 }
 
-add_action( 'wp_ajax_extra-redirection', array( 'Redirection', 'extra_redirection_wp_ajax' ) );
+add_action( 'wp_ajax_extra_redirection', array( '\\ExtraMetabox\\Redirection', 'extra_redirection_wp_ajax' ) );

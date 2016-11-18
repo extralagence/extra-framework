@@ -51,6 +51,10 @@
 	text-align: left;
 	vertical-align: top;
 }
+.extra-metabox .extra-conditional-container label {
+	display: inline-block;
+	vertical-align: -3px;
+}
 .extra-metabox .extra-label-checkbox {
 	display: inline-block;
 	padding-top: 0;
@@ -63,12 +67,20 @@
 #side-sortables .extra-metabox .extra-radio-group-container label,
 #side-sortables .extra-metabox .extra-radio-group-container .label{
 	padding-top: 0;
+	display: inline-block;
 }
 
 .extra-metabox label.label-position-left {
 	text-align: left;
 	margin-left: 10px;
 	margin-right: 0;
+}
+.extra-metabox .extra-conditional-container > p > label {
+	display: inline-block;
+	margin-right: 10px;
+}
+.extra-metabox .extra-conditional-container > p > label + input[type="checkbox"] {
+	vertical-align: -18px;
 }
 .extra-metabox .bloc input[type="text"],
 .extra-metabox .bloc select {
@@ -107,7 +119,7 @@
 //.extra-metabox .extra-textarea-wide label {
 //	text-align: left;
 //}
-.extra-textarea-wide .extra-input-wrapper {
+.extra-wide .extra-input-wrapper {
 	//width: ~"calc(100% - 155px)";
 }
 .extra-textarea-wide textarea {
@@ -115,9 +127,17 @@
 	width: 100%;
 	outline: 0;
 }
+.extra-wide input[type="number"],
+.extra-wide input[type="password"],
+.extra-wide input[type="email"],
+.extra-wide input[type="text"] {
+	width: 100%;
+	outline: 0;
+}
 
 
-#poststuff .extra-metabox h2 {
+
+#poststuff .extra-metabox h2:not(.hndle):not(.extra-accordion-handle) {
 	color: #777;
 	font-size: 18px;
 	font-weight: bold;

@@ -61,8 +61,8 @@ function extra_social_enqueue_assets() {
 	if(!$extra_enabled_social) {
 		return;
 	}
-	wp_enqueue_style('extra-social', EXTRA_MODULES_URI.'/social/front/css/social.less');
-	wp_enqueue_script('extra-social', EXTRA_MODULES_URI.'/social/front/js/social.js', array('jquery'), false, true);
+	wp_enqueue_style('extra-social', EXTRA_MODULES_URI.'/social/front/css/social.less', array(), EXTRA_VERSION, 'all');
+	wp_enqueue_script('extra-social', EXTRA_MODULES_URI.'/social/front/js/social.js', array('jquery'), EXTRA_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'extra_social_enqueue_assets');
 

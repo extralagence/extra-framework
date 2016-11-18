@@ -34,20 +34,27 @@ class Number extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<p class="<?php echo $this->css_class; ?> extra-text-container">
+		<div class="<?php echo $this->css_class; ?> extra-text-container">
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
-			<input
-				class="extra-text-input"
-				id="<?php $this->mb->the_name(); ?>"
-				name="<?php $this->mb->the_name(); ?>"
-				type="number"
-				value="<?php $this->mb->the_value(); ?>"
-				<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
-				<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
-            <?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
-		</p>
+
+			<div class="extra-input-wrapper">
+				<input
+					class="extra-text-input"
+					id="<?php $this->mb->the_name(); ?>"
+					name="<?php $this->mb->the_name(); ?>"
+					type="number"
+					value="<?php $this->mb->the_value(); ?>"
+					<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
+					<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
+				<?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
+
+				<?php if ($this->description != null) : ?>
+					<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+				<?php endif; ?>
+			</div>
+		</div>
 		<?php
 	}
 

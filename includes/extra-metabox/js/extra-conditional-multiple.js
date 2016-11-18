@@ -11,8 +11,8 @@ jQuery(function ($) {
 		$('.extra-conditional-multiple-container').each(function () {
 			var $checkboxes = $(this).find('.extra-conditional-multiple-input');
 
-			$checkboxes.on('change', function() {
-				$checkboxes.each(function() {
+			$checkboxes.on('change', function () {
+				$checkboxes.each(function () {
 					var $checkbox = $(this);
 					if ($checkbox.is(':checked')) {
 						$checkbox.closest('.extra-conditional-multiple-input-container').addClass('open');
@@ -22,6 +22,8 @@ jQuery(function ($) {
 						$checkbox.next('.extra-conditional-multiple-field').slideUp(300);
 					}
 				});
+				$window.trigger('extra:admin:tabs:refresh');
+				$window.trigger('extra:admin:accordion:refresh');
 			}).change();
 		});
 	}

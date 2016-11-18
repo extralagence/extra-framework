@@ -15,7 +15,7 @@ $redirection_metabox = new ExtraMetaBox( array(
 	'title'            => __( "Redirection", "extra" ),
 	'types'            => array( 'page' ),
 	'include_template' => array( 'template-redirect.php' ),
-	'hide_editor'      => TRUE,
+	'hide_editor'      => true,
 	'fields'           => array(
 		array(
 			'type'      => 'redirection',
@@ -30,25 +30,19 @@ function extra_redirect() {
 	if ( is_page_template( 'template-redirect.php' ) ) {
 		global $post, $redirection_metabox;
 		the_post();
-		$meta = $redirection_metabox->the_meta();
-		$data = $redirection_metabox->meta;
+		$data = $redirection_metabox->the_meta();
 
-		$redirection_type = 'auto';
-		if ( isset( $data['redirection_type'] ) && !empty( $data['redirection_type'] ) ) {
-			$redirection_type  = $data['redirection_type'];
-			$redirection_value = $data['redirection_content'];
-		}
+		$redirection_type = ! empty( $data['redirection_type'] ) ? $data['redirection_type'] : 'auto';
 
 		switch ( $redirection_type ) {
 			case 'auto' :
-
 				$redirect_params = array(
-					'child_of' => $post->ID,
+					'child_of'    => $post->ID,
 					'sort_column' => 'menu_oder'
 				);
-				$redirect_params = apply_filters('extra_redirection_get_pages_params', $redirect_params);
-				$pagekids = get_pages( $redirect_params );
-				if ( !empty( $pagekids ) ) {
+				$redirect_params = apply_filters( 'extra_redirection_get_pages_params', $redirect_params );
+				$pagekids        = get_pages( $redirect_params );
+				if ( ! empty( $pagekids ) ) {
 					$firstchild = $pagekids[0];
 					wp_redirect( get_permalink( $firstchild->ID ) );
 				} else {
@@ -58,8 +52,8 @@ function extra_redirect() {
 
 			case 'manual' :
 
-				if ( !empty( $redirection_value ) ) {
-					wp_redirect( $redirection_value );
+				if ( ! empty( $data['redirection_manual'] ) ) {
+					wp_redirect( $data['redirection_manual'] );
 				} else {
 					_e( "Cette page n'a pas d'url de destination", "extra" );
 				}
@@ -67,8 +61,8 @@ function extra_redirect() {
 
 			case 'content' :
 
-				if ( !empty( $redirection_value ) ) {
-					wp_redirect( get_permalink( $redirection_value ) );
+				if ( ! empty( $data['redirection_content'] ) ) {
+					wp_redirect( get_permalink( $data['redirection_content'] ) );
 				} else {
 					_e( "Cette page n'a pas d'url de destination", "extra" );
 				}
@@ -77,13 +71,14 @@ function extra_redirect() {
 			case 'post-type' :
 
 				$redirection_value = $data['redirection_post-type'];
-				if ( !empty( $redirection_value ) ) {
+				if ( ! empty( $redirection_value ) ) {
 
 					$targets = get_posts( array(
 						'post_type'        => $redirection_value,
 						'numberposts'      => 1,
 						'orderby'          => 'menu_order',
 						'order'            => 'ASC',
+						'post_status'      => 'publish,private',
 						'suppress_filters' => 0
 					) );
 

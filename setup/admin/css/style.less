@@ -56,22 +56,34 @@
  * WELCOME PANEL
  *
  ********************/
-#welcome-panel {
-	overflow: visible;
+#extra_welcome_dashboard_widget {
 	padding: 20px;
-}
-#welcome-panel .welcome-panel-close {
-	display: none;
-}
-#welcome-panel .extra-welcome-wrapper:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}
-.welcome-panel .welcome-panel-column ul {
-	margin: 20px 0 0 0;
+	.handlediv,
+	.hndle,
+	.welcome-panel-close {
+		display: none;
+	}
+	h2 {
+		margin: 0;
+		padding: 0;
+	}
+	.inside {
+		margin: 0;
+		padding: 0;
+	}
+	.welcome-panel {
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		border: 0;
+		padding: 0;
+		margin: 0;
+	}
+	.welcome-panel .welcome-panel-column ul {
+		margin: 20px 0 0 0;
+	}
+	.welcome-panel .welcome-panel-column li:last-of-type {
+		margin-bottom: 0;
+	}
 }
 #dashboard-widgets-wrap .empty-container {
 	display: none;

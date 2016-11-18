@@ -37,8 +37,7 @@ function extra_redirect() {
 		switch ( $redirection_type ) {
 			case 'auto' :
 
-				$redirection_value = ! empty( $data['redirection_content'] ) ? $data['redirection_content'] : '';
-				$pagekids          = get_pages( "child_of=" . $post->ID . "&sort_column=menu_order" );
+				$pagekids = get_pages( array('child_of' => $post->ID, 'sort_column' => 'menu_order', 'post_status' => 'publish,private') );
 				if ( ! empty( $pagekids ) ) {
 					$firstchild = $pagekids[0];
 					wp_redirect( get_permalink( $firstchild->ID ) );
@@ -75,6 +74,7 @@ function extra_redirect() {
 						'numberposts'      => 1,
 						'orderby'          => 'menu_order',
 						'order'            => 'ASC',
+						'post_status'      => 'publish,private',
 						'suppress_filters' => 0
 					) );
 

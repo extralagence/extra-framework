@@ -96,7 +96,29 @@ $current_post = apply_filters( 'extra_arianne_current_post', $post );
 						'link'  => get_permalink( $homeID ),
 					);
 				}
-				$parents[]            = array(
+				$current_item['name'] = get_the_title();
+			}
+		}
+
+		// CUSTOM POST TYPE
+		else if (!is_single($current_post->ID) && !is_page($current_post->ID) && get_post_type($current_post->ID) != 'post' && !is_404()) {
+			$post_type = get_post_type_object(get_post_type($current_post->ID));
+			$current_item['name'] = $post_type->labels->singular_name;
+		}
+
+		// ATTACHMENT
+		elseif (is_attachment()) {
+			$parent = get_post($current_post->post_parent);
+			$cat = get_the_category($parent->ID);
+			$cat = $cat[0];
+
+			$ancestors_ids = get_ancestors($cat, 'category');
+			$ancestors_ids = array_reverse($ancestors_ids);
+			$ancestors_ids[] = $cat;
+
+			foreach ($ancestors_ids as $ancestor_id) {
+				$ancestor_category = get_category($ancestor_id, false);
+				$parents[] = array(
 					'class' => '',
 					'name'  => get_the_time( 'Y' ),
 					'link'  => get_year_link( get_the_time( 'Y' ) ),

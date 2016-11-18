@@ -109,8 +109,8 @@ function extra_custom_social_enqueue_assets() {
 	if ( !$extra_enabled_custom_share ) {
 		return;
 	}
-	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less' );
-	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), false, true );
+	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less', array(), EXTRA_VERSION, 'all' );
+	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), EXTRA_VERSION, true );
 	wp_localize_script( 'extra-custom-share', 'extra_custom_share_params', array(
 		'assets_uri' => EXTRA_MODULES_URI . '/custom_share/'
 	) );

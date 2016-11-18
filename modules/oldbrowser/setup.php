@@ -3,11 +3,11 @@ if (defined('EXTRA_OLD_BROWSER_RESTRICTIONS') && EXTRA_OLD_BROWSER_RESTRICTIONS)
 	// CSS & JS
 	function extra_oldbrowser_enqueue_styles() {
 		// CSS
-		wp_enqueue_style( 'extra-oldbrowser', EXTRA_MODULES_URI . '/oldbrowser/front/css/oldbrowser.less', array('fancybox'), false, 'all' );
+		wp_enqueue_style( 'extra-oldbrowser', EXTRA_MODULES_URI . '/oldbrowser/front/css/oldbrowser.less', array('fancybox'), EXTRA_VERSION, 'all' );
 
 		// JS
-		wp_enqueue_script('jquery-browser', EXTRA_MODULES_URI.'/oldbrowser/front/js/jquery.browser.min.js', array('jquery'), false, true);
-		wp_enqueue_script('extra-oldbrowser', EXTRA_MODULES_URI.'/oldbrowser/front/js/oldbrowser.js', array('jquery-browser', 'fancybox'), false, true);
+		wp_enqueue_script('jquery-browser', EXTRA_MODULES_URI.'/oldbrowser/front/js/jquery.browser.min.js', array('jquery'), EXTRA_VERSION, true);
+		wp_enqueue_script('extra-oldbrowser', EXTRA_MODULES_URI.'/oldbrowser/front/js/oldbrowser.js', array('jquery-browser', 'fancybox'), EXTRA_VERSION, true);
 
 		$restrictions = apply_filters('extra_oldbrowser_restrictions', array(
 			array('msie', 8),
@@ -23,8 +23,8 @@ if (defined('EXTRA_OLD_BROWSER_RESTRICTIONS') && EXTRA_OLD_BROWSER_RESTRICTIONS)
 	add_action('wp_enqueue_scripts', 'extra_oldbrowser_enqueue_styles');
 	function extra_oldbrowser_enqueue_styles_login() {
 		// FANCYBOX
-		wp_enqueue_style( 'fancybox', EXTRA_URI . '/assets/css/jquery.fancybox.css', array(), false, 'all' );
-		wp_enqueue_script('fancybox', EXTRA_URI . '/assets/js/lib/jquery.fancybox.js', array('jquery'), null, true);
+		wp_enqueue_style( 'fancybox', EXTRA_URI . '/assets/css/jquery.fancybox.css', array(), EXTRA_VERSION, 'all' );
+		wp_enqueue_script('fancybox', EXTRA_URI . '/assets/js/lib/jquery.fancybox.js', array('jquery'), EXTRA_VERSION, true);
 
 		extra_oldbrowser_enqueue_styles();
 	}

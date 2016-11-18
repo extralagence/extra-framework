@@ -77,11 +77,11 @@ class ExtraPageBuilder extends WPAlchemy_MetaBox {
 
 	public function extra_init() {
 		// TWEENMAX
-		wp_enqueue_script('tweenmax', 'http://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.6/TweenMax.min.js', null, null, true);
+		wp_enqueue_script('tweenmax', 'http://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.6/TweenMax.min.js', null, EXTRA_VERSION, true);
 
 		// ADMIN MODAL
 		wp_enqueue_style('extra-admin-modal', EXTRA_INCLUDES_URI . '/extra-metabox/page-builder/css/extra-admin-modal.less');
-		wp_enqueue_script('extra-admin-modal', EXTRA_INCLUDES_URI . '/extra-metabox/page-builder/js/extra-admin-modal.js', array('jquery'), null, true);
+		wp_enqueue_script('extra-admin-modal', EXTRA_INCLUDES_URI . '/extra-metabox/page-builder/js/extra-admin-modal.js', array('jquery'), EXTRA_VERSION, true);
 
 		// PAGE BUILDER
 		wp_enqueue_style('extra-page-builder-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/page-builder/css/extra-page-builder.less');
@@ -89,7 +89,7 @@ class ExtraPageBuilder extends WPAlchemy_MetaBox {
 			'extra-page-builder-metabox',
 			EXTRA_INCLUDES_URI . '/extra-metabox/page-builder/js/extra-page-builder.js',
 			array('jquery', 'extra-admin-modal', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-resizable'),
-			null,
+			EXTRA_VERSION,
 			true
 		);
 

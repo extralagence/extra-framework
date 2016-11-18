@@ -36,7 +36,7 @@ function extra_second_title_metabox_init () {
 }
 // INCLUDE CSS
 function extra_second_title_metabox_enqueue_assets () {
-	wp_enqueue_style('second_title_metabox', EXTRA_MODULES_URI.'/_second-title/admin/css/style.css');
+	wp_enqueue_style('second_title_metabox', EXTRA_MODULES_URI.'/_second-title/admin/css/style.css', array(), EXTRA_VERSION, 'all');
 }
 
 

@@ -1,65 +1,33 @@
-///////////////////////////////////////
-//
-//
-// RESPONSIVE IMAGES
-//
-//
-///////////////////////////////////////
-$window.on("load", function () {
-	var $responsiveImages = $(".responsiveImagePlaceholder:not(.responsiveImageLazy)"),
-		$responsiveLazyImages = $('.responsiveImagePlaceholder.responsiveImageLazy'),
-		$responsiveCustomLoadedImages = $('.responsiveImagePlaceholder.extra-custom-loading'),
-		totalResponsivesImages = $responsiveImages.length,
-		currentResponsiveImagesLoaded = 0;
-
+(function () {
 	///////////////////////////////////////
 	//
 	//
-	// LOOP THROUGH IMAGES
+	// RESPONSIVE IMAGES
 	//
 	//
 	///////////////////////////////////////
-	$responsiveImages.each(function () {
-		var $responsiveImage = $(this);
-		$responsiveImage.data("size", "");
-		initPlaceholder($responsiveImage);
-		initResponsiveImage($responsiveImage);
-	});
-
-	function initLazyAndCustomLoaded() {
-		var $responsiveImage = $(this);
-		$responsiveImage.data("size", "");
-		initPlaceholder($responsiveImage);
-	}
-
-	$responsiveLazyImages.each(initLazyAndCustomLoaded);
-	$responsiveCustomLoadedImages.each(initLazyAndCustomLoaded);
+	var $responsiveImagesNotLazy,
+		totalResponsivesImages,
+		currentResponsiveImagesLoaded;
 
 
-	///////////////////////////////////////
-	//
-	//
-	// INIT
-	//
-	//
-	///////////////////////////////////////
 	function initPlaceholder($container) {
-
 		var $placeholderImage = $container.find('.placeholder-image'),
 			$placeholderCanvas = $container.find('.placeholder-canvas');
 		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
 			if (typeof stackBlurImage == 'function') {
-				stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
+				if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
+					stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
+				}
 			}
 		}
 	}
 
-
-	function initResponsiveImage($container) {
+	function loadResponsiveImage($container) {
 
 		if ($container.data("extraResponsiveImageProcessed") === true) {
-		 return;
-		 }
+			return;
+		}
 		//$container.data('extraResponsiveImageProcessed', true);
 
 		var datas = $container.find("noscript"),
@@ -107,7 +75,7 @@ $window.on("load", function () {
 						// complete.extra.responsiveImageTotal
 						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 					}
-					initResponsiveImage($container);
+					loadResponsiveImage($container);
 				})
 
 				// LOAD
@@ -163,40 +131,7 @@ $window.on("load", function () {
 		addImage(size);
 
 		$container.data('extraResponsiveImageProcessed', true);
-
 	}
-
-	$window.on('extra:responsiveImage:init', function (event, $container) {
-		$container.each(function () {
-			var $elem = $(this),
-				$responsiveImage = $elem;
-			if ($responsiveImage.hasClass('responsiveImagePlaceholder')) {
-				initResponsiveImage($responsiveImage.data("size", ""));
-			} else {
-				$responsiveImage = $elem.find('.responsiveImagePlaceholder');
-				if ($responsiveImage.length > 0) {
-					initResponsiveImage($responsiveImage.data("size", ""));
-				} else {
-					$elem.trigger("extra:responsiveImage:error");
-				}
-			}
-			totalResponsivesImages++;
-		});
-	});
-
-	/*********************
-	 *
-	 * EXTRA SLIDERS
-	 *
-	 *********************/
-	$window.on('extra:slider:updateClones', function (event, currentItem, currentIndex) {
-
-		var $slider = $(event.target),
-			$responsiveImages = $slider.find('.extra-slider-clone .responsiveImagePlaceholder:not(.responsiveImageLazy)').data("size", "");
-		$responsiveImages.each(function () {
-			$window.trigger('extra:responsiveImage:init', [$(this)]);
-		});
-	});
 
 
 	/*********************
@@ -204,26 +139,110 @@ $window.on("load", function () {
 	 * ON SCROLL
 	 *
 	 *********************/
-	$window.on('extra:responsiveImage:startFollowScroll', startFollowScroll);
 	function startFollowScroll(event, $container) {
-		$container.fracs(function (fracs, previousFracs) {
-			if (fracs.visible > 0) {
-				var $elem = $(this);
+		console.log('listen startFollowScroll');
+		if (typeof $container != 'undefined' && $container.length > 0) {
+			$container.fracs(function (fracs, previousFracs) {
+				if (fracs.visible > 0) {
+					var $elem = $(this);
 
-				if ($elem.hasClass('responsiveImagePlaceholder')) {
-					initResponsiveImage($elem.data("size", ""));
-				} else {
-					var $responsiveImages = $elem.find('.responsiveImagePlaceholder');
-					$responsiveImages.each(function () {
-						initResponsiveImage($(this).data("size", ""));
-					});
+					if ($elem.hasClass('responsiveImagePlaceholder')) {
+						loadResponsiveImage($elem.data("size", ""));
+					} else {
+						var $responsiveImages = $elem.find('.responsiveImagePlaceholder');
+						$responsiveImages.each(function () {
+							loadResponsiveImage($(this).data("size", ""));
+						});
+					}
+					$elem.fracs('unbind');
 				}
-				$elem.fracs('unbind');
-			}
-		});
-		$container.fracs('check');
+			});
+			$container.fracs('check');
+		} else {
+			console.warn('nothing to follow');
+		}
 	}
 
-	var $lazyImages = $('.responsiveImageLazy:not(.extra-custom-loading)');
-	$window.trigger('extra:responsiveImage:startFollowScroll', [$lazyImages]);
-});
+
+	///////////////////////////////////////
+	//
+	//
+	// INIT
+	//
+	//
+	///////////////////////////////////////
+	jQuery(function($) {
+		$responsiveImagesNotLazy = $(".responsiveImagePlaceholder:not(.responsiveImageLazy)");
+		totalResponsivesImages = $responsiveImagesNotLazy.length;
+		currentResponsiveImagesLoaded = 0;
+
+
+		// INIT PLACEHOLDER FOR ALL RESPONSIVE IMAGE
+		$('.responsiveImagePlaceholder').each(function () {
+			var $responsiveImage = $(this);
+			$responsiveImage.data("size", "");
+			initPlaceholder($responsiveImage);
+		});
+
+		$window.on('extra:responsiveImage:init', function (event, $container) {
+			$container.each(function () {
+				var $elem = $(this),
+					$responsiveImage = $elem;
+				if ($responsiveImage.hasClass('responsiveImagePlaceholder')) {
+					$responsiveImage.data("size", "");
+					initPlaceholder($responsiveImage);
+					loadResponsiveImage($responsiveImage);
+				} else {
+					$responsiveImage = $elem.find('.responsiveImagePlaceholder');
+					if ($responsiveImage.length > 0) {
+						$responsiveImage.data("size", "");
+						initPlaceholder($responsiveImage);
+						loadResponsiveImage($responsiveImage);
+					} else {
+						$elem.trigger("extra:responsiveImage:error");
+					}
+				}
+				totalResponsivesImages++;
+			});
+		});
+
+		/*********************
+		 *
+		 * EXTRA SLIDERS
+		 *
+		 *********************/
+		$window.on('extra:slider:updateClones', function (event, currentItem, currentIndex) {
+
+			var $slider = $(event.target),
+				$clones = $slider.find('.extra-slider-clone');
+
+			$window.trigger('extra:responsiveImage:init', [$clones]);
+		});
+
+
+		/*********************
+		 *
+		 * ON SCROLL
+		 *
+		 *********************/
+		$window.on('extra:responsiveImage:startFollowScroll', startFollowScroll);
+
+		///////////////////////////////////////
+		//
+		//
+		// LOOP THROUGH IMAGES AND START LOADING
+		//
+		//
+		///////////////////////////////////////
+		$responsiveImagesNotLazy.each(function () {
+			var $responsiveImage = $(this);
+			$responsiveImage.data("size", "");
+			loadResponsiveImage($responsiveImage);
+		});
+
+		var $lazyImages = $('.responsiveImageLazy:not(.extra-custom-loading)');
+		if ($lazyImages.length > 0) {
+			startFollowScroll(null, $lazyImages);
+		}
+	});
+})();

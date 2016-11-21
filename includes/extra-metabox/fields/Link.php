@@ -61,14 +61,20 @@ class Link extends AbstractField {
 			<?php endif; ?>
 
 			<?php
+
+			$this->mb->the_field( $this->get_single_field_name( 'link' ) );
+			$value = $this->mb->get_the_value();
+
 			$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
 			$is_deprecated = $this->mb->is_value( 'content' );
 
 
 			// RETRO COMPATIBILITY CHECKING !e
-			if ( $is_deprecated ) {
+			if ( empty( $value ) || $is_deprecated ) {
 
-				$value = array();
+				if ( empty( $value ) ) {
+					$value = array();
+				}
 
 				// WE MIGHT BE IN A DEPRECATED CASE !
 				// Type
@@ -80,7 +86,7 @@ class Link extends AbstractField {
 				// Url
 				$this->mb->the_field( $this->get_prefixed_field_name( "url" ) );
 				if ( ( ! array_key_exists( 'url', $value ) || empty( $value['url'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
-					$value['type'] = $this->mb->get_the_value();
+					$value['url'] = $this->mb->get_the_value();
 				}
 
 				// Content search
@@ -90,7 +96,7 @@ class Link extends AbstractField {
 				}
 
 				// Post id
-				$this->mb->the_field( $this->get_prefixed_field_name( "post_id" ) );
+				$this->mb->the_field( $this->get_prefixed_field_name( "content" ) );
 				if ( ( ! array_key_exists( 'post_id', $value ) || empty( $value['post_id'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
 					$value['post_id'] = $this->mb->get_the_value();
 				}
@@ -104,7 +110,7 @@ class Link extends AbstractField {
 				// Taxonomy
 				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy" ) );
 				if ( ( ! array_key_exists( 'taxonomy', $value ) || empty( $value['taxonomy'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
-					$value['taxonomy_search'] = $this->mb->get_the_value();
+					$value['taxonomy'] = $this->mb->get_the_value();
 				}
 
 				// Term slug

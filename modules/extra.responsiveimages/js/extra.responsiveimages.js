@@ -49,8 +49,6 @@
 
 			// Do we have a src ?
 			if (!imgSrc || imgSrc == '') {
-				console.warn("Image src is empty");
-				console.warn($container);
 				// currentResponsiveImagesLoaded++;
 				totalResponsivesImages--;
 				$container.trigger('extra:responsiveImage:error', [currentResponsiveImagesLoaded, totalResponsivesImages]);
@@ -140,7 +138,6 @@
 	 *
 	 *********************/
 	function startFollowScroll(event, $container) {
-		console.log('listen startFollowScroll');
 		if (typeof $container != 'undefined' && $container.length > 0) {
 			$container.fracs(function (fracs, previousFracs) {
 				if (fracs.visible > 0) {

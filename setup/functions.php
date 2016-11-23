@@ -637,3 +637,14 @@ function remove_api() {
 }
 
 add_action( 'after_setup_theme', 'remove_api' );
+///////////////////////////////////////
+//
+//
+// REMOVE ADMIN BAR MARGINS ON HTML
+//
+//
+///////////////////////////////////////
+function extra_remove_adminbar_margin() {
+	remove_action('wp_head', '_admin_bar_bump_cb');
+}
+add_action('admin_bar_init', 'extra_remove_adminbar_margin');

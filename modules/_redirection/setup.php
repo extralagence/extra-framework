@@ -38,7 +38,7 @@ function extra_redirect() {
 			case 'auto' :
 				$redirect_params = array(
 					'child_of'    => $post->ID,
-					'sort_column' => 'menu_oder'
+					'sort_column' => 'menu_order'
 				);
 				$redirect_params = apply_filters( 'extra_redirection_get_pages_params', $redirect_params );
 				$pagekids        = get_pages( $redirect_params );

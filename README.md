@@ -7,6 +7,8 @@
 
 Subfields now stored with an array
 
+Needs to update the metabox in the page on existing projects
+
 Structure details :
 ```php
 array (

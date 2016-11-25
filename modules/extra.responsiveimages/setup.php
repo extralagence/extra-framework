@@ -71,8 +71,7 @@ function extra_responsive_images_init() {
 		'tweenmax',
 		'extra',
 		'extra.blur',
-		'extra.jfracs',
-		'extra.slider'
+		'extra.jfracs'
 	), EXTRA_VERSION, true );
 }
 

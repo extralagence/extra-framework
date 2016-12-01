@@ -25,11 +25,6 @@
 
 	function loadResponsiveImage($container) {
 
-		/*if ($container.data("extraResponsiveImageProcessed") === true) {
-		 return;
-		 }*/
-		//$container.data('extraResponsiveImageProcessed', true);
-
 		var datas = $container.find("noscript"),
 			altTxt = datas.data("alt"),
 			itemProp = datas.data("img-itemprop"),
@@ -127,8 +122,6 @@
 			addImage(size);
 		});
 		addImage(size);
-
-		$container.data('extraResponsiveImageProcessed', true);
 	}
 
 
@@ -190,9 +183,8 @@
 					initPlaceholder($responsiveImage);
 					loadResponsiveImage($responsiveImage);
 				} else {
-					$responsiveImage = $elem.find('.responsiveImagePlaceholder');
+					$responsiveImage = $elem.find('.responsiveImagePlaceholder').data("size", "");
 					if ($responsiveImage.length > 0) {
-						$responsiveImage.data("size", "");
 						initPlaceholder($responsiveImage);
 						loadResponsiveImage($responsiveImage);
 					} else {

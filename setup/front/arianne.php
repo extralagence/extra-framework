@@ -20,7 +20,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 		if(isset($current_post) && !empty($current_post)) {
 
 			$home = array(
-				'class' => 'home',
+				'class' => 'arianne-item home',
 				'name'  => __("Accueil", "extra"),
 				'link'  => home_url("/"),
 			);
@@ -28,7 +28,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 			$parents = array();
 
 			$current_item = array(
-				'class' => 'current',
+				'class' => 'arianne-item current',
 				'name'  => '',
 				'link'  => null,
 			);
@@ -44,7 +44,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					foreach ($ancestors_ids as $ancestor_id) {
 						$ancestor_category = get_category($ancestor_id, false);
 						$parents[] = array(
-							'class' => '',
+							'class' => 'arianne-item',
 							'name'  => $ancestor_category->name,
 							'link'  => get_category_link($ancestor_category->term_id),
 						);
@@ -54,7 +54,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				$homeID = get_option("page_for_posts");
 				$home_post = get_post($homeID);
 				$parents[] = array(
-					'class' => '',
+					'class' => 'arianne-item',
 					'name'  => $home_post->post_title,
 					'link'  => get_permalink($homeID),
 				);
@@ -73,18 +73,18 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					$homeID = get_option("page_for_posts");
 					$home_post = get_post($homeID);
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
 						'link'  => get_permalink($homeID),
 					);
 				}
 				$parents[] = array(
-					'class' => '',
+					'class' => 'arianne-item',
 					'name'  => get_the_time('Y'),
 					'link'  => get_year_link(get_the_time('Y')),
 				);
 				$parents[] = array(
-					'class' => '',
+					'class' => 'arianne-item',
 					'name'  => get_the_time('F'),
 					'link'  => get_month_link(get_the_time('Y'), get_the_time('m')),
 				);
@@ -97,13 +97,13 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					$homeID = get_option("page_for_posts");
 					$home_post = get_post($homeID);
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
 						'link'  => get_permalink($homeID),
 					);
 				}
 				$parents[] = array(
-					'class' => '',
+					'class' => 'arianne-item',
 					'name'  => get_the_time('Y'),
 					'link'  => get_year_link(get_the_time('Y')),
 				);
@@ -116,7 +116,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					$homeID = get_option("page_for_posts");
 					$home_post = get_post($homeID);
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
 						'link'  => get_permalink($homeID),
 					);
@@ -139,7 +139,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 					$post_type = get_post_type_object(get_post_type());
 					$slug = $post_type->rewrite;
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => $post_type->labels->singular_name,
 						'link'  => home_url("/").'/'.$slug['slug'],
 					);
@@ -151,7 +151,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 						$homeID = get_option("page_for_posts");
 						$home_post = get_post($homeID);
 						$parents[] = array(
-							'class' => '',
+							'class' => 'arianne-item',
 							'name'  => $home_post->post_title,
 							'link'  => get_permalink($homeID),
 						);
@@ -179,14 +179,14 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				foreach ($ancestors_ids as $ancestor_id) {
 					$ancestor_category = get_category($ancestor_id, false);
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => $ancestor_category->name,
 						'link'  => get_category_link($ancestor_category->term_id),
 					);
 				}
 
 				$parents[] = array(
-					'class' => '',
+					'class' => 'arianne-item',
 					'name'  => $parent->post_title,
 					'link'  => get_permalink($parent),
 				);
@@ -204,7 +204,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				$ancestors_ids = array_reverse($ancestors_ids);
 				foreach ($ancestors_ids as $ancestor_id) {
 					$parents[] = array(
-						'class' => '',
+						'class' => 'arianne-item',
 						'name'  => get_the_title($ancestor_id),
 						'link'  => get_permalink($ancestor_id),
 					);

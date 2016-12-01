@@ -25,9 +25,9 @@
 
 	function loadResponsiveImage($container) {
 
-		if ($container.data("extraResponsiveImageProcessed") === true) {
-			return;
-		}
+		/*if ($container.data("extraResponsiveImageProcessed") === true) {
+		 return;
+		 }*/
 		//$container.data('extraResponsiveImageProcessed', true);
 
 		var datas = $container.find("noscript"),
@@ -168,7 +168,7 @@
 	//
 	//
 	///////////////////////////////////////
-	jQuery(function($) {
+	jQuery(function ($) {
 		$responsiveImagesNotLazy = $(".responsiveImagePlaceholder:not(.responsiveImageLazy)");
 		totalResponsivesImages = $responsiveImagesNotLazy.length;
 		currentResponsiveImagesLoaded = 0;
@@ -213,7 +213,7 @@
 			var $slider = $(event.target),
 				$clones = $slider.find('.extra-slider-clone');
 
-			$window.trigger('extra:responsiveImage:init', [$clones]);
+			$window.trigger('extra:responsiveImage:init', [$clones.find(".responsiveImagePlaceholder").data("size", "")]);
 		});
 
 

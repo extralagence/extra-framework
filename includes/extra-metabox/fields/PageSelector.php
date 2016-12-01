@@ -27,7 +27,7 @@ class PageSelector extends AbstractField {
 	}
 
 	public function the_admin() {
-		if ( !empty( $this->title ) ) : ?>
+		if ( ! empty( $this->title ) ) : ?>
 			<h2>
 				<?php echo ( $this->icon != null ) ? '<div class="dashicons ' . $this->icon . '"></div>' : ''; ?>
 				<?php echo ( $this->title == null ) ? __( 'Image', 'extra-admin' ) : $this->title; ?>
@@ -35,7 +35,8 @@ class PageSelector extends AbstractField {
 		<?php endif;
 		$this->mb->the_field( $this->get_single_field_name( 'page_selector' ) ); ?>
 		<p class="<?php echo $this->css_class; ?> extra-page-selector-container">
-			<label for="<?php $this->mb->the_name(); ?>"><?php echo ( $this->label == null ) ? $this->name : $this->label; ?></label>
+			<?php if ( ! empty( $this->label ) ): ?>
+				<label for="<?php $this->mb->the_name(); ?>"><?php echo $this->label; ?></label><?php endif; ?>
 			<?php $this->generate_post_select( $this->mb->get_the_name(), $this->mb->get_the_value(), $this->post_type, $this->option_none_value ); ?>
 		</p>
 		<?php
@@ -51,9 +52,13 @@ class PageSelector extends AbstractField {
 		} else {
 			//$post_type_object = get_post_type_object( $post_type );
 			//$label = $post_type_object->label;
-			$posts = get_posts( array( 'post_type' => $post_type, 'post_status' => 'publish', 'suppress_filters' => false, 'posts_per_page' => - 1 ) );
+			$posts = get_posts( array( 'post_type'        => $post_type,
+			                           'post_status'      => 'publish',
+			                           'suppress_filters' => false,
+			                           'posts_per_page'   => - 1
+			) );
 			echo '<select name="' . $select_id . '" id="' . $select_id . '">';
-			if ( !empty( $option_none_value ) ) {
+			if ( ! empty( $option_none_value ) ) {
 				echo '<option value="">' . ( $option_none_value === true ? __( 'Choisir dans la liste...', 'extra' ) : $option_none_value ) . '</option>';
 			}
 			foreach ( $posts as $post ) {

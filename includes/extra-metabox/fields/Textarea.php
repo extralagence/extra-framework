@@ -26,7 +26,7 @@ class Textarea extends AbstractField {
 		<div class="extra-field-wrapper <?php echo $this->css_class; ?><?php echo ($this->wide) ? ' extra-textarea-wide' : ''; ?>">
 			<?php $this->mb->the_field($this->get_single_field_name('text')); ?>
 			<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
-			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+			<?php if(!empty($this->label)): ?><label for="<?php $this->mb->the_name(); ?>"><?php echo $this->label; ?></label><?php endif; ?>
 			<div class="extra-input-wrapper">
 				<textarea
 					id="<?php $this->mb->the_name(); ?>"

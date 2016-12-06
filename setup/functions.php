@@ -185,14 +185,14 @@ function remove_parent_classes( $class ) {
 add_action( 'init', 'extra_add_shortcode_submit', 10 );
 function extra_add_shortcode_submit() {
 	if ( function_exists( 'wpcf7_remove_shortcode' ) ) {
-		wpcf7_remove_shortcode( 'submit' );
-		wpcf7_add_shortcode( 'submit', 'extra_submit_shortcode_handler' );
+		wpcf7_remove_form_tag( 'submit' );
+		wpcf7_add_form_tag( 'submit', 'extra_submit_shortcode_handler' );
 	}
 }
 
 if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
 	function extra_submit_shortcode_handler( $tag ) {
-		$tag = new WPCF7_Shortcode( $tag );
+		$tag = new WPCF7_FormTag( $tag );
 
 		$class = wpcf7_form_controls_class( $tag->type );
 

@@ -43,9 +43,10 @@ class Image extends AbstractField {
 					<?php echo ($this->title == null) ? __('Image', 'extra-admin') : $this->title; ?>
 				</h3>
 			<?php endif; ?>
+
+			<?php if(!empty($this->label)): ?><label for="<?php $this->mb->the_name(); ?>"><?php echo $this->label; ?></label><?php endif; ?>
 			<?php $this->mb->the_field($this->get_single_field_name("image")); ?>
 			<div class="extra-custom-image">
-
 
 
 				<?php
@@ -72,7 +73,6 @@ class Image extends AbstractField {
 				?>
 
 				<div class="floater">
-<!--					<label for="--><?php //$this->mb->the_name(); ?><!--">--><?php //echo ($this->label == null) ? __('Sélectionner une image', 'extra-admin') : $this->label; ?><!--</label>-->
 					<div class="extra-input-wrapper">
 						<input class="image-input" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
 						<input class="choose-button button" type="button" value="<?php _e("Sélectionner une image", "extra-admin"); ?>" />

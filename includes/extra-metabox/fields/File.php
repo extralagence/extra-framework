@@ -44,7 +44,6 @@ class File extends AbstractField {
 				<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? __('Ajouter un fichier', 'extra-admin') : $this->label; ?></label>
 				<input class="choose-button button" type="button" value="<?php _e("Ouvrir le gestionnaire de fichiers", "extra-admin"); ?>" />
 				<input class="file-input" name="<?php $this->mb->the_name(); ?>" type="text" value="<?php $this->mb->the_value(); ?>" />
-				<br />
 				<span class="file-name"><?php echo basename($this->mb->get_the_value()); ?></span>
 
 				<?php $this->mb->the_field($this->get_prefixed_field_name("id")); ?>

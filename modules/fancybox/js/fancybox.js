@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 	// SETUP FANCYBOX TITLE
 	$(document).on('afterLoad', function () {
-		if ($.fancybox.coming.element.next(".wp-caption-text").length) {
+		if ($.fancybox.coming.element && $.fancybox.coming.element.next(".wp-caption-text").length) {
 			$.fancybox.coming.title = $.fancybox.coming.element.next(".wp-caption-text").html();
 		} else {
 			$.fancybox.coming.title = '';

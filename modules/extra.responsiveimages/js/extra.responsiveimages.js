@@ -1,237 +1,213 @@
-(function () {
+///////////////////////////////////////
+//
+//
+// EXTRA RESPONSIVE IMAGES
+//
+//
+///////////////////////////////////////
+$(document).ready(function ($) {
+	var totalResponsivesImages = 0,
+		currentResponsiveImagesLoaded = 0;
+
 	///////////////////////////////////////
 	//
 	//
-	// RESPONSIVE IMAGES
+	// INITIALIZATION
 	//
 	//
 	///////////////////////////////////////
-	var $responsiveImagesNotLazy,
-		totalResponsivesImages,
-		currentResponsiveImagesLoaded;
+	function init($container) {
+		var isLazy = $container.hasClass('.extra-responsive-image-lazy'),
+			isCustom = $container.hasClass('.extra-responsive-image-custom-loading'),
+			$placeholderImage = $container.find('.extra-responsive-image-placeholder'),
+			$placeholderCanvas = $container.find('.extra-responsive-image-placeholder-canvas');
 
+		// BLURRED CANVAS
+		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0 && typeof stackBlurImage == 'function') {
+			stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
+		}
 
-	function initPlaceholder($container) {
-		var $placeholderImage = $container.find('.placeholder-image'),
-			$placeholderCanvas = $container.find('.placeholder-canvas');
-		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
-			if (typeof stackBlurImage == 'function') {
-				if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0) {
-					stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
-				}
-			}
+		// Lazy but not custom = follow scroll
+		if (isLazy && !isCustom) {
+			startFollowScroll(null, $container);
+		}
+		// Classic responsive image
+		else {
+			$window.on("extra:resize:responsive", function () {
+				console.log("resize responsive");
+				load($container);
+			});
+			load($container);
 		}
 	}
 
-	function loadResponsiveImage($container) {
+	///////////////////////////////////////
+	//
+	//
+	// LOAD
+	//
+	//
+	///////////////////////////////////////
+	function load($imageWrapper) {
 
-		var datas = $container.find("noscript"),
+		var datas = $imageWrapper.find("noscript"),
 			altTxt = datas.data("alt"),
 			itemProp = datas.data("img-itemprop"),
 			size = extra.getImageVersion();
 
-		function addImage(size) {
-			// If image is the same, return
-			if ($container.data("size") == size) {
-				return;
-			}
+		// If image is the same, return
+		if ($imageWrapper.data("size") == size) {
+			return;
+		}
 
-			// Keep track of the current size
-			$container.data("size", size);
+		// Keep track of the current size
+		$imageWrapper.data("size", size);
 
-			// Get new src
-			var imgSrc = datas.data("src-" + size);
+		// Get new src
+		var imgSrc = datas.data("src-" + size);
 
-			// Do we have a src ?
-			if (!imgSrc || imgSrc == '') {
-				// currentResponsiveImagesLoaded++;
-				totalResponsivesImages--;
-				$container.trigger('extra:responsiveImage:error', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-				if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-					$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+		// Do we have a src ?
+		if (!imgSrc || imgSrc == '') {
+			currentResponsiveImagesLoaded++;
+			// totalResponsivesImages--;
+			$imageWrapper.trigger('extra:responsiveImage:error', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+			checkCompleteState($imageWrapper);
+			return;
+		}
+
+		// Create temporary image
+		var imgElement = $("<img />");
+
+		// EVENTS
+		imgElement
+
+		// ERROR
+			.on("error", function () {
+				currentResponsiveImagesLoaded++;
+				$imageWrapper.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+				checkCompleteState($imageWrapper);
+			})
+
+			// LOAD
+			.on("load", function () {
+				// CORRECT IMAGE SIZE
+				imgElement.attr({
+					'width' : this.width,
+					'height': this.height
+				});
+				if (itemProp) {
+					imgElement.attr('itemprop', itemProp);
 				}
-				return;
-			}
-
-			// Create temporary image
-			var imgElement = $("<img />");
-
-			// EVENTS
-			imgElement
-
-			// ERROR
-				.on("error", function () {
-					currentResponsiveImagesLoaded++;
-					// complete.extra.responsiveImage
-					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-						// complete.extra.responsiveImageTotal
-						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-					}
-					loadResponsiveImage($container);
-				})
-
-				// LOAD
-				.on("load", function () {
-					// CORRECT IMAGE SIZE
-					imgElement.attr({
-						'width' : this.width,
-						'height': this.height
+				// APPEND
+				if ($imageWrapper.hasClass('extra-responsive-image-background')) {
+					$imageWrapper.css('background-image', "url('" + imgSrc + "')");
+				}
+				else if ($imageWrapper.hasClass('extra-responsive-image-svg')) {
+					$imageWrapper.find('>svg').find('image').attr({
+						'xlink:href': imgSrc
 					});
-					if (itemProp) {
-						imgElement.attr('itemprop', itemProp);
-					}
-					// APPEND
-					if ($container.hasClass('responsiveBackgroundImagePlaceholder')) {
-						$container.css('background-image', "url('" + imgSrc + "')");
-					}
-					else if ($container.hasClass('responsiveSvgImagePlaceholder')) {
-						$container.find('>svg').find('image').attr({
-							'xlink:href': imgSrc
-						});
-					}
-					else {
-						$container.find('img').last().after(imgElement);
-						$container.find('img').not(imgElement).remove();
-					}
+				}
+				else {
+					$imageWrapper.append(imgElement);
+					$imageWrapper.find('img').not(imgElement).remove();
+				}
 
-					setTimeout(function () {
-						$container.find('.placeholder-canvas').remove();
-					}, 500);
+				setTimeout(function () {
+					$imageWrapper.find('.extra-responsive-image-placeholder-canvas').remove();
+				}, 500);
 
-					currentResponsiveImagesLoaded++;
-					// complete.extra.responsiveImage
-					$container.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-					if (currentResponsiveImagesLoaded === totalResponsivesImages) {
-						// complete.extra.responsiveImageTotal
-						$container.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
-					}
+				currentResponsiveImagesLoaded++;
+				// complete.extra.responsiveImage
+				$imageWrapper.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
+				checkCompleteState($imageWrapper);
 
-					$container.addClass("extra-responsive-image-loaded");
+				$imageWrapper.addClass("extra-responsive-image-loaded");
 
-				}).attr({
-				alt: altTxt,
-				src: imgSrc
-			});
-
-		}
-
-		//extra.responsive-resize
-		$window.on("extra:resize:responsive", function () {
-			size = extra.getImageVersion();
-			addImage(size);
+			}).attr({
+			alt: altTxt,
+			src: imgSrc
 		});
-		addImage(size);
 	}
 
-
-	/*********************
-	 *
-	 * ON SCROLL
-	 *
-	 *********************/
+	///////////////////////////////////////
+	//
+	//
+	// SCROLL EVENT
+	//
+	//
+	///////////////////////////////////////
 	function startFollowScroll(event, $container) {
-		if (typeof $container != 'undefined' && $container.length > 0) {
-			$container.fracs(function (fracs, previousFracs) {
-				if (fracs.visible > 0) {
-					var $elem = $(this);
 
-					if ($elem.hasClass('responsiveImagePlaceholder')) {
-						loadResponsiveImage($elem.data("size", ""));
-					} else {
-						var $responsiveImages = $elem.find('.responsiveImagePlaceholder');
-						$responsiveImages.each(function () {
-							loadResponsiveImage($(this).data("size", ""));
-						});
-					}
-					$elem.fracs('unbind');
-				}
-			});
-			$container.fracs('check');
-		} else {
-			console.warn('nothing to follow');
+		// Find the responsive image(s)
+		var $image = $container.hasClass('extra-responsive-image-wrapper') ? $container : $container.find('.extra-responsive-image-wrapper');
+
+		// Make sure we have an image
+		if (!$image.length) {
+			console.warn("Nothing to follow");
+			return false;
+		}
+
+		// Add to fracs
+		$container.fracs(function (fracs, previousFracs) {
+			if (fracs.visible > 0) {
+				$image.each(function () {
+					load($(this));
+				});
+				$container.fracs('unbind');
+			}
+		});
+
+		// Checks
+		$container.fracs('check');
+	}
+
+	$window.on('extra:responsiveImage:startFollowScroll', startFollowScroll);
+
+	///////////////////////////////////////
+	//
+	//
+	// IS IT COMPLETE ?
+	//
+	//
+	///////////////////////////////////////
+	function checkCompleteState($imageWrapper) {
+		if (currentResponsiveImagesLoaded === totalResponsivesImages) {
+			$imageWrapper.trigger('extra:responsiveImage:complete', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 		}
 	}
 
-
 	///////////////////////////////////////
 	//
 	//
-	// INIT
+	// INIT LISTENER
 	//
 	//
 	///////////////////////////////////////
-	jQuery(function ($) {
-		$responsiveImagesNotLazy = $(".responsiveImagePlaceholder:not(.responsiveImageLazy)");
-		totalResponsivesImages = $responsiveImagesNotLazy.length;
-		currentResponsiveImagesLoaded = 0;
+	$window.on('extra:responsiveImage:init', function (event, $container) {
 
+		// Make sure we have a container
+		if (!$container || !$container.length) {
+			console.warn("Nothing to init");
+			return false;
+		}
 
-		// INIT PLACEHOLDER FOR ALL RESPONSIVE IMAGE
-		$('.responsiveImagePlaceholder').each(function () {
-			var $responsiveImage = $(this);
-			$responsiveImage.data("size", "");
-			initPlaceholder($responsiveImage);
-		});
+		$container.each(function () {
+			var $elem = $(this),
+				$images = $elem.hasClass('extra-responsive-image-wrapper') ? $elem : $elem.find('.extra-responsive-image-wrapper');
 
-		$window.on('extra:responsiveImage:init', function (event, $container) {
-			$container.each(function () {
-				var $elem = $(this),
-					$responsiveImage = $elem;
-				if ($responsiveImage.hasClass('responsiveImagePlaceholder')) {
-					$responsiveImage.data("size", "");
-					initPlaceholder($responsiveImage);
-					loadResponsiveImage($responsiveImage);
-				} else {
-					$responsiveImage = $elem.find('.responsiveImagePlaceholder').data("size", "");
-					if ($responsiveImage.length > 0) {
-						initPlaceholder($responsiveImage);
-						loadResponsiveImage($responsiveImage);
-					} else {
-						$elem.trigger("extra:responsiveImage:error");
-					}
-				}
-				totalResponsivesImages++;
+			if (!$images.length) {
+				$elem.trigger("extra:responsiveImage:error");
+				console.warn('No responsive images to process');
+			}
+
+			totalResponsivesImages += $images.length;
+
+			$images.each(function (index, element) {
+				var $image = $(element);
+				$image.data("size", "");
+				init($image);
 			});
 		});
-
-		/*********************
-		 *
-		 * EXTRA SLIDERS
-		 *
-		 *********************/
-		$window.on('extra:slider:updateClones', function (event, currentItem, currentIndex) {
-
-			var $slider = $(event.target),
-				$clones = $slider.find('.extra-slider-clone');
-
-			$window.trigger('extra:responsiveImage:init', [$clones.find(".responsiveImagePlaceholder").data("size", "")]);
-		});
-
-
-		/*********************
-		 *
-		 * ON SCROLL
-		 *
-		 *********************/
-		$window.on('extra:responsiveImage:startFollowScroll', startFollowScroll);
-
-		///////////////////////////////////////
-		//
-		//
-		// LOOP THROUGH IMAGES AND START LOADING
-		//
-		//
-		///////////////////////////////////////
-		$responsiveImagesNotLazy.each(function () {
-			var $responsiveImage = $(this);
-			$responsiveImage.data("size", "");
-			loadResponsiveImage($responsiveImage);
-		});
-
-		var $lazyImages = $('.responsiveImageLazy:not(.extra-custom-loading)');
-		if ($lazyImages.length > 0) {
-			startFollowScroll(null, $lazyImages);
-		}
 	});
-})();
+	$window.trigger('extra:responsiveImage:init', [$(document.body)]);
+});

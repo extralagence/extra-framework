@@ -98,9 +98,6 @@ function extra_get_placeholder( $id, $width, $height ) {
 		}
 
 		$placeholder_src = wp_get_attachment_image_src( $id, $placeholder_size );
-		// DEBUGGING
-//			$placeholder_src =  wp_get_attachment_image_src( $id, $first_dimension );
-//			$placeholder_src = $placeholder_src[0];
 
 	} else {
 		$placeholder_src    = array();
@@ -127,11 +124,12 @@ function extra_get_placeholder( $id, $width, $height ) {
  */
 function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
-// hook it to override available sizes
+	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
-	$class .= ( $lazy_loading ) ? ' responsiveImageLazy' : '';
-	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
+	$class .= ( $lazy_loading ) ? ' extra-responsive-image-lazy' : '';
+	$class .= ( $custom_loading ) ? ' extra-responsive-image-custom-loading' : '';
+	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 
 // SRC IS AN ID
 	if ( empty( $id ) || ! is_numeric( $id ) ) {
@@ -139,7 +137,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		ob_start();
 		?>
 		<img
-			class="placeholder-image<?php echo ! empty( $class ) ? ' ' . $class : ''; ?>"
+			class="extra-responsive-image-placeholder<?php echo ! empty( $class ) ? ' ' . $class : ''; ?>"
 			src="<?php echo EXTRA_URI; ?>/assets/img/blank.png">
 		<?php
 		$return = ob_get_contents();
@@ -165,13 +163,9 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 
 	// START RENDERING
 	ob_start();
-
-	/*
-	 * src="<?php echo EXTRA_URI ?>/assets/img/blank.png"
-	 */
 	?>
 
-	<<?php echo $tag; ?> class="responsiveImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
+	<<?php echo $tag; ?> class="extra-responsive-image-wrapper<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?><?php echo ( ! empty( $caption ) ) ? ' wp-caption' : ''; ?>"<?php echo ( $img_itemprop ) ? ' itemprop="image" itemscope itemtype="http://schema.org/ImageObject"' : ''; ?>>
 	<?php if ( $img_itemprop ) :
 		$dimension = is_array( $dimensions ) ? reset( $dimensions ) : $dimensions;
 		$src    = wp_get_attachment_image_src( $id, $dimension );
@@ -194,22 +188,19 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		$src       = wp_get_attachment_image_src( $id, $dimension );
 		echo $src[0];
 		?>"
-		     width="<?php echo $src[1]; ?>"
-		     height="<?php echo $src[2]; ?>">
+			 width="<?php echo $src[1]; ?>"
+			 height="<?php echo $src[2]; ?>">
 	</noscript>
-	<?php
-	$placeholder_src = extra_get_placeholder( $id, $src[1], $src[2] );
-	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
-	?>
-	<img class="placeholder-image"
-	     src="<?php echo $placeholder_src[0]; ?>"
-	     alt=""
-	     width="<?php echo ( ! empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
-	     height="<?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
-	     style="height: <?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
+	<?php $placeholder_src = extra_get_placeholder( $id, $src[1], $src[2] ); ?>
+	<img class="extra-responsive-image-placeholder-thumb"
+		 src="<?php echo $placeholder_src[0]; ?>"
+		 alt=""
+		 width="<?php echo ( ! empty( $placeholder_src[1] ) ) ? $placeholder_src[1] : ''; ?>"
+		 height="<?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>"
+		 style="height: <?php echo ( ! empty( $placeholder_src[2] ) ) ? $placeholder_src[2] : ''; ?>px;"
 	/>
 	<?php if ( $use_placeholder ) : ?>
-		<canvas class="placeholder-canvas"></canvas>
+		<canvas class="extra-responsive-image-placeholder-canvas"></canvas>
 	<?php endif; ?>
 	<?php if ( ! empty( $caption ) ) : ?>
 		<figcaption class="wp-caption-text">
@@ -245,8 +236,8 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
-	$class .= ( $lazy_loading ) ? ' responsiveImageLazy' : '';
-	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
+	$class .= ( $lazy_loading ) ? ' extra-responsive-image-lazy' : '';
+	$class .= ( $custom_loading ) ? ' extra-responsive-custom-loading' : '';
 
 	// SRC IS AN ID
 	if ( ! is_numeric( $id ) ) {
@@ -261,7 +252,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 
 	?>
 
-	<<?php echo $tag; ?> class="responsiveImagePlaceholder responsiveBackgroundImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>"
+	<<?php echo $tag; ?> class="extra-responsive-image-wrapper extra-responsive-image-background<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>"
 	style="background-image: url('<?php echo EXTRA_URI . '/assets/img/blank.png'; ?>');">
 	<noscript
 		<?php foreach ( $sizes as $size => $value ): ?>
@@ -296,8 +287,8 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
-	$class .= ( $lazy_loading ) ? ' responsiveImageLazy' : '';
-	$class .= ( $custom_loading ) ? ' extra-custom-loading' : '';
+	$class .= ( $lazy_loading ) ? ' extra-responsive-image-lazy' : '';
+	$class .= ( $custom_loading ) ? ' extra-responsive-image-custom-loading' : '';
 
 	// SRC IS AN ID
 	if ( ! is_numeric( $id ) ) {
@@ -311,13 +302,13 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	?>
 
 	<div
-		class="responsiveImagePlaceholder responsiveSvgImagePlaceholder<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
+		class="extra-responsive-image-wrapper extra-responsive-image-svg<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
 		<svg width="100%" height="100%"
-		     preserveAspectRatio="none"
-		     xmlns="http://www.w3.org/2000/svg"
-		     xmlns:xlink="http://www.w3.org/1999/xlink">
+			 preserveAspectRatio="none"
+			 xmlns="http://www.w3.org/2000/svg"
+			 xmlns:xlink="http://www.w3.org/1999/xlink">
 			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
-			       xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
+				   xlink:href="<?php echo EXTRA_URI ?>/assets/img/blank.png"></image>
 		</svg>
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>

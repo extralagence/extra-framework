@@ -72,7 +72,7 @@ function extra_custom_share( $id = 0 ) {
 		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
 
 			$email = '
-			<a href="#extra-social-share-wrapper" class="extra-social-button extra-social-share">
+			<a href="#extra-social-share-'.$extra_sharer_counter.'-wrapper" class="extra-social-button extra-social-share">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-mail"></use></svg>
 				<span class="text">' . __( 'Partager par email', 'extra' ) . '</span>
 			</a>

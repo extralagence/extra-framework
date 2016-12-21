@@ -20,7 +20,11 @@ function extra_slider_init() {
 	), EXTRA_VERSION, true );
 	// EXTRA SLIDER
 	wp_enqueue_script( 'extra.slider', EXTRA_MODULES_URI . '/extra.slider/inc/js/extra.slider.js', array(
-		'jquery',
+		'tweenmax',
+		'draggable',
+		'extra.responsiveimages'
+	), EXTRA_VERSION, true );
+	wp_enqueue_script( 'extra.slider.responsiveimages', EXTRA_MODULES_URI . '/extra.slider/front/js/extra.slider.responsiveimages.js', array(
 		'tweenmax',
 		'draggable',
 		'extra.responsiveimages'

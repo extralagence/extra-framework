@@ -33,22 +33,41 @@
 				containerOuterHeight,
 				innerHeight,
 				offsetTop,
+				allowStick = true,
 				isFixed = false,
 				isEnded = false,
 				resizeTime = null;
 
 			/*********************************** FUNCTIONS ***********************************/
 			function resizeHandler() {
-				TweenMax.set($container, {
-					clearProps: 'height'
+				$this.css({
+					'position': '',
+					'top'     : '',
+					'width'   : ''
 				});
+				$container.css({
+					'height': ''
+				});
+				isFixed = false;
+				isEnded = false;
+				$this.removeClass(opt.class);
+
+
 				offsetTop = $container.offset().top;
 				containerHeight = $container.height();
 				containerOuterHeight = $container.outerHeight();
 				innerHeight = $this.outerHeight();
+
+				// Element height must be less than window height
+				allowStick = innerHeight < wHeight;
+
+				// Adjust container height if needed
 				if (isFixed && opt.keepHeight && containerHeight == 0) {
 					containerHeight = containerOuterHeight = innerHeight;
+					$container.height(containerOuterHeight);
 				}
+
+				// Adjust element width if needed
 				if (isFixed && opt.keepChildWidth) {
 					$this.innerWidth($container.innerWidth());
 				}
@@ -56,6 +75,11 @@
 			}
 
 			function scrollHandler() {
+
+				if (!allowStick) {
+					return;
+				}
+
 				var scrollTop = $window.scrollTop(),
 					diffStart = offsetTop - scrollTop - opt.offset,
 					diffStop = offsetTop + containerHeight - innerHeight - scrollTop - opt.offset;
@@ -64,6 +88,12 @@
 					if (diffStart >= 0) {
 						isFixed = false;
 						$this.removeClass(opt.class);
+						TweenMax.set($container, {
+							clearProps: 'height'
+						});
+						TweenMax.set($this, {
+							clearProps: 'width'
+						});
 					}
 				} else {
 					if (diffStart < 0) {
@@ -82,15 +112,28 @@
 					if (isEnded) {
 						if (diffStop > 0) {
 							isEnded = false;
-							TweenMax.set($this, {
-								'clearProps': 'all'
+							$this.css({
+								'position': '',
+								'top'     : ''
 							});
+							if (!isFixed) {
+								$container.height('');
+								$this.width('');
+							}
 						}
 					} else {
 						if (diffStop <= 0) {
 							isEnded = true;
-							$this.css('position', 'absolute');
-							$this.css('top', (containerHeight - innerHeight) + 'px');
+							$this.css({
+								'position': 'absolute',
+								'top'     : (containerHeight - innerHeight) + 'px'
+							});
+							if (opt.keepHeight) {
+								$container.height(containerOuterHeight);
+							}
+							if (opt.keepChildWidth) {
+								$this.innerWidth($container.innerWidth());
+							}
 						}
 					}
 				}

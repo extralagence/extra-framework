@@ -8,22 +8,26 @@
  *
  *
  *********************/
-global $redirection_metabox;
-$redirection_metabox = new ExtraMetaBox( array(
-	'id'               => '_redirection',
-	'lock'             => WPALCHEMY_LOCK_AFTER_POST_TITLE,
-	'title'            => __( "Redirection", "extra" ),
-	'types'            => array( 'page' ),
-	'include_template' => array( 'template-redirect.php' ),
-	'hide_editor'      => true,
-	'fields'           => array(
-		array(
-			'type'      => 'redirection',
-			'name'      => 'redirection',
-			'css_class' => 'bloc'
+function extra_redirection__metabox() {
+	global $redirection_metabox;
+	$redirection_metabox = new ExtraMetaBox( array(
+		'id'               => '_redirection',
+		'lock'             => WPALCHEMY_LOCK_AFTER_POST_TITLE,
+		'title'            => __( "Redirection", "extra" ),
+		'types'            => array( 'page' ),
+		'include_template' => array( 'template-redirect.php' ),
+		'hide_editor'      => true,
+		'fields'           => array(
+			array(
+				'type'      => 'redirection',
+				'name'      => 'redirection',
+				'css_class' => 'bloc'
+			),
 		),
-	),
-) );
+	) );
+}
+
+add_action( 'init', 'extra_redirection__metabox', 12 );
 
 
 function extra_redirect() {

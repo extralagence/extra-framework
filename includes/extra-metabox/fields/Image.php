@@ -36,7 +36,7 @@ class Image extends AbstractField {
 
 	public function the_admin() {
 		?>
-		<div class="<?php echo $this->css_class; ?>">
+		<div class="extra-metabox-image <?php echo $this->css_class; ?>">
 			<?php if (!empty($this->title)) : ?>
 				<h3>
 					<?php echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>

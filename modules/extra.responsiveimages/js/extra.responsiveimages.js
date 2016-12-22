@@ -7,7 +7,8 @@
 ///////////////////////////////////////
 $(document).ready(function ($) {
 	var totalResponsivesImages = 0,
-		currentResponsiveImagesLoaded = 0;
+		currentResponsiveImagesLoaded = 0,
+		$initialImages = $(document.body).find(".extra-responsive-image-wrapper").not('.extra-responsive-custom-loading');
 
 	///////////////////////////////////////
 	//
@@ -32,7 +33,7 @@ $(document).ready(function ($) {
 			startFollowScroll(null, $container);
 		}
 		// Classic responsive image
-		else {
+		else if (!isLazy) {
 			$window.on("extra:resize:responsive", function () {
 				console.log("resize responsive");
 				load($container);
@@ -209,5 +210,18 @@ $(document).ready(function ($) {
 			});
 		});
 	});
-	$window.trigger('extra:responsiveImage:init', [$(document.body)]);
+
+	///////////////////////////////////////
+	//
+	//
+	// FIRST LAUNCH
+	//
+	//
+	///////////////////////////////////////
+	if ($initialImages.length) {
+		totalResponsivesImages = $initialImages.length;
+		$initialImages.each(function () {
+			init($(this));
+		});
+	}
 });

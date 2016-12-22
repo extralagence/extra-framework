@@ -60,7 +60,8 @@ class Checkbox extends AbstractField {
 	}
 
 	public function the_admin_column_value() {
-		if (!empty($this->mb->get_the_value($this->name))) {
+		$value = $this->mb->get_the_value($this->name);
+		if (!empty($value)) {
 			_e("Oui", "extra-admin");
 		} else {
 			_e("Non", "extra-admin");

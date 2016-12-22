@@ -184,7 +184,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		<?php endforeach; ?>>
 
 		<img alt="<?php echo $alt; ?>" src="<?php
-		$dimension = reset( $dimensions );
+		$dimension = is_array( $dimensions ) ? reset( $dimensions ) : $dimensions;
 		$src       = wp_get_attachment_image_src( $id, $dimension );
 		echo $src[0];
 		?>"

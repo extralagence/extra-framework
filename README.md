@@ -2,6 +2,11 @@
 
 ## Changelog
 
+###2016/12/21
+*Version 0.1.0*
+
+See https://github.com/extralagence/extra-framework/releases/tag/0.1.0 for details.
+
 ###2016/10/24
 *Updated link field metabox*
 

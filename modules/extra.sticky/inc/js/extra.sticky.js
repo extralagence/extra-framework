@@ -20,7 +20,8 @@
 			'limit'              : true,
 			'offset'             : 0,
 			'keepContainerHeight': false,
-			'keepChildWidth'     : false
+			'keepChildWidth'     : false,
+			'minSize'            : 0
 		}, options);
 
 		this.each(function () {
@@ -29,6 +30,7 @@
 			var $this = $(this),
 				$window = $(window),
 				$container = opt.container ? opt.container : $this.parent(),
+				windowWidth = window.innerWidth,
 				containerHeight,
 				containerOuterHeight,
 				innerHeight,
@@ -40,6 +42,7 @@
 
 			/*********************************** FUNCTIONS ***********************************/
 			function resizeHandler() {
+				$window.off('scroll', scrollHandler);
 				$this.css({
 					'position': '',
 					'top'     : '',
@@ -51,6 +54,12 @@
 				isFixed = false;
 				isEnded = false;
 				$this.removeClass(opt.class);
+				windowWidth = window.innerWidth;
+
+				// Check minimum size requirement
+				if (windowWidth < opt.minSize) {
+					return;
+				}
 
 
 				offsetTop = $container.offset().top;
@@ -71,6 +80,7 @@
 				if (isFixed && opt.keepChildWidth) {
 					$this.innerWidth($container.innerWidth());
 				}
+				$window.on('scroll', scrollHandler);
 				scrollHandler();
 			}
 
@@ -147,7 +157,6 @@
 				}
 				resizeTime = setTimeout(resizeHandler, 300);
 			});
-			$window.on('scroll', scrollHandler);
 			/*********************************** INIT ***********************************/
 			resizeHandler();
 		});

@@ -85,12 +85,16 @@
 							TweenMax.set($this, {
 								'clearProps': 'all'
 							});
+							if (opt.keepChildWidth) {
+								$this.innerWidth($container.innerWidth());
+							}
 						}
 					} else {
 						if (diffStop <= 0) {
 							isEnded = true;
 							$this.css('position', 'absolute');
 							$this.css('top', (containerHeight - innerHeight) + 'px');
+
 						}
 					}
 				}

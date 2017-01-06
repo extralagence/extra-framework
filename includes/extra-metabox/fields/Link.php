@@ -79,55 +79,64 @@ class Link extends AbstractField {
 				// WE MIGHT BE IN A DEPRECATED CASE !
 				// Type
 				$this->mb->the_field( $this->get_prefixed_field_name( "type" ) );
-				if ( ( ! array_key_exists( 'type', $value ) || empty( $value['type'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$type_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'type', $value ) || empty( $value['type'] ) ) && ! empty( $type_value ) ) {
 					$value['type'] = $this->mb->get_the_value();
 				}
 
 				// Url
 				$this->mb->the_field( $this->get_prefixed_field_name( "url" ) );
-				if ( ( ! array_key_exists( 'url', $value ) || empty( $value['url'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$url_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'url', $value ) || empty( $value['url'] ) ) && ! empty( $url_value ) ) {
 					$value['url'] = $this->mb->get_the_value();
 				}
 
 				// Content search
 				$this->mb->the_field( $this->get_prefixed_field_name( "content_search" ) );
-				if ( ( ! array_key_exists( 'content_search', $value ) || empty( $value['content_search'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$content_search_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'content_search', $value ) || empty( $value['content_search'] ) ) && ! empty( $content_search_value ) ) {
 					$value['content_search'] = $this->mb->get_the_value();
 				}
 
 				// Post id
 				$this->mb->the_field( $this->get_prefixed_field_name( "content" ) );
-				if ( ( ! array_key_exists( 'post_id', $value ) || empty( $value['post_id'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$content_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'post_id', $value ) || empty( $value['post_id'] ) ) && ! empty( $content_value ) ) {
 					$value['post_id'] = $this->mb->get_the_value();
 				}
 
 				// Taxonomy search
 				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy_search" ) );
-				if ( ( ! array_key_exists( 'taxonomy_search', $value ) || empty( $value['taxonomy_search'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$taxonomy_search_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'taxonomy_search', $value ) || empty( $value['taxonomy_search'] ) ) && ! empty( $taxonomy_search_value ) ) {
 					$value['taxonomy_search'] = $this->mb->get_the_value();
 				}
 
 				// Taxonomy
 				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy" ) );
-				if ( ( ! array_key_exists( 'taxonomy', $value ) || empty( $value['taxonomy'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$taxonomy_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'taxonomy', $value ) || empty( $value['taxonomy'] ) ) && ! empty( $taxonomy_value ) ) {
 					$value['taxonomy'] = $this->mb->get_the_value();
 				}
 
 				// Term slug
 				$this->mb->the_field( $this->get_prefixed_field_name( "taxonomy-slug" ) );
-				if ( ( ! array_key_exists( 'term_slug', $value ) || empty( $value['term_slug'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$taxonomy_slug_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'term_slug', $value ) || empty( $value['term_slug'] ) ) && ! empty( $taxonomy_slug_value ) ) {
 					$value['term_slug'] = $this->mb->get_the_value();
 				}
 
 				// Title
 				$this->mb->the_field( $this->get_prefixed_field_name( "title" ) );
-				if ( ( ! array_key_exists( 'title', $value ) || empty( $value['title'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$title_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'title', $value ) || empty( $value['title'] ) ) && ! empty( $title_value ) ) {
 					$value['title'] = $this->mb->get_the_value();
 				}
 
 				// Target
 				$this->mb->the_field( $this->get_prefixed_field_name( "target" ) );
-				if ( ( ! array_key_exists( 'target', $value ) || empty( $value['target'] ) ) && ! empty( $this->mb->get_the_value() ) ) {
+				$target_value = $this->mb->get_the_value();
+				if ( ( ! array_key_exists( 'target', $value ) || empty( $value['target'] ) ) && ! empty( $target_value ) ) {
 					$value['target'] = $this->mb->get_the_value();
 				}
 			} else {

@@ -55,7 +55,7 @@ class ExtraPageBuilder extends WPAlchemy_MetaBox {
 
 	function __construct ($arr) {
 		$arr['template'] = EXTRA_INCLUDES_PATH.'/extra-metabox/page-builder/template.php';
-		parent::WPAlchemy_MetaBox($arr);
+		parent::__construct($arr);
 
 		$this->add_action('init', array($this, 'extra_init'));
 

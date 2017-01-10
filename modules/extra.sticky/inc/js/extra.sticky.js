@@ -62,7 +62,7 @@
 				allowStick = innerHeight < wHeight;
 
 				// Adjust container height if needed
-				if (isFixed && opt.keepHeight && containerHeight == 0) {
+				if (isFixed && opt.keepContainerHeight && containerHeight == 0) {
 					containerHeight = containerOuterHeight = innerHeight;
 					$container.height(containerOuterHeight);
 				}
@@ -99,7 +99,7 @@
 					if (diffStart < 0) {
 						isFixed = true;
 						$this.addClass(opt.class);
-						if (opt.keepHeight) {
+						if (opt.keepContainerHeight) {
 							$container.height(containerOuterHeight);
 						}
 						if (opt.keepChildWidth) {
@@ -128,7 +128,7 @@
 								'position': 'absolute',
 								'top'     : (containerHeight - innerHeight) + 'px'
 							});
-							if (opt.keepHeight) {
+							if (opt.keepContainerHeight) {
 								$container.height(containerOuterHeight);
 							}
 							if (opt.keepChildWidth) {

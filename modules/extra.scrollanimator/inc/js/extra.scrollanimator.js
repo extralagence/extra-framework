@@ -5,13 +5,12 @@ function ExtraScrollAnimator(options) {
 	self.init = function (_options) {
 
 		self.options = $.extend({
-			target   : null,
-			tween    : null,
-			ease     : Linear.easeNone,
-			min      : "100%",
-			max      : "66%",
-			autoAlpha: false,
-			speed    : 0.3
+			target: null,
+			tween : null,
+			ease  : Linear.easeNone,
+			min   : 0,
+			max   : 1,
+			speed : 0.3
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -26,7 +25,6 @@ function ExtraScrollAnimator(options) {
 
 		self.allowScrollUpdate = true;
 		self.update();
-		self.updatePosition(true);
 		self.repaint();
 	};
 
@@ -90,4 +88,13 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** LAUCNH INIT ***********************************/
 	self.init(options);
+
+
+	/*********************************** EXTERNAL UPDATE TWEEN ***********************************/
+	self.updateTween = function (tween) {
+		self.tween = tween;
+		self.allowScrollUpdate = true;
+		self.update();
+		self.repaint();
+	};
 }

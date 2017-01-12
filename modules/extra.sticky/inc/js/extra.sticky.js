@@ -68,7 +68,7 @@
 				outerHeight = $this.outerHeight();
 
 				// Element height must be less than window height and less than container height
-				allowStick = outerHeight < wHeight && outerHeight < containerOuterHeight;
+				allowStick = outerHeight < wHeight && (outerHeight < containerOuterHeight || !opt.limit) ;
 
 				// Adjust container height if needed
 				if (isFixed && opt.keepContainerHeight && containerHeight == 0) {
@@ -93,6 +93,7 @@
 				var scrollTop = $window.scrollTop(),
 					diffStart = offsetTop - scrollTop - opt.offset,
 					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
+
 
 				if (isFixed) {
 					if (diffStart >= 0) {

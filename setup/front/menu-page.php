@@ -64,7 +64,7 @@ $post_status     = apply_filters( 'extra_menu_page__post_status', 'publish' );
 //
 //
 ///////////////////////////////////////
-function menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_status = 'publish' ) {
+function extra_menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_status = 'publish' ) {
 	// SET ARGS
 	$args     = array(
 		'parent'      => $parent->ID,
@@ -98,7 +98,7 @@ function menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_status
 					echo '<a href="' . get_permalink( $child->ID ) . '">' . $child_title . '</a>';
 				}
 
-				menu_page( $id, $child, ( $level + 1 ), $ancestors, $post_status );
+				extra_menu_page( $id, $child, ( $level + 1 ), $ancestors, $post_status );
 
 				echo '</li>';
 			}
@@ -122,6 +122,6 @@ function menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_status
 		}
 		echo '</div>';
 	}
-	menu_page( $current_post_id, $top_parent, 0, $current_ancestors, $post_status );
+    extra_menu_page( $current_post_id, $top_parent, 0, $current_ancestors, $post_status );
 	?>
 </div>

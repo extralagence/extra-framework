@@ -20,7 +20,8 @@
 			'limit'              : true,
 			'offset'             : 0,
 			'keepContainerHeight': false,
-			'keepChildWidth'     : false
+			'keepChildWidth'     : false,
+			'minSize'            : 0
 		}, options);
 
 		this.each(function () {
@@ -29,9 +30,10 @@
 			var $this = $(this),
 				$window = $(window),
 				$container = opt.container ? opt.container : $this.parent(),
+				windowWidth = window.innerWidth,
 				containerHeight,
 				containerOuterHeight,
-				innerHeight,
+				outerHeight,
 				offsetTop,
 				allowStick = true,
 				isFixed = false,
@@ -40,6 +42,7 @@
 
 			/*********************************** FUNCTIONS ***********************************/
 			function resizeHandler() {
+				$window.off('scroll', scrollHandler);
 				$this.css({
 					'position': '',
 					'top'     : '',
@@ -51,19 +54,25 @@
 				isFixed = false;
 				isEnded = false;
 				$this.removeClass(opt.class);
+				windowWidth = window.innerWidth;
+
+				// Check minimum size requirement
+				if (windowWidth < opt.minSize) {
+					return;
+				}
 
 
 				offsetTop = $container.offset().top;
 				containerHeight = $container.height();
 				containerOuterHeight = $container.outerHeight();
-				innerHeight = $this.outerHeight();
+				outerHeight = $this.outerHeight();
 
-				// Element height must be less than window height
-				allowStick = innerHeight < wHeight;
+				// Element height must be less than window height and less than container height
+				allowStick = outerHeight < wHeight && outerHeight < containerOuterHeight;
 
 				// Adjust container height if needed
 				if (isFixed && opt.keepContainerHeight && containerHeight == 0) {
-					containerHeight = containerOuterHeight = innerHeight;
+					containerHeight = containerOuterHeight = outerHeight;
 					$container.height(containerOuterHeight);
 				}
 
@@ -71,6 +80,7 @@
 				if (isFixed && opt.keepChildWidth) {
 					$this.innerWidth($container.innerWidth());
 				}
+				$window.on('scroll', scrollHandler);
 				scrollHandler();
 			}
 
@@ -82,7 +92,7 @@
 
 				var scrollTop = $window.scrollTop(),
 					diffStart = offsetTop - scrollTop - opt.offset,
-					diffStop = offsetTop + containerHeight - innerHeight - scrollTop - opt.offset;
+					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
 
 				if (isFixed) {
 					if (diffStart >= 0) {
@@ -126,7 +136,7 @@
 							isEnded = true;
 							$this.css({
 								'position': 'absolute',
-								'top'     : (containerHeight - innerHeight) + 'px'
+								'top'     : (containerHeight - outerHeight) + 'px'
 							});
 							if (opt.keepContainerHeight) {
 								$container.height(containerOuterHeight);
@@ -147,7 +157,6 @@
 				}
 				resizeTime = setTimeout(resizeHandler, 300);
 			});
-			$window.on('scroll', scrollHandler);
 			/*********************************** INIT ***********************************/
 			resizeHandler();
 		});

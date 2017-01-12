@@ -33,7 +33,7 @@
 				windowWidth = window.innerWidth,
 				containerHeight,
 				containerOuterHeight,
-				innerHeight,
+				outerHeight,
 				offsetTop,
 				allowStick = true,
 				isFixed = false,
@@ -65,14 +65,14 @@
 				offsetTop = $container.offset().top;
 				containerHeight = $container.height();
 				containerOuterHeight = $container.outerHeight();
-				innerHeight = $this.outerHeight();
+				outerHeight = $this.outerHeight();
 
-				// Element height must be less than window height
-				allowStick = innerHeight < wHeight;
+				// Element height must be less than window height and less than container height
+				allowStick = outerHeight < wHeight && outerHeight < containerOuterHeight;
 
 				// Adjust container height if needed
 				if (isFixed && opt.keepContainerHeight && containerHeight == 0) {
-					containerHeight = containerOuterHeight = innerHeight;
+					containerHeight = containerOuterHeight = outerHeight;
 					$container.height(containerOuterHeight);
 				}
 
@@ -92,7 +92,7 @@
 
 				var scrollTop = $window.scrollTop(),
 					diffStart = offsetTop - scrollTop - opt.offset,
-					diffStop = offsetTop + containerHeight - innerHeight - scrollTop - opt.offset;
+					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
 
 				if (isFixed) {
 					if (diffStart >= 0) {
@@ -136,7 +136,7 @@
 							isEnded = true;
 							$this.css({
 								'position': 'absolute',
-								'top'     : (containerHeight - innerHeight) + 'px'
+								'top'     : (containerHeight - outerHeight) + 'px'
 							});
 							if (opt.keepContainerHeight) {
 								$container.height(containerOuterHeight);

@@ -79,16 +79,18 @@ function extra_menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_
 		foreach ( $children as $child ) {
 
 			if ( $child->post_parent == $parent->ID ) {
+				$max_level = apply_filters( 'extra_menu_page__max_level', null);
+				$allow_next_level = $max_level === null || $max_level > $level;
+
 				$selected = '';
 				$selected .= ( $id == $child->ID ) ? " current-{$child->post_type}-item current-menu-item" : "";
 				if ( in_array( $child->ID, $ancestors ) ) {
 					$selected .= " parent-page-item";
 				}
 				$sub_children = get_pages( array( 'parent' => $child->ID ) );
-				if ( ! empty( $sub_children ) ) {
+				if ( ! empty( $sub_children ) && $allow_next_level ) {
 					$selected .= " menu-has-children";
 				}
-
 
 				echo '<li class="menu-item ' . $child->post_type . '-item page-item-' . $child->ID . $selected . '">';
 				if ( $id == $child->ID ) {
@@ -98,7 +100,9 @@ function extra_menu_page( $id, $parent, $level = 1, $ancestors = array(), $post_
 					echo '<a href="' . get_permalink( $child->ID ) . '">' . $child_title . '</a>';
 				}
 
-				extra_menu_page( $id, $child, ( $level + 1 ), $ancestors, $post_status );
+				if ($allow_next_level) {
+					extra_menu_page( $id, $child, ( $level + 1 ), $ancestors, $post_status );
+				}
 
 				echo '</li>';
 			}

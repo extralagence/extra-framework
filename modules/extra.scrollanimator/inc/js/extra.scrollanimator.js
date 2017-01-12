@@ -33,7 +33,7 @@ function ExtraScrollAnimator(options) {
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
 			scrollTop = $window.scrollTop(),
 			coords = self.options.target.data('coords'),
-			percent = Math.max(0, Math.min(1, (scrollTop - coords.min) / (coords.max - coords.min)));
+			percent = Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
 
 		if (small) {
 			percent = 1;
@@ -92,7 +92,9 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** EXTERNAL UPDATE TWEEN ***********************************/
 	self.updateTween = function (tween) {
-		self.tween = tween;
+		self.options.tween = tween;
+		self.options.tween.paused(true);
+		self.options.tween.progress(1);
 		self.allowScrollUpdate = true;
 		self.update();
 		self.repaint();

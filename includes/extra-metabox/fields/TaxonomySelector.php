@@ -46,6 +46,7 @@ class TaxonomySelector extends AbstractField {
 			'name' => $this->mb->get_the_name(),
 			'selected' => $this->mb->get_the_value(),
 			'taxonomy' => $this->taxonomy,
+			'hierarchical' => true,
 			'hide_empty' => false
 		));
 	}
@@ -57,8 +58,12 @@ class TaxonomySelector extends AbstractField {
 	}
 
 	public function the_admin_column_value() {
-		//TODO
+		$term_name = '';
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
-		echo $meta;
+		if (!empty($meta)) {
+			$term = get_term_by('id', $meta, $this->taxonomy);
+			$term_name = $term->name;
+		}
+		echo $term_name;
 	}
 } 

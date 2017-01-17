@@ -10,15 +10,16 @@ function ExtraAjaxNavigation(options) {
 
 	/*********************************** OPTIONS ***********************************/
 	self.options = $.extend({
-		wrapper                : null,
-		contentSelector        : '.extra-ajax-navigation-wrapper',
-		itemSelector           : '.extra-ajax-navigation-item',
-		nextButtonSelector     : '.extra-ajax-navigation-next-button',
-		previousButtonSelector : '.extra-ajax-navigation-previous-button',
-		loadingClass           : 'extra-ajax-navigation-loading',
-		completeClass          : 'extra-ajax-navigation-complete',
-		pageMarkerSelector     : '.extra-ajax-navigation-page-marker',
-		startPageAt            : 1
+		wrapper               : null,
+		contentSelector       : '.extra-ajax-navigation-wrapper',
+		itemSelector          : '.extra-ajax-navigation-item',
+		nextButtonSelector    : '.extra-ajax-navigation-next-button',
+		previousButtonSelector: '.extra-ajax-navigation-previous-button',
+		loadingClass          : 'extra-ajax-navigation-loading',
+		nextCompleteClass     : 'extra-ajax-navigation-next-complete',
+		previousCompleteClass : 'extra-ajax-navigation-previous-complete',
+		pageMarkerSelector    : '.extra-ajax-navigation-page-marker',
+		startPageAt           : 1
 	}, options);
 
 
@@ -35,7 +36,8 @@ function ExtraAjaxNavigation(options) {
 		$pageMarkers = self.options.wrapper.find(self.options.pageMarkerSelector),
 		currentPageNum = self.options.startPageAt,
 		isLoading = false,
-		isComplete = false,
+		nextIsComplete = false,
+		previousIsComplete = false,
 		wHeight = 0,
 		scrollTop = 0,
 		pages = [],
@@ -45,19 +47,19 @@ function ExtraAjaxNavigation(options) {
 
 	function clickHandler($button, isPrevious) {
 		// CAN WE START LOADING ?
-		if (isLoading || isComplete) {
+		if (isLoading || (nextIsComplete && !isPrevious) || (previousIsComplete && isPrevious)) {
 			return;
 		}
 
 		// We are loading
 		isLoading = true;
-		$button.addClass(self.options.loadingClass);
+		self.options.wrapper.addClass(self.options.loadingClass);
 
 		// Create a temporary div to store divs
 		var $tmpDiv = $("<div></div>"),
 
-		// Get url from button
-		url = $button.attr("href");
+			// Get url from button
+			url = $button.attr("href");
 
 		// Load next page content into the temporary div
 		$.ajax(url, {
@@ -70,7 +72,7 @@ function ExtraAjaxNavigation(options) {
 
 				// We are no longer loading
 				isLoading = false;
-				$button.removeClass(self.options.loadingClass);
+				self.options.wrapper.removeClass(self.options.loadingClass);
 
 				// Handles error
 				if (status == "error") {
@@ -81,13 +83,13 @@ function ExtraAjaxNavigation(options) {
 
 				// Get elements from our load
 				var $items = $tmpDiv.find(self.options.itemSelector),
-					$newButton = (isPrevious) ? $tmpDiv.find(self.options.previousButtonSelector) : $tmpDiv.find(self.options.nextButtonSelector),
+					$newNextButton = $tmpDiv.find(self.options.nextButtonSelector),
+					$newPreviousButton = $tmpDiv.find(self.options.previousButtonSelector),
 					$pageMarker = $tmpDiv.find(self.options.pageMarkerSelector);
 
 				// Appends page marker
 				if ($pageMarker.length) {
 					if (isPrevious) {
-						console.log(self.options.wrapper.find(self.options.itemSelector).first());
 						$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
 					} else {
 						$pageMarker.insertAfter(self.options.wrapper.find(self.options.itemSelector).last());
@@ -96,9 +98,6 @@ function ExtraAjaxNavigation(options) {
 
 				// Update all the page markers
 				$pageMarkers = self.options.wrapper.find(self.options.pageMarkerSelector);
-
-				// Recalculate position
-				calculatePagePositions();
 
 				// Manage posts
 				if ($items.length) {
@@ -112,21 +111,32 @@ function ExtraAjaxNavigation(options) {
 					self.options.wrapper.trigger("extra:ajaxNavigation:afterAddItems", [isPrevious, $items]);
 				}
 
-				// Is there a next button ?
-				if ($newButton.length > 0) {
-					$button.attr("href", $newButton.attr("href"));
-				} else {
-					isComplete = true;
-					if (isPrevious) {
-						$button.remove();
+				if (!isPrevious) {
+					// Update next button
+					if ($newNextButton.length > 0 && $nextButton.length > 0) {
+						$nextButton.attr("href", $newNextButton.attr("href"));
 					} else {
-						$button.removeAttr("href");
+						nextIsComplete = true;
+						$nextButton.removeAttr("href");
+						self.options.wrapper.addClass(self.options.nextCompleteClass);
+						self.options.wrapper.trigger("extra:ajaxNavigation:nextComplete");
 					}
-					self.options.wrapper.addClass(self.options.completeClass);
-					self.options.wrapper.trigger("extra:ajaxNavigation:complete");
+				} else {
+					// Update previous button
+					if ($newPreviousButton.length > 0 && $previousButton.length > 0) {
+						$previousButton.attr("href", $newPreviousButton.attr("href"));
+					} else {
+						previousIsComplete = true;
+						$previousButton.removeAttr("href");
+						self.options.wrapper.addClass(self.options.previousCompleteClass);
+						self.options.wrapper.trigger("extra:ajaxNavigation:previousComplete");
+					}
 				}
 
 				$tmpDiv.empty().remove();
+
+				// Recalculate position
+				self.options.wrapper.trigger("extra:ajaxNavigation:update");
 			}
 
 		});
@@ -231,6 +241,7 @@ function ExtraAjaxNavigation(options) {
 	}
 
 	$window.on("scroll", scrollHandler);
+	self.options.wrapper.on("extra:ajaxNavigation:update", resizeHandler);
 
 	/*********************************** INIT ***********************************/
 	repaint();

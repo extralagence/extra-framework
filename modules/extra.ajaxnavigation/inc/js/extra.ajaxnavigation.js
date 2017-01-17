@@ -13,7 +13,7 @@ function ExtraAjaxNavigation(options) {
 		wrapper                : null,
 		contentSelector        : '.extra-ajax-navigation-wrapper',
 		itemSelector           : '.extra-ajax-navigation-item',
-		nextButtonSelector     : '.extra-ajax-navigation-more-button',
+		nextButtonSelector     : '.extra-ajax-navigation-next-button',
 		previousButtonSelector : '.extra-ajax-navigation-previous-button',
 		loadingClass           : 'extra-ajax-navigation-loading',
 		completeClass          : 'extra-ajax-navigation-complete',

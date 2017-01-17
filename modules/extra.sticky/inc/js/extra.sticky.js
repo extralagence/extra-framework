@@ -38,7 +38,8 @@
 				allowStick = true,
 				isFixed = false,
 				isEnded = false,
-				resizeTime = null;
+				resizeTime = null,
+				allowRepaint = false;
 
 			/*********************************** FUNCTIONS ***********************************/
 			function resizeHandler() {
@@ -84,70 +85,79 @@
 				scrollHandler();
 			}
 
+
+			var scrollTop,
+				diffStart,
+				diffStop;
+
 			function scrollHandler() {
+				scrollTop = $window.scrollTop();
+				diffStart = offsetTop - scrollTop - opt.offset;
+				diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
 
-				if (!allowStick) {
-					return;
-				}
+				allowRepaint = true;
+			}
 
-				var scrollTop = $window.scrollTop(),
-					diffStart = offsetTop - scrollTop - opt.offset,
-					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
-
-
-				if (isFixed) {
-					if (diffStart >= 0) {
-						isFixed = false;
-						$this.removeClass(opt.class);
-						TweenMax.set($container, {
-							clearProps: 'height'
-						});
-						TweenMax.set($this, {
-							clearProps: 'width'
-						});
-					}
-				} else {
-					if (diffStart < 0) {
-						isFixed = true;
-						$this.addClass(opt.class);
-						if (opt.keepContainerHeight) {
-							$container.height(containerOuterHeight);
-						}
-						if (opt.keepChildWidth) {
-							$this.innerWidth($container.innerWidth());
-						}
-					}
-				}
-
-				if (opt.limit) {
-					if (isEnded) {
-						if (diffStop > 0) {
-							isEnded = false;
-							$this.css({
-								'position': '',
-								'top'     : ''
-							});
-							if (!isFixed) {
-								$container.height('');
-								$this.width('');
+			function repaint() {
+				if (allowRepaint) {
+					if (allowStick) {
+						if (isFixed) {
+							if (diffStart >= 0) {
+								isFixed = false;
+								$this.removeClass(opt.class);
+								TweenMax.set($container, {
+									clearProps: 'height'
+								});
+								TweenMax.set($this, {
+									clearProps: 'width'
+								});
+							}
+						} else {
+							if (diffStart < 0) {
+								isFixed = true;
+								$this.addClass(opt.class);
+								if (opt.keepContainerHeight) {
+									$container.height(containerOuterHeight);
+								}
+								if (opt.keepChildWidth) {
+									$this.innerWidth($container.innerWidth());
+								}
 							}
 						}
-					} else {
-						if (diffStop <= 0) {
-							isEnded = true;
-							$this.css({
-								'position': 'absolute',
-								'top'     : (containerHeight - outerHeight) + 'px'
-							});
-							if (opt.keepContainerHeight) {
-								$container.height(containerOuterHeight);
-							}
-							if (opt.keepChildWidth) {
-								$this.innerWidth($container.innerWidth());
+
+						if (opt.limit) {
+							if (isEnded) {
+								if (diffStop > 0) {
+									isEnded = false;
+									$this.css({
+										'position': '',
+										'top'     : ''
+									});
+									if (!isFixed) {
+										$container.height('');
+										$this.width('');
+									}
+								}
+							} else {
+								if (diffStop <= 0) {
+									isEnded = true;
+									$this.css({
+										'position': 'absolute',
+										'top'     : (containerHeight - outerHeight) + 'px'
+									});
+									if (opt.keepContainerHeight) {
+										$container.height(containerOuterHeight);
+									}
+									if (opt.keepChildWidth) {
+										$this.innerWidth($container.innerWidth());
+									}
+								}
 							}
 						}
 					}
 				}
+				allowRepaint = false;
+				window.requestAnimationFrame(repaint);
 			}
 
 			/********************************* LISTENERS ********************************/
@@ -160,6 +170,7 @@
 			});
 			/*********************************** INIT ***********************************/
 			resizeHandler();
+			repaint();
 		});
 
 		return this;

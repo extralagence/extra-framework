@@ -44,7 +44,7 @@ class Text extends AbstractField {
 				</h2>
 			<?php endif; ?>
 			<?php echo ($this->title == null && $this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
-			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
 			<div class="extra-input-wrapper">
 				<input
 					class="extra-text-input"
@@ -58,6 +58,7 @@ class Text extends AbstractField {
 						$value = $this->default;
 					}
 					echo $value; ?>"
+					<?php echo $this->required ? ' required="true"' : ''; ?>
 					<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
 					<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
 				<?php echo ($this->suffix == null) ? '' : $this->suffix; ?>

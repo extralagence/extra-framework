@@ -20,6 +20,8 @@ abstract class AbstractField {
 	protected $show_in_admin_column;
 	protected $admin_column_label;
 
+	protected $required;
+
 	function __construct(\WPAlchemy_MetaBox $mb) {
 		$this->mb = $mb;
 	}
@@ -69,6 +71,8 @@ abstract class AbstractField {
 
 		$this->show_in_admin_column = isset($properties['show_in_admin_column']) ? $properties['show_in_admin_column'] : null;
 		$this->admin_column_label = isset($properties['admin_column_label']) ? $properties['admin_column_label'] : null;
+
+		$this->required = isset($properties['required']) ? $properties['required'] : false;
 	}
 
 	/**

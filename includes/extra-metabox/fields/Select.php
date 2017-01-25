@@ -32,11 +32,13 @@ class Select extends AbstractField {
         <?php endif; ?>
 		<div class="<?php echo $this->css_class; ?> extra-select-container">
 			<?php $this->mb->the_field($this->get_single_field_name('select')); ?>
-            <label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+            <label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
 			<select
 				class="extra-select-input"
 				id="<?php $this->mb->the_name(); ?>"
-				name="<?php $this->mb->the_name(); ?>">
+				name="<?php $this->mb->the_name(); ?>"
+				<?php echo $this->required ? ' required="true"' : ''; ?>
+				>
 				<?php
                     foreach($this->values as $value => $label) {
                         echo '<option';

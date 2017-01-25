@@ -47,7 +47,9 @@ class Select extends AbstractField {
                     }
 				?>
 			</select>
-
+			<?php if ($this->description != null) : ?>
+				<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+			<?php endif; ?>
 		</div>
 		<?php
 	}

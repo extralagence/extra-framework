@@ -74,9 +74,16 @@ class PageSelector extends AbstractField {
 		$this->option_none_value = ( isset ( $properties['option_none_value'] ) ) ? $properties['option_none_value'] : true;
 	}
 
+
 	public function the_admin_column_value() {
-		//TODO
-		$meta = $this->mb->get_meta( $this->name, $this->mb->meta );
-		echo $meta;
+		$value = '';
+		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
+		if (!empty($meta)) {
+			$post = get_post($meta);
+			if ($post) {
+				$value = $post->post_title;
+			}
+		}
+		echo $value;
 	}
 }

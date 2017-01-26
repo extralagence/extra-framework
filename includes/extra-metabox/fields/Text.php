@@ -44,7 +44,11 @@ class Text extends AbstractField {
 				</h2>
 			<?php endif; ?>
 			<?php echo ($this->title == null && $this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
+
+			<?php if(!empty($this->label)): ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+			<?php endif; ?>
+
 			<div class="extra-input-wrapper">
 				<input
 					class="extra-text-input"

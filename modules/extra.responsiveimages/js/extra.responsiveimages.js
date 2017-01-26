@@ -35,7 +35,6 @@ $(document).ready(function ($) {
 		// Classic responsive image
 		else if (!isLazy) {
 			$window.on("extra:resize:responsive", function () {
-				console.log("resize responsive");
 				load($container);
 			});
 			load($container);

@@ -305,6 +305,7 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 		class="extra-responsive-image-wrapper extra-responsive-image-svg<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
 		<svg width="100%" height="100%"
 			 preserveAspectRatio="none"
+			 version="1.1"
 			 xmlns="http://www.w3.org/2000/svg"
 			 xmlns:xlink="http://www.w3.org/1999/xlink">
 			<image width="100%" height="100%" preserveAspectRatio="xMidYMid slice"

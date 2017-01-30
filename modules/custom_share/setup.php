@@ -1,112 +1,139 @@
 <?php
-/**********************
- *
- *
- * PUBLIC FUNCTION
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// PUBLIC FUNCTION
+//
+//
+///////////////////////////////////////
 global $extra_sharer_counter;
 $extra_sharer_counter = 0;
-function extra_custom_share( $id = 0 ) {
+function extra_custom_share( $custom_url, $custom_page_title ) {
 
 	global $post,
-		   $extra_options,
-		   $extra_sharer_counter,
-		   $extra_contact_form_printed;
+	       $extra_options,
+	       $extra_sharer_counter,
+	       $extra_contact_form_printed;
 
-	if ( $id === 0 && isset( $post->ID ) ) {
-		$id = $post->ID;
+	// Available tags
+	// %url%
+	// %sitetitle%
+	// %pagetitle%
+
+	// Setup all services
+	$extra_share_services             = array();
+	$extra_share_services['facebook'] = array(
+		'tag' => '<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%s%" class="extra-social-button extra-social-facebook">
+			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-facebook"></use></svg>
+			<span class="text">' . __( 'Partager sur Facebook', 'extra' ) . '</span><span class="counter"></span>
+		</a>',
+		'url' => '%url%'
+	);
+	$extra_share_services['twitter']  = array(
+		'tag' => '<a target="_blank" href="https://twitter.com/home?status=%s%" class="extra-social-button extra-social-twitter">
+			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-twitter"></use></svg>
+			<span class="text">' . __( 'Partager sur Twitter', 'extra' ) . '</span><span class="counter"></span>
+		</a>',
+		'url' => __( 'Lire l\'article intitulé %pagetitle% sur %sitetitle% : %url%', 'extra' )
+	);
+
+	// Add a hook on default services
+	$extra_share_services = apply_filters( 'extra_custom_share__services', $extra_share_services );
+
+	// URL
+	$url = false;
+	if ( empty( $custom_url ) ) {
+		if ( ! empty( $post ) && ! empty( $post->ID ) ) {
+			$url = get_permalink( $post->ID );
+		}
+	} else {
+		$url = $custom_url;
 	}
+	$url = apply_filters( 'extra_custom_share__url', $url );
 
-	$id = apply_filters( 'extra_custom_share_id', $id );
-
-	if ( !isset( $id ) ) {
+	if ( empty( $url ) ) {
 		return;
 	}
 
+	// Page title
+	if ( ! empty( $custom_page_title ) ) {
+		$page_title = $custom_page_title;
+	} else {
+		$page_title = get_the_title();
+	}
+	$page_title = apply_filters( 'extra_custom_share__page_title', $page_title );
+
+	// Site title
+	$site_title = apply_filters( 'extra_custom_share__site_title', get_bloginfo( 'name' ) );
+
+
+	// Start echoing
+	echo '<div class="extra-social-wrapper">';
+
+
+	foreach ( $extra_share_services as $service ) {
+		$service_url = $service['url'];
+		$service_url = str_replace( '%url%', $url, $service_url );
+		$service_url = str_replace( '%pagetitle%', $page_title, $service_url );
+		$service_url = str_replace( '%sitetitle%', $site_title, $service_url );
+
+		$service_tag = $service['tag'];
+		$service_tag = str_replace( '%url%', $url, $service_tag );
+		$service_tag = str_replace( '%pagetitle%', $page_title, $service_tag );
+		$service_tag = str_replace( '%sitetitle%', $site_title, $service_tag );
+		$service_tag = str_replace( '%s%', urlencode( $service_url ), $service_tag );
+		if ( ! empty( $service_tag ) ) {
+			echo $service_tag;
+		}
+	}
+
+
+	// Share form
+	// Make this unique (for fancybox mainly)
 	$extra_sharer_counter ++;
+	if ( array_key_exists( 'share-form-id', $extra_options ) || array_key_exists( 'contact-form-select', $extra_options ) ) {
 
-	$title      = get_the_title();
-	$blog_title = get_bloginfo( 'name' );
-	$link       = is_int($id) ? get_permalink( $id ) : $id;
+		$form_id = array_key_exists( 'share-form-id', $extra_options ) ? $extra_options['share-form-id'] : $extra_options['contact-form-select'];
 
-	// IF LINK, ECHO SHARE
-	if ( !empty( $link ) ) {
-		$facebook = '
-		<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=' . $link . '" class="extra-social-button extra-social-facebook" data-url="' . $link . '" data-counter="https://graph.facebook.com/?ids=' . urlencode( $link ) . '">
-			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-facebook"></use></svg>
-			<span class="text">' . __( 'Partager sur Facebook', 'extra' ) . '</span><span class="counter"></span>
-		</a>
-		';
-		$facebook = apply_filters( 'extra_social_facebook_link', $facebook, $link );
-
-		// TODO Twitter api count no more valid
-		// data-counter="http://api.twitter.com/1/urls/count.json?url=' . urlencode($link) . '&amp;callback=?"
-		$twitter = '
-		<a target="_blank" href="https://twitter.com/home?status=' . urlencode( sprintf( __( 'Lire l\'article intitulé %s sur %s : %s', 'extra' ), $title, $blog_title, $link ) ) . '" class="extra-social-button extra-social-twitter" data-url="' . $link . '">
-			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-twitter"></use></svg>
-			<span class="text">' . __( 'Partager sur Twitter', 'extra' ) . '</span><span class="counter"></span>
-		</a>
-		';
-		$twitter = apply_filters( 'extra_social_twitter_link', $twitter, $link, $title, $blog_title );
-
-		/*$gplus = '
-		<a target="_blank" href="https://plus.google.com/share?url=' . $link . '" class="extra-social-button extra-social-gplus" data-url="' . $link . '" data-counter="' . THEME_MODULES_URI . '/custom_share/gplus.php?url= ' . urlencode( $link ) . '">
-			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-google"></use></svg>
-			<span class="text">' . __( 'Partager sur Google+', 'extra' ) . '</span><span class="counter"></span>
-		</a>
-		';
-		$gplus = apply_filters( 'extra_social_gplus_link', $gplus, $link );*/
-
-
-		// AJAXIFIED
-		//		$return = file_get_contents(EXTRA_MODULES_PATH.'/custom_share/img/sprite.svg');
-		$return = '
-		<div class="extra-social-wrapper">';
-
-		$return .= $facebook;
-		$return .= $twitter;
-		//$return .= $gplus;
-
-		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
-
-			$email = '
-			<a href="#extra-social-share-'.$extra_sharer_counter.'-wrapper" class="extra-social-button extra-social-share">
+		$email = '
+			<a href="#extra-social-share-wrapper" class="extra-social-button extra-social-share">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-mail"></use></svg>
 				<span class="text">' . __( 'Partager par email', 'extra' ) . '</span>
 			</a>
 			';
-			$email = apply_filters( 'extra_social_share_link', $email, $extra_sharer_counter );
-			$return .= $email;
+		$email = apply_filters( 'extra_social_share_link', $email, $extra_sharer_counter );
+		echo $email;
 
-			if ( !isset( $extra_contact_form_printed ) ) {
-				$email_popup                = '<div class="js-custom-share-hidden">
-					<div class="extra-form extra-social-share-wrapper" id="extra-social-share-1-wrapper">
+		if ( ! isset( $extra_contact_form_printed ) ) {
+
+			$shortcode = '[contact-form-7 id="' . $form_id . '"]';
+			$shortcode = apply_filters( 'extra_custom_share__share_shortcode', $shortcode, $form_id );
+
+			$email_popup                = '<div class="js-custom-share-hidden">
+					<div class="extra-form extra-social-share-wrapper" id="extra-social-share-wrapper">
 					<h3>' . __( 'Partager par email', 'extra' ) . '</h3>
-					' . do_shortcode( '[contact-form-7 id="' . $extra_options['contact-form-select'] . '"]' ) . '
+					' . do_shortcode( $shortcode ) . '
 					</div>
 				</div>';
-				$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup, $extra_options['contact-form-select'] );
-				$extra_contact_form_printed = true;
-				$return .= $email_popup;
-			}
+			$email_popup                = apply_filters( 'extra_social_share_popup', $email_popup, $form_id );
+			$extra_contact_form_printed = true;
+			echo $email_popup;
 		}
-		$return .= '</div>';
-		echo $return;
 	}
+
+	echo '</div>';
 }
 
-/**********************
- *
- *
- * ENQUEUE ASSETS
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// ASSETS
+//
+//
+///////////////////////////////////////
 function extra_custom_social_enqueue_assets() {
 	$extra_enabled_custom_share = apply_filters( 'extra_enabled_custom_share', true );
-	if ( !$extra_enabled_custom_share ) {
+	if ( ! $extra_enabled_custom_share ) {
 		return;
 	}
 	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less', array(), EXTRA_VERSION, 'all' );
@@ -117,30 +144,28 @@ function extra_custom_social_enqueue_assets() {
 }
 
 add_action( 'wp_enqueue_scripts', 'extra_custom_social_enqueue_assets' );
-/**********************
- *
- *
- *
- * SOCIAL  SECTION
- *
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// REDUX OPTION
+//
+//
+///////////////////////////////////////
 function extra_custom_share_add_global_options_section( $sections ) {
 	$extra_enabled_custom_share = apply_filters( 'extra_enabled_custom_share', true );
-	if ( !$extra_enabled_custom_share ) {
+	if ( ! $extra_enabled_custom_share ) {
 		return $sections;
 	}
 	// PAGES
 	$sections[] = array(
 		'icon'   => 'el-icon-share',
-		'title'  => __( 'Gestion du formulaire de contact', 'extra-admin' ),
+		'title'  => __( 'Formulaire de partage', 'extra-admin' ),
 		'desc'   => null,
 		'fields' => array(
 			array(
-				'id'    => 'contact-form-select',
+				'id'    => 'share-form-id',
 				'type'  => 'select',
-				'title' => __( 'Formulaire de contact', 'extra-admin' ),
+				'title' => __( 'Formulaire de partage', 'extra-admin' ),
 				'data'  => 'post',
 				'args'  => array( 'post_type' => array( 'wpcf7_contact_form' ), 'posts_per_page' => - 1 ),
 			)
@@ -151,18 +176,23 @@ function extra_custom_share_add_global_options_section( $sections ) {
 }
 
 add_filter( 'extra_add_global_options_section', 'extra_custom_share_add_global_options_section' );
-/**********************
- *
- *
- *
- * SHARE CONTACT FORM
- *
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// SEND MAIL OPTION
+//
+//
+///////////////////////////////////////
 function extra_share_contact_wpcf7_before_send_mail( $cf7 ) {
 	global $extra_options;
-	if ( intval( $cf7->id() ) !== intval( $extra_options['contact-form-select'] ) || !isset( $cf7->posted_data['sender'] ) || !isset( $cf7->posted_data['username'] ) ) {
+
+	if ( ! array_key_exists( 'share-form-id', $extra_options ) && ! array_key_exists( 'contact-form-select', $extra_options ) ) {
+		return;
+	}
+
+	$form_id = array_key_exists( 'share-form-id', $extra_options ) ? $extra_options['share-form-id'] : $extra_options['contact-form-select'];
+
+	if ( intval( $cf7->id() ) !== $form_id || ! isset( $cf7->posted_data['sender'] ) || ! isset( $cf7->posted_data['username'] ) ) {
 		return;
 	}
 	$sender       = $cf7->posted_data['sender'];
@@ -180,15 +210,13 @@ function extra_share_contact_wpcf7_before_send_mail( $cf7 ) {
 }
 
 add_action( 'wpcf7_before_send_mail', 'extra_share_contact_wpcf7_before_send_mail' );
-/**********************
- *
- *
- *
- * DEFAULT MESSAGE
- *
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// DEFAULT MESSAGE
+//
+//
+///////////////////////////////////////
 function extra_share_contact_wpcf7_form_tag( $tags ) {
 
 	if ( is_admin() ) {
@@ -197,18 +225,19 @@ function extra_share_contact_wpcf7_form_tag( $tags ) {
 
 	global $post;
 
-	if ( $tags['name'] == 'share_message' ) {
+	/*if ( $tags['name'] == 'share_message' ) {
 		$post_title     = ( $post !== null ) ? $post->post_title : '';
 		$post_title     = str_replace( '<br>', ' ', $post_title );
 		$post_title     = str_replace( '&nbsp;', ' ', $post_title );
 		$post_id        = ( $post !== null ) ? $post->ID : 0;
-		$tags['values'] = array( __( "Bonjour,", 'extra' ) . "\n\n" . __( "Je vous invite à aller voir ", 'extra' ) . ( $post_title ) . "\n" . get_permalink( $post_id ) . "\n\n" . __( "Bien cordialement.", 'extra' ) );
-	}
+		$value          = __( "Bonjour,", 'extra' ) . "\n\n" . __( "Je vous invite à aller voir ", 'extra' ) . ( $post_title ) . "\n" . get_permalink( $post_id ) . "\n\n" . __( "Bien cordialement.", 'extra' );
+		$tags['values'] = array( apply_filters( 'extra_custom_share__default_message', $value, $post_title, $post_id ) );
+	}*/
 
 	if ( $tags['name'] == 'sender' ) {
-		if (is_user_logged_in()) {
-			$logged_user = wp_get_current_user();
-			$tags['values'] = array($logged_user->user_email);
+		if ( is_user_logged_in() ) {
+			$logged_user    = wp_get_current_user();
+			$tags['values'] = array( $logged_user->user_email );
 		}
 	}
 
@@ -226,3 +255,13 @@ function extra_share_contact_filter_wordpress_name( $from_name ) {
 
 add_filter( 'wp_mail_from_name', 'extra_share_contact_filter_wordpress_name' );
 
+
+add_action( 'init', function () {
+	// Trigger deprecated for custom share
+	global $extra_options;
+	if ( WP_DEBUG && apply_filters( 'deprecated_function_trigger_error', true ) ) {
+		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
+			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.' ), 'contact-form-select in $extra_options', '0.3.0', 'share-form-id' ) );
+		}
+	}
+}, 99 );

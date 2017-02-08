@@ -44,7 +44,11 @@ class Text extends AbstractField {
 				</h2>
 			<?php endif; ?>
 			<?php echo ($this->title == null && $this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
-			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+
+			<?php if(!empty($this->label)): ?>
+			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
+			<?php endif; ?>
+			
 			<div class="extra-input-wrapper">
 				<input
 					class="extra-text-input"
@@ -58,6 +62,8 @@ class Text extends AbstractField {
 						$value = $this->default;
 					}
 					echo $value; ?>"
+					<?php echo $this->required ? ' required="true"' : ''; ?>
+					<?php echo ($this->maxlength != null) ? ' maxlength="' . $this->maxlength . '"' : ''; ?>
 					<?php echo ($this->regex != null) ? 'data-regex="'.$this->regex.'"' : ''; ?>
 					<?php echo ($this->placeholder != null) ? 'placeholder="'.$this->placeholder.'"' : ''; ?>>
 				<?php echo ($this->suffix == null) ? '' : $this->suffix; ?>
@@ -76,6 +82,7 @@ class Text extends AbstractField {
         $this->placeholder = isset($properties['placeholder']) ? $properties['placeholder'] : null;
         $this->default = isset($properties['default']) ? $properties['default'] : '';
 		$this->wide = isset($properties['wide']) ? $properties['wide'] : false;
+		$this->maxlength = isset($properties['maxlength']) ? $properties['maxlength'] : null;
 	}
 
 	public function the_admin_column_value() {

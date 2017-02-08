@@ -34,7 +34,7 @@ class TaxonomySelector extends AbstractField {
 		?>
 		<?php $this->mb->the_field($this->get_single_field_name('taxonomy_selector')); ?>
 		<p class="<?php echo $this->css_class; ?> extra-taxonomy-selector-container">
-			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?></label>
+			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
 			<?php $this->generate_category_select(); ?>
 		</p>
 		<?php
@@ -47,7 +47,9 @@ class TaxonomySelector extends AbstractField {
 			'selected' => $this->mb->get_the_value(),
 			'taxonomy' => $this->taxonomy,
 			'hierarchical' => true,
-			'hide_empty' => false
+			'hide_empty' => false,
+			'option_none_value' => '',
+			'required' => ($this->required) ? 'true' : 'false'
 		));
 	}
 
@@ -62,7 +64,9 @@ class TaxonomySelector extends AbstractField {
 		$meta = $this->mb->get_meta($this->name, $this->mb->meta);
 		if (!empty($meta)) {
 			$term = get_term_by('id', $meta, $this->taxonomy);
-			$term_name = $term->name;
+			if ($term) {
+				$term_name = $term->name;
+			}
 		}
 		echo $term_name;
 	}

@@ -6,11 +6,16 @@
  *
  */
 // GET POST GLOBAL
-global $post;
+global $post, $wp_query;
 
 $current_post = apply_filters('extra_arianne_current_post', $post);
 ?>
 <div id="arianne">
+
+
+    <?php
+    do_action( 'extra_arianne_before' );
+    ?>
 
 	<div class="inner">
 
@@ -160,6 +165,7 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 				}
 			}
 
+
 			// CUSTOM POST TYPE
 			else if (!is_single($current_post->ID) && !is_page($current_post->ID) && get_post_type($current_post->ID) != 'post' && !is_404()) {
 				$post_type = get_post_type_object(get_post_type($current_post->ID));
@@ -277,11 +283,14 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 						echo '<span'. $class .'>';
 					}
 
+                    echo '<svg class="icon icon-previous"><use xlink:href="#icon-arrow"></use></svg>';
+
 					echo apply_filters('extra_arianne_before_item_name', '', $breadcrumb, $breadcrumb_index);
-					echo $breadcrumb['name'];
+					echo '<span class="text">' . $breadcrumb['name'] . '</span>';
 					echo apply_filters('extra_arianne_after_item_name', '', $breadcrumb, $breadcrumb_index);
 
 					if (!empty($breadcrumb['link'])) {
+
 						echo '</a>';
 					} else {
 						echo '</span>';

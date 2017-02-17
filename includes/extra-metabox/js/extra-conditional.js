@@ -15,17 +15,25 @@ jQuery(function ($) {
 
 		if ($checkbox.is(':checked')) {
 			$containerFalse.slideUp(300, function() {
-				$container.closest('.ui-accordion').accordion('refresh');
+				if ($container.closest('.ui-accordion').length) {
+					$container.closest('.ui-accordion').accordion('refresh');
+				}
 			});
 			$containerTrue.slideDown(300, function() {
-				$container.closest('.ui-accordion').accordion('refresh');
+				if ($container.closest('.ui-accordion').length) {
+					$container.closest('.ui-accordion').accordion('refresh');
+				}
 			});
 		} else {
 			$containerFalse.slideDown(300, function() {
-				$container.closest('.ui-accordion').accordion('refresh');
+				if ($container.closest('.ui-accordion').length) {
+					$container.closest('.ui-accordion').accordion('refresh');
+				}
 			});
 			$containerTrue.slideUp(300, function() {
-				$container.closest('.ui-accordion').accordion('refresh');
+				if ($container.closest('.ui-accordion').length) {
+					$container.closest('.ui-accordion').accordion('refresh');
+				}
 			});
 		}
 		$window.trigger('extra:admin:tabs:refresh');

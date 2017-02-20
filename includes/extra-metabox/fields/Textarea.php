@@ -32,6 +32,7 @@ class Textarea extends AbstractField {
 					id="<?php $this->mb->the_name(); ?>"
 					data-extra-field-name="<?php echo $this->name; ?>"
 					name="<?php $this->mb->the_name(); ?>"
+					<?php echo ($this->maxlength != null) ? ' maxlength="' . $this->maxlength . '"' : ''; ?>
 					<?php echo $this->required ? ' required="true"' : ''; ?>><?php $this->mb->the_value(); ?></textarea>
 				<?php if ($this->description != null) : ?>
 					<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
@@ -44,6 +45,7 @@ class Textarea extends AbstractField {
 	public function extract_properties($properties) {
 		parent::extract_properties($properties);
 		$this->wide = isset($properties['wide']) ? $properties['wide'] : false;
+		$this->maxlength = isset($properties['maxlength']) ? $properties['maxlength'] : null;
 	}
 
 

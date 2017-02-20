@@ -8,7 +8,7 @@
 ///////////////////////////////////////
 global $extra_sharer_counter;
 $extra_sharer_counter = 0;
-function extra_custom_share( $custom_url, $custom_page_title ) {
+function extra_custom_share( $custom_url = null, $custom_page_title = null, $custom_description = null ) {
 
 	global $post,
 	       $extra_options,
@@ -19,9 +19,13 @@ function extra_custom_share( $custom_url, $custom_page_title ) {
 	// %url%
 	// %sitetitle%
 	// %pagetitle%
+	// %description%
 
 	// Setup all services
-	$extra_share_services             = array();
+	$extra_share_services = array();
+
+
+	// FACEBOOK
 	$extra_share_services['facebook'] = array(
 		'tag' => '<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=%s%" class="extra-social-button extra-social-facebook">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-facebook"></use></svg>
@@ -29,7 +33,9 @@ function extra_custom_share( $custom_url, $custom_page_title ) {
 		</a>',
 		'url' => '%url%'
 	);
-	$extra_share_services['twitter']  = array(
+
+	// TWITTER
+	$extra_share_services['twitter'] = array(
 		'tag' => '<a target="_blank" href="https://twitter.com/home?status=%s%" class="extra-social-button extra-social-twitter">
 			<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-twitter"></use></svg>
 			<span class="text">' . __( 'Partager sur Twitter', 'extra' ) . '</span><span class="counter"></span>
@@ -66,6 +72,14 @@ function extra_custom_share( $custom_url, $custom_page_title ) {
 	// Site title
 	$site_title = apply_filters( 'extra_custom_share__site_title', get_bloginfo( 'name' ) );
 
+	// Description
+	if ( ! empty( $custom_description ) ) {
+		$description = $custom_description;
+	} else {
+		$description = '';
+	}
+	$description = apply_filters( 'extra_custom_share__description', $description );
+
 
 	// Start echoing
 	echo '<div class="extra-social-wrapper">';
@@ -76,11 +90,13 @@ function extra_custom_share( $custom_url, $custom_page_title ) {
 		$service_url = str_replace( '%url%', $url, $service_url );
 		$service_url = str_replace( '%pagetitle%', $page_title, $service_url );
 		$service_url = str_replace( '%sitetitle%', $site_title, $service_url );
+		$service_url = str_replace( '%description%', $description, $service_url );
 
 		$service_tag = $service['tag'];
 		$service_tag = str_replace( '%url%', $url, $service_tag );
 		$service_tag = str_replace( '%pagetitle%', $page_title, $service_tag );
 		$service_tag = str_replace( '%sitetitle%', $site_title, $service_tag );
+		$service_tag = str_replace( '%description%', $description, $service_tag );
 		$service_tag = str_replace( '%s%', urlencode( $service_url ), $service_tag );
 		if ( ! empty( $service_tag ) ) {
 			echo $service_tag;

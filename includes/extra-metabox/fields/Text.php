@@ -48,7 +48,7 @@ class Text extends AbstractField {
 			<?php if(!empty($this->label)): ?>
 			<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
 			<?php endif; ?>
-			
+
 			<div class="extra-input-wrapper">
 				<input
 					class="extra-text-input"

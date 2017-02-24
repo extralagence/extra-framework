@@ -18,7 +18,9 @@ function extra_add_gallery_type() {
 		<label class="setting" for="extra_gallery_type"><span><?php _e('Type de galerie :', 'extra'); ?></span></label>
 		<select id="extra_gallery_type" data-setting="extra_gallery_type">
 			<option value="mosaic"> <?php _e('Mosaïque', 'extra-admin'); ?> </option>
-			<option value="slider"> <?php _e('Carousel', 'extra-admin'); ?> </option>
+			<?php if (apply_filters('extra_gallery_type_slider_enabled', true)) : ?>
+				<option value="slider"> <?php _e('Carousel', 'extra-admin'); ?> </option>
+			<?php endif; ?>
 		</select>
 	</script>
 
@@ -78,17 +80,21 @@ function extra_gallery_handler($atts, $content = null) {
 
 				$attachment = get_post( $id );
 				$src = wp_get_attachment_image_src($id, 'large');
-
-				$return .= '    <li><a href="'.$src[0].'" class="zoom">';
+				$item_classes = apply_filters('extra_gallery_item_classes', '', 'mosaic');
+				if ($item_classes != '') {
+					$item_classes = ' '.$item_classes;
+				}
+				$return .= '    <li><a href="'.$src[0].'" class="zoom' . $item_classes . '">';
+				$return .= apply_filters('extra_gallery_before_item', '', 'mosaic');
 				$sizes = apply_filters('extra_responsive_sizes', array());
 				$params = array();
 				foreach($sizes as $size => $value) {
 					$params[$size] = array(
-						apply_filters('extra_gallery_width', $content_width/3, 'gallery', $size),
-						apply_filters('extra_gallery_height', $content_width/3, 'gallery', $size));
+						apply_filters('extra_gallery_width', $content_width/3, 'mosaic', $size),
+						apply_filters('extra_gallery_height', $content_width/3, 'mosaic', $size));
 				}
 				$return .= extra_get_responsive_image($id, $params, '', '', '', $attachment->post_excerpt);
-
+				$return .= apply_filters('extra_gallery_after_item', '', 'mosaic');
 				$return .= '    </a></li>';
 			endforeach;
 			$return .= '</ul>';
@@ -99,7 +105,7 @@ function extra_gallery_handler($atts, $content = null) {
 			$return .= '     <ul>';
 			foreach ($ids as $id):
 				$src = wp_get_attachment_image_src($id, 'large');
-				$item_classes = apply_filters('extra_gallery_item_classes', '');
+				$item_classes = apply_filters('extra_gallery_item_classes', '', 'slider');
 				if (!empty($item_classes)) {
 					$item_classes = ' class="'.$item_classes.'"';
 				}

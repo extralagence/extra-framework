@@ -4,7 +4,9 @@ $(document).ready(function () {
 	$(document).on('afterLoad', function () {
 		if ($.fancybox.coming.element && $.fancybox.coming.element.next(".wp-caption-text").length) {
 			$.fancybox.coming.title = $.fancybox.coming.element.next(".wp-caption-text").html();
-		} else {
+		} else if ($.fancybox.coming.element && $.fancybox.coming.element.find(".wp-caption-text").length) {
+			$.fancybox.coming.title = $.fancybox.coming.element.find(".wp-caption-text").html();
+		} else  {
 			$.fancybox.coming.title = '';
 		}
 	});

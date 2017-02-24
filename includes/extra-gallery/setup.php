@@ -79,7 +79,7 @@ function extra_gallery_handler($atts, $content = null) {
 			foreach ($ids as $id):
 
 				$attachment = get_post( $id );
-				$src = wp_get_attachment_image_src($id, 'large');
+				$src = wp_get_attachment_image_src($id, apply_filters('extra_gallery_item_zoom_media_size', 'large', 'mosaic'));
 				$item_classes = apply_filters('extra_gallery_item_classes', '', 'mosaic');
 				if ($item_classes != '') {
 					$item_classes = ' '.$item_classes;
@@ -104,7 +104,7 @@ function extra_gallery_handler($atts, $content = null) {
 			$return .= ' <div class="wrapper">';
 			$return .= '     <ul>';
 			foreach ($ids as $id):
-				$src = wp_get_attachment_image_src($id, 'large');
+				$src = wp_get_attachment_image_src($id, apply_filters('extra_gallery_item_zoom_media_size', 'large', 'slider'));
 				$item_classes = apply_filters('extra_gallery_item_classes', '', 'slider');
 				if (!empty($item_classes)) {
 					$item_classes = ' class="'.$item_classes.'"';

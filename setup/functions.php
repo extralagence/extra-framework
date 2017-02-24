@@ -326,6 +326,27 @@ function extra_the_archive_title( $id = 0 ) {
  *
  *
  *
+ * REMOVE POST LIMIT FOR SEARCH
+ *
+ *
+ *
+ *********************/
+if ( ! function_exists( 'extra_post_limits' ) ) {
+	add_filter( 'post_limits', 'extra_post_limits' );
+	function extra_post_limits( $limits ) {
+		if ( is_search() ) {
+			global $wp_query;
+			$wp_query->query_vars['posts_per_page'] = - 1;
+		}
+
+		return $limits;
+	}
+}
+
+/**********************
+ *
+ *
+ *
  * SITE TITLE
  *
  *

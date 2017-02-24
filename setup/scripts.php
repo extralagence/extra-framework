@@ -32,3 +32,21 @@ function extra_template_enqueue_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'extra_template_enqueue_scripts' );
+
+
+
+/**********************
+ *
+ *
+ *
+ * TELL TO WP ROCKET TO NOT MINIFY THESES EXTERNAL JS
+ *
+ *
+ *
+ *********************/
+add_filter('rocket_minify_excluded_external_js', function ($external_js) {
+	$external_js[] = 'cdnjs.cloudflare.com';
+	$external_js[] = 'ajax.googleapis.com';
+
+	return $external_js;
+});

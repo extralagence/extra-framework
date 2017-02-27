@@ -79,9 +79,6 @@ function require_extra_libraries() {
 	require_once EXTRA_INCLUDES_PATH . '/extra-metabox/ExtraMetaBox.php';
 	require_once EXTRA_INCLUDES_PATH . '/extra-metabox/ExtraPageBuilder.php';
 
-	// INCLUDE EXTRA GALLERY
-	require_once EXTRA_INCLUDES_PATH . '/extra-gallery/setup.php';
-
 	// LESS HOOK
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		add_filter( 'less_force_compile', function () {

@@ -32,6 +32,7 @@ add_action( 'init', 'extra_redirection__metabox', 12 );
 
 function extra_get_redirect($page_id) {
 	global $redirection_metabox;
+
 	$data = $redirection_metabox->the_meta($page_id);
 
 	$redirection_type = ! empty( $data['redirection_type'] ) ? $data['redirection_type'] : 'auto';
@@ -91,7 +92,8 @@ function extra_get_redirect($page_id) {
 
 				if ( count( $targets ) > 0 ) {
 					if ( function_exists( 'icl_object_id' ) ) {
-						$target_id = icl_object_id( $targets[0]->ID, $redirection_value, true );
+
+						$target_id = apply_filters('wpml_object_id', $targets[0]->ID, 'page', true);
 					} else {
 						$target_id = $targets[0]->ID;
 					}
@@ -113,7 +115,7 @@ add_action( 'template_redirect', function () {
 	if ( is_page_template( 'template-redirect.php' ) ) {
 		global $post, $redirection_metabox;
 		the_post();
-		$redirect = extra_get_redirect ($post->ID);
+		$redirect = extra_get_redirect ( $post->ID);
 
 		if ($redirect['error'] != false) {
 			echo $redirect['error'];

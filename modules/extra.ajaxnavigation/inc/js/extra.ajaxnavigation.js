@@ -12,12 +12,14 @@ function ExtraAjaxNavigation(options) {
 	self.options = $.extend({
 		wrapper               : null,
 		contentSelector       : '.extra-ajax-navigation-wrapper',
+		listSelector          : '.extra-ajax-navigation-list',
 		itemSelector          : '.extra-ajax-navigation-item',
 		nextButtonSelector    : '.extra-ajax-navigation-next-button',
 		previousButtonSelector: '.extra-ajax-navigation-previous-button',
 		loadingClass          : 'extra-ajax-navigation-loading',
 		nextCompleteClass     : 'extra-ajax-navigation-next-complete',
 		previousCompleteClass : 'extra-ajax-navigation-previous-complete',
+		noMoreLinkClass        : 'extra-ajax-navigation-no-more-link',
 		pageMarkerSelector    : '.extra-ajax-navigation-page-marker',
 		startPageAt           : 1
 	}, options);
@@ -46,6 +48,12 @@ function ExtraAjaxNavigation(options) {
 
 
 	function clickHandler($button, isPrevious) {
+		// Get url from button
+		var url = $button.attr("href");
+		loadNextPage(url, isPrevious);
+	}
+
+	function loadNextPage(url, isPrevious) {
 		// CAN WE START LOADING ?
 		if (isLoading || (nextIsComplete && !isPrevious) || (previousIsComplete && isPrevious)) {
 			return;
@@ -56,18 +64,15 @@ function ExtraAjaxNavigation(options) {
 		self.options.wrapper.addClass(self.options.loadingClass);
 
 		// Create a temporary div to store divs
-		var $tmpDiv = $("<div></div>"),
-
-			// Get url from button
-			url = $button.attr("href");
+		var $tmpDiv = $("<div></div>");
 
 		// Load next page content into the temporary div
 		$.ajax(url, {
 			cache   : true,
 			dataType: 'html',
-			success : function (data, textStatus, jqXHR) {
+			success : function (rawHtml, status, jqXHR) {
 
-				$tmpDiv.append(data);
+				$tmpDiv.append(rawHtml);
 				$tmpDiv = $tmpDiv.find(self.options.contentSelector);
 
 				// We are no longer loading
@@ -76,9 +81,13 @@ function ExtraAjaxNavigation(options) {
 
 				// Handles error
 				if (status == "error") {
-					isComplete = true;
-					self.options.wrapper.addClass(self.options.completeClass);
+					nextIsComplete = true;
+					previousIsComplete = true;
+					self.options.wrapper.addClass(self.options.nextCompleteClass);
+					self.options.wrapper.addClass(self.options.previousCompleteClass);
 					self.options.wrapper.trigger("extra:ajaxNavigation:complete extra:ajaxNavigation:error");
+				} else {
+					self.options.wrapper.trigger("extra:ajaxNavigation:loaded", [rawHtml, status]);
 				}
 
 				// Get elements from our load
@@ -90,9 +99,17 @@ function ExtraAjaxNavigation(options) {
 				// Appends page marker
 				if ($pageMarker.length) {
 					if (isPrevious) {
-						$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
+						if (self.options.wrapper.find(self.options.pageMarkerSelector).length > 0) {
+							$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
+						} else {
+							$pageMarker.appendTo(self.options.wrapper.find(self.options.listSelector));
+						}
 					} else {
-						$pageMarker.insertAfter(self.options.wrapper.find(self.options.itemSelector).last());
+						if (self.options.wrapper.find(self.options.itemSelector).length > 0) {
+							$pageMarker.insertAfter(self.options.wrapper.find(self.options.itemSelector).last());
+						} else {
+							$pageMarker.appendTo(self.options.wrapper.find(self.options.listSelector));
+						}
 					}
 				}
 
@@ -102,20 +119,21 @@ function ExtraAjaxNavigation(options) {
 				// Manage posts
 				if ($items.length) {
 					// Append new items
-					self.options.wrapper.trigger("extra:ajaxNavigation:beforeAddItems", [isPrevious, $items]);
+					self.options.wrapper.trigger("extra:ajaxNavigation:beforeAddItems", [isPrevious, $items, $pageMarker]);
 					if (isPrevious) {
 						$items.insertAfter(self.options.wrapper.find(self.options.itemSelector + ', ' + self.options.pageMarkerSelector).first());
 					} else {
 						$items.insertAfter(self.options.wrapper.find(self.options.itemSelector + ', ' + self.options.pageMarkerSelector).last());
 					}
-					self.options.wrapper.trigger("extra:ajaxNavigation:afterAddItems", [isPrevious, $items]);
+					self.options.wrapper.trigger("extra:ajaxNavigation:afterAddItems", [isPrevious, $items, $pageMarker]);
 				}
 
 				if (!isPrevious) {
 					// Update next button
 					if ($newNextButton.length > 0 && $nextButton.length > 0) {
 						$nextButton.attr("href", $newNextButton.attr("href"));
-					} else {
+					}
+					if ($newNextButton.length == 0 || $newNextButton.hasClass(self.options.noMoreLinkClass)) {
 						nextIsComplete = true;
 						$nextButton.removeAttr("href");
 						self.options.wrapper.addClass(self.options.nextCompleteClass);
@@ -125,7 +143,8 @@ function ExtraAjaxNavigation(options) {
 					// Update previous button
 					if ($newPreviousButton.length > 0 && $previousButton.length > 0) {
 						$previousButton.attr("href", $newPreviousButton.attr("href"));
-					} else {
+					}
+					if ($newPreviousButton.length == 0 || $newPreviousButton.hasClass(self.options.noMoreLinkClass)) {
 						previousIsComplete = true;
 						$previousButton.removeAttr("href");
 						self.options.wrapper.addClass(self.options.previousCompleteClass);
@@ -145,12 +164,16 @@ function ExtraAjaxNavigation(options) {
 	// CLICK ON THE NEXT PAGE BUTTON
 	$nextButton.on("click", function (event) {
 		event.preventDefault();
-		clickHandler($(this), false);
+		if (!$(this).hasClass(self.options.noMoreLinkClass)) {
+			clickHandler($(this), false);
+		}
 	});
 	// CLICK ON THE PREVIOUS PAGE BUTTON
 	$previousButton.on("click", function (event) {
 		event.preventDefault();
-		clickHandler($(this), true);
+		if (!$(this).hasClass(self.options.noMoreLinkClass)) {
+			clickHandler($(this), true);
+		}
 	});
 
 
@@ -242,6 +265,14 @@ function ExtraAjaxNavigation(options) {
 
 	$window.on("scroll", scrollHandler);
 	self.options.wrapper.on("extra:ajaxNavigation:update", resizeHandler);
+	self.options.wrapper.on("extra:ajaxNavigation:load", function (event, url, isPrevious, reset) {
+		if (reset) {
+			nextIsComplete = false;
+			previousIsComplete = false;
+			self.options.wrapper.find(self.options.listSelector).html('');
+		}
+		loadNextPage(url, isPrevious);
+	});
 
 	/*********************************** INIT ***********************************/
 	repaint();

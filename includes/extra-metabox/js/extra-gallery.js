@@ -1,8 +1,11 @@
+console.log(wp);
+console.log(wp.media);
+
 var originalTrigger = wp.media.view.MediaFrame.Post.prototype.trigger;
 wp.media.view.MediaFrame.Post.prototype.trigger = function () {
 	console.log('Event Triggered:', arguments);
 	originalTrigger.apply(this, Array.prototype.slice.call(arguments));
-}
+};
 
 jQuery(document).ready(function ($) {
 

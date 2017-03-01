@@ -1,5 +1,5 @@
 <?php
-define('EXTRA_VERSION', '1.0.0');
+define('EXTRA_VERSION', '0.3.2');
 
 define( 'EXTRA_PATH', get_stylesheet_directory() . '/extra-framework' );
 define( 'EXTRA_MODULES_PATH', EXTRA_PATH . '/modules' );
@@ -78,9 +78,6 @@ function require_extra_libraries() {
 	// INCLUDE EXTRA METABOX
 	require_once EXTRA_INCLUDES_PATH . '/extra-metabox/ExtraMetaBox.php';
 	require_once EXTRA_INCLUDES_PATH . '/extra-metabox/ExtraPageBuilder.php';
-
-	// INCLUDE EXTRA GALLERY
-	require_once EXTRA_INCLUDES_PATH . '/extra-gallery/setup.php';
 
 	// LESS HOOK
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {

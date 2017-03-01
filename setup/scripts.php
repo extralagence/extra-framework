@@ -13,9 +13,9 @@ function extra_template_enqueue_scripts() {
 	wp_deregister_script( 'jquery' );
 	wp_enqueue_script( 'jquery', apply_filters( 'extra_script__jquery_url', '//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'), apply_filters( 'extra_script__jquery_dependencies', array() ), EXTRA_VERSION, apply_filters( 'extra_jquery_in_footer', true ) );
 	// TWEENMAX
-	wp_enqueue_script( 'tweenmax', apply_filters( 'extra_script__tweenmax_url', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'), array( 'jquery' ), EXTRA_VERSION, true );
+	wp_enqueue_script( 'tweenmax', apply_filters( 'extra_script__tweenmax_url', '//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'), false, EXTRA_VERSION, true );
 	// SCROLLTO
-	wp_enqueue_script( 'tweenmax-scrollto', apply_filters( 'extra_script__scrollto_url', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/plugins/ScrollToPlugin.min.js'), array( 'jquery' ), EXTRA_VERSION, true );
+	wp_enqueue_script( 'tweenmax-scrollto', apply_filters( 'extra_script__scrollto_url', '//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/plugins/ScrollToPlugin.min.js'), array('tweenmax'), EXTRA_VERSION, true );
 	// EXTRA
 	wp_enqueue_script( 'extra', EXTRA_URI . '/assets/js/lib/extra.js', apply_filters( 'extra_script__dependencies', array(
 		'jquery',
@@ -32,3 +32,22 @@ function extra_template_enqueue_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'extra_template_enqueue_scripts' );
+
+
+
+/**********************
+ *
+ *
+ *
+ * TELL TO WP ROCKET TO NOT MINIFY THESES EXTERNAL JS
+ *
+ *
+ *
+ *********************/
+add_filter('rocket_minify_excluded_external_js', function ($external_js) {
+	$external_js[] = 'cdnjs.cloudflare.com';
+	$external_js[] = 'ajax.googleapis.com';
+	$external_js[] = 'maps.googleapis.com';
+
+	return $external_js;
+});

@@ -6,23 +6,28 @@
  *
  */
 // GET POST GLOBAL
-global $post;
+global $post, $wp_query;
 
-$current_post = apply_filters('extra_arianne_current_post', $post);
+$current_post = apply_filters( 'extra_arianne_current_post', $post );
 ?>
 <div id="arianne">
 
-	<div class="inner">
+
+	<?php
+	do_action( 'extra_arianne_before' );
+	?>
+
+	<ol class="inner" itemscope itemtype="http://schema.org/BreadcrumbList">
 
 		<?php
 
 		// if $current_post variable exists
-		if(isset($current_post) && !empty($current_post)) {
+		if ( isset( $current_post ) && ! empty( $current_post ) ) {
 
 			$home = array(
 				'class' => 'arianne-item home',
-				'name'  => __("Accueil", "extra"),
-				'link'  => home_url("/"),
+				'name'  => __( "Accueil", "extra" ),
+				'link'  => home_url( "/" ),
 			);
 
 			$parents = array();
@@ -35,263 +40,242 @@ $current_post = apply_filters('extra_arianne_current_post', $post);
 
 
 			// CATEGORY
-			if (is_category()) {
-				$current_category = get_category(get_query_var('cat'), false);
-				if ($current_category->parent != 0) {
-					$ancestors_ids = get_ancestors($current_category->ID, 'category');
-					$ancestors_ids = array_reverse($ancestors_ids);
+			if ( is_category() ) {
+				$current_category = get_category( get_query_var( 'cat' ), false );
+				if ( $current_category->parent != 0 ) {
+					$ancestors_ids = get_ancestors( $current_category->ID, 'category' );
+					$ancestors_ids = array_reverse( $ancestors_ids );
 
-					foreach ($ancestors_ids as $ancestor_id) {
-						$ancestor_category = get_category($ancestor_id, false);
-						$parents[] = array(
+					foreach ( $ancestors_ids as $ancestor_id ) {
+						$ancestor_category = get_category( $ancestor_id, false );
+						$parents[]         = array(
 							'class' => 'arianne-item',
 							'name'  => $ancestor_category->name,
-							'link'  => get_category_link($ancestor_category->term_id),
+							'link'  => get_category_link( $ancestor_category->term_id ),
 						);
 					}
 				}
 
-				$homeID = get_option("page_for_posts");
-				$home_post = get_post($homeID);
+				$homeID    = get_option( "page_for_posts" );
+				$home_post = get_post( $homeID );
 				$parents[] = array(
 					'class' => 'arianne-item',
 					'name'  => $home_post->post_title,
-					'link'  => get_permalink($homeID),
+					'link'  => get_permalink( $homeID ),
 				);
 
-				$current_item['name'] = sprintf(__('Archive de la catégorie "%s"', 'extra'), single_cat_title('', false));
-			}
-
-			// SEARCH
-			else if (is_search()) {
-				$current_item['name'] = sprintf(__('Résultats pour la recherche "%s"', 'extra'), get_search_query());
-			}
-
-			// TIME - DAY
-			else if (is_day()) {
-				if (get_option("page_for_posts") != 0) {
-					$homeID = get_option("page_for_posts");
-					$home_post = get_post($homeID);
+				$current_item['name'] = sprintf( __( 'Archive de la catégorie "%s"', 'extra' ), single_cat_title( '', false ) );
+			} // SEARCH
+			else if ( is_search() ) {
+				$current_item['name'] = sprintf( __( 'Résultats pour la recherche "%s"', 'extra' ), get_search_query() );
+			} // TIME - DAY
+			else if ( is_day() ) {
+				if ( get_option( "page_for_posts" ) != 0 ) {
+					$homeID    = get_option( "page_for_posts" );
+					$home_post = get_post( $homeID );
 					$parents[] = array(
 						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
-						'link'  => get_permalink($homeID),
+						'link'  => get_permalink( $homeID ),
 					);
 				}
-				$parents[] = array(
+				$parents[]            = array(
 					'class' => 'arianne-item',
-					'name'  => get_the_time('Y'),
-					'link'  => get_year_link(get_the_time('Y')),
+					'name'  => get_the_time( 'Y' ),
+					'link'  => get_year_link( get_the_time( 'Y' ) ),
 				);
-				$parents[] = array(
+				$parents[]            = array(
 					'class' => 'arianne-item',
-					'name'  => get_the_time('F'),
-					'link'  => get_month_link(get_the_time('Y'), get_the_time('m')),
+					'name'  => get_the_time( 'F' ),
+					'link'  => get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ),
 				);
-				$current_item['name'] = get_the_time('d');
-			}
-
-			// TIME - MONTH
-			else if (is_month()) {
-				if (get_option("page_for_posts") != 0) {
-					$homeID = get_option("page_for_posts");
-					$home_post = get_post($homeID);
+				$current_item['name'] = get_the_time( 'd' );
+			} // TIME - MONTH
+			else if ( is_month() ) {
+				if ( get_option( "page_for_posts" ) != 0 ) {
+					$homeID    = get_option( "page_for_posts" );
+					$home_post = get_post( $homeID );
 					$parents[] = array(
 						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
-						'link'  => get_permalink($homeID),
+						'link'  => get_permalink( $homeID ),
 					);
 				}
-				$parents[] = array(
+				$parents[]            = array(
 					'class' => 'arianne-item',
-					'name'  => get_the_time('Y'),
-					'link'  => get_year_link(get_the_time('Y')),
+					'name'  => get_the_time( 'Y' ),
+					'link'  => get_year_link( get_the_time( 'Y' ) ),
 				);
-				$current_item['name'] = get_the_time('F');
-			}
-
-			// TIME - YEAR
-			else if (is_year()) {
-				if (get_option("page_for_posts") != 0) {
-					$homeID = get_option("page_for_posts");
-					$home_post = get_post($homeID);
+				$current_item['name'] = get_the_time( 'F' );
+			} // TIME - YEAR
+			else if ( is_year() ) {
+				if ( get_option( "page_for_posts" ) != 0 ) {
+					$homeID    = get_option( "page_for_posts" );
+					$home_post = get_post( $homeID );
 					$parents[] = array(
 						'class' => 'arianne-item',
 						'name'  => $home_post->post_title,
-						'link'  => get_permalink($homeID),
+						'link'  => get_permalink( $homeID ),
 					);
 				}
-				$current_item['name'] = get_the_time('Y');
-			}
-
-			// NEWS HOME
-			else if(is_home()) {
-				$homeID = get_option("page_for_posts");
-				$home_post = get_post($homeID);
-				$current_item['name'] = ($home_post !== null) ? $home_post->post_title : '';
-			}
-
-			// SINGLE, NOT ATTACHMENT
-			else if (is_single() && !is_attachment()) {
+				$current_item['name'] = get_the_time( 'Y' );
+			} // NEWS HOME
+			else if ( is_home() ) {
+				$homeID               = get_option( "page_for_posts" );
+				$home_post            = get_post( $homeID );
+				$current_item['name'] = ( $home_post !== null ) ? $home_post->post_title : '';
+			} // SINGLE, NOT ATTACHMENT
+			else if ( is_single() && ! is_attachment() ) {
 
 				// CUSTOM POST TYPE
-				if (get_post_type() != 'post') {
-					$post_type = get_post_type_object(get_post_type());
-					$slug = $post_type->rewrite;
-					$parents[] = array(
+				if ( get_post_type() != 'post' ) {
+					$post_type            = get_post_type_object( get_post_type() );
+					$slug                 = $post_type->rewrite;
+					$parents[]            = array(
 						'class' => 'arianne-item',
 						'name'  => $post_type->labels->singular_name,
-						'link'  => home_url("/").'/'.$slug['slug'],
+						'link'  => home_url( "/" ) . '/' . $slug['slug'],
 					);
 					$current_item['name'] = get_the_title();
-				}
-				// POST
+				} // POST
 				else {
-					if (get_option("page_for_posts") != 0) {
-						$homeID = get_option("page_for_posts");
-						$home_post = get_post($homeID);
+					if ( get_option( "page_for_posts" ) != 0 ) {
+						$homeID    = get_option( "page_for_posts" );
+						$home_post = get_post( $homeID );
 						$parents[] = array(
 							'class' => 'arianne-item',
 							'name'  => $home_post->post_title,
-							'link'  => get_permalink($homeID),
+							'link'  => get_permalink( $homeID ),
 						);
 					}
 					$current_item['name'] = get_the_title();
 				}
-			}
-
-			// CUSTOM POST TYPE
-			else if (!is_single($current_post->ID) && !is_page($current_post->ID) && get_post_type($current_post->ID) != 'post' && !is_404()) {
-				$post_type = get_post_type_object(get_post_type($current_post->ID));
+			} // CUSTOM POST TYPE
+			else if ( ! is_single( $current_post->ID ) && ! is_page( $current_post->ID ) && get_post_type( $current_post->ID ) != 'post' && ! is_404() ) {
+				$post_type            = get_post_type_object( get_post_type( $current_post->ID ) );
 				$current_item['name'] = $post_type->labels->singular_name;
-			}
+			} // ATTACHMENT
+			elseif ( is_attachment() ) {
+				$parent = get_post( $current_post->post_parent );
+				$cat    = get_the_category( $parent->ID );
+				$cat    = $cat[0];
 
-			// ATTACHMENT
-			elseif (is_attachment()) {
-				$parent = get_post($current_post->post_parent);
-				$cat = get_the_category($parent->ID);
-				$cat = $cat[0];
-
-				$ancestors_ids = get_ancestors($cat, 'category');
-				$ancestors_ids = array_reverse($ancestors_ids);
+				$ancestors_ids   = get_ancestors( $cat, 'category' );
+				$ancestors_ids   = array_reverse( $ancestors_ids );
 				$ancestors_ids[] = $cat;
 
-				foreach ($ancestors_ids as $ancestor_id) {
-					$ancestor_category = get_category($ancestor_id, false);
-					$parents[] = array(
+				foreach ( $ancestors_ids as $ancestor_id ) {
+					$ancestor_category = get_category( $ancestor_id, false );
+					$parents[]         = array(
 						'class' => 'arianne-item',
 						'name'  => $ancestor_category->name,
-						'link'  => get_category_link($ancestor_category->term_id),
+						'link'  => get_category_link( $ancestor_category->term_id ),
 					);
 				}
 
-				$parents[] = array(
+				$parents[]            = array(
 					'class' => 'arianne-item',
 					'name'  => $parent->post_title,
-					'link'  => get_permalink($parent),
+					'link'  => get_permalink( $parent ),
 				);
 				$current_item['name'] = get_the_title();
-			}
-
-			// TOP LEVEL PAGE
-			elseif ( is_page() && !$current_post->post_parent ) {
+			} // TOP LEVEL PAGE
+			elseif ( is_page() && ! $current_post->post_parent ) {
 				$current_item['name'] = get_the_title();
-			}
-
-			// PAGE WITH ANCESTOR
-			else if(is_page()){
-				$ancestors_ids = get_ancestors($current_post-> ID, 'page');
-				$ancestors_ids = array_reverse($ancestors_ids);
-				foreach ($ancestors_ids as $ancestor_id) {
+			} // PAGE WITH ANCESTOR
+			else if ( is_page() ) {
+				$ancestors_ids = get_ancestors( $current_post->ID, 'page' );
+				$ancestors_ids = array_reverse( $ancestors_ids );
+				foreach ( $ancestors_ids as $ancestor_id ) {
 					$parents[] = array(
 						'class' => 'arianne-item',
-						'name'  => get_the_title($ancestor_id),
-						'link'  => get_permalink($ancestor_id),
+						'name'  => get_the_title( $ancestor_id ),
+						'link'  => get_permalink( $ancestor_id ),
 					);
 				}
 				$current_item['name'] = get_the_title();
-			}
-
-			// TAG
-			else if(is_tag()) {
-				$current_item['name'] = sprintf(__('Actualités correspondant au tag %s', 'extra'), single_tag_title('', false));
-			}
-
-
-			// AUTHOR
-			else if(is_author()) {
+			} // TAG
+			else if ( is_tag() ) {
+				$current_item['name'] = sprintf( __( 'Actualités correspondant au tag %s', 'extra' ), single_tag_title( '', false ) );
+			} // AUTHOR
+			else if ( is_author() ) {
 				global $author;
-				$userdata = get_userdata($author);
-				$current_item['name'] = sprintf(__('Actualités rédigées par %s', 'extra'), $userdata->display_name);
-			}
-
-
-			// 404
-			else if (is_404()) {
-				$current_item['name'] = __('Erreur 404', 'extra');
+				$userdata             = get_userdata( $author );
+				$current_item['name'] = sprintf( __( 'Actualités rédigées par %s', 'extra' ), $userdata->display_name );
+			} // 404
+			else if ( is_404() ) {
+				$current_item['name'] = __( 'Erreur 404', 'extra' );
 			}
 
 			// PAGINATE
-			if(get_query_var('paged')) {
+			if ( get_query_var( 'paged' ) ) {
 				$name = ' ';
-				if(is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author()) {
+				if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) {
 					$name .= ' (';
 				}
-				$name .=  __('Page', 'extra').' '.get_query_var('paged');
-				if(is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author()) {
-					$name .=  ')';
+				$name .= __( 'Page', 'extra' ) . ' ' . get_query_var( 'paged' );
+				if ( is_category() || is_day() || is_month() || is_year() || is_search() || is_tag() || is_author() ) {
+					$name .= ')';
 				}
 
 				$current_item['name'] .= $name;
 			}
 
-			$home = apply_filters('extra_arianne_home', $home);
+			$home = apply_filters( 'extra_arianne_home', $home );
 
-			$parents = apply_filters('extra_arianne_parents', $parents);
+			$parents = apply_filters( 'extra_arianne_parents', $parents );
 
-			$current_item = apply_filters('extra_arianne_current', $current_item);
+			$current_item = apply_filters( 'extra_arianne_current', $current_item );
 
-			$delimiter = apply_filters('extra_arianne_delimiter', '');
+			$delimiter = apply_filters( 'extra_arianne_delimiter', '' );
 
-			$breadcrumbs = array();
+			$breadcrumbs   = array();
 			$breadcrumbs[] = $home;
-			$breadcrumbs = array_merge($breadcrumbs, $parents);
+			$breadcrumbs   = array_merge( $breadcrumbs, $parents );
 			$breadcrumbs[] = $current_item;
 
 			$first = true;
 
-			foreach ($breadcrumbs as $breadcrumb_index => $breadcrumb) {
-				$breadcrumb = apply_filters('extra_arianne_item', $breadcrumb, $breadcrumb_index);
+			foreach ( $breadcrumbs as $breadcrumb_index => $breadcrumb ) {
+				$breadcrumb = apply_filters( 'extra_arianne_item', $breadcrumb, $breadcrumb_index );
 
-				if (!empty($breadcrumb['name'])) {
-					if ($first) {
+				if ( ! empty( $breadcrumb['name'] ) ) {
+
+					echo '<li class="arianne-list-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">';
+
+					if ( $first ) {
 						$first = false;
 					} else {
 						echo $delimiter;
 					}
-					$class = (!empty($breadcrumb['class']) ? ' class="'.$breadcrumb['class'].'"' : '');
+					$class = ( ! empty( $breadcrumb['class'] ) ? ' class="' . $breadcrumb['class'] . '"' : '' );
 
-					if (!empty($breadcrumb['link'])) {
-						echo '<a '. $class .' href="'.$breadcrumb['link'].'">';
+					if ( ! empty( $breadcrumb['link'] ) ) {
+						echo '<a ' . $class . ' href="' . $breadcrumb['link'] . '" itemprop="item">';
 					} else {
-						echo '<span'. $class .'>';
+						echo '<span' . $class . ' itemprop="item">';
 					}
 
-					echo apply_filters('extra_arianne_before_item_name', '', $breadcrumb, $breadcrumb_index);
-					echo $breadcrumb['name'];
-					echo apply_filters('extra_arianne_after_item_name', '', $breadcrumb, $breadcrumb_index);
+					echo '<svg class="icon icon-previous"><use xlink:href="#icon-arrow"></use></svg>';
 
-					if (!empty($breadcrumb['link'])) {
+					echo apply_filters( 'extra_arianne_before_item_name', '', $breadcrumb, $breadcrumb_index );
+					echo '<span class="text" itemprop="name">' . $breadcrumb['name'] . '</span>';
+					echo apply_filters( 'extra_arianne_after_item_name', '', $breadcrumb, $breadcrumb_index );
+
+					if ( ! empty( $breadcrumb['link'] ) ) {
 						echo '</a>';
+						echo '<meta itemprop="position" content="' . ( $breadcrumb_index + 1 ) . '" />';
 					} else {
 						echo '</span>';
 					}
+
+					echo '</li>';
 				}
 			}
 		}
 
 		?>
 
-	</div><!-- .inner -->
+	</ol><!-- .inner -->
 
 </div><!-- #arianne -->

@@ -24,8 +24,9 @@ class Gallery extends AbstractField {
 	public static function init () {
 		parent::init();
 		add_action('admin_enqueue_scripts', function() {
+//			wp_enqueue_media();
 			wp_enqueue_style('extra-image-gallery-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/css/extra-image-gallery.less');
-			wp_enqueue_script('extra-gallery-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-gallery.js', array('jquery'), null, true);
+			wp_enqueue_script('extra-gallery-metabox', EXTRA_INCLUDES_URI . '/extra-metabox/js/extra-gallery.js', array('jquery', 'media-views'), null, true);
 		});
 	}
 

@@ -2,6 +2,16 @@
 
 ## Changelog
 
+###2017/02/21
+*Version 0.4.0*
+
+See https://github.com/extralagence/extra-framework/releases/tag/0.4.0 for details.
+
+###2017/01/25
+*Version 0.3.1*
+
+See https://github.com/extralagence/extra-framework/releases/tag/0.3.1 for details.
+
 ###2017/01/10
 *Version 0.2.0*
 

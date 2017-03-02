@@ -256,8 +256,6 @@ $current_post = apply_filters( 'extra_arianne_current_post', $post );
 						echo '<span' . $class . ' itemprop="item">';
 					}
 
-					echo '<svg class="icon icon-previous"><use xlink:href="#icon-arrow"></use></svg>';
-
 					echo apply_filters( 'extra_arianne_before_item_name', '', $breadcrumb, $breadcrumb_index );
 					echo '<span class="text" itemprop="name">' . $breadcrumb['name'] . '</span>';
 					echo apply_filters( 'extra_arianne_after_item_name', '', $breadcrumb, $breadcrumb_index );

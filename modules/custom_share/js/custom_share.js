@@ -1,13 +1,4 @@
 $(document).ready(function () {
-
-	// AJAX SVG SPRITE
-	$.get(extra_custom_share_params.assets_uri + "img/sprite.svg", function (data) {
-		var div = document.createElement("div");
-		div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
-		document.body.insertBefore(div, document.body.childNodes[0]);
-		$("html").addClass("extra-custom-share-svg-loaded");
-	});
-
 	extraInitShare($('body'));
 
 });
@@ -48,7 +39,7 @@ function extraInitShare($wrapper) {
 	$wrapper.find('.extra-social-share').fancybox(extraFancyboxCustomShareOptions);
 
 	// AJAX SVG SPRITE
-	$.get(extra_custom_share_params.assets_uri + "/img/sprite.svg", function (data) {
+	$.get(extra_custom_share_params.assets_uri + "img/sprite.svg?v=" + extra_custom_share_params.extra_version, function (data) {
 		var div = document.createElement("div");
 		div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
 		document.body.insertBefore(div, document.body.childNodes[0]);

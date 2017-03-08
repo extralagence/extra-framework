@@ -56,13 +56,15 @@ $current_post = apply_filters( 'extra_arianne_current_post', $post );
 					}
 				}
 
-				$homeID    = get_option( "page_for_posts" );
-				$home_post = get_post( $homeID );
-				$parents[] = array(
-					'class' => 'arianne-item',
-					'name'  => $home_post->post_title,
-					'link'  => get_permalink( $homeID ),
-				);
+				if (get_option( "page_for_posts" ) != 0) {
+					$homeID    = get_option( "page_for_posts" );
+					$home_post = get_post( $homeID );
+					$parents[] = array(
+						'class' => 'arianne-item',
+						'name'  => $home_post->post_title,
+						'link'  => get_permalink( $homeID ),
+					);
+				}
 
 				$current_item['name'] = sprintf( __( 'Archive de la catégorie "%s"', 'extra' ), single_cat_title( '', false ) );
 			} // SEARCH

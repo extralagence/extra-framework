@@ -81,8 +81,8 @@ function ExtraScrollAnimator(options) {
 			window.requestAnimationFrame(self.repaint);
 			return;
 		}
-		self.allowScrollUpdate = false;
 		self.updatePosition();
+		self.allowScrollUpdate = false;
 		window.requestAnimationFrame(self.repaint);
 	};
 

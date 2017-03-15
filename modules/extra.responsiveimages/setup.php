@@ -455,10 +455,28 @@ function extra_responsive_images__wp_calculate_image_srcset( $sources ) {
 
 add_filter( 'wp_calculate_image_srcset', 'extra_responsive_images__wp_calculate_image_srcset' );
 
+
+///////////////////////////////////////
+//
+//
+// ADJUST DIMENSIONS
+//
+//
+///////////////////////////////////////
 function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions ) {
 
 	// Assuming we have key values of sizes (desktop, tablet, ...)
 	if ( is_array( $dimensions ) ) {
+
+		if ( ! empty( $dimensions[0] ) && is_int( $dimensions[0] ) ) {
+			$width      = $dimensions[0];
+			$height     = ! empty( $dimensions[1] ) ? $dimensions[1] : 0;
+			$sizes      = apply_filters( 'extra_responsive_sizes', array() );
+			$dimensions = array();
+			foreach ( $sizes as $size_name => $size_value ) {
+				$dimensions[ $size_name ] = array( $width, $height );
+			}
+		}
 
 		// Get full size
 		$image_full_src = wp_get_attachment_image_src( $attachment_id, 'full' );

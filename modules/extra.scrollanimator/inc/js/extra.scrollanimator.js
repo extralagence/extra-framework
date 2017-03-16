@@ -1,16 +1,20 @@
 function ExtraScrollAnimator(options) {
-	var self = this;
+	var self = this,
+		$window = $(window),
+		wWidth = $window.width(),
+		wHeight = $window.height();
 
 	/*********************************** FIRST INIT ***********************************/
 	self.init = function (_options) {
 
 		self.options = $.extend({
-			target: null,
-			tween : null,
-			ease  : Linear.easeNone,
-			min   : 0,
-			max   : 1,
-			speed : 0.3
+			target : null,
+			tween  : null,
+			ease   : Linear.easeNone,
+			min    : 0,
+			max    : 1,
+			minSize: 0,
+			speed  : 0.3
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -35,8 +39,8 @@ function ExtraScrollAnimator(options) {
 			coords = self.options.target.data('coords'),
 			percent = Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
 
-		if (small) {
-			percent = 1;
+		if (wWidth < self.options.minSize) {
+			percent = self.options.max;
 		}
 
 		TweenMax.to(self.options.tween, time, {progress: percent, ease: self.options.ease});
@@ -44,10 +48,15 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** UPDATE COORDS ***********************************/
 	self.update = function () {
+
+		wWidth = $window.width();
+		wHeight = $window.height();
+
 		var coords = {},
+			height = self.options.target.height(),
 			min = self.options.min,
 			max = self.options.max,
-			vMin = wHeight * min,
+			vMin = wHeight * min - height,
 			vMax = wHeight * max;
 
 		coords.top = self.options.target.offset().top;
@@ -58,7 +67,7 @@ function ExtraScrollAnimator(options) {
 		self.options.tween.paused(true);
 		self.options.tween.progress(1);
 
-		if (small) {
+		if (wWidth < self.options.minSize) {
 			$window.off('scroll', scrollHandler);
 		} else {
 			$window.on('scroll', scrollHandler);

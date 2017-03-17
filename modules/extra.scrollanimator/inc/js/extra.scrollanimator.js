@@ -37,7 +37,7 @@ function ExtraScrollAnimator(options) {
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
 			scrollTop = $window.scrollTop(),
 			coords = self.options.target.data('coords'),
-			percent = Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
+			percent = 1 - Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
 
 		if (wWidth < self.options.minSize) {
 			percent = self.options.max;
@@ -53,15 +53,13 @@ function ExtraScrollAnimator(options) {
 		wHeight = $window.height();
 
 		var coords = {},
+			offsetTop = self.options.target.offset().top,
 			height = self.options.target.height(),
 			min = self.options.min,
-			max = self.options.max,
-			vMin = wHeight * min - height,
-			vMax = wHeight * max;
+			max = self.options.max;
 
-		coords.top = self.options.target.offset().top;
-		coords.min = coords.top - vMin;
-		coords.max = coords.top - vMax;
+		coords.min = offsetTop - wHeight + (wHeight * min);
+		coords.max = (offsetTop - wHeight + height) + (wHeight * max);
 		self.options.target.data("coords", coords);
 
 		self.options.tween.paused(true);

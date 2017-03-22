@@ -1,16 +1,4 @@
 $(document).ready(function () {
-
-	// SETUP FANCYBOX TITLE
-	$(document).on('afterLoad', function () {
-		if ($.fancybox.coming.element && $.fancybox.coming.element.next(".wp-caption-text").length) {
-			$.fancybox.coming.title = $.fancybox.coming.element.next(".wp-caption-text").html();
-		} else if ($.fancybox.coming.element && $.fancybox.coming.element.find(".wp-caption-text").length) {
-			$.fancybox.coming.title = $.fancybox.coming.element.find(".wp-caption-text").html();
-		} else  {
-			$.fancybox.coming.title = '';
-		}
-	});
-
 	extraInitFancybox($("body"));
 });
 //extra.initFancybox
@@ -24,14 +12,20 @@ function extraInitFancybox($parent) {
 	// DEFAULT OPTIONS
 	var extraFancyboxDefaultOptions = {
 			margin : 50,
-			padding: 0,
-			// type   : 'image',
-			helpers: {
-				title: {
-					type: 'over'
-				},
-				media: {}
-			}
+			opacity : 'auto',
+
+			// Should display toolbars
+			infobar : true,
+			buttons : true,
+			smallBtn: false,
+
+			// What buttons should appear in the toolbar
+			slideShow  : false,
+			fullScreen : false,
+			thumbs     : false,
+			closeBtn   : true,
+
+			errorTpl : '<div class="fancybox-error"><p>Impossible de charger le contenu<br /> Veuillez réessayer ultérieurement.<p></div>'
 		},
 
 
@@ -55,6 +49,10 @@ function extraInitFancybox($parent) {
 		else {
 			uniques[$this.attr('href')] = true;
 		}
+
+		if($this.next().is('.wp-caption-text')) {
+			$this.data('caption', $this.next().html());
+		}
 	});
 
 	// OPTIONS EXTENDER
@@ -63,7 +61,7 @@ function extraInitFancybox($parent) {
 	}
 
 	// SETUP FANCYBOX
-	$toShow.attr("data-fancybox-group", "gallery").addClass('extra-fancybox-processed').fancybox(extraFancyboxDefaultOptions);
+	$toShow.attr("data-fancybox", "gallery").addClass('extra-fancybox-processed').fancybox(extraFancyboxDefaultOptions);
 
 	if (duplicates.length) {
 		$(duplicates).each(function () {

@@ -9,6 +9,7 @@
  *
  *********************/
 function extra_fancybox_init() {
+	global $post;
 	$extra_enabled_fancybox = apply_filters( 'extra_enabled_fancybox', true );
 	if ( ! $extra_enabled_fancybox ) {
 		return;
@@ -22,7 +23,8 @@ function extra_fancybox_init() {
 	wp_localize_script('extra.fancybox', 'extra_fancybox_options', array(
 		'messages' => array(
 			'error' => __("Impossible de charger le contenu<br /> Veuillez réessayer ultérieurement.", 'extra'),
-			'count' => sprintf(__("%s&nbsp;sur&nbsp;%s", 'extra'), '<span class="js-fancybox-index"></span>', '<span class="js-fancybox-count"></span>')
+			'count' => sprintf(__("%s&nbsp;sur&nbsp;%s", 'extra'), '<span class="js-fancybox-index"></span>', '<span class="js-fancybox-count"></span>'),
+			'title' => (!empty($post)) ? get_the_title($post) : '',
 		),
 	));
 }

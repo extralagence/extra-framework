@@ -29,8 +29,9 @@ function extraInitFancybox($parent) {
 			baseTpl     : 	'<div class="fancybox-container" role="dialog" tabindex="-1">' +
 								'<div class="fancybox-bg"></div>' +
 								'<div class="fancybox-controls">' +
-									'<div class="fancybox-infobar">' +
-										'<div class="fancybox-infobar__body">' + extra_fancybox_options.messages.count + '</div>' +
+									'<div class="fancybox-infobar__body">' +
+										'<h2 class="extra-fancybox-title">' + extra_fancybox_options.messages.title + '</h2>' +
+										'<div class="extra-fancybox-counter"><div class="inner"><div class="text">' + extra_fancybox_options.messages.count + '</div></div></div>' +
 									'</div>' +
 									'<div class="fancybox-buttons">' +
 										'<button data-fancybox-previous class="extra-fancybox-nav extra-fancybox-prev"><span class="icon-arrow"></span></button>' +

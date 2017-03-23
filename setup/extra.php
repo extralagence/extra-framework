@@ -1,5 +1,5 @@
 <?php
-define('EXTRA_VERSION', '0.4.0');
+define('EXTRA_VERSION', '0.5.0');
 
 define( 'EXTRA_PATH', get_stylesheet_directory() . '/extra-framework' );
 define( 'EXTRA_MODULES_PATH', EXTRA_PATH . '/modules' );

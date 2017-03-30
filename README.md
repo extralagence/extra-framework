@@ -75,7 +75,7 @@ array (
 - renamed extra.resize to extra:resize
 - renamed extra.responsive-resize to extra:resize:responsive
 - renamed complete.extra.responsiveImage to extra:responsiveImage:load
-- renamed complete.extra.responsiveImageTotal to extra.responsiveImage:complete
+- renamed complete.extra.responsiveImageTotal to extra:responsiveImage:complete
 - renamed extra.responsiveImage to extra:responsiveImage:init
 - renamed extra.initFancybox to extra:fancybox:init
 

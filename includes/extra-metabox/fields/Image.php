@@ -23,6 +23,7 @@ class Image extends AbstractField {
 
 	protected $sizes;
 	protected $size_label;
+	protected $button_label;
 
 	public static function init () {
 
@@ -75,7 +76,7 @@ class Image extends AbstractField {
 				<div class="floater">
 					<div class="extra-input-wrapper">
 						<input class="image-input" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
-						<input class="choose-button button" type="button" value="<?php _e("Sélectionner une image", "extra-admin"); ?>" />
+						<input class="choose-button button" type="button" value="<?php echo $this->button_label; ?>" />
 						<?php if ($this->description != null) : ?>
 							<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
 						<?php endif; ?>
@@ -140,6 +141,7 @@ class Image extends AbstractField {
 		parent::extract_properties($properties);
 		$this->sizes = isset($properties['sizes']) ? $properties['sizes'] : array();
 		$this->size_label = isset($properties['size_label']) ? $properties['size_label'] : null;
+		$this->button_label = isset($properties['button_label']) ? $properties['button_label'] : __("Sélectionner une image", "extra-admin");
 	}
 
 	public function the_admin_column_value() {

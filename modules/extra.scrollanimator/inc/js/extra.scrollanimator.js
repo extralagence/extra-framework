@@ -1,16 +1,20 @@
 function ExtraScrollAnimator(options) {
-	var self = this;
+	var self = this,
+		$window = $(window),
+		wWidth = $window.width(),
+		wHeight = $window.height();
 
 	/*********************************** FIRST INIT ***********************************/
 	self.init = function (_options) {
 
 		self.options = $.extend({
-			target: null,
-			tween : null,
-			ease  : Linear.easeNone,
-			min   : 0,
-			max   : 1,
-			speed : 0.3
+			target : null,
+			tween  : null,
+			ease   : Linear.easeNone,
+			min    : 0,
+			max    : 1,
+			minSize: 0,
+			speed  : 0.3
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -33,10 +37,10 @@ function ExtraScrollAnimator(options) {
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
 			scrollTop = $window.scrollTop(),
 			coords = self.options.target.data('coords'),
-			percent = Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
+			percent = 1 - Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
 
-		if (small) {
-			percent = 1;
+		if (wWidth < self.options.minSize) {
+			percent = self.options.max;
 		}
 
 		TweenMax.to(self.options.tween, time, {progress: percent, ease: self.options.ease});
@@ -44,21 +48,24 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** UPDATE COORDS ***********************************/
 	self.update = function () {
-		var coords = {},
-			min = self.options.min,
-			max = self.options.max,
-			vMin = wHeight * min,
-			vMax = wHeight * max;
 
-		coords.top = self.options.target.offset().top;
-		coords.min = coords.top - vMin;
-		coords.max = coords.top - vMax;
+		wWidth = $window.width();
+		wHeight = $window.height();
+
+		var coords = {},
+			offsetTop = self.options.target.offset().top,
+			height = self.options.target.height(),
+			min = self.options.min,
+			max = self.options.max;
+
+		coords.min = offsetTop - wHeight + (wHeight * min);
+		coords.max = (offsetTop - wHeight + height) + (wHeight * max);
 		self.options.target.data("coords", coords);
 
 		self.options.tween.paused(true);
 		self.options.tween.progress(1);
 
-		if (small) {
+		if (wWidth < self.options.minSize) {
 			$window.off('scroll', scrollHandler);
 		} else {
 			$window.on('scroll', scrollHandler);
@@ -81,8 +88,8 @@ function ExtraScrollAnimator(options) {
 			window.requestAnimationFrame(self.repaint);
 			return;
 		}
-		self.allowScrollUpdate = false;
 		self.updatePosition();
+		self.allowScrollUpdate = false;
 		window.requestAnimationFrame(self.repaint);
 	};
 

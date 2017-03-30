@@ -51,7 +51,7 @@ jQuery(function ($) {
 				timeFormat = $extraDatePicker.data('time-format'),
 				$altField = $extraDatePicker.closest('.extra-date-container ').find('.extra-datepicker-en');
 
-			if($wrapper.closest('.wpa_group.tocopy').length) {
+			if ($wrapper.closest('.wpa_group.tocopy').length) {
 				return;
 			}
 
@@ -70,6 +70,7 @@ jQuery(function ($) {
 					altFormat       : $extraDatePicker.data('format')
 				});
 			}
+			$("#ui-datepicker-div").wrap('<div class="extra-jqueryui-datepicker-wrapper"></div>');
 			$wrapper.addClass('extra-date-processed');
 		});
 	}

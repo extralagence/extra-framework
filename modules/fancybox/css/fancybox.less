@@ -1,0 +1,259 @@
+.fancybox-bg {
+	background-color: fade(@black, 90%);
+}
+.fancybox-container--ready .fancybox-bg {
+	opacity: 1;
+	transition-timing-function: cubic-bezier(.22,.61,.36,1);
+}
+///////////////////////////////////////
+//
+//
+// CONTROLS
+//
+//
+///////////////////////////////////////
+.fancybox-controls {
+	height: 90px;
+	position: relative;
+	background-image: linear-gradient(to top, transparent 0%, fade(@black, 90%) 100%);
+}
+
+///////////////////////////////////////
+//
+//
+// INFOBAR
+//
+//
+///////////////////////////////////////
+.fancybox-infobar {
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+
+	transform: translate3d(0, -90px, 0);
+	transition: 0.3s transform ease-in-out 0.3s;
+}
+.fancybox-container--ready .fancybox-infobar {
+	transform: translate3d(0, 0, 0);
+}
+.fancybox-show-infobar .fancybox-infobar {
+	display: flex;
+}
+
+.fancybox-infobar__body {
+	font-family: @font;
+	font-size: 18px;
+	line-height: 35px;
+	background: transparent;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.extra-fancybox-title {
+		font-family: @font;
+		font-size: 26px;
+		width: 100%;
+		padding: 0 250px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+}
+.js-fancybox-index {
+	color: @highlight;
+}
+///////////////////////////////////////
+//
+//
+// BUTTONS
+//
+//
+///////////////////////////////////////
+.fancybox-buttons {
+	padding: 25px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+
+	.extra-fancybox-nav {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+		margin-left: 10px;
+		overflow: hidden;
+		width: 40px;
+		height: 40px;
+		position: relative;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: @highlight;
+
+		transform: translate3d(0, -90px, 0);
+		transition: 0.3s transform ease-in-out 0.3s;
+
+		&:nth-child(1) {
+			transition-delay: 0.5s;
+		}
+		&:nth-child(2) {
+			transition-delay: 0.4s;
+		}
+
+		.icon-close,
+		.icon-arrow {
+			display: block;
+			width: 10px;
+			height: 10px;
+			position: relative;
+
+			&:before,
+			&:after {
+				content: '';
+				display: block;
+				height: 1px;
+				width: 100%;
+				background-color: @white;
+				position: absolute;
+				top: 50%;
+				left: 0;
+				transform-origin: 100% 50%;
+				transform: translate3d(0, 0, 0);
+			}
+			&:before {
+				transform: rotate(45deg) translate3d(0, 0, 0);
+			}
+			&:after {
+				transform: rotate(-45deg) translate3d(0, 0, 0);
+			}
+		}
+		.icon-close {
+			width: 20px;
+			height: 20px;
+
+			&:before,
+			&:after {
+				transform-origin: 50% 50%;
+			}
+		}
+		&:after {
+			background: @black;
+			content: "";
+			margin: auto;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: -1;
+			transform-origin: left center;
+			transform: scaleX(0);
+			transition: transform 300ms ease-in-out;
+		}
+
+		&.extra-fancybox-prev {
+			.icon-arrow {
+				transform: rotate(180deg);
+			}
+			&:after {
+				transform-origin: right center;
+			}
+		}
+
+		&:hover:after,
+		&:focus:after {
+			transform: scaleX(1);
+		}
+	}
+}
+.fancybox-show-buttons .fancybox-buttons {
+	display: flex;
+}
+.fancybox-container--ready .fancybox-buttons .extra-fancybox-nav {
+	transform: translate3d(0, 0, 0);
+}
+
+///////////////////////////////////////
+//
+//
+// CLOSE
+//
+//
+///////////////////////////////////////
+.extra-fancybox-close {
+	.icon-close {
+		&:before,
+		&:after {
+			background-color: @white;
+		}
+	}
+}
+
+///////////////////////////////////////
+//
+//
+// CAPTION
+//
+//
+///////////////////////////////////////
+.fancybox-caption-wrap {
+	background: transparent;
+	padding: 30px 0 0;
+	background-image: linear-gradient(to bottom, transparent 0%, fade(@black, 90%) 100%);
+}
+
+.fancybox-caption {
+	font-family: @font;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 30px;
+	border-top: none;
+	text-align: center;
+	position: relative;
+	padding: 10px 0 50px;
+
+	transform: translate(0, 20px);
+	opacity: 0;
+
+	&:before {
+		content: '';
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 50%;
+		width: 40px;
+		height: 1px;
+		margin: 0 0 0 -20px;
+		transform: scaleX(0);
+		background-color: @highlight;
+	}
+}
+.fancybox-show-caption.fancybox-container--ready .fancybox-caption {
+	transform: translate(0, 0);
+	opacity: 1;
+	transition: all 0.3s ease-in-out 0.3s;
+
+	&:before {
+		transform: scaleX(1);
+		transition: transform 0.3s ease-in-out 0.6s;
+	}
+}
+
+
+///////////////////////////////////////
+//
+//
+// ERROR
+//
+//
+///////////////////////////////////////
+.fancybox-error p {
+	font-family: @font;
+	text-align: center;
+	font-size: 18px;
+	line-height: 35px;
+}

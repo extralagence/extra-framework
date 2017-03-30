@@ -107,10 +107,18 @@ function extra_custom_share( $custom_url = null, $custom_page_title = null, $cus
 	// Share form
 	// Make this unique (for fancybox mainly)
 	$extra_sharer_counter ++;
-	if ( array_key_exists( 'share-form-id', $extra_options ) || array_key_exists( 'contact-form-select', $extra_options ) ) {
 
+	$current_language = apply_filters( 'wpml_current_language', null );
+	$form_id          = null;
+
+	if ( ! empty( $current_language ) ) {
+		if ( array_key_exists( 'share-form-id-' . $current_language, $extra_options ) ) {
+			$form_id = $extra_options[ 'share-form-id-' . $current_language ];
+		}
+	} else if ( array_key_exists( 'share-form-id', $extra_options ) || array_key_exists( 'contact-form-select', $extra_options ) ) {
 		$form_id = array_key_exists( 'share-form-id', $extra_options ) ? $extra_options['share-form-id'] : $extra_options['contact-form-select'];
-
+	}
+	if ( $form_id !== null ) {
 		$email = '
 			<a href="#extra-social-share-wrapper" class="extra-social-button extra-social-share">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-mail"></use></svg>
@@ -155,7 +163,8 @@ function extra_custom_social_enqueue_assets() {
 	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less', array(), EXTRA_VERSION, 'all' );
 	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), EXTRA_VERSION, true );
 	wp_localize_script( 'extra-custom-share', 'extra_custom_share_params', array(
-		'assets_uri' => EXTRA_MODULES_URI . '/custom_share/'
+		'assets_uri' => EXTRA_MODULES_URI . '/custom_share/',
+		'extra_version' => EXTRA_VERSION
 	) );
 }
 
@@ -172,12 +181,23 @@ function extra_custom_share_add_global_options_section( $sections ) {
 	if ( ! $extra_enabled_custom_share ) {
 		return $sections;
 	}
-	// PAGES
-	$sections[] = array(
-		'icon'   => 'el-icon-share',
-		'title'  => __( 'Formulaire de partage', 'extra-admin' ),
-		'desc'   => null,
-		'fields' => array(
+
+	$languages = apply_filters( 'wpml_active_languages', null );
+	if ( ! empty( $languages ) ) {
+		$fields = array();
+
+		foreach ( $languages as $language ) {
+			$field = array(
+				'id'    => 'share-form-id-' . $language['code'],
+				'type'  => 'select',
+				'title' => sprintf( __( 'Formulaire de partage en %s', 'extra-admin' ), $language['translated_name'] ),
+				'data'  => 'post',
+				'args'  => array( 'post_type' => array( 'wpcf7_contact_form' ), 'posts_per_page' => - 1 ),
+			);
+			array_push( $fields, $field );
+		}
+	} else {
+		$fields = array(
 			array(
 				'id'    => 'share-form-id',
 				'type'  => 'select',
@@ -185,7 +205,14 @@ function extra_custom_share_add_global_options_section( $sections ) {
 				'data'  => 'post',
 				'args'  => array( 'post_type' => array( 'wpcf7_contact_form' ), 'posts_per_page' => - 1 ),
 			)
-		)
+		);
+	}
+	// PAGES
+	$sections[] = array(
+		'icon'   => 'el-icon-share',
+		'title'  => __( 'Formulaire de partage', 'extra-admin' ),
+		'desc'   => null,
+		'fields' => $fields
 	);
 
 	return $sections;

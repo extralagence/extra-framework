@@ -17,7 +17,7 @@ function extra_slider_init() {
 	wp_enqueue_script( 'draggable', apply_filters( 'extra_script__draggable_url', '//cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/utils/Draggable.min.js'), array(
 		'jquery',
 		'tweenmax'
-	), EXTRA_VERSION, true );
+	), null, true );
 	// EXTRA SLIDER
 	wp_enqueue_script( 'extra.slider', EXTRA_MODULES_URI . '/extra.slider/inc/js/extra.slider.js', array(
 		'tweenmax',

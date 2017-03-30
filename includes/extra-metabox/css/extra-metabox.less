@@ -25,7 +25,6 @@
 .extra-field-wrapper {
 	margin-bottom: 10px;
 }
-
 /**********************
  *
  *
@@ -35,13 +34,13 @@
  **********************/
 .extra-metabox .bloc {
 	background: #fafafa;
-	border: 1px solid #DFDFDF;
+	border: 1px solid #dfdfdf;
 	margin: 10px 0;
 	padding: 20px;
 	position: relative;
 }
 .extra-metabox-minimal-ui .bloc {
-	background: #FFFFFF;
+	background: #ffffff;
 }
 .extra-metabox label,
 .extra-metabox .label {
@@ -65,11 +64,10 @@
 	text-align: left;
 }
 #side-sortables .extra-metabox .extra-radio-group-container label,
-#side-sortables .extra-metabox .extra-radio-group-container .label{
+#side-sortables .extra-metabox .extra-radio-group-container .label {
 	padding-top: 0;
 	display: inline-block;
 }
-
 .extra-metabox label.label-position-left {
 	text-align: left;
 	margin-left: 10px;
@@ -96,36 +94,31 @@
 	cursor: pointer;
 	vertical-align: -6px;
 }
-
 #side-sortables .extra-metabox input[type="text"],
 #side-sortables .extra-metabox select,
 #side-sortables .extra-metabox input[type="number"] {
 	width: 100%;
 }
-
 .extra-metabox .mediaInput {
 	float: left;
 	width: 200px;
 }
-.extra-metabox textarea {
+.extra-textarea-wrapper textarea {
+	outline: 0;
+	padding: 3px 8px;
 	width: 50%;
 	max-width: none;
 	height: 150px;
+}
+.extra-textarea-small textarea {
+	height: 50px;
 }
 .extra-metabox .fullsize textarea {
 	width: 100%;
 	height: 350px;
 }
-//.extra-metabox .extra-textarea-wide label {
-//	text-align: left;
-//}
-.extra-wide .extra-input-wrapper {
-	//width: ~"calc(100% - 155px)";
-}
 .extra-textarea-wide textarea {
-	padding: 3px 8px;
 	width: 100%;
-	outline: 0;
 }
 .extra-wide input[type="number"],
 .extra-wide input[type="password"],
@@ -134,11 +127,8 @@
 	width: 100%;
 	outline: 0;
 }
-
-
-
 #poststuff .extra-metabox h2:not(.hndle):not(.extra-accordion-handle) {
-	color: #777;
+	color: #777777;
 	font-size: 18px;
 	font-weight: bold;
 	line-height: 20px;
@@ -164,7 +154,8 @@
 #poststuff .bloc h3,
 .metabox-holder .bloc h3,
 .extra-metabox .bloc h3 {
-	background: transparent;text-shadow: #fff 0 1px 0;
+	background: transparent;
+	text-shadow: #ffffff 0 1px 0;
 	cursor: text;
 	-webkit-box-shadow: none;
 	box-shadow: none;
@@ -194,7 +185,7 @@
 	margin: 20px 0 10px 0;
 }
 .repeat-actions a {
-	border: 1px solid #ddd;
+	border: 1px solid #dddddd;
 	color: #000000;
 	display: inline-block;
 	line-height: 20px;
@@ -202,7 +193,7 @@
 	padding: 10px;
 	text-decoration: none;
 	vertical-align: middle;
-	white-space:nowrap;
+	white-space: nowrap;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
 }
@@ -233,8 +224,6 @@
 	text-decoration: none;
 	vertical-align: middle;
 }
-
-
 /**********************
  *
  *
@@ -248,8 +237,8 @@
 	border: 1px solid #e5e5e5;
 	border-top: none;
 	background-color: #f7f7f7;
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-	box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 .post-status-info td {
 	font-size: 12px;
@@ -259,7 +248,6 @@
 	width: 12px;
 	cursor: n-resize;
 }
-
 /**********************
  *
  *
@@ -270,8 +258,6 @@
 .extra-error-message {
 	color: red;
 }
-
-
 /**********************
  *
  *
@@ -353,9 +339,9 @@
  **********************/
 .bloc:after,
 .floater:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
 }

@@ -31,5 +31,9 @@ default: 'bottom'
 values: 'bottom', 'top', 'custom'
 
 __waitingBeforeCheck__ (int)  
-default: 1000 (ms)
+default: 1000 (ms)  
+  
+__$button__ (jquery object)  
+default: null
+
 

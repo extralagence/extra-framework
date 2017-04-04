@@ -43,6 +43,7 @@ function extraInitShare($wrapper) {
 		var div = document.createElement("div");
 		div.innerHTML = new XMLSerializer().serializeToString(data.documentElement);
 		document.body.insertBefore(div, document.body.childNodes[0]);
+		$(div).addClass('extra-custom-share-sprite');
 		$("html").addClass("extra-custom-share-svg-loaded");
 	});
 }

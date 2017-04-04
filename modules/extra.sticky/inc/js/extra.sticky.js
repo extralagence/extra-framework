@@ -72,7 +72,7 @@
 				allowStick = outerHeight < wHeight && (outerHeight < containerOuterHeight || !opt.limit) ;
 
 				// Adjust container height if needed
-				if (isFixed && opt.keepContainerHeight && containerHeight == 0) {
+				if (isFixed && opt.keepContainerHeight && containerHeight === 0) {
 					containerHeight = containerOuterHeight = outerHeight;
 					$container.height(containerOuterHeight);
 				}
@@ -111,6 +111,7 @@
 								TweenMax.set($this, {
 									clearProps: 'width'
 								});
+								$this.trigger("extra:sticky:unstick");
 							}
 						} else {
 							if (diffStart < 0) {
@@ -122,6 +123,7 @@
 								if (opt.keepChildWidth) {
 									$this.innerWidth($container.innerWidth());
 								}
+								$this.trigger("extra:sticky:stick");
 							}
 						}
 

@@ -54,6 +54,7 @@
 				if (!shown) {
 					shown = true;
 					$this.toggleClass('extra-cookies-popup-show', true);
+					$this.trigger("extra:cookies:show");
 				}
 			}
 
@@ -61,6 +62,7 @@
 				if (shown) {
 					shown = false;
 					$this.toggleClass('extra-cookies-popup-show', false);
+					$this.trigger("extra:cookies:hide");
 				}
 			}
 

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	$('.extra-cookies-popup').extraCookies({
+	$('.extra-cookies-default-popup').extraCookies({
 		cookieName        : 'extra_cookies_default_accepted',
 		cookieValue       : 'true',
 		position          : extraCookiesParams.position,

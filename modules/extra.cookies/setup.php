@@ -52,13 +52,13 @@ add_action( 'wp_enqueue_scripts', 'extra_cookies_assets' );
 add_action( 'wp_footer', function () {
 
 	// Make sure the theme allows the cookie module, AND it allows the default cookie behaviour (strip to accept cookie usage)
-	if ( ! apply_filters( 'extra_enabled_extra_cookies', false ) && ! apply_filters( 'extra_enabled_extra_cookies_default', true ) ) {
+	if ( ! apply_filters( 'extra_enabled_extra_cookies', false ) || ! apply_filters( 'extra_enabled_extra_cookies_default', true ) ) {
 		return;
 	}
 
 	global $extra_options;
 
-	echo '<div class="extra-cookies-popup"><div class="extra-cookies-popup-inner">';
+	echo '<div class="extra-cookies-default-popup"><div class="extra-cookies-popup-inner">';
 	echo '<div class="extra-cookies-text">' . nl2br( $extra_options['cookies-default-content'] ) . '</div>';
 	echo '<button type="button" class="extra-cookies-button">' . $extra_options['cookies-default-button-text'] . '</button>';
 	echo ' </div ></div > ';
@@ -74,7 +74,7 @@ add_action( 'wp_footer', function () {
 add_filter( 'extra_default_global_options_section', function ( $sections ) {
 
 	// Make sure the theme allows the cookie module, AND it allows the default cookie behaviour (strip to accept cookie usage)
-	if ( ! apply_filters( 'extra_enabled_extra_cookies', false ) && ! apply_filters( 'extra_enabled_extra_cookies_default', true ) ) {
+	if ( ! apply_filters( 'extra_enabled_extra_cookies', false ) || ! apply_filters( 'extra_enabled_extra_cookies_default', true ) ) {
 		return $sections;
 	}
 	$sections[] = array(

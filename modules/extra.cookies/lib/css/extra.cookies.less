@@ -22,20 +22,10 @@
 		padding: 0 15px;
 	}
 	.extra-cookies-button {
-		background-color: @white;
 		color: @black;
 		cursor: pointer;
-		font-weight: 700;
 		margin-left: 30px;
-		padding: 10px;
-		transition: background-color 0.2s ease-out;
-	}
-	.extra-cookies-button:hover {
-		background-color: fade(@white, 80%);
-	}
-	.extra-cookies-button:active {
-		background-color: fade(@white, 50%);
-		transition-duration: 0s;
+		padding: 5px 10px;
 	}
 	&.extra-cookies-popup-top {
 		top: 0;
@@ -56,7 +46,7 @@
 		}
 	}
 }
-.extra-cookies-popup.extra-cookies-popup-initialised {
+.extra-cookies-popup-positioned.extra-cookies-popup-initialised {
 	display: block;
 	.extra-cookies-popup-inner {
 		transition: transform 0.3s ease-out;

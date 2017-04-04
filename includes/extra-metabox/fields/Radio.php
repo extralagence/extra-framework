@@ -32,7 +32,19 @@ class Radio extends AbstractField {
 		?>
 		<div class="<?php echo $this->css_class; ?> extra-radio-group-container">
 			<?php $this->mb->the_field( $this->get_single_field_name( 'radio' ) ); ?>
-			<?php echo ( $this->icon != null ) ? '<div class="dashicons ' . $this->icon . '"></div>' : ''; ?>
+
+
+			<?php if ($this->title != null) : ?>
+				<h2><?php
+					echo ($this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : '';
+					echo $this->title; ?>
+				</h2>
+			<?php endif; ?>
+			<?php echo ($this->title == null && $this->icon != null) ? '<div class="dashicons '.$this->icon.'"></div>' : ''; ?>
+
+			<?php if(!empty($this->label)): ?>
+				<label for="<?php $this->mb->the_name(); ?>"><?php echo ($this->label == null) ? $this->name : $this->label; ?><?php echo $this->required ? '*' : ''; ?></label>
+			<?php endif; ?>
 
 			<?php foreach ( $this->radios as $radio ) {
 

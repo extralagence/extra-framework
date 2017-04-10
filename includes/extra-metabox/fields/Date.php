@@ -78,6 +78,10 @@ class Date extends AbstractField {
 			</span>
 			<?php $this->mb->the_field( $this->get_prefixed_field_name( 'en', '-' ) ); ?>
 			<input class="extra-datepicker-en" id="<?php $this->mb->the_name(); ?>" name="<?php $this->mb->the_name(); ?>" type="hidden" value="<?php $this->mb->the_value(); ?>" />
+
+			<?php if ($this->description != null) : ?>
+				<div class="extra-input-description"><small><em><?php echo $this->description; ?></em></small></div>
+			<?php endif; ?>
 		</div>
 		<?php
 	}

@@ -13,6 +13,7 @@ namespace ExtraMetabox;
 class Html extends AbstractField {
 
 	protected $template;
+	protected $content;
 
 	public function the_admin() {
 		?>
@@ -20,6 +21,9 @@ class Html extends AbstractField {
 			<?php
 			if ($this->template !== null) {
 				include $this->template;
+			}
+			if ($this->content !== null) {
+				echo $this->content;
 			}
 			?>
 		</div>
@@ -33,6 +37,7 @@ class Html extends AbstractField {
 		}
 
 		$this->template = isset($properties['template']) ? $properties['template'] : null;
+		$this->content = isset($properties['content']) ? $properties['content'] : null;
 		$this->template_admin_column = isset($properties['template_admin_column']) ? $properties['template_admin_column'] : null;
 	}
 

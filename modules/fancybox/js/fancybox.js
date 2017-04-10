@@ -3,14 +3,14 @@ $(document).ready(function () {
 });
 //extra.initFancybox
 $window.on('extra:fancybox:init', function (event, $parent) {
-
 	if ($parent && $parent.length) {
 		extraInitFancybox($parent);
 	}
 });
 function extraInitFancybox($parent) {
 	// DEFAULT OPTIONS
-	var extraFancyboxDefaultOptions = {
+	var $metaTitle = $('meta[name="extra:fancybox_title"]'),
+		extraFancyboxDefaultOptions = {
 			opacity : 'auto',
 
 			// Should display toolbars
@@ -30,7 +30,7 @@ function extraInitFancybox($parent) {
 								'<div class="fancybox-bg"></div>' +
 								'<div class="fancybox-controls">' +
 									'<div class="fancybox-infobar__body">' +
-										'<h2 class="extra-fancybox-title">' + extra_fancybox_options.messages.title + '</h2>' +
+										'<h2 class="extra-fancybox-title">' + $metaTitle.attr('content') + '</h2>' +
 										'<div class="extra-fancybox-counter"><div class="inner"><div class="text">' + extra_fancybox_options.messages.count + '</div></div></div>' +
 									'</div>' +
 									'<div class="fancybox-buttons">' +
@@ -54,7 +54,6 @@ function extraInitFancybox($parent) {
 		// STORE UNIQUE VALUES
 		uniques = {},
 		duplicates = [];
-
 
 	// REMOVE DUPLICATES
 	$toShow.each(function () {

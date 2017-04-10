@@ -1,0 +1,54 @@
+.extra-cookies-popup-positioned {
+	display: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	z-index: 999;
+
+	.extra-cookies-popup-inner {
+		align-items: center;
+		background-color: @black;
+		color: @white;
+		display: flex;
+		justify-content: center;
+		line-height: 30px;
+		position: relative;
+		width: 100%;
+		height: auto;
+		min-height: 60px;
+	}
+	.extra-cookies-text {
+		padding: 0 15px;
+	}
+	.extra-cookies-button {
+		color: @black;
+		cursor: pointer;
+		margin-left: 30px;
+		padding: 5px 10px;
+	}
+	&.extra-cookies-popup-top {
+		top: 0;
+		.extra-cookies-popup-inner {
+			transform: translateY(-100%);
+		}
+		&.extra-cookies-popup-show .extra-cookies-popup-inner {
+			transform: translateY(0);
+		}
+	}
+	&.extra-cookies-popup-bottom {
+		bottom: 0;
+		.extra-cookies-popup-inner {
+			transform: translateY(100%);
+		}
+		&.extra-cookies-popup-show .extra-cookies-popup-inner {
+			transform: translateY(0);
+		}
+	}
+}
+.extra-cookies-popup-positioned.extra-cookies-popup-initialised {
+	display: block;
+	.extra-cookies-popup-inner {
+		transition: transform 0.3s ease-out;
+	}
+}

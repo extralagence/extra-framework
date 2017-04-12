@@ -2,19 +2,26 @@ function ExtraScrollAnimator(options) {
 	var self = this,
 		$window = $(window),
 		wWidth = $window.width(),
-		wHeight = $window.height();
+		wHeight = $window.height(),
+		isMin = null,
+		isMax = null,
+		isInside = null;
 
 	/*********************************** FIRST INIT ***********************************/
 	self.init = function (_options) {
 
 		self.options = $.extend({
-			target : null,
-			tween  : null,
-			ease   : Linear.easeNone,
-			min    : 0,
-			max    : 1,
-			minSize: 0,
-			speed  : 0.3
+			target   : null,
+			tween    : null,
+			ease     : Linear.easeNone,
+			min      : 0,
+			max      : 1,
+			minSize  : 0,
+			speed    : 0.3,
+			onMin    : null,
+			onMax    : null,
+			onOutside: null,
+			onInside : null
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -37,12 +44,54 @@ function ExtraScrollAnimator(options) {
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
 			scrollTop = $window.scrollTop(),
 			coords = self.options.target.data('coords'),
-			percent = 1 - Math.max(0, Math.min(1, (scrollTop - coords.max) / (coords.min - coords.max)));
+			percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
 
-		if (wWidth < self.options.minSize) {
-			percent = self.options.max;
+		// Before the content
+		if (percent < 0 && isMin !== true) {
+			isMin = true;
+			if (isFunction(self.options.onMin)) {
+				self.options.onMin();
+			}
+			self.options.target.trigger("extra:scrollanimator:min");
+		} else if (percent >= 0 && isMin !== false) {
+			isMin = false;
 		}
 
+		// After the content
+		if (percent > 1 && isMax !== true) {
+			isMax = true;
+			if (isFunction(self.options.onMax)) {
+				self.options.onMax();
+			}
+			self.options.target.trigger("extra:scrollanimator:max");
+		} else if (percent <= 1 && isMax !== false) {
+			isMax = false;
+		}
+
+		// Check if we are outside
+		if ((isMin === true || isMax === true) && isInside !== false) {
+			isInside = false;
+			if (isFunction(self.options.onOutside)) {
+				self.options.onOutside();
+			}
+			self.options.target.trigger("extra:scrollanimator:outside");
+		}
+
+		// Check if we are inside
+		else if (percent <= 1 && percent >= 0 && isInside !== true) {
+			isInside = true;
+			if (isFunction(self.options.onInside)) {
+				self.options.onInside();
+			}
+			self.options.target.trigger("extra:scrollanimator:inside");
+		}
+
+		// Do we really need to update the tween ?
+		if (isInside === false) {
+			return;
+		}
+
+		// Update the tween
 		TweenMax.to(self.options.tween, time, {progress: percent, ease: self.options.ease});
 	};
 
@@ -106,4 +155,10 @@ function ExtraScrollAnimator(options) {
 		self.update();
 		self.repaint();
 	};
+
+	/*********************************** UTILS ***********************************/
+	function isFunction(functionToCheck) {
+		var getType = {};
+		return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
 }

@@ -19,7 +19,7 @@ function ExtraAjaxNavigation(options) {
 		loadingClass          : 'extra-ajax-navigation-loading',
 		nextCompleteClass     : 'extra-ajax-navigation-next-complete',
 		previousCompleteClass : 'extra-ajax-navigation-previous-complete',
-		noMoreLinkClass        : 'extra-ajax-navigation-no-more-link',
+		noMoreLinkClass       : 'extra-ajax-navigation-no-more-link',
 		pageMarkerSelector    : '.extra-ajax-navigation-page-marker',
 		startPageAt           : 1
 	}, options);
@@ -33,6 +33,7 @@ function ExtraAjaxNavigation(options) {
 
 	/*********************************** VARIABLES ***********************************/
 	var $window = $(window),
+		$list = self.options.wrapper.find(self.options.listSelector),
 		$nextButton = self.options.wrapper.find(self.options.nextButtonSelector),
 		$previousButton = self.options.wrapper.find(self.options.previousButtonSelector),
 		$pageMarkers = self.options.wrapper.find(self.options.pageMarkerSelector),
@@ -80,7 +81,7 @@ function ExtraAjaxNavigation(options) {
 				self.options.wrapper.removeClass(self.options.loadingClass);
 
 				// Handles error
-				if (status == "error") {
+				if (status === "error") {
 					nextIsComplete = true;
 					previousIsComplete = true;
 					self.options.wrapper.addClass(self.options.nextCompleteClass);
@@ -102,13 +103,13 @@ function ExtraAjaxNavigation(options) {
 						if (self.options.wrapper.find(self.options.pageMarkerSelector).length > 0) {
 							$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
 						} else {
-							$pageMarker.appendTo(self.options.wrapper.find(self.options.listSelector));
+							$pageMarker.appendTo($list);
 						}
 					} else {
 						if (self.options.wrapper.find(self.options.itemSelector).length > 0) {
 							$pageMarker.insertAfter(self.options.wrapper.find(self.options.itemSelector).last());
 						} else {
-							$pageMarker.appendTo(self.options.wrapper.find(self.options.listSelector));
+							$pageMarker.appendTo($list);
 						}
 					}
 				}
@@ -131,9 +132,14 @@ function ExtraAjaxNavigation(options) {
 				if (!isPrevious) {
 					// Update next button
 					if ($newNextButton.length > 0 && $nextButton.length > 0) {
-						$nextButton.attr("href", $newNextButton.attr("href"));
+						$nextButton.off("click", onClickNextButton);
+						$newNextButton.insertAfter($nextButton);
+						$nextButton.remove();
+						$nextButton = $newNextButton;
+						$nextButton.on("click", onClickNextButton);
+						// $nextButton.attr("href", $newNextButton.attr("href"));
 					}
-					if ($newNextButton.length == 0 || $newNextButton.hasClass(self.options.noMoreLinkClass)) {
+					if (!$newNextButton.length || $newNextButton.hasClass(self.options.noMoreLinkClass)) {
 						nextIsComplete = true;
 						$nextButton.removeAttr("href");
 						self.options.wrapper.addClass(self.options.nextCompleteClass);
@@ -142,9 +148,14 @@ function ExtraAjaxNavigation(options) {
 				} else {
 					// Update previous button
 					if ($newPreviousButton.length > 0 && $previousButton.length > 0) {
-						$previousButton.attr("href", $newPreviousButton.attr("href"));
+						$previousButton.off("click", onClickPreviousButton);
+						$newPreviousButton.insertAfter($previousButton);
+						$previousButton.remove();
+						$previousButton = $newPreviousButton;
+						$previousButton.on("click", onClickPreviousButton);
+						// $previousButton.attr("href", $newPreviousButton.attr("href"));
 					}
-					if ($newPreviousButton.length == 0 || $newPreviousButton.hasClass(self.options.noMoreLinkClass)) {
+					if (!$newPreviousButton.length || $newPreviousButton.hasClass(self.options.noMoreLinkClass)) {
 						previousIsComplete = true;
 						$previousButton.removeAttr("href");
 						self.options.wrapper.addClass(self.options.previousCompleteClass);
@@ -161,20 +172,19 @@ function ExtraAjaxNavigation(options) {
 		});
 	}
 
-	// CLICK ON THE NEXT PAGE BUTTON
-	$nextButton.on("click", function (event) {
+	function onClickNextButton(event) {
 		event.preventDefault();
 		if (!$(this).hasClass(self.options.noMoreLinkClass)) {
 			clickHandler($(this), false);
 		}
-	});
-	// CLICK ON THE PREVIOUS PAGE BUTTON
-	$previousButton.on("click", function (event) {
+	}
+
+	function onClickPreviousButton(event) {
 		event.preventDefault();
 		if (!$(this).hasClass(self.options.noMoreLinkClass)) {
 			clickHandler($(this), true);
 		}
-	});
+	}
 
 
 	/*********************************** PAGE POSITION ***********************************/
@@ -191,7 +201,7 @@ function ExtraAjaxNavigation(options) {
 
 			pages.push(page);
 
-			if (firstPage == null || firstPage.top > top) {
+			if (firstPage === null || firstPage.top > top) {
 				firstPage = page;
 			}
 		});
@@ -207,14 +217,14 @@ function ExtraAjaxNavigation(options) {
 		while (i < length) {
 			currentPage = pages[i];
 			if (currentPage.top < scrollTop) {
-				if (goodPage == null || goodPage.top < currentPage.top) {
+				if (goodPage === null || goodPage.top < currentPage.top) {
 					goodPage = currentPage;
 				}
 			}
 			i++;
 		}
 
-		if (goodPage == null) {
+		if (goodPage === null) {
 			goodPage = firstPage;
 		}
 
@@ -223,7 +233,7 @@ function ExtraAjaxNavigation(options) {
 
 	/*********************************** CHANGE PAGE IN HISTORY ***********************************/
 	function changeCurrentPage(pageNum, pageUrl, pageTitle) {
-		if (currentPageNum != pageNum) {
+		if (currentPageNum !== pageNum) {
 			currentPageNum = pageNum;
 			if (window.history && window.history.pushState) {
 				window.history.pushState("", "", pageUrl);
@@ -240,7 +250,6 @@ function ExtraAjaxNavigation(options) {
 		scrollUpdate();
 	}
 
-	$window.on("extra:resize", resizeHandler);
 
 	/*********************************** SCROLL ***********************************/
 	function scrollUpdate() {
@@ -263,16 +272,38 @@ function ExtraAjaxNavigation(options) {
 		allowScrollUpdate = true;
 	}
 
-	$window.on("scroll", scrollHandler);
-	self.options.wrapper.on("extra:ajaxNavigation:update", resizeHandler);
-	self.options.wrapper.on("extra:ajaxNavigation:load", function (event, url, isPrevious, reset) {
+	function externalLoad(event, url, isPrevious, reset) {
 		if (reset) {
 			nextIsComplete = false;
 			previousIsComplete = false;
 			self.options.wrapper.find(self.options.listSelector).html('');
 		}
 		loadNextPage(url, isPrevious);
-	});
+	}
+
+	/*********************************** EVENTS ***********************************/
+	// Window listeners
+	$window.on("extra:resize", resizeHandler);
+	$window.on("scroll", scrollHandler);
+
+	// Buttons click handler
+	$nextButton.on("click", onClickNextButton);
+	$previousButton.on("click", onClickPreviousButton);
+
+	// External calls
+	self.options.wrapper.on("extra:ajaxNavigation:update", resizeHandler);
+	self.options.wrapper.on("extra:ajaxNavigation:load", externalLoad);
+
+	/*********************************** DESTROY ***********************************/
+	self.destroy = function () {
+		console.log("destroy ajax");
+		$window.off("extra:resize", resizeHandler);
+		$window.off("scroll", scrollHandler);
+		$nextButton.off("click", onClickNextButton);
+		$previousButton.off("click", onClickPreviousButton);
+		self.options.wrapper.off("extra:ajaxNavigation:update", resizeHandler);
+		self.options.wrapper.off("extra:ajaxNavigation:load", externalLoad);
+	};
 
 	/*********************************** INIT ***********************************/
 	repaint();

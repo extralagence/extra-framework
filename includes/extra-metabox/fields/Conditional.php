@@ -46,7 +46,7 @@ class Conditional extends AbstractField {
 			<?php $this->mb->the_field( $this->get_single_field_name( 'conditional' ) ); ?>
 			<?php $checked = $this->mb->get_the_value(); ?>
 			<?php echo ( $this->icon != null ) ? '<div class="dashicons ' . $this->icon . '"></div>' : ''; ?>
-			<p>
+			<div class="extra-conditional-input-wrapper">
 				<input
 					class="extra-conditional-input"
 					id="<?php $this->mb->the_name(); ?>"
@@ -57,7 +57,7 @@ class Conditional extends AbstractField {
 						echo ' checked="checked"';
 					} ?>>
 				<label for="<?php $this->mb->the_name(); ?>"><?php echo ( $this->label == null ) ? $this->name : $this->label; ?></label>
-			</p>
+			</div>
 
 			<div class="extra-conditional-field-false"<?php echo ( $checked ) ? ' style="display:none;"' : ''; ?>>
 				<?php $this->mb->the_admin_from_field( $this->subfields_false, $this->name_suffix ); ?>

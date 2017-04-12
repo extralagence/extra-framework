@@ -22,13 +22,13 @@ add_filter( 'login_headerurl', 'extra_url_login' );
  *
  *
  *********************/
-if ( !function_exists( 'extra_css_admin' ) ) {
+if ( ! function_exists( 'extra_css_admin' ) ) {
 	function extra_css_admin() {
 		wp_enqueue_style( 'extra-admin-css', EXTRA_COMMON_MODULE_URI . '/admin/css/style.less', array(), EXTRA_VERSION, 'all' );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'extra_css_admin' );
-if ( !function_exists( 'extra_css_login' ) ) {
+if ( ! function_exists( 'extra_css_login' ) ) {
 	function extra_css_login() {
 		wp_enqueue_style( 'extra-login-css', EXTRA_COMMON_MODULE_URI . '/admin/css/login.less', array(), EXTRA_VERSION, 'all' );
 	}
@@ -131,8 +131,8 @@ function extra_tinymce( $init ) {
 	global $post;
 	if ( $typenow == 'page' || ( isset( $_REQUEST['post_id'] ) && get_post_type( $_REQUEST['post_id'] ) == 'page' ) ) {
 		$init['body_class'] .= ' page-' . $post->post_name;
-		$page_template = substr( basename( get_page_template_slug( $post->id ) ), 0, - 4 );
-		if ( !empty( $page_template ) ) {
+		$page_template      = substr( basename( get_page_template_slug( $post->id ) ), 0, - 4 );
+		if ( ! empty( $page_template ) ) {
 			$init['body_class'] .= ' ' . $page_template;
 		}
 	}
@@ -152,7 +152,7 @@ add_filter( 'tiny_mce_before_init', 'extra_tinymce', 5 );
  *********************/
 // INSERT BUTTON
 function extra_add_insert_plugin() {
-	if ( !current_user_can( 'edit_posts' ) && !current_user_can( 'edit_pages' ) ) {
+	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
 	if ( get_user_option( 'rich_editing' ) == 'true' ) {
@@ -199,9 +199,9 @@ function extra_gettext_filter( $translated, $original, $domain ) {
 	$strings = array(
 		'Déplacer dans la Corbeille' => 'Mettre à la corbeille'
 	);
-	if ( isset( $strings[$translated] ) ) {
+	if ( isset( $strings[ $translated ] ) ) {
 		$translations = get_translations_for_domain( $domain );
-		$translated   = $translations->translate( $strings[$translated] );
+		$translated   = $translations->translate( $strings[ $translated ] );
 	}
 
 	return $translated;
@@ -287,7 +287,7 @@ add_action( 'init', function () {
  *
  *********************/
 function extra_hide_update_notices() {
-	if ( !current_user_can( 'update_core' ) ) {
+	if ( ! current_user_can( 'update_core' ) ) {
 		remove_action( 'admin_notices', 'update_nag', 3 );
 	}
 }
@@ -335,7 +335,7 @@ require_once 'redux-options.php';
 function extra_display_post_states( $post_states, $post ) {
 	if ( $post->post_type === 'page' ) {
 		$template = get_post_meta( $post->ID, '_wp_page_template', true );
-		if ( isset( $template ) && !empty( $template ) ) {
+		if ( isset( $template ) && ! empty( $template ) ) {
 			$template_name = array_search( $template, get_page_templates( $post ) );
 			if ( $template_name ) {
 				$post_states[] = $template_name;
@@ -392,7 +392,7 @@ add_action( "redux/page/extra_options/load", "extra_redux_wpml_checkup" );
 ///////////////////////////////////////
 function rocket_for_administrator( $capability ) {
 
-	if ( !current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'administrator' ) ) {
 		return false;
 	}
 
@@ -401,3 +401,15 @@ function rocket_for_administrator( $capability ) {
 
 add_filter( 'option_page_capability_wp_rocket', 'rocket_for_administrator' );
 add_filter( 'rocket_capacity', 'rocket_for_administrator' );
+///////////////////////////////////////
+//
+//
+// EXTRA TINYMCE
+//
+//
+///////////////////////////////////////
+function extra_admin_enqueue_scripts() {
+	wp_enqueue_script( 'extra_tinymce', EXTRA_URI . '/setup/admin/js/extra-tinymce.js', array( 'jquery' ), EXTRA_VERSION );
+}
+
+add_action( 'admin_enqueue_scripts', 'extra_admin_enqueue_scripts' );

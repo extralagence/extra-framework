@@ -22,43 +22,6 @@ add_filter( 'body_class', 'extra_body_class' );
  *
  *
  *
- * CONTACT FORM 7
- *
- *
- *
- *********************/
-function extra_wpcf7_ajax_loader() {
-	return THEME_URI . '/assets/img/loading.gif';
-}
-
-add_filter( 'wpcf7_ajax_loader', 'extra_wpcf7_ajax_loader' );
-/**********************
- *
- *
- *
- * CUSTOM SEARCH
- *
- *
- *
- *********************/
-if ( ! function_exists( 'extra_search_form' ) ) {
-	function extra_search_form( $form ) {
-		$form = '
-    	<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
-    		<label for="s">' . __( "Une recherche ?", "extra" ) . '</label>
-    		<input type="text" value="' . get_search_query() . '" name="s" id="s" />
-    		<button type="submit" id="searchsubmit"><span class="icon icon-search"></span><span class="text">' . __( 'Valider', 'extra' ) . '</span></button>
-    	</form>
-    	';
-
-		return $form;
-	}
-}
-add_filter( 'get_search_form', 'extra_search_form' );
-/**********************
- *
- *
- *
  * NO 10px MARGIN CAPTION
  *
  *
@@ -168,10 +131,10 @@ define( 'ICL_DONT_PROMOTE', true );
 //}
 //add_filter('wp_get_nav_menu_items','extra_hook_nav_menu_footer', 10, 3);
 
-function remove_parent_classes( $class ) {
-	// check for current page classes, return false if they exist.
-	return ( $class == 'current_page_item' || $class == 'current_page_parent' || $class == 'current_page_ancestor' || $class == 'current-menu-item' ) ? false : true;
-}
+//function remove_parent_classes( $class ) {
+//	// check for current page classes, return false if they exist.
+//	return ( $class == 'current_page_item' || $class == 'current_page_parent' || $class == 'current_page_ancestor' || $class == 'current-menu-item' ) ? false : true;
+//}
 
 /**********************
  *
@@ -489,7 +452,7 @@ function dateformat_to_js( $php_format ) {
 		} else {
 			if ( $escaping ) {
 				$jqueryui_format .= "'";
-				$escaping = false;
+				$escaping        = false;
 			}
 			if ( isset( $SYMBOLS_MATCHING[ $char ] ) ) {
 				$jqueryui_format .= $SYMBOLS_MATCHING[ $char ];
@@ -645,6 +608,28 @@ add_action( 'after_setup_theme', 'remove_api' );
 //
 ///////////////////////////////////////
 function extra_remove_adminbar_margin() {
-	remove_action('wp_head', '_admin_bar_bump_cb');
+	remove_action( 'wp_head', '_admin_bar_bump_cb' );
 }
-add_action('admin_bar_init', 'extra_remove_adminbar_margin');
+
+add_action( 'admin_bar_init', 'extra_remove_adminbar_margin' );
+///////////////////////////////////////
+//
+//
+// DEFAULT SEARCH FORM
+//
+//
+///////////////////////////////////////
+if ( ! function_exists( 'extra_search_form' ) ) {
+	function extra_search_form( $form ) {
+		$form = '
+    	<form role="search" method="get" id="searchform" action="' . home_url( '/' ) . '" >
+    		<label for="s">' . __( "Une recherche ?", "extra" ) . '</label>
+    		<input type="text" value="' . get_search_query() . '" name="s" id="s" />
+    		<button type="submit" id="searchsubmit"><span class="icon icon-search"></span><span class="text">' . __( 'Valider', 'extra' ) . '</span></button>
+    	</form>
+    	';
+
+		return $form;
+	}
+}
+add_filter( 'get_search_form', 'extra_search_form' );

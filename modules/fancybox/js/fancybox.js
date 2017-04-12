@@ -11,7 +11,7 @@ function extraInitFancybox($parent) {
 	// DEFAULT OPTIONS
 	var $metaTitle = $('meta[name="extra:fancybox_title"]'),
 		extraFancyboxDefaultOptions = {
-			opacity : 'auto',
+			opacity : false,
 
 			// Should display toolbars
 			infobar : true,
@@ -48,7 +48,7 @@ function extraInitFancybox($parent) {
 
 		// GET ALL ELEMENTS
 		$toShow = $parent.find("a[href$='.jpg'], a[href$='.jpeg'], a[href$='.png'], a[href$='.gif'], a[href$='.svg'], .fancybox").not('.no-fancybox').not('.extra-fancybox-processed').filter(function () {
-			return $(this).attr("target") != "_blank";
+			return $(this).attr("target") !== "_blank";
 		}),
 
 		// STORE UNIQUE VALUES
@@ -86,7 +86,7 @@ function extraInitFancybox($parent) {
 			$duplicate.on("click", function (event) {
 				event.preventDefault();
 				$toShow.filter(function (index, element) {
-					return $duplicate.attr('href') == $(element).attr('href');
+					return $duplicate.attr('href') === $(element).attr('href');
 				}).trigger("click");
 			});
 		});

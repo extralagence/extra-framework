@@ -21,7 +21,8 @@ function ExtraAjaxNavigation(options) {
 		previousCompleteClass : 'extra-ajax-navigation-previous-complete',
 		noMoreLinkClass       : 'extra-ajax-navigation-no-more-link',
 		pageMarkerSelector    : '.extra-ajax-navigation-page-marker',
-		startPageAt           : 1
+		startPageAt           : 1,
+		historyReplaceState   : false
 	}, options);
 
 
@@ -133,7 +134,9 @@ function ExtraAjaxNavigation(options) {
 					// Update next button
 					if ($newNextButton.length > 0 && $nextButton.length > 0) {
 						$nextButton.off("click", onClickNextButton);
-						$newNextButton.insertAfter($nextButton);
+						if (!$newNextButton.closest(self.options.itemSelector).length) {
+							$newNextButton.insertAfter($nextButton);
+						}
 						$nextButton.remove();
 						$nextButton = $newNextButton;
 						$nextButton.on("click", onClickNextButton);
@@ -149,7 +152,9 @@ function ExtraAjaxNavigation(options) {
 					// Update previous button
 					if ($newPreviousButton.length > 0 && $previousButton.length > 0) {
 						$previousButton.off("click", onClickPreviousButton);
-						$newPreviousButton.insertAfter($previousButton);
+						if (!$newPreviousButton.closest(self.options.itemSelector).length) {
+							$newPreviousButton.insertAfter($previousButton);
+						}
 						$previousButton.remove();
 						$previousButton = $newPreviousButton;
 						$previousButton.on("click", onClickPreviousButton);
@@ -166,7 +171,7 @@ function ExtraAjaxNavigation(options) {
 				$tmpDiv.empty().remove();
 
 				// Recalculate position
-				self.options.wrapper.trigger("extra:ajaxNavigation:update");
+				resizeHandler();
 			}
 
 		});
@@ -235,9 +240,14 @@ function ExtraAjaxNavigation(options) {
 	function changeCurrentPage(pageNum, pageUrl, pageTitle) {
 		if (currentPageNum !== pageNum) {
 			currentPageNum = pageNum;
-			if (window.history && window.history.pushState) {
-				window.history.pushState("", "", pageUrl);
+			if (window.history && window.history.pushState && window.history.replaceState) {
+				if (self.options.historyReplaceState === true) {
+					window.history.replaceState("", "", pageUrl);
+				} else {
+					window.history.pushState("", "", pageUrl);
+				}
 				document.title = pageTitle;
+				self.options.wrapper.trigger("extra:ajaxNavigation:pageChanged");
 			}
 		}
 	}

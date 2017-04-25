@@ -53,13 +53,10 @@ $(document).ready(function () {
 		}
 	});
 	function resizeHandler() {
-		if ($window.width() !== wWidth || $window.height() !== wHeight) {
-			wWidth = $window.width();
-			wHeight = $window.height();
-			small = extra_responsive_small_width_limit.value > wWidth;
-			// $window.trigger('extra.resize');
-			$window.trigger('extra:resize');
-		}
+		wWidth = $window.width();
+		wHeight = $window.height();
+		small = extra_responsive_small_width_limit.value > wWidth;
+		$window.trigger('extra:resize', [wWidth, wHeight]);
 	}
 
 	/*********************
@@ -74,8 +71,8 @@ $(document).ready(function () {
 			_tmpExtraResponsiveSizesTests[index] = matchMedia(value).matches;
 		});
 		/*if (extraResponsiveSizes['desktop'] !== undefined) {
-			small = !_tmpExtraResponsiveSizesTests['desktop'];
-		}*/
+		 small = !_tmpExtraResponsiveSizesTests['desktop'];
+		 }*/
 		if (JSON.stringify(_tmpExtraResponsiveSizesTests) !== JSON.stringify(extraResponsiveSizesTests)) {
 			extraResponsiveSizesTests = $.extend({}, _tmpExtraResponsiveSizesTests);
 			// $(document).trigger("extra.responsive-resize");

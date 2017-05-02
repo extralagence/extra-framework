@@ -1,6 +1,8 @@
 function ExtraScrollAnimator(options) {
 	var self = this,
 		$window = $(window),
+		scrollTop = $window.scrollTop(),
+		isActive = true,
 		wWidth = $window.width(),
 		wHeight = $window.height(),
 		isMin = null,
@@ -41,8 +43,10 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** UPDATE POSITION ***********************************/
 	self.updatePosition = function (fast) {
+		if (!isActive) {
+			return;
+		}
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
-			scrollTop = $window.scrollTop(),
 			coords = self.options.target.data('coords'),
 			percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
 
@@ -123,16 +127,18 @@ function ExtraScrollAnimator(options) {
 	};
 
 	/*********************************** RESIZE ***********************************/
-	$window.on('extra:resize', function () {
-		self.update();
-	});
+	$window.on('extra:resize', self.update);
 
 	/*********************************** SCROLL ***********************************/
 	function scrollHandler(event) {
+		scrollTop = $window.scrollTop();
 		self.allowScrollUpdate = true;
 	}
 
 	self.repaint = function () {
+		if (!isActive) {
+			return;
+		}
 		if (!self.allowScrollUpdate) {
 			window.requestAnimationFrame(self.repaint);
 			return;
@@ -154,6 +160,19 @@ function ExtraScrollAnimator(options) {
 		self.allowScrollUpdate = true;
 		self.update();
 		self.repaint();
+	};
+
+	/*********************************** DESTROY ***********************************/
+	self.destroy = function () {
+		isActive = false;
+		$window.off('scroll', scrollHandler);
+		$window.off('extra:resize', self.update);
+		if (self.options.tween) {
+			self.options.tween.paused(true);
+			self.options.tween.progress(1);
+			self.options.tween.kill();
+		}
+		self.allowScrollUpdate = false;
 	};
 
 	/*********************************** UTILS ***********************************/

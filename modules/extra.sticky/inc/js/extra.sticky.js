@@ -15,13 +15,13 @@
 	$.fn.extraSticky = function (options) {
 
 		var opt = $.extend({
-			'class'              : 'sticky',
-			'container'          : null,
-			'limit'              : true,
-			'offset'             : 0,
+			'class': 'sticky',
+			'container': null,
+			'limit': true,
+			'offset': 0,
 			'keepContainerHeight': false,
-			'keepChildWidth'     : false,
-			'minSize'            : 0
+			'keepChildWidth': false,
+			'minSize': 0
 		}, options);
 
 		this.each(function () {
@@ -31,6 +31,7 @@
 				$window = $(window),
 				$container = opt.container ? opt.container : $this.parent(),
 				windowWidth = window.innerWidth,
+				windowHeight = window.innerHeight,
 				containerHeight,
 				containerOuterHeight,
 				outerHeight,
@@ -46,8 +47,8 @@
 				$window.off('scroll', scrollHandler);
 				$this.css({
 					'position': '',
-					'top'     : '',
-					'width'   : ''
+					'top': '',
+					'width': ''
 				});
 				$container.css({
 					'height': ''
@@ -56,6 +57,7 @@
 				isEnded = false;
 				$this.removeClass(opt.class);
 				windowWidth = window.innerWidth;
+				windowHeight = window.innerHeight;
 
 				// Check minimum size requirement
 				if (windowWidth < opt.minSize) {
@@ -69,7 +71,7 @@
 				outerHeight = $this.outerHeight();
 
 				// Element height must be less than window height and less than container height
-				allowStick = outerHeight < wHeight && (outerHeight < containerOuterHeight || !opt.limit) ;
+				allowStick = outerHeight <= windowHeight && (outerHeight < containerOuterHeight || !opt.limit);
 
 				// Adjust container height if needed
 				if (isFixed && opt.keepContainerHeight && containerHeight === 0) {
@@ -94,7 +96,6 @@
 				scrollTop = $window.scrollTop();
 				diffStart = offsetTop - scrollTop - opt.offset;
 				diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
-
 				allowRepaint = true;
 			}
 
@@ -113,7 +114,8 @@
 								});
 								$this.trigger("extra:sticky:unstick");
 							}
-						} else {
+						}
+						else {
 							if (diffStart < 0) {
 								isFixed = true;
 								$this.addClass(opt.class);
@@ -133,19 +135,20 @@
 									isEnded = false;
 									$this.css({
 										'position': '',
-										'top'     : ''
+										'top': ''
 									});
 									if (!isFixed) {
 										$container.height('');
 										$this.width('');
 									}
 								}
-							} else {
+							}
+							else {
 								if (diffStop <= 0) {
 									isEnded = true;
 									$this.css({
 										'position': 'absolute',
-										'top'     : (containerHeight - outerHeight) + 'px'
+										'top': (containerHeight - outerHeight) + 'px'
 									});
 									if (opt.keepContainerHeight) {
 										$container.height(containerOuterHeight);

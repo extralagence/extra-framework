@@ -24,7 +24,7 @@ $(document).ready(function ($) {
 			$placeholderCanvas = $container.find('.extra-responsive-image-placeholder-canvas');
 
 		// BLURRED CANVAS
-		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0 && typeof stackBlurImage == 'function') {
+		if ($placeholderImage.length > 0 && $placeholderCanvas.length > 0 && typeof stackBlurImage === 'function') {
 			stackBlurImage($placeholderImage[0], $placeholderCanvas[0], 20);
 		}
 
@@ -117,11 +117,11 @@ $(document).ready(function ($) {
 				}, 500);
 
 				currentResponsiveImagesLoaded++;
+				$imageWrapper.addClass("extra-responsive-image-loaded");
+
 				// complete.extra.responsiveImage
 				$imageWrapper.trigger('extra:responsiveImage:load', [currentResponsiveImagesLoaded, totalResponsivesImages]);
 				checkCompleteState($imageWrapper);
-
-				$imageWrapper.addClass("extra-responsive-image-loaded");
 
 			}).attr({
 			alt: altTxt,

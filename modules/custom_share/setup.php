@@ -163,7 +163,7 @@ function extra_custom_social_enqueue_assets() {
 	wp_enqueue_style( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/css/custom_share.less', array(), EXTRA_VERSION, 'all' );
 	wp_enqueue_script( 'extra-custom-share', EXTRA_MODULES_URI . '/custom_share/js/custom_share.js', array( 'extra' ), EXTRA_VERSION, true );
 	wp_localize_script( 'extra-custom-share', 'extra_custom_share_params', array(
-		'assets_uri' => EXTRA_MODULES_URI . '/custom_share/',
+		'assets_uri'    => EXTRA_MODULES_URI . '/custom_share/',
 		'extra_version' => EXTRA_VERSION
 	) );
 }
@@ -303,7 +303,7 @@ add_action( 'init', function () {
 	// Trigger deprecated for custom share
 	global $extra_options;
 	if ( WP_DEBUG && apply_filters( 'deprecated_function_trigger_error', true ) ) {
-		if ( array_key_exists( 'contact-form-select', $extra_options ) ) {
+		if ( is_array( $extra_options ) && array_key_exists( 'contact-form-select', $extra_options ) ) {
 			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since version %2$s! Use %3$s instead.' ), 'contact-form-select in $extra_options', '0.3.0', 'share-form-id' ) );
 		}
 	}

@@ -100,6 +100,7 @@ function ExtraAjaxNavigation(options) {
 
 				// Appends page marker
 				if ($pageMarker.length) {
+					$pageMarker.data('rawHtml', rawHtml);
 					if (isPrevious) {
 						if (self.options.wrapper.find(self.options.pageMarkerSelector).length > 0) {
 							$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
@@ -202,7 +203,8 @@ function ExtraAjaxNavigation(options) {
 				pagePermalink = $marker.data('page-permalink'),
 				pageTitle = $marker.data('page-title'),
 				top = $marker.offset().top,
-				page = {top: top, num: pageNum, permalink: pagePermalink, title: pageTitle};
+				rawHtml = $marker.data('rawHtml'),
+				page = {top: top, num: pageNum, permalink: pagePermalink, title: pageTitle, rawHtml: rawHtml};
 
 			pages.push(page);
 
@@ -237,17 +239,18 @@ function ExtraAjaxNavigation(options) {
 	}
 
 	/*********************************** CHANGE PAGE IN HISTORY ***********************************/
-	function changeCurrentPage(pageNum, pageUrl, pageTitle) {
-		if (currentPageNum !== pageNum) {
-			currentPageNum = pageNum;
+	// function changeCurrentPage(pageNum, pageUrl, pageTitle) {
+	function changeCurrentPage(page) {
+		if (currentPageNum !== page.num) {
+			currentPageNum = page.num;
 			if (window.history && window.history.pushState && window.history.replaceState) {
 				if (self.options.historyReplaceState === true) {
-					window.history.replaceState("", "", pageUrl);
+					window.history.replaceState("", "", page.permalink);
 				} else {
-					window.history.pushState("", "", pageUrl);
+					window.history.pushState("", "", page.permalink);
 				}
-				document.title = pageTitle;
-				self.options.wrapper.trigger("extra:ajaxNavigation:pageChanged");
+				document.title = page.title;
+				self.options.wrapper.trigger("extra:ajaxNavigation:pageChanged", [page]);
 			}
 		}
 	}
@@ -266,7 +269,8 @@ function ExtraAjaxNavigation(options) {
 		scrollTop = $window.scrollTop();
 		var scrolledPage = getScrolledPage(scrollTop);
 		if (scrolledPage) {
-			changeCurrentPage(scrolledPage.num, scrolledPage.permalink, scrolledPage.title);
+			// changeCurrentPage(scrolledPage.num, scrolledPage.permalink, scrolledPage.title);
+			changeCurrentPage(scrolledPage);
 		}
 	}
 
@@ -306,7 +310,7 @@ function ExtraAjaxNavigation(options) {
 
 	/*********************************** DESTROY ***********************************/
 	self.destroy = function () {
-		console.log("destroy ajax");
+		self.options.wrapper.trigger("extra:ajaxNavigation:destroyed");
 		$window.off("extra:resize", resizeHandler);
 		$window.off("scroll", scrollHandler);
 		$nextButton.off("click", onClickNextButton);

@@ -1,4 +1,6 @@
 jQuery(document).ready(function ($) {
+	// Too buggy to use in production. We'll try again later... maybe with gutenberg ?
+	return;
 	$('body').on('afterWpautop', function (event, obj) {
 		var $div = $('<div></div>');
 		$div.html(obj.data);
@@ -18,11 +20,12 @@ jQuery(document).ready(function ($) {
 					$link.addClass('link-' + cssclass);
 				}
 			}
-			$link.unwrap('p');
+			// $link.parent('p').addClass('paragraph-link-image-wrapper');
 		});
 		$div.find('p > img').each(function () {
 			if ($(this).parent().is('p')) {
-				$(this).unwrap('p');
+				// $(this).unwrap('p');
+				$(this).parent('p').addClass('paragraph-image-wrapper');
 			}
 		});
 		obj.data = $div.html();

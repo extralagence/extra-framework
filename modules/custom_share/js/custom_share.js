@@ -37,8 +37,10 @@ function extraInitShare($wrapper) {
 	}
 
 
-    if($.isFunction('fancybox'))
-        $wrapper.find('.extra-social-share').fancybox(extraFancyboxCustomShareOptions);
+	// if($.isFunction('fancybox'))
+	if (jQuery.fn.pluginName) {
+		$wrapper.find('.extra-social-share').fancybox(extraFancyboxCustomShareOptions);
+	}
 
 	// AJAX SVG SPRITE
 	$.get(extra_custom_share_params.assets_uri + "img/sprite.svg?v=" + extra_custom_share_params.extra_version, function (data) {

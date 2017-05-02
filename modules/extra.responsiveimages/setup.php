@@ -207,6 +207,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 			<?php echo $caption; ?>
 		</figcaption>
 	<?php endif; ?>
+	<?php do_action('extra_responsive_image_content_after'); ?>
 	</<?php echo $tag; ?>>
 
 	<?php

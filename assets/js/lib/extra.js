@@ -78,7 +78,7 @@ $(document).ready(function () {
 			// $(document).trigger("extra.responsive-resize");
 			$(document).trigger("extra:resize:responsive");
 		}
-	}).trigger('extra:resize');
+	}).trigger('resize');
 	/*********************
 	 *
 	 * EXTRA RESIZE

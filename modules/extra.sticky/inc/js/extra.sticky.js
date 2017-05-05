@@ -205,6 +205,7 @@
 
 					function destroyHandler() {
 						isActive = false;
+						$window.off('scroll', scrollHandler);
 						$window.off('extra:sticky:resize', resize);
 						$window.off('resize', resizeHandler);
 						$window.off('extra:sticky:destroy', destroyHandler);
@@ -213,7 +214,7 @@
 					/********************************* LISTENERS ********************************/
 					$window.on('extra:sticky:resize', resize);
 					$window.on('resize', resizeHandler);
-					$this.on("extra:sticky:destroy", destroyHandler);
+					$this.on('extra:sticky:destroy', destroyHandler);
 
 					/*********************************** INIT ***********************************/
 					resize();

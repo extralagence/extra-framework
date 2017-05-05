@@ -48,7 +48,14 @@ function ExtraScrollAnimator(options) {
 		}
 		var time = (fast === undefined || !fast) ? self.options.speed : 0,
 			coords = self.options.target.data('coords'),
-			percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
+			percent = 0;
+
+		if (!coords) {
+			return;
+		}
+
+		// Get percent
+		percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
 
 		// Before the content
 		if (percent < 0 && isMin !== true) {

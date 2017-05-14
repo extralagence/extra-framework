@@ -38,7 +38,8 @@ $(document).ready(function () {
 	 *
 	 *
 	 *************************/
-	var canResize = true;
+	var canResize = true,
+		hasRequestedResize = false;
 	wWidth = $window.width();
 	wHeight = $window.height();
 	small = extra_responsive_small_width_limit.value > wWidth;
@@ -47,9 +48,15 @@ $(document).ready(function () {
 			resizeHandler();
 			canResize = false;
 			setTimeout(function () {
-				resizeHandler();
+				if (hasRequestedResize) {
+					hasRequestedResize = false;
+					resizeHandler();
+				}
 				canResize = true;
 			}, 300);
+		}
+		else {
+			hasRequestedResize = true;
 		}
 	});
 	function resizeHandler() {

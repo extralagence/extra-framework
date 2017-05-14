@@ -11,15 +11,13 @@
 // REMOVE JS FROM CONTACT FORM 7
 add_filter( 'wpcf7_load_js', '__return_false' );
 add_filter( 'wpcf7_load_css', '__return_false' );
-/**********************
- *
- *
- *
- * CONTACT FORM / CUSTOM SUBMIT
- *
- *
- *
- *********************/
+///////////////////////////////////////
+//
+//
+// Better submit button
+//
+//
+///////////////////////////////////////
 add_action( 'init', 'extra_add_shortcode_submit', 10 );
 function extra_add_shortcode_submit() {
 	if ( function_exists( 'wpcf7_remove_shortcode' ) ) {
@@ -59,3 +57,17 @@ if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
 		return $html;
 	}
 }
+///////////////////////////////////////
+//
+//
+// No size attributes on contact form 7 inputs
+//
+//
+///////////////////////////////////////
+add_filter( 'wpcf7_form_elements', function ( $obj ) {
+	$obj = preg_replace( '/(<[^>]+) size=".*?"/i', '$1', $obj );
+	$obj = preg_replace( '/(<[^>]+) rows=".*?"/i', '$1', $obj );
+	$obj = preg_replace( '/(<[^>]+) cols=".*?"/i', '$1', $obj );
+
+	return $obj;
+} );

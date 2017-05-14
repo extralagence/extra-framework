@@ -44,7 +44,6 @@
 					isFixed = false,
 					isEnded = false,
 					isActive = true,
-					resizeTime = null,
 					allowRepaint = false,
 					isShy = false,
 					scrollTop = 0,
@@ -217,23 +216,16 @@
 					}
 				}
 
-				function resizeHandler() {
-					if (resizeTime) {
-						clearTimeout(resizeTime);
-					}
-					resizeTime = setTimeout(resize, 300);
-				}
-
 				function destroyHandler() {
 					isActive = false;
 					$window.off('extra:sticky:resize', resize);
-					$window.off('resize', resizeHandler);
+					$window.off('extra:resize', resize);
 					$window.off('extra:sticky:destroy', destroyHandler);
 				}
 
 				/********************************* LISTENERS ********************************/
 				$window.on('extra:sticky:resize', resize);
-				$window.on('resize', resizeHandler);
+				$window.on('extra:resize', resize);
 				$this.on("extra:sticky:destroy", destroyHandler);
 
 				/*********************************** INIT ***********************************/

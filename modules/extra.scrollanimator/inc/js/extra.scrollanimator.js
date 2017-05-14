@@ -7,23 +7,26 @@ function ExtraScrollAnimator(options) {
 		wHeight = $window.height(),
 		isMin = null,
 		isMax = null,
-		isInside = null;
+		isInside = null,
+		isPaused = false;
 
 	/*********************************** FIRST INIT ***********************************/
 	self.init = function (_options) {
 
 		self.options = $.extend({
-			target   : null,
-			tween    : null,
-			ease     : Linear.easeNone,
-			min      : 0,
-			max      : 1,
-			minSize  : 0,
-			speed    : 0.3,
-			onMin    : null,
-			onMax    : null,
-			onOutside: null,
-			onInside : null
+			target         : null,
+			tween          : null,
+			ease           : Linear.easeNone,
+			min            : 0,
+			max            : 1,
+			minSize        : 0,
+			speed          : 0.3,
+			defaultProgress: 1,
+			debug          : false,
+			onMin          : null,
+			onMax          : null,
+			onOutside      : null,
+			onInside       : null
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -57,7 +60,8 @@ function ExtraScrollAnimator(options) {
 				self.options.onMin();
 			}
 			self.options.target.trigger("extra:scrollanimator:min");
-		} else if (percent >= 0 && isMin !== false) {
+		}
+		else if (percent >= 0 && isMin !== false) {
 			isMin = false;
 		}
 
@@ -68,7 +72,8 @@ function ExtraScrollAnimator(options) {
 				self.options.onMax();
 			}
 			self.options.target.trigger("extra:scrollanimator:max");
-		} else if (percent <= 1 && isMax !== false) {
+		}
+		else if (percent <= 1 && isMax !== false) {
 			isMax = false;
 		}
 
@@ -116,11 +121,12 @@ function ExtraScrollAnimator(options) {
 		self.options.target.data("coords", coords);
 
 		self.options.tween.paused(true);
-		self.options.tween.progress(1);
+		self.options.tween.progress(self.options.defaultProgress);
 
 		if (wWidth < self.options.minSize) {
 			$window.off('scroll', scrollHandler);
-		} else {
+		}
+		else {
 			$window.on('scroll', scrollHandler);
 			self.updatePosition(true);
 		}
@@ -156,10 +162,35 @@ function ExtraScrollAnimator(options) {
 	self.updateTween = function (tween) {
 		self.options.tween = tween;
 		self.options.tween.paused(true);
-		self.options.tween.progress(1);
+		self.options.tween.progress(self.options.defaultProgress);
 		self.allowScrollUpdate = true;
 		self.update();
 		self.repaint();
+	};
+
+	/*********************************** PAUSE / RESUME ***********************************/
+	self.pause = function () {
+		if (!isPaused) {
+			$window.off('scroll', scrollHandler);
+			$window.off('extra:resize', self.update);
+			isActive = false;
+			isPaused = true;
+		}
+	};
+
+	self.resume = function () {
+		if (isPaused) {
+			if (wWidth < self.options.minSize) {
+				$window.off('scroll', scrollHandler);
+			}
+			else {
+				$window.on('scroll', scrollHandler);
+			}
+			$window.on('extra:resize', self.update);
+			isActive = true;
+			isPaused = false;
+			// self.update();
+		}
 	};
 
 	/*********************************** DESTROY ***********************************/
@@ -169,7 +200,7 @@ function ExtraScrollAnimator(options) {
 		$window.off('extra:resize', self.update);
 		if (self.options.tween) {
 			self.options.tween.paused(true);
-			self.options.tween.progress(1);
+			self.options.tween.progress(self.options.defaultProgress);
 			self.options.tween.kill();
 		}
 		self.allowScrollUpdate = false;

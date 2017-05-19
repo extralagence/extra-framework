@@ -75,7 +75,7 @@ function ExtraScrollAnimator(options) {
 
 		// Before the content
 		if (percent < 0 && isMin !== true) {
-			self.options.tween.progress(0);
+			TweenMax.to(self.options.tween, time, {progress: 0, ease: self.options.ease});
 			isMin = true;
 			if (isFunction(self.options.onMin)) {
 				self.options.onMin();
@@ -88,7 +88,7 @@ function ExtraScrollAnimator(options) {
 
 		// After the content
 		if (percent > 1 && isMax !== true) {
-			self.options.tween.progress(1);
+			TweenMax.to(self.options.tween, time, {progress: 1, ease: self.options.ease});
 			isMax = true;
 			if (isFunction(self.options.onMax)) {
 				self.options.onMax();

@@ -74,7 +74,7 @@ function ExtraScrollAnimator(options) {
 		percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
 
 		// Before the content
-		if (percent < 0 && isMin !== true) {
+		if (percent <= 0 && isMin !== true) {
 			TweenMax.to(self.options.tween, time, {progress: 0, ease: self.options.ease});
 			isMin = true;
 			if (isFunction(self.options.onMin)) {
@@ -82,12 +82,12 @@ function ExtraScrollAnimator(options) {
 			}
 			self.options.target.trigger("extra:scrollanimator:min");
 		}
-		else if (percent >= 0 && isMin !== false) {
+		else if (percent > 0 && isMin !== false) {
 			isMin = false;
 		}
 
 		// After the content
-		if (percent > 1 && isMax !== true) {
+		if (percent >= 1 && isMax !== true) {
 			TweenMax.to(self.options.tween, time, {progress: 1, ease: self.options.ease});
 			isMax = true;
 			if (isFunction(self.options.onMax)) {

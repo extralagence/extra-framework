@@ -26,7 +26,8 @@ function ExtraScrollAnimator(options) {
 			onMin          : null,
 			onMax          : null,
 			onOutside      : null,
-			onInside       : null
+			onInside       : null,
+			onUpdate       : null
 		}, _options);
 
 		if (self.options.target === null || self.options.target.length < 1) {
@@ -46,13 +47,25 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** UPDATE POSITION ***********************************/
 	self.updatePosition = function (fast) {
+
+		// not allowed to update
 		if (!isActive) {
 			return;
 		}
-		var time = (fast === undefined || !fast) ? self.options.speed : 0,
-			coords = self.options.target.data('coords'),
-			percent = 0;
 
+
+		var
+			// get tween speed
+			time = (fast === undefined || !fast) ? self.options.speed : 0,
+
+			//get coordinates from target (no recalculation)
+			coords = self.options.target.data('coords'),
+
+			// prepare percent variable
+			percent;
+
+		// if we have no coordinates,
+		// we stop there
 		if (!coords) {
 			return;
 		}
@@ -62,6 +75,7 @@ function ExtraScrollAnimator(options) {
 
 		// Before the content
 		if (percent < 0 && isMin !== true) {
+			self.options.tween.progress(0);
 			isMin = true;
 			if (isFunction(self.options.onMin)) {
 				self.options.onMin();
@@ -74,6 +88,7 @@ function ExtraScrollAnimator(options) {
 
 		// After the content
 		if (percent > 1 && isMax !== true) {
+			self.options.tween.progress(1);
 			isMax = true;
 			if (isFunction(self.options.onMax)) {
 				self.options.onMax();
@@ -137,6 +152,12 @@ function ExtraScrollAnimator(options) {
 			$window.on('scroll', scrollHandler);
 			self.updatePosition(true);
 		}
+
+		if (isFunction(self.options.onUpdate)) {
+			self.options.onUpdate(coords);
+		}
+		self.options.target.trigger("extra:scrollanimator:update", [coords]);
+
 	};
 
 	/*********************************** RESIZE ***********************************/
@@ -164,15 +185,16 @@ function ExtraScrollAnimator(options) {
 	/*********************************** LAUCNH INIT ***********************************/
 	self.init(options);
 
-
 	/*********************************** EXTERNAL UPDATE TWEEN ***********************************/
 	self.updateTween = function (tween) {
+		if (self.options.tween) {
+			self.options.tween.kill();
+		}
 		self.options.tween = tween;
 		self.options.tween.paused(true);
 		self.options.tween.progress(self.options.defaultProgress);
 		self.allowScrollUpdate = true;
 		self.update();
-		self.repaint();
 	};
 
 	/*********************************** PAUSE / RESUME ***********************************/
@@ -196,7 +218,7 @@ function ExtraScrollAnimator(options) {
 			$window.on('extra:resize', self.update);
 			isActive = true;
 			isPaused = false;
-			// self.update();
+			self.repaint();
 		}
 	};
 
@@ -212,6 +234,12 @@ function ExtraScrollAnimator(options) {
 		}
 		self.allowScrollUpdate = false;
 	};
+
+	function debug(string) {
+		if (self.options.debug === true) {
+			console.log(string);
+		}
+	}
 
 	/*********************************** UTILS ***********************************/
 	function isFunction(functionToCheck) {

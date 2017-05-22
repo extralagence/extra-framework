@@ -74,21 +74,21 @@ function ExtraScrollAnimator(options) {
 		percent = 1 - (scrollTop - coords.max) / (coords.min - coords.max);
 
 		// Before the content
-		if (percent < 0 && isMin !== true) {
-			self.options.tween.progress(0);
+		if (percent <= 0 && isMin !== true) {
+			// TweenMax.to(self.options.tween, time, {progress: 0, ease: self.options.ease});
 			isMin = true;
 			if (isFunction(self.options.onMin)) {
 				self.options.onMin();
 			}
 			self.options.target.trigger("extra:scrollanimator:min");
 		}
-		else if (percent >= 0 && isMin !== false) {
+		else if (percent > 0 && isMin !== false) {
 			isMin = false;
 		}
 
 		// After the content
-		if (percent > 1 && isMax !== true) {
-			self.options.tween.progress(1);
+		if (percent >= 1 && isMax !== true) {
+			// TweenMax.to(self.options.tween, time, {progress: 1, ease: self.options.ease});
 			isMax = true;
 			if (isFunction(self.options.onMax)) {
 				self.options.onMax();
@@ -119,9 +119,16 @@ function ExtraScrollAnimator(options) {
 
 		// Do we really need to update the tween ?
 		if (isInside === false) {
-			return;
+			if (isMax) {
+				// Force Max
+				percent = 1;
+			} else {
+				// Force Min
+				percent = 0;
+			}
 		}
 
+		percent = Math.max(0, Math.min(percent));
 		// Update the tween
 		TweenMax.to(self.options.tween, time, {progress: percent, ease: self.options.ease});
 	};

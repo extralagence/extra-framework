@@ -44,7 +44,7 @@ if ( ! function_exists( 'extra_submit_shortcode_handler' ) ) {
 			$value = __( 'Send', 'wpcf7' );
 		}
 
-		$value = apply_filters( 'extra_cf7_submit_value', $value );
+		$value = apply_filters( 'extra_cf7_submit_value', $value, $tag );
 
 		$atts['type'] = 'submit';
 		//$atts['value'] = $value;

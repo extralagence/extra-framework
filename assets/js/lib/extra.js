@@ -1,7 +1,9 @@
-var styleLog1 = "padding: 0; color:#000000; line-height:30px; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;",
-	styleLog2 = styleLog1 + " color: red;",
-	styleLog3 = styleLog1 + " font-weight: 700;";
-console.log("%c\n          Made with %c♥ %cby       \n    %cwww.extralagence.com    \n \n ", styleLog1, styleLog2, styleLog1, styleLog3);
+if(!window.customsignature) {
+	var styleLog1 = "padding: 0; color:#000000; line-height:30px; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;",
+		styleLog2 = styleLog1 + " color: red;",
+		styleLog3 = styleLog1 + " font-weight: 700;";
+	console.log("%c\n          Made with %c♥ %cby       \n    %cwww.extralagence.com    \n \n ", styleLog1, styleLog2, styleLog1, styleLog3);
+}
 
 /*********************
  *

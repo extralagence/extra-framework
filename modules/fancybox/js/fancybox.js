@@ -14,39 +14,85 @@ function extraInitFancybox($parent) {
 	// DEFAULT OPTIONS
 	var $metaTitle = $('meta[name="extra:fancybox_title"]'),
 		extraFancyboxDefaultOptions = {
-			opacity: false,
-
-			// Should display toolbars
-			infobar : true,
-			buttons : true,
-			smallBtn: false,
+			animationEffect : "fade",
+			arrows          : false,
+			zoomOpacity     : true,
+			transitionEffect: "slide",
+			opacity         : false,
+			infobar         : true,
+			toolbar         : true,
+			loop            : true,
+			smallBtn        : false,
+			buttons         : [],
+			lang            : 'fr',
+			i18n            : {
+				'fr': {
+					CLOSE      : 'Fermer',
+					NEXT       : 'Suivant',
+					PREV       : 'Précédent',
+					ERROR      : 'Le chargement n\'a pas abouti. <br/> Merci de réessayer plus tard.',
+					PLAY_START : 'Lecture',
+					PLAY_STOP  : 'Pause',
+					FULL_SCREEN: 'Plein écran',
+					THUMBS     : 'Miniatures'
+				}
+			},
 
 			// What buttons should appear in the toolbar
-			slideShow : false,
-			fullScreen: false,
-			thumbs    : false,
-			closeBtn  : true,
+			// slideShow : false,
+			// fullScreen: false,
+			// thumbs    : false,
+			// closeBtn  : true,
 
 			errorTpl: '<div class="fancybox-error"><p>' + extra_fancybox_options.messages.error + '<p></div>',
 			margin  : [140, 90, 120, 90],
 			baseTpl : '<div class="fancybox-container" role="dialog" tabindex="-1">' +
 			'<div class="fancybox-bg"></div>' +
-			'<div class="fancybox-controls">' +
+			'<div class="fancybox-inner">' +
+			'<div class="fancybox-infobar">' +
 			'<div class="fancybox-infobar__body">' +
 			'<h2 class="extra-fancybox-title">' + $metaTitle.attr('content') + '</h2>' +
-			'<div class="extra-fancybox-counter"><div class="inner"><div class="text">' + extra_fancybox_options.messages.count + '</div></div></div>' +
+			'<div class="counter"><span data-fancybox-index></span>&nbsp;/&nbsp;<span data-fancybox-count></span></div>' +
+			'</div>' +
+			'</div>' +
+			'<div class="fancybox-toolbar">' +
+			'{{BUTTONS}}' +
 			'</div>' +
 			'<div class="fancybox-buttons">' +
-			'<button data-fancybox-previous class="extra-fancybox-nav extra-fancybox-prev"><span class="icon-arrow"></span></button>' +
-			'<button data-fancybox-next class="extra-fancybox-nav extra-fancybox-next" ><span class="icon-arrow"></span></button>' +
-			'<button data-fancybox-close class="extra-fancybox-nav close-button"><span class="icon-close"></span></button>' +
+			'<button data-fancybox-prev title="{{PREV}}" class="extra-fancybox-nav extra-fancybox-prev"><span class="icon-arrow"></span></button>' +
+			'<button data-fancybox-next title="{{NEXT}}" class="extra-fancybox-nav extra-fancybox-next"><span class="icon-arrow"></span></button>' +
+			'<button data-fancybox-close class="extra-fancybox-nav close-button" title="{{CLOSE}}"><span class="icon-close"></span></button>' +
 			'</div>' +
-			'</div>' +
-			'<div class="fancybox-slider-wrap">' +
-			'<div class="fancybox-slider"></div>' +
-			'</div>' +
+			'<div class="fancybox-stage"></div>' +
 			'<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
-			'</div>'
+			'</div>' +
+			'</div>',
+
+			btnTpl: {
+				// close: '<button data-fancybox-close class="extra-fancybox-nav close-button" title="{{CLOSE}}"><span class="icon-close"></span></button>',
+			}
+
+
+
+			/*'<div class="fancybox-container" role="dialog" tabindex="-1">' +
+			 '<div class="fancybox-bg"></div>' +
+			 '<div class="fancybox-controls">' +
+			 '<div class="fancybox-infobar__body">' +
+			 '<h2 class="extra-fancybox-title">' + $metaTitle.attr('content') + '</h2>' +
+			 '<div class="extra-fancybox-counter"><div class="inner"><div class="text">' + extra_fancybox_options.messages.count + '</div></div></div>' +
+			 '</div>' +
+			 '<div class="fancybox-buttons">' +
+			 '<button data-fancybox-previous class="extra-fancybox-nav extra-fancybox-prev"><span class="icon-arrow"></span></button>' +
+			 '<button data-fancybox-next class="extra-fancybox-nav extra-fancybox-next" ><span class="icon-arrow"></span></button>' +
+			 '<button data-fancybox-close class="extra-fancybox-nav close-button"><span class="icon-close"></span></button>' +
+			 '</div>' +
+			 '</div>' +
+			 '<div class="fancybox-slider-wrap">' +
+			 '<div class="fancybox-slider"></div>' +
+			 '</div>' +
+			 '<div class="fancybox-stage"></div>' +
+			 '<div class="fancybox-caption-wrap"><div class="fancybox-caption"></div></div>' +
+			 '</div>'*/
 		},
 
 		// GET ALL ELEMENTS

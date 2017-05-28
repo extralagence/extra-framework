@@ -88,7 +88,8 @@ function ExtraAjaxNavigation(options) {
 					self.options.wrapper.addClass(self.options.nextCompleteClass);
 					self.options.wrapper.addClass(self.options.previousCompleteClass);
 					self.options.wrapper.trigger("extra:ajaxNavigation:complete extra:ajaxNavigation:error");
-				} else {
+				}
+				else {
 					self.options.wrapper.trigger("extra:ajaxNavigation:loaded", [rawHtml, status]);
 				}
 
@@ -104,13 +105,16 @@ function ExtraAjaxNavigation(options) {
 					if (isPrevious) {
 						if (self.options.wrapper.find(self.options.pageMarkerSelector).length > 0) {
 							$pageMarker.insertBefore(self.options.wrapper.find(self.options.pageMarkerSelector).first());
-						} else {
+						}
+						else {
 							$pageMarker.appendTo($list);
 						}
-					} else {
+					}
+					else {
 						if (self.options.wrapper.find(self.options.itemSelector).length > 0) {
 							$pageMarker.insertAfter(self.options.wrapper.find(self.options.itemSelector).last());
-						} else {
+						}
+						else {
 							$pageMarker.appendTo($list);
 						}
 					}
@@ -125,7 +129,8 @@ function ExtraAjaxNavigation(options) {
 					self.options.wrapper.trigger("extra:ajaxNavigation:beforeAddItems", [isPrevious, $items, $pageMarker]);
 					if (isPrevious) {
 						$items.insertAfter(self.options.wrapper.find(self.options.itemSelector + ', ' + self.options.pageMarkerSelector).first());
-					} else {
+					}
+					else {
 						$items.insertAfter(self.options.wrapper.find(self.options.itemSelector + ', ' + self.options.pageMarkerSelector).last());
 					}
 					self.options.wrapper.trigger("extra:ajaxNavigation:afterAddItems", [isPrevious, $items, $pageMarker]);
@@ -149,7 +154,8 @@ function ExtraAjaxNavigation(options) {
 						self.options.wrapper.addClass(self.options.nextCompleteClass);
 						self.options.wrapper.trigger("extra:ajaxNavigation:nextComplete");
 					}
-				} else {
+				}
+				else {
 					// Update previous button
 					if ($newPreviousButton.length > 0 && $previousButton.length > 0) {
 						$previousButton.off("click", onClickPreviousButton);
@@ -246,7 +252,8 @@ function ExtraAjaxNavigation(options) {
 			if (window.history && window.history.pushState && window.history.replaceState) {
 				if (self.options.historyReplaceState === true) {
 					window.history.replaceState("", "", page.permalink);
-				} else {
+				}
+				else {
 					window.history.pushState("", "", page.permalink);
 				}
 				document.title = page.title;

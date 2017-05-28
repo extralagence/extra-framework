@@ -112,23 +112,23 @@ function extra_get_placeholder( $id, $width, $height ) {
 /**
  * echo reponsive image
  *
- * @param        $src            $source
- * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class          add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
- * @param bool   $img_itemprop   true if you want to use itemprop
- * @param string $caption        html for the caption
- * @param string $tag            used to wrap the image (figure, span, etc.)
- * @param bool   $lazy_loading   true if loading start only when element is in viewport
- * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param bool $img_itemprop true if you want to use itemprop
+ * @param string $caption html for the caption
+ * @param string $tag used to wrap the image (figure, span, etc.)
+ * @param bool $lazy_loading true if loading start only when element is in viewport
+ * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = '', $alt = null, $img_itemprop = true, $caption = '', $tag = 'figure', $lazy_loading = false, $custom_loading = false ) {
 
 	// hook it to override available sizes
 	$sizes = apply_filters( 'extra_responsive_sizes', array() );
 
-	$class .= ( $lazy_loading ) ? ' extra-responsive-image-lazy' : '';
-	$class .= ( $custom_loading ) ? ' extra-responsive-image-custom-loading' : '';
+	$class           .= ( $lazy_loading ) ? ' extra-responsive-image-lazy' : '';
+	$class           .= ( $custom_loading ) ? ' extra-responsive-image-custom-loading' : '';
 	$use_placeholder = apply_filters( 'extra_responsive_images_use_placeholder', false );
 
 // SRC IS AN ID
@@ -137,8 +137,8 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		ob_start();
 		?>
 		<img
-			class="extra-responsive-image-placeholder<?php echo ! empty( $class ) ? ' ' . $class : ''; ?>"
-			src="<?php echo EXTRA_URI; ?>/assets/img/blank.png">
+				class="extra-responsive-image-placeholder<?php echo ! empty( $class ) ? ' ' . $class : ''; ?>"
+				src="<?php echo EXTRA_URI; ?>/assets/img/blank.png">
 		<?php
 		$return = ob_get_contents();
 		ob_end_clean();
@@ -175,7 +175,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 		<meta itemprop="height" content="<?php echo $src[2]; ?>">
 	<?php endif; ?>
 	<noscript
-		data-alt="<?php echo $alt; ?>"
+			data-alt="<?php echo $alt; ?>"
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
 			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
@@ -207,7 +207,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 			<?php echo $caption; ?>
 		</figcaption>
 	<?php endif; ?>
-	<?php do_action('extra_responsive_image_content_after'); ?>
+	<?php do_action( 'extra_responsive_image_content_after' ); ?>
 	</<?php echo $tag; ?>>
 
 	<?php
@@ -224,13 +224,13 @@ function extra_responsive_image( $id = 0, $dimensions = 'thumbnail', $class = ''
 /**
  * echo reponsive image
  *
- * @param        $src            $source
- * @param array  $params         $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class          add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
- * @param string $tag            used to be carry the background image
- * @param bool   $lazy_loading   true if loading start only when element is in viewport
- * @param bool   $custom_loading true if you want to overide the loading mechanic (lazy or not)
+ * @param string $tag used to be carry the background image
+ * @param bool $lazy_loading true if loading start only when element is in viewport
+ * @param bool $custom_loading true if you want to overide the loading mechanic (lazy or not)
  */
 function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnail', $class = '', $tag = 'div', $lazy_loading = false, $custom_loading = false ) {
 
@@ -278,9 +278,9 @@ function extra_responsive_background_image( $id = 0, $dimensions = 'thumbnail', 
 /**
  * get svg responsive image
  *
- * @param        $src    $source
- * @param array  $params $params['desktop'] $params['tablet'] $params['mobile'] required
- * @param string $class  add custom classes
+ * @param        $src $source
+ * @param array $params $params['desktop'] $params['tablet'] $params['mobile'] required
+ * @param string $class add custom classes
  * @param string $alt
  */
 function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class = '', $lazy_loading = false, $custom_loading = false ) {
@@ -303,7 +303,7 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 	?>
 
 	<div
-		class="extra-responsive-image-wrapper extra-responsive-image-svg<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
+			class="extra-responsive-image-wrapper extra-responsive-image-svg<?php echo ( ! empty( $class ) ) ? ' ' . $class : ''; ?>">
 		<svg width="100%" height="100%"
 			 preserveAspectRatio="none"
 			 version="1.1"
@@ -342,8 +342,6 @@ function extra_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $class 
 ///////////////////////////////////////
 function extra_responsive_images__the_content_replace( $matches, $tag ) {
 
-	$alt = '';
-
 	$img = $matches[4];
 
 	// Extract ID
@@ -354,24 +352,22 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 	// Extract Height
 	$current_matches = array();
 	preg_match( '/height="([0-9]*)"/', $img, $current_matches );
-	$height = intval( $current_matches[1] );
+	$height = ! empty( $current_matches ) ? intval( $current_matches[1] ) : 1;
 
 	// Extract Width
 	$current_matches = array();
 	preg_match( '/width="([0-9]*)"/', $img, $current_matches );
-	$width = intval( $current_matches[1] );
+	$width = ! empty( $current_matches ) ? intval( $current_matches[1] ) : 1;
 
 	// Extract Alt
 	$current_matches = array();
 	preg_match( '/alt="(.*?)"/', $img, $current_matches );
-	if ( ! empty( $current_matches[1] ) ) {
-		$alt = $current_matches[1];
-	}
+	$alt = ! empty( $current_matches ) ? $current_matches[1] : '';
 
 	// Extract Class
 	$current_matches = array();
 	preg_match( '/class="(.*?)"/', $img, $current_matches );
-	$class = $current_matches[1];
+	$class = ! empty( $current_matches ) ? $current_matches[1] : '';
 
 	// GET SPECIFIC CLASSES
 	preg_match( '/(align[a-zA-Z]*)/', $class, $align_class );

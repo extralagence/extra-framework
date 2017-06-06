@@ -169,6 +169,8 @@ function ExtraScrollAnimator(options) {
 
 	/*********************************** RESIZE ***********************************/
 	$window.on('extra:resize', self.update);
+	$window.on('extra:scrollanimator:resize', self.update);
+	$window.on('extra:scrollanimator:tick', self.updatePosition);
 
 	/*********************************** SCROLL ***********************************/
 	function scrollHandler(event) {

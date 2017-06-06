@@ -30,15 +30,15 @@ function extra_redirection__metabox() {
 add_action( 'init', 'extra_redirection__metabox', 12 );
 
 
-function extra_get_redirect($page_id) {
+function extra_get_redirect( $page_id ) {
 	global $redirection_metabox;
 
-	$data = $redirection_metabox->the_meta($page_id);
+	$data = $redirection_metabox->the_meta( $page_id );
 
 	$redirection_type = ! empty( $data['redirection_type'] ) ? $data['redirection_type'] : 'auto';
 
 	$response = array(
-		'url' => null,
+		'url'   => null,
 		'error' => false
 	);
 
@@ -51,7 +51,7 @@ function extra_get_redirect($page_id) {
 			$redirect_params = apply_filters( 'extra_redirection_get_pages_params', $redirect_params );
 			$pagekids        = get_pages( $redirect_params );
 			if ( ! empty( $pagekids ) ) {
-				$firstchild = $pagekids[0];
+				$firstchild      = $pagekids[0];
 				$response['url'] = get_permalink( $firstchild->ID );
 			} else {
 				$response['error'] = __( "Cette page n'a pas d'enfant", "extra" );
@@ -93,7 +93,7 @@ function extra_get_redirect($page_id) {
 				if ( count( $targets ) > 0 ) {
 					if ( function_exists( 'icl_object_id' ) ) {
 
-						$target_id = apply_filters('wpml_object_id', $targets[0]->ID, 'page', true);
+						$target_id = apply_filters( 'wpml_object_id', $targets[0]->ID, 'page', true );
 					} else {
 						$target_id = $targets[0]->ID;
 					}
@@ -115,30 +115,45 @@ add_action( 'template_redirect', function () {
 	if ( is_page_template( 'template-redirect.php' ) ) {
 		global $post, $redirection_metabox;
 		the_post();
-		$redirect = extra_get_redirect ( $post->ID);
+		$redirect = extra_get_redirect( $post->ID );
 
-		if ($redirect['error'] != false) {
+		if ( $redirect['error'] != false ) {
 			echo $redirect['error'];
 		} else {
-			wp_redirect($redirect['url']);
+			wp_redirect( $redirect['url'] );
 		}
 		die();
 	}
 } );
 
 
-add_filter('wp_nav_menu_objects', function ($items) {
-	foreach ($items as $item) {
-		if ($item->object == 'page') {
-			$slug = get_page_template_slug($item->object_id);
-			if ($slug == 'template-redirect.php') {
-				$redirect = extra_get_redirect ($item->object_id);
-				if ($redirect['error'] == false) {
-					$item->url = $redirect['url'];
-				}
+//add_filter( 'wp_nav_menu_objects', function ( $items ) {
+//	foreach ( $items as $item ) {
+//		if ( $item->object == 'page' ) {
+//			$slug = get_page_template_slug( $item->object_id );
+//			if ( $slug == 'template-redirect.php' ) {
+//				$redirect = extra_get_redirect( $item->object_id );
+//				if ( $redirect['error'] == false ) {
+//					$item->url = $redirect['url'];
+//				}
+//			}
+//		}
+//	}
+//
+//	return $items;
+//} );
+
+
+add_filter( 'page_link',
+	function ( $url, $post_id ) {
+		$slug = get_page_template_slug( $post_id );
+		if ( $slug == 'template-redirect.php' ) {
+			$redirect = extra_get_redirect( $post_id );
+			if ( $redirect['error'] == false ) {
+				$url = $redirect['url'];
 			}
 		}
-	}
 
-	return $items;
-});
+		return $url;
+	},
+	10, 3 );

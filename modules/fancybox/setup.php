@@ -17,7 +17,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'fancybox', EXTRA_MODULES_URI . '/fancybox/inc/dist/jquery.fancybox.min.css', array(), EXTRA_VERSION, 'all' );
 	wp_enqueue_style( 'extra.fancybox', EXTRA_MODULES_URI . '/fancybox/css/fancybox.less', array('fancybox'), EXTRA_VERSION, 'all' );
 
-	wp_enqueue_script( 'fancybox', EXTRA_MODULES_URI . '/fancybox/inc/dist/jquery.fancybox.min.js', array( 'jquery' ), EXTRA_VERSION, true );
+	wp_enqueue_script( 'fancybox', EXTRA_MODULES_URI . '/fancybox/inc/dist/jquery.fancybox.js', array( 'jquery' ), EXTRA_VERSION, true );
 	wp_enqueue_script( 'extra.fancybox', EXTRA_MODULES_URI . '/fancybox/js/fancybox.js', apply_filters('extra_fancybox_script_dependencies', array( 'fancybox' )), EXTRA_VERSION, true );
 	wp_localize_script('extra.fancybox', 'extra_fancybox_options', array(
 		'messages' => array(

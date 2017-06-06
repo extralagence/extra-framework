@@ -18,6 +18,7 @@
 			'class'              : 'sticky',
 			'container'          : null,
 			'limit'              : true,
+			'limitClass'         : 'limited',
 			'offset'             : 0,
 			'shy'                : false,
 			'shyOffset'          : -100,
@@ -42,7 +43,7 @@
 					offsetTop,
 					allowStick = true,
 					isFixed = false,
-					isEnded = false,
+					isLimited = false,
 					isActive = true,
 					allowRepaint = false,
 					isShy = false,
@@ -58,7 +59,7 @@
 					$window.off('scroll', scrollHandler);
 					$this.css({
 						'position': '',
-						'top'     : ''
+						'bottom'     : ''
 					});
 					if (opt.keepContainerHeight) {
 						TweenMax.set($container, {
@@ -71,13 +72,14 @@
 						});
 					}
 					isFixed = false;
-					isEnded = false;
+					isLimited = false;
 					$this.removeClass(opt.class);
+					$this.removeClass(opt.limitClass);
 					windowWidth = window.innerWidth;
 					windowHeight = window.innerHeight;
 
 					// Check minimum size requirement
-					if (windowWidth < opt.minSize) {
+					if (windowWidth <= opt.minSize) {
 						return;
 					}
 
@@ -89,16 +91,6 @@
 					// Element height must be less than window height and less than container height
 					allowStick = outerHeight <= windowHeight && (outerHeight <= containerOuterHeight || !opt.limit);
 
-					// Adjust container height if needed
-					if (isFixed && opt.keepContainerHeight && containerHeight === 0) {
-						containerHeight = containerOuterHeight = outerHeight;
-						$container.height(containerOuterHeight);
-					}
-
-					// Adjust element width if needed
-					if (isFixed && opt.keepChildWidth) {
-						$this.innerWidth($container.innerWidth());
-					}
 					$window.on('scroll', scrollHandler);
 					scrollHandler();
 				}
@@ -152,13 +144,14 @@
 							}
 
 							if (opt.limit) {
-								if (isEnded) {
+								if (isLimited) {
 									if (diffStop > 0) {
-										isEnded = false;
+										isLimited = false;
 										$this.css({
 											'position': '',
-											'top'     : ''
+											'bottom'  : ''
 										});
+										$this.removeClass(opt.limitClass);
 										if (!isFixed) {
 											if (opt.keepContainerHeight) {
 												TweenMax.set($container, {
@@ -175,11 +168,12 @@
 								}
 								else {
 									if (diffStop <= 0) {
-										isEnded = true;
+										isLimited = true;
 										$this.css({
 											'position': 'absolute',
-											'top'     : (containerHeight - outerHeight) + 'px'
+											'bottom'  : 0
 										});
+										$this.addClass(opt.limitClass);
 										if (opt.keepContainerHeight) {
 											$container.height(containerOuterHeight);
 										}

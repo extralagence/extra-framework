@@ -42,10 +42,6 @@
 	transform: translate3d(0, -90px, 0);
 	transition: 0.3s transform ease-in-out 0s;
 
-	// < 500
-	@media screen and (max-width: 720px) {
-		padding-left: 20px;
-	}
 }
 
 .fancybox-is-open .fancybox-infobar {
@@ -101,7 +97,6 @@
 		align-items: center;
 		display: flex;
 		justify-content: center;
-		margin-left: 10px;
 		overflow: hidden;
 		width: 40px;
 		height: 40px;
@@ -120,12 +115,15 @@
 		&:nth-child(2) {
 			transition-delay: 0.4s;
 		}
-
+		&:not(:nth-child(1)) {
+			margin-left: 10px;
+		}
 		.icon-close,
 		.icon-arrow {
 			display: block;
 			width: 10px;
 			height: 10px;
+			margin: 0 auto;
 			position: relative;
 
 			&:before,
@@ -269,4 +267,26 @@
 	text-align: center;
 	font-size: 18px;
 	line-height: 35px;
+}
+
+///////////////////////////////////////
+//
+//
+// < 500
+//
+//
+///////////////////////////////////////
+@media screen and (max-width: 720px) {
+	.fancybox-infobar {
+		padding: 80px 0 0 0;
+		height: auto;
+	}
+
+	.fancybox-container .fancybox-buttons {
+		padding: 20px;
+		right: 0;
+		left: 0;
+		width: 180px;
+		margin: auto;
+	}
 }

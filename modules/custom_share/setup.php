@@ -118,7 +118,7 @@ function extra_custom_share( $custom_url = null, $custom_page_title = null, $cus
 	} else if ( array_key_exists( 'share-form-id', $extra_options ) || array_key_exists( 'contact-form-select', $extra_options ) ) {
 		$form_id = array_key_exists( 'share-form-id', $extra_options ) ? $extra_options['share-form-id'] : $extra_options['contact-form-select'];
 	}
-	if ( $form_id !== null ) {
+	if ( !empty($form_id) ) {
 		$email = '
 			<a href="#extra-social-share-wrapper" class="extra-social-button extra-social-share">
 				<svg viewBox="0 0 20 20" class="icon"><use xlink:href="#extra-social-mail"></use></svg>

@@ -17,9 +17,10 @@
 		var opt = $.extend({
 			'class'              : 'sticky',
 			'container'          : null,
-			'limit'              : true,
-			'limitClass'         : 'limited',
 			'offset'             : 0,
+			'limit'              : true,
+			'limitOffset'        : 0,
+			'limitClass'         : 'limited',
 			'shy'                : false,
 			'shyOffset'          : -100,
 			'shyClass'           : 'shy',
@@ -59,7 +60,7 @@
 					$window.off('scroll', scrollHandler);
 					$this.css({
 						'position': '',
-						'bottom'     : ''
+						'bottom'  : ''
 					});
 					if (opt.keepContainerHeight) {
 						TweenMax.set($container, {
@@ -103,7 +104,7 @@
 					previousScrollTop = scrollTop;
 					scrollTop = tmpScrollTop;
 					diffStart = offsetTop - scrollTop - opt.offset;
-					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
+					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset - windowHeight;
 					diffStartShy = offsetTop - scrollTop - opt.shyOffset;
 					diffStopShy = offsetTop + containerHeight - outerHeight - scrollTop - opt.shyOffset;
 					allowRepaint = true;
@@ -142,10 +143,9 @@
 									$this.trigger("extra:sticky:stick");
 								}
 							}
-
 							if (opt.limit) {
 								if (isLimited) {
-									if (diffStop > 0) {
+									if (diffStop > opt.limitOffset) {
 										isLimited = false;
 										$this.css({
 											'position': '',
@@ -167,11 +167,11 @@
 									}
 								}
 								else {
-									if (diffStop <= 0) {
+									if (diffStop <= opt.limitOffset) {
 										isLimited = true;
 										$this.css({
 											'position': 'absolute',
-											'bottom'  : 0
+											'bottom'  : opt.limitOffset
 										});
 										$this.addClass(opt.limitClass);
 										if (opt.keepContainerHeight) {

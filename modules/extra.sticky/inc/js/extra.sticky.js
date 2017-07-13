@@ -114,7 +114,7 @@
 					previousScrollTop = scrollTop;
 					scrollTop = tmpScrollTop;
 					diffStart = offsetTop - scrollTop - opt.offset;
-					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset - windowHeight;
+					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
 					diffStartShy = offsetTop - scrollTop - opt.shyOffset;
 					diffStopShy = offsetTop + containerHeight - outerHeight - scrollTop - opt.shyOffset;
 					allowRepaint = true;

@@ -56,25 +56,33 @@
 
 				/*********************************** FUNCTIONS ***********************************/
 				function resize() {
+
+					// remove scroll listener by default
+					// we may have it back later
 					$window.off('scroll', scrollHandler);
-					$this.css({
-						'position': '',
-						'bottom'     : ''
-					});
-					if (opt.keepContainerHeight) {
-						TweenMax.set($container, {
-							clearProps: 'height'
-						});
-					}
-					if (opt.keepChildWidth) {
-						TweenMax.set($this, {
-							clearProps: 'width'
-						});
-					}
-					isFixed = false;
-					isLimited = false;
+
+					// Clean item
+					TweenMax.set($this, {clearProps: 'position,bottom'});
 					$this.removeClass(opt.class);
 					$this.removeClass(opt.limitClass);
+
+					// If needed, clear container
+					if (opt.keepContainerHeight) {
+						TweenMax.set($container, {clearProps: 'height'});
+					}
+
+					// If needed, clean with item
+					if (opt.keepChildWidth) {
+						TweenMax.set($this, {clearProps: 'width'});
+					}
+
+					// Set vars to their default values
+					// to allow them to be updated
+					isFixed = false;
+					isLimited = false;
+					previousScrollTop = -1;
+
+					// Window dimensions
 					windowWidth = window.innerWidth;
 					windowHeight = window.innerHeight;
 
@@ -83,6 +91,7 @@
 						return;
 					}
 
+					// Update dimensions
 					offsetTop = $container.offset().top;
 					containerHeight = $container.height();
 					containerOuterHeight = $container.outerHeight();
@@ -91,7 +100,10 @@
 					// Element height must be less than window height and less than container height
 					allowStick = outerHeight <= windowHeight && (outerHeight <= containerOuterHeight || !opt.limit);
 
+					// Set listener back
 					$window.on('scroll', scrollHandler);
+
+					// Update position
 					scrollHandler();
 				}
 
@@ -147,10 +159,7 @@
 								if (isLimited) {
 									if (diffStop > 0) {
 										isLimited = false;
-										$this.css({
-											'position': '',
-											'bottom'  : ''
-										});
+										TweenMax.set($this, {clearProps: 'position,bottom'});
 										$this.removeClass(opt.limitClass);
 										if (!isFixed) {
 											if (opt.keepContainerHeight) {
@@ -210,16 +219,23 @@
 					}
 				}
 
+				function update(event, options) {
+					opt = $.extend(opt, options);
+					resize();
+				}
+
 				function destroyHandler() {
 					isActive = false;
 					$window.off('extra:sticky:resize', resize);
 					$window.off('extra:resize', resize);
-					$window.off('extra:sticky:destroy', destroyHandler);
+					$this.off("extra:sticky:update", update);
+					$this.off('extra:sticky:destroy', destroyHandler);
 				}
 
 				/********************************* LISTENERS ********************************/
 				$window.on('extra:sticky:resize', resize);
 				$window.on('extra:resize', resize);
+				$this.on("extra:sticky:update", update);
 				$this.on("extra:sticky:destroy", destroyHandler);
 
 				/*********************************** INIT ***********************************/

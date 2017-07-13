@@ -129,6 +129,7 @@ function ExtraScrollAnimator(options) {
 		}
 
 		percent = Math.max(0, Math.min(percent));
+		debug(percent);
 		// Update the tween
 		TweenMax.to(self.options.tween, time, {progress: percent, ease: self.options.ease});
 	};
@@ -236,6 +237,7 @@ function ExtraScrollAnimator(options) {
 		isActive = false;
 		$window.off('scroll', scrollHandler);
 		$window.off('extra:resize', self.update);
+		$window.off('extra:scrollanimator:tick', self.updatePosition);
 		if (self.options.tween) {
 			self.options.tween.paused(true);
 			self.options.tween.progress(self.options.defaultProgress);

@@ -61,7 +61,7 @@
 					// remove scroll listener by default
 					// we may have it back later
 					$window.off('scroll', scrollHandler);
-					
+
 					// Clean item
 					TweenMax.set($this, {clearProps: 'position,bottom'});
 					$this.removeClass(opt.class);

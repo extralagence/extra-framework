@@ -36,8 +36,8 @@ function extra_responsive_images__default_responsive_sizes( $sizes ) {
 		if ( $max_width !== null ) {
 			$current = ' and (max-width: ' . $max_width . 'px)';
 		}
-		$sizes[ $rule_name ] = 'only screen' . $previous . $current;
-		$previous_max        = $max_width;
+		$sizes[$rule_name] = 'only screen' . $previous . $current;
+		$previous_max      = $max_width;
 	}
 
 	$sizes = array_reverse( $sizes );
@@ -178,7 +178,7 @@ function extra_get_responsive_image( $id = 0, $dimensions = 'thumbnail', $class 
 			data-alt="<?php echo $alt; ?>"
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[$size] : $dimensions );
 			echo $src[0];
 			?>"
 		<?php endforeach; ?>>
@@ -258,7 +258,7 @@ function extra_get_responsive_background_image( $id = 0, $dimensions = 'thumbnai
 	<noscript
 		<?php foreach ( $sizes as $size => $value ): ?>
 			data-src-<?php echo $size; ?>="<?php
-			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
+			$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[$size] : $dimensions );
 			echo $src[0]; ?>"
 		<?php endforeach; ?>>
 	</noscript>
@@ -315,7 +315,7 @@ function extra_get_responsive_svg_image( $id = 0, $dimensions = 'thumbnail', $cl
 		<noscript
 			<?php foreach ( $sizes as $size => $value ): ?>
 				data-src-<?php echo $size; ?>="<?php
-				$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[ $size ] : $dimensions );
+				$src = wp_get_attachment_image_src( $id, is_array( $dimensions ) ? $dimensions[$size] : $dimensions );
 				echo $src[0]; ?>"
 			<?php endforeach; ?>>
 		</noscript>
@@ -382,8 +382,8 @@ function extra_responsive_images__the_content_replace( $matches, $tag ) {
 		} else {
 			$current_width = $width;
 		}
-		$current_height                 = floor( $height * $current_width / $width );
-		$responsive_sizes[ $rule_name ] = array( $current_width, $current_height );
+		$current_height               = floor( $height * $current_width / $width );
+		$responsive_sizes[$rule_name] = array( $current_width, $current_height );
 	}
 
 	$responsive_sizes = apply_filters( 'extra_responsive_images_sizes', $responsive_sizes, $width, $height );
@@ -471,7 +471,7 @@ function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions 
 			$sizes      = apply_filters( 'extra_responsive_sizes', array() );
 			$dimensions = array();
 			foreach ( $sizes as $size_name => $size_value ) {
-				$dimensions[ $size_name ] = array( $width, $height );
+				$dimensions[$size_name] = array( $width, $height );
 			}
 		}
 
@@ -483,8 +483,8 @@ function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions 
 		}
 
 		$filetype = wp_check_filetype( $image_full_src[0] );
-		if ( ! empty( $filetype ) && $filetype['ext'] === 'svg' ) {
-			return $dimensions;
+		if ( ! empty( $filetype ) && ( $filetype['ext'] === 'svg' || $filetype['ext'] === 'gif' ) ) {
+			return 'full';
 		}
 
 		$full_dimension = array( $image_full_src[1], $image_full_src[2] );
@@ -530,7 +530,7 @@ function extra_responsive_image__adjust_dimensions( $attachment_id, $dimensions 
 					$dimension[1] = min( floor( ( $dimension[0] * $full_dimension[1] ) / $full_dimension[0] ), $full_dimension[1] );
 				}
 
-				$real_dimensions[ $dimension_name ] = $dimension;
+				$real_dimensions[$dimension_name] = $dimension;
 			}
 		}
 

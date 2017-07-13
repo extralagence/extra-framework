@@ -17,9 +17,10 @@
 		var opt = $.extend({
 			'class'              : 'sticky',
 			'container'          : null,
-			'limit'              : true,
-			'limitClass'         : 'limited',
 			'offset'             : 0,
+			'limit'              : true,
+			'limitOffset'        : 0,
+			'limitClass'         : 'limited',
 			'shy'                : false,
 			'shyOffset'          : -100,
 			'shyClass'           : 'shy',
@@ -60,13 +61,11 @@
 					// remove scroll listener by default
 					// we may have it back later
 					$window.off('scroll', scrollHandler);
-
+					
 					// Clean item
 					TweenMax.set($this, {clearProps: 'position,bottom'});
 					$this.removeClass(opt.class);
 					$this.removeClass(opt.limitClass);
-
-					// If needed, clear container
 					if (opt.keepContainerHeight) {
 						TweenMax.set($container, {clearProps: 'height'});
 					}
@@ -115,7 +114,7 @@
 					previousScrollTop = scrollTop;
 					scrollTop = tmpScrollTop;
 					diffStart = offsetTop - scrollTop - opt.offset;
-					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset;
+					diffStop = offsetTop + containerHeight - outerHeight - scrollTop - opt.offset - windowHeight;
 					diffStartShy = offsetTop - scrollTop - opt.shyOffset;
 					diffStopShy = offsetTop + containerHeight - outerHeight - scrollTop - opt.shyOffset;
 					allowRepaint = true;
@@ -154,10 +153,9 @@
 									$this.trigger("extra:sticky:stick");
 								}
 							}
-
 							if (opt.limit) {
 								if (isLimited) {
-									if (diffStop > 0) {
+									if (diffStop > opt.limitOffset) {
 										isLimited = false;
 										TweenMax.set($this, {clearProps: 'position,bottom'});
 										$this.removeClass(opt.limitClass);
@@ -176,11 +174,11 @@
 									}
 								}
 								else {
-									if (diffStop <= 0) {
+									if (diffStop <= opt.limitOffset) {
 										isLimited = true;
 										$this.css({
 											'position': 'absolute',
-											'bottom'  : 0
+											'bottom'  : opt.limitOffset
 										});
 										$this.addClass(opt.limitClass);
 										if (opt.keepContainerHeight) {

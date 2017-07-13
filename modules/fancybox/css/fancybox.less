@@ -67,7 +67,7 @@
 	.extra-fancybox-title {
 		font-size: 26px;
 		width: 100%;
-		padding: 0;
+		padding: 0 20px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -215,6 +215,7 @@
 ///////////////////////////////////////
 .fancybox-caption-wrap {
 	background: transparent;
+	opacity: 1;
 	padding: 30px 0 0;
 	background-image: linear-gradient(to bottom, transparent 0%, fade(@black, 90%) 100%);
 }
@@ -245,7 +246,7 @@
 	}
 }
 
-.fancybox-show-caption.fancybox-is-open .fancybox-caption {
+.fancybox-is-open .fancybox-caption {
 	transform: translate(0, 0);
 	opacity: 1;
 	transition: all 0.3s ease-in-out 0.3s;
